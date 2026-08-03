@@ -1,0 +1,63 @@
+---
+name: its-generator
+description: Generate an ITS (Instrucao de Trabalho de Software) - the implementation plan mapping a user story and its use case documents to concrete code changes, written against the prime-core/its-contract. Architect-layer skill. Use whenever the architect asks for an implementation plan, impact analysis, "what needs to change in the code", "generate the ITS for story S-NNN", or provides a story plus use case documents. Requires the use case repository as input. Do NOT use for writing or updating use case documents (prime-docs skills) or for reviewing an implementation (code-review).
+---
+
+# ITS Generator (prime-architect)
+
+Generate one ITS per story: the work instruction the Developer will implement from. The ITS format is NOT defined here — it is owned by **prime-core/its-contract** (read its SKILL.md and `templates/its-template.md` before writing). This skill defines the *process* of producing an ITS that honors that contract.
+
+Core discipline: **read before proposing**. Never plan changes to code you have not inspected. And process **exactly one delta**: the one belonging to the story at hand.
+
+## Step 0 — Load project configuration and core contracts
+
+Read `docs/prime-config.md` (fall back to repo root). It provides the stack and versions (respect them — do not propose Java 17 features in a Java 11 project), folder structure, architectural conventions, document locations, and verification commands. If missing, offer to bootstrap via auto-detection and user review. Explicit config wins over detection; report divergences.
+
+Then load the core contracts this skill writes against: **prime-core/its-contract** (output format), **prime-core/use-case** (input format), and **prime-core/coding-standards** plus **prime-core/quality-model** (every proposed change must be plannable within their rules — never propose a change that violates them).
+
+## Step 1 — Gather inputs and validate
+
+Required inputs: the story (ID + description) and the use case documents it created or revised. If the architect did not list the affected use cases, find them by searching Revision History entries for the story ID in the use case repository.
+
+Validate each document against the prime-core/use-case format. If a document is missing mandatory sections, or is in Draft status with unresolved `[CONFIRM: ...]` markers relevant to the story, report the gaps and stop — a plan built on unvalidated behavior is worse than no plan. If the story modifies behavior whose use case does not exist at all, recommend running prime-docs/use-case-extractor on that area first.
+
+## Step 2 — Locate the delta and classify the scenario
+
+For each affected use case, find the Revision History entry matching the current story ID.
+
+- Entry says the document was **created** by this story → **creation scenario** for this use case.
+- Entry lists added/changed/removed items → **change scenario**; that entry is the delta.
+
+**Older revision entries are read-only.** They describe behavior already implemented — they are state, not pending work. Never treat them as something to implement. Their only legitimate use is in Step 4's hot-area check.
+
+## Step 3 — Inspect the codebase (per use case)
+
+**Creation scenario** — broad, directed exploration:
+- Locate entry points, layers, and models related to the actor/action, guided by the config's structure map.
+- Find similar existing features to reuse patterns (error handling, validation style, test layout).
+- Map every main-flow step and every exception flow to a component, classifying each as: exists as-is / modify / create.
+
+**Change scenario** — narrow, delta-driven analysis:
+1. Use the document (its current body describes the consolidated behavior) to locate the components implementing this use case today.
+2. Map **only the delta items**: for each added/changed/removed item, identify the corresponding code and what must change.
+3. **Regression analysis** — exclusive to this scenario: identify behavior that did *not* change but shares code with what will change. The full document body (not the delta) tells you everything that must keep working. List these points for the test strategy.
+
+## Step 4 — Repository-wide risk check
+
+For every component slated for modification, check whether it also serves other documented use cases (search the repository). List those use cases as risk areas. Optionally, if a delta touches a step that also appears in the last 1–2 revision entries of the same document, flag it as a **hot area** (frequently changed → deserves extra test attention). This is a targeted lookup, not a re-reading of history.
+
+## Step 5 — Write the ITS per the contract
+
+Write the document exactly per **prime-core/its-contract**: file naming, mandatory sections, level of detail, and the "instructs, does not implement" rule all come from there. Remember the reader: the Developer will implement from this document and is instructed to return questions rather than assume — every ambiguity you leave is a round-trip you cause.
+
+## Step 6 — Verify traceability before delivering
+
+Run the contract's bidirectional check per use case section and record it in the ITS:
+- Delta → plan: no delta item without a planned change or an explicit "already covered" justification.
+- Plan → delta: no planned change without a referenced delta item or a stated technical-consequence justification.
+
+If either direction fails, fix the plan — do not deliver an ITS with unexplained scope.
+
+## Output
+
+One ITS document (named per the contract) in the configured location, traceable end-to-end: story → use case deltas → code changes → tests.
