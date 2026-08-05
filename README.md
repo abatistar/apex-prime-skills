@@ -39,14 +39,14 @@ apex-prime-skills/
 │   │   └── SKILL.md              # how to create and update use cases
 │   └── use-case-extractor/
 │       └── SKILL.md              # reverse engineering to create use cases
-├── prime-architect/              # Solution Architect layer ("Dr. Skills")
+├── prime-architect/              # Solution Architect layer ("Jarvis Skills")
 │   ├── its-generator/
 │   │   └── SKILL.md              # how to write the ITS using the core contract
 │   └── code-review/
 │       ├── SKILL.md              # review script: validates implementation against ITS + quality-model
 │       └── checklists/
 │           └── review-checklist.md
-└── prime-dev/                    # Dev layer ("Leo Skills")
+└── prime-dev/                    # Dev layer ("Friday Skills")
     ├── its-implementation/
     │   └── SKILL.md              # how to read the ITS, plan, and implement following the core
     ├── testing/
@@ -59,8 +59,8 @@ apex-prime-skills/
 
 | Agent | Layers loaded | Responsibility in the workflow |
 |---|---|---|
-| **Architect** | `prime-core` + `prime-architect` | Understands the demand, creates the ITS, performs the code review |
-| **Dev** | `prime-core` + `prime-dev` | Implements from the ITS, tests, and prepares the PR |
+| **Jarvis** (Architect) | `prime-core` + `prime-architect` | Understands the demand, creates the ITS, performs the code review |
+| **Friday** (Dev) | `prime-core` + `prime-dev` | Implements from the ITS, tests, and prepares the PR |
 
 > Golden rule: an agent **never** loads the other role's layer.
 
