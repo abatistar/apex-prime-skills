@@ -30,6 +30,8 @@ This file is read by every Apex Prime skill (all layers) as their first step. Ke
 ## Document repository
 - Use cases: `docs/use-cases/UC-NNN-title.md`
 - ITS: `docs/its/ITS-<story-id>-title.md`
+- ADRs (architecture decision records): `docs/adr/ADR-NNN-title.md`
+  <!-- Sequential, never renumbered. Structure and lifecycle defined by prime-core/its-contract (decision boundary section) -->
 - Custom use case template: none (use the skill's bundled default)
   <!-- To override: point to e.g. docs/use-cases/TEMPLATE.md and list extra mandatory sections -->
 - Extra mandatory use case sections: none

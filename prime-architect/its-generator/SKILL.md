@@ -11,15 +11,17 @@ Core discipline: **read before proposing**. Never plan changes to code you have 
 
 ## Step 0 — Load project configuration and core contracts
 
-Read `docs/prime-config.md` (fall back to repo root). It provides the stack and versions (respect them — do not propose Java 17 features in a Java 11 project), folder structure, architectural conventions, document locations, and verification commands. If missing, offer to bootstrap via auto-detection and user review. Explicit config wins over detection; report divergences.
+Read `docs/prime-config.md` (fall back to repo root). It provides the stack and versions (respect them — do not propose Java 17 features in a Java 11 project), folder structure, architectural conventions, document locations (including the ADR repository), and verification commands. If missing, offer to bootstrap via auto-detection and user review. Explicit config wins over detection; report divergences.
 
-Then load the core contracts this skill writes against: **prime-core/its-contract** (output format), **prime-core/use-case** (input format), and **prime-core/coding-standards** plus **prime-core/quality-model** (every proposed change must be plannable within their rules — never propose a change that violates them).
+Then load the core contracts this skill writes against: **prime-core/its-contract** (output format and the ITS-vs-ADR decision boundary), **prime-core/use-case** (input format), and **prime-core/coding-standards** plus **prime-core/quality-model** (every proposed change must be plannable within their rules — never propose a change that violates them).
 
 ## Step 1 — Gather inputs and validate
 
 Required inputs: the story (ID + description) and the use case documents it created or revised. If the architect did not list the affected use cases, find them by searching Revision History entries for the story ID in the use case repository.
 
 Validate each document against the prime-core/use-case format. If a document is missing mandatory sections, or is in Draft status with unresolved `[CONFIRM: ...]` markers relevant to the story, report the gaps and stop — a plan built on unvalidated behavior is worse than no plan. If the story modifies behavior whose use case does not exist at all, recommend running prime-docs/use-case-extractor on that area first.
+
+Also scan the ADR repository for Accepted ADRs touching the affected area — they constrain the plan the same way the config's conventions do.
 
 ## Step 2 — Locate the delta and classify the scenario
 
@@ -42,22 +44,35 @@ For each affected use case, find the Revision History entry matching the current
 2. Map **only the delta items**: for each added/changed/removed item, identify the corresponding code and what must change.
 3. **Regression analysis** — exclusive to this scenario: identify behavior that did *not* change but shares code with what will change. The full document body (not the delta) tells you everything that must keep working. List these points for the test strategy.
 
+Throughout the inspection, note every point where more than one viable implementation path exists. These notes feed Step 5 (discarded-alternative lines) and Step 4.5 (ADR candidates).
+
 ## Step 4 — Repository-wide risk check
 
 For every component slated for modification, check whether it also serves other documented use cases (search the repository). List those use cases as risk areas. Optionally, if a delta touches a step that also appears in the last 1–2 revision entries of the same document, flag it as a **hot area** (frequently changed → deserves extra test attention). This is a targeted lookup, not a re-reading of history.
 
+## Step 4.5 — Detect and propose ADRs
+
+Review the decision points noted in Step 3 against the contract's decision boundary: does any choice constrain future implementations, affect more than one use case or module, or need a rationale readable outside this ITS? If yes:
+
+1. Draft the ADR (Context, Decision, Consequences, Status: Proposed) in the configured ADR location, presenting the alternatives considered.
+2. **Present it to the architect for approval before delivering the ITS.** The architect decides; you propose. If rejected as "story-scoped", the decision falls back to a discarded-alternative line in the ITS.
+3. Reference the approved ADR's ID in the ITS metadata.
+
+Do not over-produce: most stories yield zero ADRs. An ADR exists because a real cross-story decision was made, not because the section wants filling.
+
 ## Step 5 — Write the ITS per the contract
 
-Write the document exactly per **prime-core/its-contract**: file naming, mandatory sections, level of detail, and the "instructs, does not implement" rule all come from there. Remember the reader: the Developer will implement from this document and is instructed to return questions rather than assume — every ambiguity you leave is a round-trip you cause.
+Write the document exactly per **prime-core/its-contract**: file naming, mandatory sections, level of detail, the "instructs, does not implement" rule, and the discarded-alternative rule all come from there. Remember the reader: the Developer will implement from this document and is instructed to return questions rather than assume — every ambiguity you leave is a round-trip you cause.
 
 ## Step 6 — Verify traceability before delivering
 
 Run the contract's bidirectional check per use case section and record it in the ITS:
 - Delta → plan: no delta item without a planned change or an explicit "already covered" justification.
 - Plan → delta: no planned change without a referenced delta item or a stated technical-consequence justification.
+- Boundary check: no architectural decision (per the contract's criteria) embedded in the ITS body — each one lives in a referenced ADR.
 
-If either direction fails, fix the plan — do not deliver an ITS with unexplained scope.
+If any check fails, fix the plan — do not deliver an ITS with unexplained scope or buried decisions.
 
 ## Output
 
-One ITS document (named per the contract) in the configured location, traceable end-to-end: story → use case deltas → code changes → tests.
+One ITS document (named per the contract) in the configured location, plus zero or more Proposed/Accepted ADRs, traceable end-to-end: story → use case deltas → decisions (ADRs) → code changes → tests.
