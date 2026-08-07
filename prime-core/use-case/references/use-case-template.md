@@ -8,52 +8,85 @@ This is the canonical template — the single copy, owned by prime-core. If the 
 
 ## Document structure
 
-```markdown
+````markdown
 # UC-NNN — [Use Case Title]
 
-## Metadata
-- **ID:** UC-NNN
-- **Status:** Draft | Reviewed | Active
-- **Actors:** [primary actor; secondary actors if any]
-- **Related use cases:** [UC-XXX links, or "none"]
+|---|---|
+| **ID:** | UC-NNN |
+| **Name** | The primary actor's goal, expressed as verb + object (e.g., *Buy Merchandise*) |
+| **Scope** | The system under consideration (software system, subsystem, or organization) |
+| **Level** | Summary · User goal · Subfunction |
+| **Actors** | Who has the goal this use case satisfies (primary actor; secondary actors if any) |
+| **Related use cases:** | UC-XXX links, or "none" |
+| **Status:** Draft · Reviewed · Active |
 
-## Goal
-[One or two sentences: what the actor wants to achieve and why. Intent level, not UI level.]
+## Stakeholders and Interests
 
-## Preconditions
-- [System state that must be true before the flow starts]
+- **<Stakeholder 1>**: <what they expect the system to protect or guarantee>
+- **<Stakeholder 2>**: <interest>
+- **<Stakeholder 3>**: <interest>
 
-## Main Flow
-1. [Actor action]
-2. [System response]
-3. ...
-[Number every step. Alternate actor actions and system responses. Write at intent level ("the user confirms the order"), never at UI level ("the user clicks the blue button").]
+## Conditions
 
-## Alternative Flows
-### [N]a. [Condition that triggers the alternative]
-- [Steps; state where the flow rejoins the main flow or ends]
+**Preconditions**
+<What must be true before the use case starts — and that the use case does not need to check.>
 
-## Exception Flows
-### [N]x. [Failure condition — validation error, permission denied, timeout, limit exceeded, integration failure, concurrency conflict]
-- [How the system responds; final outcome. Every exception must have a defined outcome.]
+**Minimal Guarantees**
+<What the system guarantees to stakeholders even if the use case fails. E.g., audit logging.>
 
-## Postconditions
-- **On success:** [what is guaranteed to be true]
-- **On failure:** [what is guaranteed — e.g., no partial state persisted]
+**Success Guarantees**
+<The state of the world after the use case ends successfully.>
+
+## Main Success Scenario
+
+1. <Actor> <action in simple present tense, active voice>.
+2. <System> <action>.
+3. <Actor> <action>.
+4. <System> <action>.
+5. <System> <action that completes the goal>.
+
+## Extensions
+
+- **2a.** <Alternative or failure condition at step 2>:
+  - 2a1. <Handling action>.
+  - 2a2. <Return to step X | Use case ends in failure>.
+- **4a.** <Condition>:
+  - 4a1. <Action>.
+- ***a.** <Condition that may occur at any time>:
+  - *a1. <Action>.
 
 ## Business Rules
-- **BR-1:** [Rule referenced by the flows, stated precisely and testably]
+- **RN-1:** [Rule referenced by the flows, stated precisely and testably]
 
 ## Acceptance Criteria
-- **AC-1:** Given [context], when [action], then [verifiable outcome]
+- **CA-1:** Given [context], when [action], then [verifiable outcome]
 [Every criterion must be objectively verifiable. Cover the main flow and every exception flow.]
+
+## UML Diagram (graphical summary)
+
+```mermaid
+flowchart LR
+    actor([Primary Actor])
+    support([Supporting Actor])
+
+    subgraph system["Scope: <System>"]
+        uc1(["<Use Case 1>"])
+        uc2(["<Use Case 2>"])
+        sub(["<Subfunction>"])
+    end
+
+    actor --> uc1
+    actor --> uc2
+    uc1 -. «include» .-> sub
+    uc2 --> support
+```
 
 ## Revision History
 | Rev | Story | Date | Summary of changes |
 |-----|-------|------|--------------------|
 | 1 | S-NNN or "initial mapping from code" | YYYY-MM-DD | [Added/changed/removed items, referencing step and section numbers] |
 [Keep only the 5 most recent entries. Full history lives in version control.]
-```
+````
 
 ## Quality rules
 
