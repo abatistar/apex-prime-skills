@@ -8,7 +8,7 @@ Apex Prime is the single source of truth for the quality standards, conventions,
 
 When quality standards live scattered — in people's heads, in loose documents, duplicated across tools — they diverge. The dev implements against one version of the standard, the review demands another, and friction appears exactly where the process should provide flow. Apex Prime solves this with two principles:
 
-1. **Single foundation.** The quality model, the coding conventions, and the ITS contract have a single owner and a single address: the `prime-core` layer. Every agent consumes the same foundation — update the standard once, and it updates for everyone.
+1. **Single foundation.** The quality model, the coding conventions, the ITS contract, and the project configuration contract have a single owner and a single address: the `prime-core` layer. Every agent consumes the same foundation — update the standard once, and it updates for everyone.
 2. **Boundaries per role.** Each agent loads only its role's layer plus the foundation. The dev's agent doesn't write the ITS; the architect's agent doesn't implement. The workflow gates stop being convention and become architecture.
 
 ## Layered architecture
@@ -17,7 +17,7 @@ When quality standards live scattered — in people's heads, in loose documents,
 apex-prime-skills/
 ├── README.md
 ├── CHANGELOG.md
-├── prime-config.example.md
+├── prime-config.example.md       # pointer to the canonical template (prime-core/prime-config)
 ├── adapters/                     # agent configuration per platform
 │   ├── claude-code/
 │   └── copilot/
@@ -26,6 +26,10 @@ apex-prime-skills/
 │   │   └── SKILL.md              # quality model: criteria, what is non-negotiable
 │   ├── coding-standards/
 │   │   └── SKILL.md              # coding conventions, naming, architecture patterns
+│   ├── prime-config/
+│   │   ├── SKILL.md              # contract for docs/prime-config.md: sections, precedence, divergence, bootstrap
+│   │   └── references/
+│   │       └── prime-config-template.md
 │   ├── use-case/
 │   │   ├── SKILL.md
 │   │   └── references/
@@ -67,6 +71,10 @@ apex-prime-skills/
 ## The ITS contract
 
 The centerpiece of the platform. The ITS (Instrução de Trabalho de Software — Software Work Instruction) format lives in `prime-core` and is consumed by both sides: the architect writes to it, the dev reads from it. A change in the contract updates writing and reading at the same time, eliminating drift between specification and implementation.
+
+## The project configuration
+
+Every run, in every layer, starts by reading `docs/prime-config.md` — the file that answers what is true about the project that the skills must not guess (stack, structure, conventions, document locations, verification commands). Its contract — mandatory sections, precedence rules, divergence handling, and the bootstrap procedure — is owned by `prime-core/prime-config`; every skill's Step 0 references that contract instead of re-describing the procedure.
 
 ## Skill design principles
 

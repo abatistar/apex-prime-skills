@@ -13,11 +13,7 @@ The document format is NOT defined here — it is owned by **prime-core/use-case
 
 ## Step 0 — Load project configuration and the core format
 
-Read `docs/prime-config.md` (fall back to repo root). It defines the stack, folder structure, conventions, and document repository locations.
-
-- If it exists: follow it. If the config contradicts what you observe (e.g., config says Java 11, `pom.xml` says 17), report the divergence and ask which is correct before proceeding.
-- If it does not exist: offer to bootstrap it. Detect what you can (build files, directory tree, framework markers), draft a config, and ask the user to review it. Explicit configuration always wins over detection.
-- Load the prime-core/use-case format; if the config declares a custom template, it takes precedence.
+Read `docs/prime-config.md` per **prime-core/prime-config** — location, fallback, precedence (explicit beats detected), divergence handling (config contradicting the codebase), and the bootstrap procedure when the file is missing all live in that contract; never re-derive them here. From the config this skill uses: the stack, the folder structure as the map for the entry-point inventory, the conventions, and the document repository locations. Then load the prime-core/use-case format; if the config declares a custom template, it takes precedence.
 
 ## Step 1 — Delimit scope with the user
 

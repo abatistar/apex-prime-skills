@@ -11,7 +11,7 @@ The document format is NOT defined here — it is owned by **prime-core/use-case
 
 ## Step 0 — Load project configuration and the core format
 
-Read `docs/prime-config.md` (fall back to repo root) for conventions, repository locations, and template overrides. If missing, offer to bootstrap it via auto-detection and user review. Explicit config wins over detection; report divergences. Then load the prime-core/use-case format; if the config declares a custom template, it takes precedence over the core default.
+Read `docs/prime-config.md` per **prime-core/prime-config** — location, fallback, precedence, divergence handling, and the bootstrap procedure when the file is missing all live in that contract; never re-derive them here. From the config this skill uses: the conventions, the document repository locations, and any use case template override. Then load the prime-core/use-case format; if the config declares a custom template, it takes precedence over the core default.
 
 ## Step 1 — Route: creation, update, or both
 

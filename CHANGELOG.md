@@ -2,6 +2,22 @@
 
 Toda evolução do padrão (especialmente do `prime-core`) é registrada aqui, para que o time saiba quando e por que ele mudou.
 
+## 2026-08-08 — Contrato prime-config no core + propagação aos consumidores
+
+**prime-core (mudança efetiva — PR revisado pelo dono do quality-model):**
+- Nova skill **`prime-core/prime-config`**: contrato canônico do `docs/prime-config.md` — seções obrigatórias e opcionais, regras de precedência (explícito vence detectado; config sobrescreve *defaults* do core apenas nos pontos de override declarados, nunca as *regras*; config não sobrescreve ADR Accepted), tratamento de divergência e lacunas, e o procedimento de bootstrap com disciplina de marcadores `[CONFIRM]`. Define a **Consumption rule**: todo Step 0 referencia o contrato em vez de redescrever o procedimento.
+- Template canônico movido para o padrão do core: `prime-core/prime-config/references/prime-config-template.md` (alinha o caminho declarado no SKILL.md e a convenção `references/` do use-case).
+- **`prime-config.example.md` da raiz reduzido a um ponteiro** para o contrato e o template canônicos — o conteúdo duplicado violava "reference, never duplicate": qualquer evolução divergiria entre as duas cópias.
+
+**Propagação (consumidores realinhados na mesma entrega — sem deixar duas fontes descrevendo o mesmo procedimento):**
+- `prime-docs/use-case-creator`, `prime-docs/use-case-extractor`, `prime-architect/its-generator`: Step 0 reescrito para referenciar **prime-core/prime-config** (fallback, divergência e bootstrap saem do corpo das skills; cada uma mantém apenas *o que* consome da config).
+- Adapters do Jarvis (`adapters/claude-code/jarvis.md`, `adapters/copilot/jarvis.agent.md`): seção Knowledge referencia o contrato e o inclui na lista do prime-core.
+- `README.md`: árvore atualizada (nova skill com `references/`; example.md anotado como ponteiro), princípio "Single foundation" e nova seção "The project configuration".
+
+**Sem alteração:** `prime-core/use-case`, `prime-core/its-contract` (ambos continuam apenas declarando seus pontos de override, agora com a precedência formalizada no novo contrato) e a camada `prime-dev` (stubs; ao serem autorados, os Step 0 já nascem referenciando o contrato).
+
+Motivação: o procedimento de leitura da config (fallback, divergência, bootstrap) estava repetido em três Step 0 e o exemplo completo vivia duplicado na raiz — exatamente a deriva que o prime-core existe para impedir. Esta entrada dá dono e endereço únicos ao contrato da configuração e realinha todos os consumidores na mesma entrega, para não repetir o descompasso corrigido em 2026-08-07 no formato de caso de uso.
+
 ## 2026-08-07 — Consolidação do formato de caso de uso no estilo Cockburn
 
 **prime-core (mudança efetiva — PR revisado pelo dono do quality-model):**

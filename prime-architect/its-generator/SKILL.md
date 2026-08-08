@@ -11,7 +11,7 @@ Core discipline: **read before proposing**. Never plan changes to code you have 
 
 ## Step 0 — Load project configuration and core contracts
 
-Read `docs/prime-config.md` (fall back to repo root). It provides the stack and versions (respect them — do not propose Java 17 features in a Java 11 project), folder structure, architectural conventions, document locations (including the ADR repository), and verification commands. If missing, offer to bootstrap via auto-detection and user review. Explicit config wins over detection; report divergences.
+Read `docs/prime-config.md` per **prime-core/prime-config** — location, fallback, precedence, divergence handling, and the bootstrap procedure when the file is missing all live in that contract; never re-derive them here. From the config this skill uses: the stack and versions (respect them — do not propose Java 17 features in a Java 11 project), the folder structure as the map for code inspection, the architectural conventions, the document locations (including the ADR repository), and the verification commands.
 
 Then load the core contracts this skill writes against: **prime-core/its-contract** (output format and the ITS-vs-ADR decision boundary), **prime-core/use-case** (input format), and **prime-core/coding-standards** plus **prime-core/quality-model** (every proposed change must be plannable within their rules — never propose a change that violates them).
 

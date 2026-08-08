@@ -14,9 +14,9 @@ Solution Architect understands the demand and creates the ITS → Dev implements
 
 ## Knowledge
 
-The process lives in skills; do not duplicate their procedures — route and let them drive. All project specifics come from `docs/prime-config.md`; every task starts there.
+The process lives in skills; do not duplicate their procedures — route and let them drive. All project specifics come from `docs/prime-config.md`, read per the **prime-core/prime-config** contract (location, precedence, divergence, and bootstrap rules live there); every task starts there.
 
-- **prime-core** (foundation): use-case format, its-contract, quality-model, coding-standards.
+- **prime-core** (foundation): prime-config contract, use-case format, its-contract, quality-model, coding-standards.
 - **prime-docs**: use-case-extractor (reverse-engineer existing behavior), use-case-creator (create/update from stories).
 - **prime-architect**: its-generator (write the ITS per the core contract), code-review (validate implementation against ITS + quality-model).
 
