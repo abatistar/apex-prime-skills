@@ -27,15 +27,18 @@ Never map "the whole system" in one run. Ask for a bounded slice: one module, on
 
 Within the scope, list every interaction surface: HTTP routes/controllers, message consumers, scheduled jobs, CLI commands, event handlers. Use the config's structure section to know where to look. Each entry point is a candidate use case (or a step within one). Present the inventory to the user and agree on which candidates become documents before writing anything.
 
-## Step 3 — Reconstruct each flow from the code
+## Step 3 — Reconstruct each scenario from the code
 
-For each agreed candidate, trace the execution path and translate code into use case elements:
+For each agreed candidate, trace the execution path and translate code into the template's elements:
 
-- Input validations and guards → **preconditions** and **exception flows**
-- Business logic branches → **main flow steps**, **alternative flows**, and **business rules**
-- Persisted effects, emitted events, external calls → **postconditions**
-- Error handling (exceptions caught, error responses, rollbacks) → **exception flows** with their outcomes
-- Authorization checks → **preconditions** or **exception flows** (permission denied)
+- Input validations and guards → **preconditions** and **extensions** (failure handling)
+- Business logic branches → **Main Success Scenario steps**, **extensions** (alternatives), and **business rules (RN-N)**
+- Persisted effects, emitted events, external calls → **Success Guarantees**
+- Effects that hold even when the operation fails (audit logs, rollbacks leaving no partial state, compensations) → **Minimal Guarantees**
+- Error handling (exceptions caught, error responses, rollbacks) → **extensions** with their defined outcomes
+- Authorization checks → **preconditions** or **extensions** (permission denied)
+
+Stakeholders and Interests is optional: code rarely reveals stakeholder interests. Fill it only when the traced material genuinely exposes one (e.g., a compliance audit trail implies a regulator's interest), always marked `[INFERRED]`; otherwise omit the section.
 
 Read existing tests for the traced code: well-written tests are near-ready acceptance criteria and often reveal intended behavior more clearly than the implementation.
 
@@ -50,10 +53,10 @@ Never silently normalize odd behavior into a clean rule. If the code does someth
 
 ## Step 5 — Write the documents and hand off for review
 
-- Use the core template. Follow its quality rules and file naming convention; pick the next free UC number.
+- Use the core template. Follow its quality rules and file naming convention; pick the next free UC number. Include the UML graphical summary scoped to the use case and its direct relations.
 - Set Status to **Draft**.
 - First Revision History entry: `Rev 1 | initial mapping from code | date | scope summary`.
-- Fill Related use cases when flows within the run reference each other.
+- Fill Related use cases when scenarios within the run reference each other.
 
 Close the run by listing, per document: the uncertainty markers that need resolution. State explicitly that the documents only become source of truth ("Reviewed" status) after a human resolves the markers. Do not promote the status yourself.
 

@@ -11,20 +11,22 @@ This is the canonical template — the single copy, owned by prime-core. If the 
 ````markdown
 # UC-NNN — [Use Case Title]
 
+| Field | Value |
 |---|---|
-| **ID:** | UC-NNN |
+| **ID** | UC-NNN |
 | **Name** | The primary actor's goal, expressed as verb + object (e.g., *Buy Merchandise*) |
 | **Scope** | The system under consideration (software system, subsystem, or organization) |
 | **Level** | Summary · User goal · Subfunction |
 | **Actors** | Who has the goal this use case satisfies (primary actor; secondary actors if any) |
-| **Related use cases:** | UC-XXX links, or "none" |
-| **Status:** Draft · Reviewed · Active |
+| **Related use cases** | UC-XXX links, or "none" |
+| **Status** | Draft · Reviewed |
 
 ## Stakeholders and Interests
 
+[OPTIONAL — include only when the source material (story, PRD, elicitation, code) reveals stakeholder interests. Omit the section entirely rather than inventing content.]
+
 - **<Stakeholder 1>**: <what they expect the system to protect or guarantee>
 - **<Stakeholder 2>**: <interest>
-- **<Stakeholder 3>**: <interest>
 
 ## Conditions
 
@@ -60,9 +62,15 @@ This is the canonical template — the single copy, owned by prime-core. If the 
 
 ## Acceptance Criteria
 - **CA-1:** Given [context], when [action], then [verifiable outcome]
-[Every criterion must be objectively verifiable. Cover the main flow and every exception flow.]
+[Every criterion must be objectively verifiable. Cover the Main Success Scenario and every extension.]
 
 ## UML Diagram (graphical summary)
+
+[Scope rule: the diagram shows THIS use case, its actors, and its direct relations only
+(«include»/«extend» and directly related use cases). It is never a system-wide map —
+the repository as a whole is the map. Update the diagram whenever a change to the flows
+alters actors or relations; diagram-only updates are NOT delta items in the Revision
+History (the diagram is derived from the flows — the behavioral change is the delta).]
 
 ```mermaid
 flowchart LR
@@ -70,34 +78,41 @@ flowchart LR
     support([Supporting Actor])
 
     subgraph system["Scope: <System>"]
-        uc1(["<Use Case 1>"])
-        uc2(["<Use Case 2>"])
-        sub(["<Subfunction>"])
+        uc(["UC-NNN <This Use Case>"])
+        sub(["<Included Subfunction>"])
     end
 
-    actor --> uc1
-    actor --> uc2
-    uc1 -. «include» .-> sub
-    uc2 --> support
+    actor --> uc
+    uc -. «include» .-> sub
+    uc --> support
 ```
 
 ## Revision History
 | Rev | Story | Date | Summary of changes |
 |-----|-------|------|--------------------|
-| 1 | S-NNN or "initial mapping from code" | YYYY-MM-DD | [Added/changed/removed items, referencing step and section numbers] |
+| 1 | S-NNN or "initial mapping from code" | YYYY-MM-DD | [Added/changed/removed items, referencing step, extension, and section identifiers — e.g., "Added extension 3b; changed step 5; removed RN-4"] |
 [Keep only the 5 most recent entries. Full history lives in version control.]
 ````
+
+## Status lifecycle
+
+- **Draft** — work in progress, or containing unresolved uncertainty markers. Not source of truth.
+- **Reviewed** — validated by a human; all uncertainty markers resolved. Source of truth for system behavior; valid input for the ITS Generator.
+
+Promotion from Draft to Reviewed is always a human act — no skill promotes status on its own.
 
 ## Quality rules
 
 Enforce all of these before considering a document done:
 
-1. Intent level, not interface level. No UI widget names in flows.
-2. Every exception flow has a defined outcome. No dangling failures.
+1. Intent level, not interface level. No UI widget names in scenarios or extensions.
+2. Every extension has a defined outcome: it either returns to a numbered step or ends the use case (in success or failure). No dangling extensions.
 3. Every acceptance criterion is verifiable. No "the system should be fast" without a metric.
-4. Every business rule referenced in a flow exists in the Business Rules section, and vice versa.
-5. Postconditions state what is true on failure, not only on success.
-6. Revision History entries always carry the originating story ID and reference the affected step/section numbers — the ITS Generator depends on this to locate the delta.
+4. The Main Success Scenario and every extension have a corresponding acceptance criterion.
+5. Every business rule (RN-N) referenced in a scenario or extension exists in the Business Rules section, and vice versa.
+6. Minimal Guarantees state what holds even on failure.
+7. The UML diagram covers this use case and its direct relations only, and is consistent with the Actors field and the Extensions.
+8. Revision History entries always carry the originating story ID and reference the affected step, extension, and section identifiers — the ITS Generator depends on this to locate the delta. Diagram-only updates are never delta items.
 
 ## Uncertainty markers (used by Use Case Extractor)
 

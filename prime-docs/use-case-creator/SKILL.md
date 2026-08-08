@@ -25,24 +25,25 @@ If the story clearly modifies existing behavior but no corresponding use case ex
 
 1. Elicit before writing. Walk through this checklist with the user for anything the story does not answer:
    - Who initiates the action? Any secondary actors or external systems?
-   - What must be true before the flow can start (permissions, state, limits)?
-   - What happens when validation fails? When the actor lacks permission? When a limit is hit? When an integration is down or times out? When two actors act concurrently?
-   - What is guaranteed after success? After failure (partial state?)?
-2. If a PRD is available, use it as context for the Goal and to respect declared non-scope — do not design behavior the PRD excludes.
-3. Fill the core template completely. Pick the next free UC number. Status: Draft (or Reviewed, if the user validates in the same session).
-4. First Revision History entry references the originating story ID and date.
+   - What must be true before the scenario can start (permissions, state, limits)?
+   - What happens when validation fails? When the actor lacks permission? When a limit is hit? When an integration is down or times out? When two actors act concurrently? (Each answer becomes an extension with a defined outcome.)
+   - What is guaranteed after success (Success Guarantees)? What holds even on failure (Minimal Guarantees — e.g., audit trail, no partial state)?
+2. Stakeholders and Interests is **optional**: fill it only when the input (story, PRD, elicitation) reveals stakeholder interests. Do not invent stakeholders to fill the section — omit it instead.
+3. If a PRD is available, use it as context for the Name/goal and to respect declared non-scope — do not design behavior the PRD excludes.
+4. Fill the core template completely, including the UML graphical summary scoped to this use case and its direct relations. Pick the next free UC number. Status: Draft (or Reviewed, if the user validates in the same session).
+5. First Revision History entry references the originating story ID and date.
 
 ## Step 2b — Update mode
 
 1. Read the current document **in full** — never patch a document you have not read.
-2. Apply the change described by the story to the affected steps, flows, rules, and criteria.
-3. Check internal side effects: a change in step 3 may invalidate exception 5a, a postcondition, or an acceptance criterion. Fix or flag every inconsistency the change introduces.
-4. Record the delta as a new Revision History entry: story ID, date, and a precise summary of what was **added / changed / removed**, referencing step and section numbers (e.g., "Added exception 3b (concurrent export limit); changed step 5; removed BR-4"). This entry is the its-generator's primary input — vagueness here becomes a bad ITS.
+2. Apply the change described by the story to the affected steps, extensions, guarantees, rules, and criteria.
+3. Check internal side effects: a change in step 3 may invalidate extension 5a, a guarantee, or an acceptance criterion. Fix or flag every inconsistency the change introduces. If the change alters actors or use case relations, update the UML diagram to match — the diagram update itself is not a delta item.
+4. Record the delta as a new Revision History entry: story ID, date, and a precise summary of what was **added / changed / removed**, referencing step, extension, and section identifiers (e.g., "Added extension 3b (concurrent export limit); changed step 5; removed RN-4"). This entry is the its-generator's primary input — vagueness here becomes a bad ITS.
 5. Keep only the 5 most recent Revision History entries; drop older ones (full history lives in version control).
 
 ## Step 3 — Cross-consistency check
 
-Before finalizing, scan the repository for conflicts: does the new/changed behavior contradict a flow, rule, or postcondition documented in another use case (e.g., a new permission rule that another flow assumes absent)? If a conflict exists, report it to the user instead of silently proceeding. If the resolution requires changing the other document too, treat it as part of the same story's mapping (back to Step 1).
+Before finalizing, scan the repository for conflicts: does the new/changed behavior contradict a scenario, extension, rule, or guarantee documented in another use case (e.g., a new permission rule that another scenario assumes absent)? If a conflict exists, report it to the user instead of silently proceeding. If the resolution requires changing the other document too, treat it as part of the same story's mapping (back to Step 1).
 
 ## Step 4 — Deliver
 
