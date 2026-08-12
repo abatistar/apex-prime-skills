@@ -13,7 +13,7 @@ Core discipline: **read before proposing**. Never plan changes to code you have 
 
 Read `docs/prime-config.md` per **prime-core/prime-config** — location, fallback, precedence, divergence handling, and the bootstrap procedure when the file is missing all live in that contract; never re-derive them here. From the config this skill uses: the stack and versions (respect them — do not propose Java 17 features in a Java 11 project), the folder structure as the map for code inspection, the architectural conventions, the document locations (including the ADR repository), and the verification commands.
 
-Then load the core contracts this skill writes against: **prime-core/its-contract** (output format and the ITS-vs-ADR decision boundary), **prime-core/use-case** (input format), and **prime-core/coding-standards** plus **prime-core/quality-model** (every proposed change must be plannable within their rules — never propose a change that violates them).
+Then load the core contracts this skill writes against: **prime-core/its-contract** (output format and the ITS-vs-ADR decision boundary), **prime-core/use-case** (input format), **prime-core/coding-standards** (the concrete conventions the plan conforms to), and **prime-core/quality-model** — consumed not as a rulebook to satisfy mechanically, but as the *definition* the plan is interrogated against before delivery (Step 4.6), honoring its calibration and its named-exception discipline. It does not, by itself, approve or reject the plan.
 
 ## Step 1 — Gather inputs and validate
 
@@ -60,6 +60,21 @@ Review the decision points noted in Step 3 against the contract's decision bound
 
 Do not over-produce: most stories yield zero ADRs. An ADR exists because a real cross-story decision was made, not because the section wants filling.
 
+## Step 4.6 — Interrogate the plan against the quality model
+
+Before writing, run the intended plan past **prime-core/quality-model**, consuming it as a definition to question the deliverable against — not as a gate (approval is the reviewer's job, later). Cite criteria by ID. Three questions, from the model's its-generator consumption rule:
+
+- Does any proposed change commit a cardinal sin (a `[NON-NEGOTIABLE]`) **silently**? A non-negotiable may be departed from, but only as a named, owned exception — never by omission.
+- Is the proposed level of care **calibrated** to the code's expected lifetime and importance (QM-MT-4)? Flag both under- and over-engineering — excess is as harmful as deficiency.
+- Where the plan departs from a criterion for legacy or deliberate debt, is that departure recorded in one of the ITS's own vehicles?
+
+Record each named departure where it belongs, never as loose prose:
+- a **discarded-alternative line** in the Traceability check, when it is a choice between viable paths that dies with the story;
+- an **out-of-scope / do-not-touch boundary**, when it is inherited legacy you deliberately leave untouched;
+- an **ADR**, when the departure outlives the story — route it back through Step 4.5 for the architect's approval.
+
+This step surfaces improvements; it never blocks delivery on its own. A *silent* non-negotiable violation, however, is a defect — name it or fix it before writing.
+
 ## Step 5 — Write the ITS per the contract
 
 Write the document exactly per **prime-core/its-contract**: file naming, mandatory sections, level of detail, the "instructs, does not implement" rule, and the discarded-alternative rule all come from there. Remember the reader: the Developer will implement from this document and is instructed to return questions rather than assume — every ambiguity you leave is a round-trip you cause.
@@ -70,6 +85,7 @@ Run the contract's bidirectional check per use case section and record it in the
 - Delta → plan: no delta item without a planned change or an explicit "already covered" justification.
 - Plan → delta: no planned change without a referenced delta item or a stated technical-consequence justification.
 - Boundary check: no architectural decision (per the contract's criteria) embedded in the ITS body — each one lives in a referenced ADR.
+- Quality check: every departure from a prime-core/quality-model criterion surfaced in Step 4.6 is recorded as a named exception (discarded-alternative line, out-of-scope boundary, or referenced ADR). No silent non-negotiable violation remains.
 
 If any check fails, fix the plan — do not deliver an ITS with unexplained scope or buried decisions.
 
