@@ -2,6 +2,34 @@
 
 Toda evolução do padrão (especialmente do `prime-core`) é registrada aqui, para que o time saiba quando e por que ele mudou.
 
+## 2026-08-14 — Registro retroativo do padrão de qualidade + realinhamento dos consumidores da config
+
+**Registro retroativo (dívida de governança paga nesta entrega):**
+
+As duas maiores adições ao `prime-core` entraram no repositório sem entrada no changelog, embora ambas declarem, na própria seção *Versioning*, que sua evolução é registrada aqui. O registro é feito agora, nomeado como retroativo em vez de datado para trás:
+
+- **`prime-core/quality-model`** (catálogo `references/quality-criteria.md` **v1.0**): definição de qualidade como uma propriedade única vista por oito lentes; três tiers (`[NON-NEGOTIABLE]`, `[CALIBRATED]`, `[AUTOMATE]`) que descrevem a *natureza* do critério, não uma consequência automática; a regra de calibração (excesso é tão nocivo quanto deficiência; a barra é proporcional ao tempo de vida e à importância do código); e a disciplina de exceção *silencioso versus deliberado* — o pecado é a partida invisível, não a dívida. IDs `QM-XX-N` estáveis, nunca renumerados. A skill declara explicitamente que **não é gate**: aprovação e rejeição pertencem a `code-review`.
+- **`prime-core/coding-standards`** (catálogo `references/convention-slots.md` **v1.0** + `references/defaults-java.md`): o *slot* como pergunta e o default como resposta; as duas classes de aplicação (**INVARIANT** vale para toda linha escrita ou alterada; **CONVENTIONAL** cede ao padrão local em área registrada), que resolvem a tensão entre `QM-CN-2` e a disciplina de piso; o **area register** declarado (`current` / `legacy-maintained` / `strangler`); migrações declaradas com quatro campos obrigatórios; e *unfilled slot* como lacuna reportável, nunca escolha livre. IDs `CS-XX-N` estáveis.
+- **`prime-architect/code-review`** e `checklists/review-checklist.md`: o ponto de enforcement que as duas skills do core deixam deliberadamente em aberto — severidades, veredito único, e a regra de exceção (a partida deliberada e nomeada não bloqueia; a silenciosa bloqueia).
+
+**prime-core (mudança efetiva — PR revisado pelo dono do quality-model):**
+
+- **`prime-config`, seção Conventions and constraints reestruturada**: passa a declarar as quatro subseções que `coding-standards` e `quality-model` já assumiam existir — **Area register**, **Slot overrides**, **Declared migrations**, **Quality model posture** — mais **Project rules** para o que não mapeia em slot. O template canônico ganha as quatro com formato, comentários de uso e exemplos. Antes desta entrega, um projeto bootstrapado nascia sem a estrutura que `code-review` (Step 0) e `its-generator` liam: a lacuna aparecia só no primeiro PR revisado.
+- **`prime-config`, nova seção "Override points (the closed list)"**: tabela única com ponto de override, contrato dono e endereço no arquivo. Três skills faziam afirmações sobre o mesmo arquivo e só uma é dona do contrato — exatamente a deriva corrigida em 2026-08-08. Regra de manutenção: um contrato do core que declara um novo ponto de override acrescenta a linha aqui no mesmo PR.
+- **`prime-config`, precedência reescrita em quatro regras**: explícito vence detectado; config vence **apenas nos pontos declarados**; config **nunca** sobrescreve regra do core — pode **elevar** a barra, e relaxar um `[NON-NEGOTIABLE]` é ADR, nunca edição de config; config não sobrescreve ADR Accepted.
+- **`prime-config`, divergência e gaps**: novo caso explícito para *slot sem valor* — lacuna reportável per `coding-standards`, nunca improvisada.
+- **`prime-config`, bootstrap de 5 para 7 passos**: novo **Passo 2 — Walk the slot catalog** (percorrer `convention-slots.md` contra o defaults da stack; override quando o projeto diverge, `[CONFIRM]` quando ninguém decidiu) e novo **Passo 3 — Classify the areas** (o area register é elicitado, nunca inferido de nome de diretório ou idade de arquivo). O mecanismo de *unfilled slot* existia no papel sem nenhum momento do processo que o exercitasse.
+- Regra transversal registrada: subseção vazia é escrita com "none declared yet" explícito, nunca omitida — silêncio e ausência são fatos diferentes e só um deles é decisão.
+
+**Propagação (consumidores realinhados na mesma entrega):**
+
+- **Adapters do Jarvis** (`adapters/claude-code/jarvis.md`, `adapters/copilot/jarvis.agent.md`): **gate 5** passa a citar ITS + `quality-model` **+ `coding-standards`**, com a exigência de que todo achado cite ID (`QM-XX-N` / `CS-XX-N` / seção do ITS / `UC-NNN/CA-N`) — o gate governava uma skill que já julgava contra os dois contratos. A seção *Knowledge* explicita o que a config fornece (area register, slot overrides) e a *Copilot stance* passa a nomear a lacuna de slot como caso de "critério que ainda não existe".
+- **`README.md`**: tabela de *Agent assembly* corrigida — o Jarvis carrega `prime-core` + `prime-architect` + **`prime-docs`**, como os dois adapters sempre disseram; a árvore ganha os `references/` de `quality-model` e `coding-standards` (que hoje carregam o conteúdo real) e marca `prime-dev` como stub; nova tabela de *Authoring status*; nova seção "The standard: two contracts, one enforcement point".
+
+**Sem alteração:** `prime-core/use-case`, `prime-core/its-contract`, `prime-docs/*` e `prime-architect/*` — seus Step 0 já referenciam o contrato da config e continuam válidos sem edição. A camada `prime-dev` segue em stub.
+
+Motivação: fechar a lacuna entre um `prime-core` que já descrevia um padrão completo e uma configuração de projeto que não tinha onde guardar as respostas desse padrão. O `coding-standards` exigia um area register e overrides de slot que o template não previa; o `quality-model` afirmava poder elevar a barra em um arquivo cuja regra de precedência não conhecia esse ponto. Enquanto isso, a governança do próprio changelog estava sendo violada pelas duas maiores adições ao core. Esta entrada paga a dívida de registro e dá endereço único a cada ponto de override, para que a próxima skill do core não precise negociar com o contrato da config por conta própria.
+
 ## 2026-08-08 — Contrato prime-config no core + propagação aos consumidores
 
 **prime-core (mudança efetiva — PR revisado pelo dono do quality-model):**

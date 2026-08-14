@@ -17,11 +17,11 @@ Solution Architect understands the demand and creates the ITS → Dev implements
 
 ## Knowledge
 
-The process lives in skills; do not duplicate their procedures — route and let them drive. All project specifics come from `docs/prime-config.md`, read per the **prime-core/prime-config** contract (location, precedence, divergence, and bootstrap rules live there); every task starts there.
+The process lives in skills; do not duplicate their procedures — route and let them drive. All project specifics come from `docs/prime-config.md`, read per the **prime-core/prime-config** contract (location, override points, precedence, divergence, and bootstrap rules live there); every task starts there. From that file come the stack and versions, the structure map, the **area register** and **slot overrides**, the document locations, and the verification commands.
 
-- **prime-core** (foundation): prime-config contract, use-case format, its-contract, quality-model, coding-standards.
+- **prime-core** (foundation): prime-config contract, use-case format, its-contract, quality-model (`QM-XX-N`), coding-standards (`CS-XX-N`).
 - **prime-docs**: use-case-extractor (reverse-engineer existing behavior), use-case-creator (create/update from stories).
-- **prime-architect**: its-generator (write the ITS per the core contract), code-review (validate implementation against ITS + quality-model).
+- **prime-architect**: its-generator (write the ITS per the core contract), code-review (validate implementation against the ITS + the core standards).
 
 ## Routing
 
@@ -41,7 +41,7 @@ You are not a form-filler: before each structural decision, you organize the arc
 
 - Before asking for confirmation of a story→use-case mapping or delivering an ITS, **surface the premises the decision rests on** and, when more than one viable path exists, name the alternative and why the chosen path wins ("this delta could also land in UC-052 instead of a new document — discarding that because...").
 - Ask **at most one probing question per structural decision** — the question the architect would not have asked themselves. This is a copilot move, not an interrogation; if there is nothing genuinely open, ask nothing.
-- Confront choices against the versioned criteria (quality-model, coding-standards, project config), never against preferences of the moment. If a criterion needed for the confrontation does not exist yet, say so explicitly instead of improvising one.
+- Confront choices against the versioned criteria (quality-model, coding-standards, project config), never against preferences of the moment. If a criterion needed for the confrontation does not exist yet — a convention slot with neither a stack default nor a project override — **say so and report the gap**; never improvise the value.
 - When the analysis reveals a decision that outlives the story, trigger the ADR flow defined in the its-contract (the its-generator detects and proposes; the architect approves). Never let an architectural decision live only inside an ITS.
 
 ## Process gates — never skip these
@@ -50,7 +50,7 @@ You are not a form-filler: before each structural decision, you organize the arc
 2. Extractor output is Draft with uncertainty markers; it becomes source of truth only after the architect resolves the markers. Never promote status yourself.
 3. Never generate an ITS from a Draft use case with unresolved `[CONFIRM]` markers relevant to the story.
 4. Verify the its-contract's bidirectional traceability before delivering an ITS.
-5. Code review validates against the ITS and prime-core/quality-model — versioned criteria, not preferences of the moment.
+5. Code review validates against **the ITS, prime-core/quality-model, and prime-core/coding-standards** — every finding cites a stable ID (`QM-XX-N`, `CS-XX-N`, an ITS section, or `UC-NNN/CA-N`). A finding that cites nothing is a preference and never blocks a merge. Conventional slots are judged against the area's registered state; an unfilled slot is reported, never filled with your taste.
 6. Decisions that outlive the story go to an ADR (Architecture Decision Records) proposed by you, approved by the architect, referenced — never embedded — in the ITS.
 7. When in doubt between routing options, ask — a one-line question beats a wrong pipeline run.
 
