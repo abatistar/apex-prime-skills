@@ -2,75 +2,84 @@
 
 Canonical template owned by prime-core/its-contract. The architect writes it; the developer implements from it; code review validates against it. See the its-contract SKILL.md for level-of-detail, writing rules, traceability, and ITS-vs-ADR boundary rules.
 
+**Language.** The block below is the artifact and is written in the project's document language (`docs/prime-config.md` › Document repository; default `pt-BR`); the guidance around it is skill-facing and stays in English. Section titles are translated; the stable tokens declared by prime-core/prime-config — `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `ITS-<story-id>`, `S-NNN`, `QM-XX-N`, `CS-XX-N`, ADR status values (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), use case status values (`Draft`, `Reviewed`), file paths and identifiers — are never translated.
+
 Formatting constraints (from the contract's writing rules): maximum 3 heading levels, 2 list-nesting levels, simple tables (no multi-line cells, no embedded HTML), simple non-nested code fences, no diagrams. The document must survive copy-paste into the company's documentation platform as-is.
 
 ```markdown
-# ITS-<story-id> — [Story title]
+# ITS-<story-id> — [Título da story]
 
-## Metadata
-- **Story:** <id — one-line summary — resolvable link to the tracker item>
-- **Affected use cases:** UC-NNN (creation|change), ...
-- **Config snapshot:** stack + versions relevant to this plan
-- **Referenced ADRs:** ADR-NNN (status), ... or "none"
-  [Decisions that outlive the story live in ADRs and are only referenced here — see the contract's decision boundary. Accepted ADRs are binding on the implementer.]
+## Metadados
+- **Story:** <id — resumo em uma linha — link resolvível para o item no tracker>
+- **Casos de uso afetados:** UC-NNN (criação|alteração), ...
+- **Snapshot de configuração:** stack + versões relevantes para este plano
+- **ADRs referenciados:** ADR-NNN (status), ou "nenhum"
+  [Decisões que sobrevivem à story vivem em ADRs e são apenas referenciadas aqui — ver a
+  fronteira de decisão no contrato. ADRs com status Accepted são vinculantes para o implementador.]
 
-## Executive summary
-[3–5 lines, business language, no code identifiers. What the story changes, in which
-use cases, and the observable effect for the user/system. Write this LAST, after the
-consolidated plan is closed. This is the entry point for tech leaders and compliance —
-the cold-reader test applies here: understandable without opening any other document.]
+## Sumário executivo
+[3–5 linhas, linguagem de negócio, sem identificadores de código. O que a story muda, em
+quais casos de uso, e o efeito observável para o usuário/sistema. Escreva esta seção POR
+ÚLTIMO, depois de fechado o plano consolidado. É a porta de entrada para lideranças
+técnicas e compliance — o teste do leitor frio se aplica aqui: compreensível sem abrir
+nenhum outro documento.]
 
-## Per-use-case analysis
-### UC-NNN — [title] (creation | change)
-[Open with ONE synthesis sentence in behavior language — what changes in this use case,
-readable by a non-implementer. E.g., "This use case gains a credit-limit validation
-before order confirmation." The table below carries the technical precision.]
-- **Delta:** [copied from the use case's revision entry for this story; for creation, "entire document"]
-- **Mapping:** table of delta item (or flow step) → component/file → action (create | modify | remove)
-- **Regression points:** [change scenario only — unchanged behavior sharing code with the changes]
+## Análise por caso de uso
+### UC-NNN — [título] (criação | alteração)
+[Abra com UMA frase de síntese em linguagem de comportamento — o que muda neste caso de uso,
+legível por quem não implementa. Ex.: "Este caso de uso passa a validar o limite de crédito
+antes de confirmar o pedido." A tabela abaixo carrega a precisão técnica.]
+- **Delta:** [copiado da entrada de revisão do caso de uso referente a esta story; para criação, "documento inteiro"]
+- **Mapeamento:** tabela de item de delta (ou passo do fluxo) → componente/arquivo → ação (criar | modificar | remover)
+- **Pontos de regressão:** [apenas em cenário de alteração — comportamento inalterado que compartilha código com as mudanças]
 
-## Consolidated plan
-### Files affected
-[Unified list across all use cases: path, nature of change, which UC/delta items it serves. Resolve overlaps — one entry per file.]
-### New files
-### Schema / migration changes
-### Implementation order
-[Numbered sequence with rationale (dependencies first, etc.)]
-### Test strategy
-[Tests derived from each acceptance criterion touched by the deltas + non-regression tests for every regression point + hot areas. Reference the project config's verification commands.]
-### Out of scope — do not touch
-[One line per untouchable area: component/path, why it stays unchanged, and the
-non-regression coverage protecting it. E.g., "Do not modify `PaymentService` — refund
-flow unchanged by this story, covered by the refund non-regression suite." Named borders
-make "all of it and nothing beyond it" enforceable for the implementer and checkable
-for the reviewer. If nothing is at risk of accidental change, write "none identified".]
-### Risks and attention points
-[Other use cases served by modified components; open questions]
+## Plano consolidado
+### Arquivos afetados
+[Lista unificada entre todos os casos de uso: caminho, natureza da mudança, quais UC/itens de delta ela atende. Resolva sobreposições — uma entrada por arquivo.]
+### Novos arquivos
+### Alterações de esquema / migrações
+### Ordem de implementação
+[Sequência numerada com justificativa (dependências primeiro, etc.)]
+### Estratégia de testes
+[Testes derivados de cada critério de aceite tocado pelos deltas + testes de não regressão para cada ponto de regressão + áreas quentes. Referencie os comandos de verificação da configuração do projeto.]
+### Fora de escopo — não alterar
+[Uma linha por área intocável: componente/caminho, por que permanece inalterada, e a
+cobertura de não regressão que a protege. Ex.: "Não modificar `PaymentService` — o fluxo de
+estorno não é alterado por esta story, coberto pela suíte de não regressão de estorno."
+Fronteiras nomeadas tornam "tudo isso e nada além disso" exigível para o implementador e
+verificável para o revisor. Se nada estiver sob risco de alteração acidental, escreva
+"nenhuma identificada".]
+### Riscos e pontos de atenção
+[Outros casos de uso servidos pelos componentes modificados; questões em aberto]
 
-## Traceability check
-[Explicit confirmation, per use case section: every delta item has a corresponding change (or a justification that existing code already covers it), and every planned change references a delta item or is justified as a technical consequence. Where a change had more than one viable path, state the discarded alternative and the deciding reason in one line. Beyond gating delivery, this section is the document's audit evidence.]
+## Verificação de rastreabilidade
+[Confirmação explícita, por seção de caso de uso: todo item de delta tem uma mudança
+correspondente (ou uma justificativa de que o código existente já o cobre), e toda mudança
+planejada referencia um item de delta ou é justificada como consequência técnica. Onde uma
+mudança teve mais de um caminho viável, declare a alternativa descartada e o motivo decisivo
+em uma linha. Além de liberar a entrega, esta seção é a evidência de auditoria do documento.]
 
-## Reference glossary
-[For readers without access to the document repository. Metadata only — resolve WHAT
-each identifier is, never copy WHAT the document says. Fill from the documents already
-loaded during planning; snapshot at delivery time. Qualify RN/CA with their UC when
-more than one use case is affected.]
+## Glossário de referência
+[Para leitores sem acesso ao repositório de documentos. Apenas metadados — resolva O QUE é
+cada identificador, nunca copie O QUE o documento diz. Preencha a partir dos documentos já
+carregados durante o planejamento; snapshot no momento da entrega. Qualifique RN/CA com seu
+UC quando mais de um caso de uso for afetado.]
 
-### Cited in this ITS
-| ID | Type | Name / one-line gloss |
+### Citados neste ITS
+| ID | Tipo | Nome / glosa em uma linha |
 |---|---|---|
-| UC-NNN | Use case | [Name field of the document] |
-| UC-NNN/RN-N | Business rule | [one-line paraphrase of the rule's intent] |
-| UC-NNN/CA-N | Acceptance criterion | [one-line paraphrase of what it verifies] |
-| ADR-NNN | Decision record | [title] (Status) |
+| UC-NNN | Caso de uso | [campo Nome do documento] |
+| UC-NNN/RN-N | Regra de negócio | [paráfrase em uma linha da intenção da regra] |
+| UC-NNN/CA-N | Critério de aceite | [paráfrase em uma linha do que ele verifica] |
+| ADR-NNN | Registro de decisão | [título] (Status) |
 
-### Process terms
-| Term | Meaning |
+### Termos do processo
+| Termo | Significado |
 |---|---|
-| ITS | Software Work Instruction — this document: the implementation plan for one story |
-| UC | Use case — the living documentation of one system behavior |
-| RN | Business rule inside a use case |
-| CA | Acceptance criterion inside a use case |
-| ADR | Architecture Decision Record — a decision that outlives the story |
-| Delta | The set of changes a story applies to a use case |
+| ITS | Instrução de Trabalho de Software — este documento: o plano de implementação de uma story |
+| UC | Caso de uso — a documentação viva de um comportamento do sistema |
+| RN | Regra de negócio dentro de um caso de uso |
+| CA | Critério de aceite dentro de um caso de uso |
+| ADR | Architecture Decision Record — uma decisão que sobrevive à story |
+| Delta | O conjunto de mudanças que uma story aplica a um caso de uso |
 ```
