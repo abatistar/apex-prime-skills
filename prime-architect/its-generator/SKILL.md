@@ -32,6 +32,8 @@ For each affected use case, find the Revision History entry matching the current
 
 **Older revision entries are read-only.** They describe behavior already implemented — they are state, not pending work. Never treat them as something to implement. Their only legitimate use is in Step 4's hot-area check.
 
+Number the delta items as you locate them (`D1`, `D2`, ...), qualified by use case when more than one is affected (`UC-042/D1`). The numbering is what makes the single-axis plan verifiable: the plan's units cite these identifiers and the traceability check is two lists of them.
+
 ## Step 3 — Inspect the codebase (per use case)
 
 **Creation scenario** — broad, directed exploration:
@@ -42,7 +44,7 @@ For each affected use case, find the Revision History entry matching the current
 **Change scenario** — narrow, delta-driven analysis:
 1. Use the document (its current body describes the consolidated behavior) to locate the components implementing this use case today.
 2. Map **only the delta items**: for each added/changed/removed item, identify the corresponding code and what must change.
-3. **Regression analysis** — exclusive to this scenario: identify behavior that did *not* change but shares code with what will change. The full document body (not the delta) tells you everything that must keep working. List these points for the test strategy.
+3. **Regression analysis** — exclusive to this scenario: identify behavior that did *not* change but shares code with what will change. The full document body (not the delta) tells you everything that must keep working. Number these points (`RG-1`, `RG-2`) — each will be claimed by the plan unit that touches the shared code, and the claim is checked in Step 6.
 
 Throughout the inspection, note every point where more than one viable implementation path exists. These notes feed Step 5 (discarded-alternative lines) and Step 4.5 (ADR candidates).
 
@@ -77,14 +79,15 @@ This step surfaces improvements; it never blocks delivery on its own. A *silent*
 
 ## Step 5 — Write the ITS per the contract
 
-Write the document exactly per **prime-core/its-contract**: file naming, mandatory sections, level of detail, the "instructs, does not implement" rule, and the discarded-alternative rule all come from there. Remember the reader: the Developer will implement from this document and is instructed to return questions rather than assume — every ambiguity you leave is a round-trip you cause.
+Write the document exactly per **prime-core/its-contract**: file naming, mandatory sections, level of detail, the "instructs, does not implement" rule, and the discarded-alternative rule all come from there. Write the plan in execution order and let it carry the single mapping — the behavior section states the delta and the regression points and stops there. Sequencing is now a writing act, not a separate list: the order you choose is the order the implementer works in and the order the reviewer walks the diff in.
 
 ## Step 6 — Verify traceability before delivering
 
-Run the contract's bidirectional check per use case section and record it in the ITS:
-- Delta → plan: no delta item without a planned change or an explicit "already covered" justification.
-- Plan → delta: no planned change without a referenced delta item or a stated technical-consequence justification.
-- Boundary check: no architectural decision (per the contract's criteria) embedded in the ITS body — each one lives in a referenced ADR.
+Run the contract's checks and record them in the ITS's Metadata section:
+- Delta → plan: every `D-N` names the unit that satisfies it, or an explicit "already covered" justification.
+- Plan → delta: every unit names its `D-N` or a stated technical consequence.
+- Regression → plan: every `RG-N` is claimed by exactly one unit, with the non-regression test named there.
+- Boundary check: no architectural decision (per the contract's criteria) embedded in the document body — each one lives in a referenced ADR.
 - Quality check: every departure from a prime-core/quality-model criterion surfaced in Step 4.6 is recorded as a named exception (discarded-alternative line, out-of-scope boundary, or referenced ADR). No silent non-negotiable violation remains.
 
 If any check fails, fix the plan — do not deliver an ITS with unexplained scope or buried decisions.

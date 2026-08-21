@@ -35,7 +35,7 @@ Read `docs/prime-config.md` per **prime-core/prime-config** — location, fallba
 
 Then load, in this order:
 
-1. **The ITS for the story** and every ADR it references — per **prime-core/its-contract** (mandatory sections, traceability rules, decision boundary, consumption rules for the implementer).
+1. **The ITS for the story** and every ADR it references — per **prime-core/its-contract**. Read the Metadata section first: it carries the traceability check the its-generator already ran (plan ⇄ delta), which is the baseline your own check (diff ⇄ plan) builds on.
 2. **The use cases it names**, per **prime-core/use-case**: the delta for this story and the acceptance criteria the delta touches.
 3. **prime-core/quality-model** with `references/quality-criteria.md`, and **prime-core/coding-standards** with `references/convention-slots.md` plus the defaults file for the project's stack.
 
@@ -45,7 +45,7 @@ Then load, in this order:
 
 Broad view first. Read the ITS's executive summary, the per-use-case syntheses, and the consolidated plan; then the pull request's own description. You must be able to state, before the first line of diff, what the change should do, which files it should touch, and which behavior must keep working (the ITS's regression points).
 
-Then walk the diff in **the plan's implementation order**, not the file tree's alphabetical order. The plan already sequenced dependencies; following it is what lets you judge each file with the previous one in mind.
+Then walk the diff **unit by unit, in the plan's order**, not in the file tree's alphabetical order. The plan already sequenced dependencies, and each unit declares the files it should have touched — the answer to "which files should this change contain" is the walk itself, not a separate list.
 
 If the change does not make sense as a whole — wrong direction, misread ITS, plan overtaken by the code — **stop and say so immediately**. Forty comments on code that should not exist waste both sides.
 
@@ -55,8 +55,8 @@ If the diff is too large to hold in your head, that is itself the first finding:
 
 The its-generator proved plan ⇄ delta before delivery. You now prove **diff ⇄ plan**, in both directions:
 
-- **Plan → diff.** Every planned change is present, or its absence is justified. Every acceptance criterion touched by the delta has a corresponding test (`CS-TS-1`, and the ITS's test strategy).
-- **Diff → plan.** Every changed file traces to a plan item or to a stated technical consequence. Anything else is scope creep — **including improvements**: an unrequested refactor is out of scope even when the code gets better, and it is erosion (`QM-CN-1`) when it introduces a second way of doing something.
+- **Plan → diff.** Every unit of the plan is present in the diff, or its absence is justified. Every test a unit owes exists — the acceptance criteria its delta items touch (`CS-TS-1`) and the non-regression coverage for the regression point it claimed.
+- **Diff → plan.** Every changed file traces to a unit or to a stated technical consequence. Anything else is scope creep — **including improvements**: an unrequested refactor is out of scope even when the code gets better, and it is erosion (`QM-CN-1`) when it introduces a second way of doing something.
 - **Boundaries.** Nothing in the ITS's "Out of scope — do not touch" list was touched. That section exists precisely to make "all of it and nothing beyond it" checkable.
 - **Decisions.** Nothing contradicts an Accepted ADR. No architectural decision landed in the code without an ADR recording it (its-contract, decision boundary). If the implementation had to make such a decision, the outcome is an ADR to propose — not a finding filed against the author.
 - **Divergence.** Where the implementation departed from the plan, was the departure returned as a question and the ITS revised? A **silent** departure is a finding. A departure that is *right* because the plan did not survive contact with the code is not the author's defect — it is the ITS's, and it routes to the fourth verdict.

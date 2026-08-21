@@ -17,19 +17,19 @@ The ITS has one canonical home (the repository) and more than one reader: the im
 
 `templates/its-template.md` is the authoritative structure. Read it in full before writing or validating an ITS. Mandatory sections:
 
-- **Metadata** — story ID, summary, and a resolvable link to the story in the tracker; affected use cases with scenario (creation | change); config snapshot (stack and versions the plan assumes); referenced ADRs, if any.
+- **Metadata** — story ID, summary, and a resolvable link to the story in the tracker; affected use cases with scenario (creation | change); config snapshot (stack and versions the plan assumes); referenced ADRs, if any; and the **traceability check** (see Traceability rules). Written last, together with the executive summary. This section carries the document's facts and its audit evidence — the two things addressed to readers who are not implementing.
 - **Executive summary** — 3–5 lines in business language: what the story changes, in which use cases, and the observable effect. The only section non-implementing readers must read. Written last, after the plan is closed, so it stays faithful.
-- **Per-use-case analysis** — one section per affected use case, opening with a one-sentence synthesis in behavior language, then: the delta (from the use case's Revision History entry for this story), the mapping table (delta item / flow step → component or file → action: create | modify | remove), and regression points (change scenario only).
-- **Consolidated plan** — files affected (unified, one entry per file), new files, schema/migration changes, implementation order with rationale, test strategy, out-of-scope boundaries, risks and attention points.
-- **Traceability check** — explicit bidirectional confirmation per use case section. Beyond gating delivery, this section is the document's audit evidence: every change justified, every alternative recorded.
+- **What changes in behavior** — one section per affected use case, carrying only what exists on that axis: a one-sentence synthesis in behavior language, the delta as **numbered items** (`D1`, `D2`, ... — qualified as `UC-NNN/D1` when more than one use case is affected) taken from the use case's Revision History entry for this story, and the regression points (change scenario only). No file mapping here: the plan owns the single mapping.
+- **Implementation plan** — the document's spine, written in execution order. One numbered unit per step of work, each stating: the files it creates, modifies, or removes; what to do, with every cited requirement written in place; the delta items it satisfies (`UC-NNN/D1`) or the technical consequence that justifies it; and the tests it owes. A unit touching code shared with a regression point states the non-regression test it owes. The plan closes with schema and migration changes, the out-of-scope boundaries, the risks and attention points, and the project's verification commands.
 - **Reference glossary** — resolves every identifier the document cites (`UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`) for readers who do not have the referenced documents at hand, plus the fixed process-term table. Metadata only (ID + name + one line) — never the referenced content. See Writing rules.
+- **One axis.** The mapping from behavior to code exists once, in the implementation plan, on the axis the implementer works in: order of execution. The behavior section carries what the plan cannot — the delta and what must keep working — and nothing that the plan will restate. Two sections describing the same change on two axes force the reader to redo a fusion the document already performed, and the section they skip is the one that was not written in their axis.
 
 ## Level of detail
 
 - Every planned change names concrete files or components. "Adjust the service layer" is not ITS-grade; `OrderService.confirm(): add limit validation before persisting` is.
 - The ITS instructs; it does not implement. No full code listings — snippets only when a signature, contract, or schema must be pinned exactly.
 - Write to eliminate questions. The implementer's ambiguity policy is to return questions, not to assume — every question returned is a hole in the ITS. This holds identically for the human developer and for the Friday agent: an instruction that admits two implementations is a defect, not a style issue.
-- Test strategy derives from the use cases' acceptance criteria touched by the deltas, plus non-regression coverage for every regression point.
+- Tests are declared per plan unit, not as a separate strategy block: each unit owes the tests derived from the acceptance criteria its delta items touch, plus the non-regression coverage for any regression point sharing code with it. Every regression point listed in the behavior section is claimed by exactly one unit — an unclaimed regression point is a traceability failure.
 
 ## Writing rules
 
@@ -70,12 +70,17 @@ The ITS must survive copy-paste into the company's documentation platform withou
 
 A document failing any of the three is not deliverable.
 
-## Traceability rules (bidirectional, per use case section)
+## Traceability rules (bidirectional, by delta item and plan unit)
 
-- Delta → plan: no delta item without a corresponding change or an explicit "already covered" justification.
-- Plan → delta: no planned change without a referenced delta item or a stated technical-consequence justification.
-- **Discarded alternative:** when a planned change had more than one viable implementation path, the entry states the discarded alternative and the deciding reason in one line. No viable alternative → nothing to state; this is a record of real choices, not a form field.
-- An ITS failing either direction is not deliverable.
+The check lives in **Metadata**, written last with the executive summary. It is evidence, not prose: two lists of identifiers plus the discarded-alternative lines. Its readers are the reviewer and the audit — the implementer does not depend on it to work, which is why it does not sit in the body.
+
+- Delta → plan: every delta item (`UC-NNN/D1`) names the unit that satisfies it, or carries an explicit "already covered" justification.
+- Plan → delta: every unit names the delta items it satisfies, or states the technical consequence that justifies it.
+- Regression → plan: every regression point is claimed by the unit that covers it.
+- **Discarded alternative:** when a unit had more than one viable implementation path, one line states the discarded alternative and the deciding reason. No viable alternative → nothing to state; this is a record of real choices, not a form field.
+- **Boundary check:** no architectural decision embedded in the document body — each lives in a referenced ADR.
+
+An ITS failing any of these is not deliverable.
 
 ## Decision boundary: ITS vs ADR
 

@@ -20,14 +20,14 @@ Operational pass owned by `prime-architect/code-review`. The SKILL.md defines th
 
 - [ ] Can I state what this change should do before reading the diff?
 - [ ] Does the direction taken match the plan, or did the author solve a different problem?
-- [ ] Which files should have been touched, and which behavior must keep working (ITS regression points)?
+- [ ] Which files should have been touched — read off the plan's units — and which behavior must keep working (the regression points and the unit that claimed each)?
 
 *Wrong direction → stop here and say so. Do not annotate code that should not exist.*
 
 ## 2. Scope conformance (diff ⇄ plan, both directions)
 
-- [ ] **Plan → diff**: every planned change is present, or its absence is justified.
-- [ ] **Diff → plan**: every changed file traces to a plan item or a stated technical consequence. Unrequested improvements count as scope creep (`QM-CN-1`).
+- [ ] **Plan → diff**: every unit of the plan is present, or its absence is justified; every test a unit owes exists.
+- [ ] **Diff → plan**: every changed file traces to a unit or a stated technical consequence. Unrequested improvements count as scope creep (`QM-CN-1`).
 - [ ] **Boundaries**: nothing in "Out of scope — do not touch" was touched.
 - [ ] **ADRs**: no contradiction with an Accepted ADR; no architectural decision landed without one.
 - [ ] **Divergence**: departures from the plan were returned as questions and the ITS revised — not applied silently.
