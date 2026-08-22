@@ -39,16 +39,38 @@ The same rules serve every reader — human or agent. What makes an instruction 
 - Prose (executive summary, synthesis sentences, rationale, risks) uses behavior language: "the system starts rejecting orders above the credit limit". No class names in prose unless unavoidable.
 - Tables and technical lists (mapping, files affected, implementation order) use code language: exact paths, signatures, identifiers. No vagueness in tables — if a cell needs a paragraph, the content belongs in prose.
 
+**Author's voice — the document instructs; it does not narrate its own production.**
+The ITS carries the architect's signature and reads as their instruction. A document that narrates deliberation invites renegotiation of what was already decided, and a hedge reaches the implementer as ambiguity — which returns as a question, the round-trip this contract exists to prevent. The rule is a closed list of marks, not a style to imitate:
+
+- No narration of how the plan was produced: what was inspected, searched, considered, or ruled out along the way.
+- No self-reference to the document or to its drafting.
+- No hedging inside an instruction ("provavelmente", "talvez", "sugere-se", "seria interessante"). The decision is closed when the ITS is delivered.
+- No section filled by ceremony. With nothing to state, the section states that ("nenhuma identificada").
+- No address to whoever commissioned the plan ("conforme solicitado"). The reader is the implementer.
+
+This governs residue of process, never the substance of the plan: stating why a path was chosen is instruction and belongs in the document. Nor is it an instruction to conceal how the document was drafted — the architect approves and signs it, and answering that question honestly is unaffected by this rule.
+
 **Sentence discipline.**
 - One instruction per sentence. Active voice, present tense. Compound sentences hide instructions the implementer can miss and the reviewer cannot check item by item.
-- References are always resolvable in place: `UC-042`, `RN-3`, `CA-2`, full file paths. Never "the rule above", "as discussed", "the usual adjustment" — deixis and presupposition are the primary failure point for both agents and readers entering mid-document. If it is not in the ITS or a referenced ADR, it does not exist for the reader.
+- References are always resolvable in place: `UC-042`, `RN-3`, `CA-2`, full file paths. Never "the rule above", "as discussed", "the usual adjustment" — deixis and presupposition are the primary failure point for both agents and readers entering mid-document. If it is not in the ITS or a referenced ADR, it does not exist for the reader. Resolving the *address* is the floor; the rule below states what the reference must additionally carry.
 - Every criterion is verifiable: numbers, conditions, named rules ("timeout of 30s per RN-5", never "an adequate timeout").
 - Project jargon and acronyms are expanded on first occurrence per section. The document will be read outside the story's context.
 - When more than one use case is affected, qualify `RN-N` and `CA-N` references with their use case (`UC-042/RN-3`) — these identifiers are scoped per document, and an unqualified reference is ambiguous.
 
+**References resolve in content, not only in address.**
+An identifier tells the reader which document holds the answer; it does not tell them the answer. An implementer who knows the code weighs the cost of the lookup against its expected value and skips it — correctly, given a bare identifier. Every reference cited inside an instruction therefore carries, on the same line, the requirement it imposes on this plan; the identifier stays as provenance for the reviewer and the audit.
+
+- `OrderService.confirm — apply UC-042/RN-3` is an address. `OrderService.confirm — reject when the order total exceeds the customer's current credit limit (UC-042/RN-3)` is an instruction.
+- The inline text is one line of *requirement*: a rule's obligation, an acceptance criterion's verifiable outcome, an ADR's operational constraint on this plan. It is never the source's content — copying a flow, a full rule statement, or an ADR's rationale is duplication and breaks the single-owner principle.
+- Where the requirement cannot be stated in one line without dragging the rationale with it, the reference is in the wrong place. Either the decision is story-scoped — a discarded-alternative line — or the source document is the thing that needs fixing. Summarizing the rationale into the ITS is neither.
+
+The rule holds wherever an instruction cites an identifier: every field of a plan unit — what to do, the delta items it satisfies, the tests it owes — and the out-of-scope boundaries. It does not extend to the Metadata or to the Reference glossary, which are addressed to readers who are not implementing and whose limits are stated in their own rules.
+
 **Self-contained references — the glossary.**
 References are resolvable in the repository, but the document is also read where the referenced documents do not exist (the company's documentation platform). The Reference glossary closes that gap:
-- One table listing every cited identifier: ID, type, name, and a one-line gloss. For use cases, the Name field; for business rules and acceptance criteria, a one-line paraphrase of intent; for ADRs, the title and status.
+- One table listing every cited identifier: ID, type, name, and a one-line gloss. For use cases, the Name field; for business rules and acceptance criteria, a one-line paraphrase of intent; for ADRs, the title, the status, and a one-line paraphrase of the **Decision** — what was decided, never why.
+- The ADR gloss stops at the decision. Context, Consequences, and the alternatives considered stay in the ADR: the rationale is what the record exists to own, and copying it into every ITS that cites it is the duplication this rule prevents. A reader who needs the rationale goes to the ADR — the gloss tells them whether they need to.
+- Like the rest of the glossary, the ADR gloss is a snapshot at delivery: it states the decision as it stood when the plan closed, and the status field carries whether it still stands.
 - **Metadata only, never content.** The glossary resolves *what the identifier is*, not *what the document says* — copying flows, rules verbatim, or ADR rationale into the glossary is duplication and breaks the single-owner principle. A reader who needs the content goes to the source; the glossary tells them which source.
 - The glossary is a snapshot at delivery time, same discipline as the config snapshot: the writer fills it from the actual documents already loaded during planning, so it costs nothing and cannot be invented.
 - The fixed process-term table (ITS, UC, RN, CA, ADR, delta) ships with the template as boilerplate — the cold reader learns the vocabulary without leaving the page.
@@ -63,12 +85,13 @@ The ITS must survive copy-paste into the company's documentation platform withou
 - Code fences are simple and never nested; used only where the contract allows snippets.
 - No diagrams in the ITS body (the use case documents own the diagrams).
 
-**Pre-delivery test.** Before delivering, answer three questions about the finished document:
+**Pre-delivery test.** Before delivering, answer four questions about the finished document:
 1. *Implementer test:* does any instruction admit two different implementations? If yes, it is a question the implementer will return — close it now.
 2. *Cold-reader test:* does someone who never saw the story — and without access to the use case repository — understand the executive summary and the synthesis sentences, and resolve every cited identifier through the Reference glossary, without opening another document?
 3. *Paste test:* pasted into the documentation platform, do tables and heading hierarchy survive?
+4. *Author test:* does any sentence describe how the document was produced rather than what must be done? Does any instruction hedge a decision that is already closed?
 
-A document failing any of the three is not deliverable.
+A document failing any of the four is not deliverable.
 
 ## Traceability rules (bidirectional, by delta item and plan unit)
 

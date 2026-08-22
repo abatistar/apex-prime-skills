@@ -58,7 +58,7 @@ Review the decision points noted in Step 3 against the contract's decision bound
 
 1. Draft the ADR (Context, Decision, Consequences, Status: Proposed) in the configured ADR location, presenting the alternatives considered.
 2. **Present it to the architect for approval before delivering the ITS.** The architect decides; you propose. If rejected as "story-scoped", the decision falls back to a discarded-alternative line in the ITS.
-3. Reference the approved ADR's ID in the ITS metadata.
+3. Reference the approved ADR's ID in the ITS metadata, and at every plan unit the decision constrains, state the constraint it imposes there — per the contract's reference rule. The implementer must not need to open the ADR to know what to do; they read it to know why, and because Accepted ADRs are binding context.
 
 Do not over-produce: most stories yield zero ADRs. An ADR exists because a real cross-story decision was made, not because the section wants filling.
 
@@ -79,7 +79,7 @@ This step surfaces improvements; it never blocks delivery on its own. A *silent*
 
 ## Step 5 — Write the ITS per the contract
 
-Write the document exactly per **prime-core/its-contract**: file naming, mandatory sections, level of detail, the "instructs, does not implement" rule, and the discarded-alternative rule all come from there. Write the plan in execution order and let it carry the single mapping — the behavior section states the delta and the regression points and stops there. Sequencing is now a writing act, not a separate list: the order you choose is the order the implementer works in and the order the reviewer walks the diff in.
+Write the document exactly per **prime-core/its-contract**: file naming, mandatory sections, level of detail, the "instructs, does not implement" rule, and the discarded-alternative rule all come from there. Write the plan in execution order and let it carry the single mapping — the behavior section states the delta and the regression points and stops there. Sequencing is now a writing act, not a separate list: the order you choose is the order the implementer works in and the order the reviewer walks the diff in. Two writing rules deserve naming here because they are where a delivered ITS most often fails its reader. First, every reference cited inside an instruction carries its requirement on the same line: the implementer knows the code and will skip a lookup whose cost exceeds its expected value, so a bare identifier is a lookup you are requesting and will not get. Second, no sentence narrates how the plan was produced — the notes from Steps 3 through 4.6 are your working material, not the document's content.
 
 ## Step 6 — Verify traceability before delivering
 

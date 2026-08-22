@@ -95,7 +95,9 @@ estorno." Se nada estiver sob risco de alteração acidental, escreva "nenhuma i
 [Para leitores sem acesso ao repositório de documentos. Apenas metadados — resolva O QUE é
 cada identificador, nunca copie O QUE o documento diz. Preencha a partir dos documentos já
 carregados durante o planejamento; snapshot no momento da entrega. Qualifique RN/CA com seu
-UC quando mais de um caso de uso for afetado.]
+UC quando mais de um caso de uso for afetado. Para ADR, a glosa vai até a Decisão — o que ficou
+decidido. Contexto, Consequências e alternativas consideradas permanecem no ADR; copiá-los aqui
+é a duplicação que o princípio de dono único proíbe.]
 
 ### Citados neste ITS
 | ID | Tipo | Nome / glosa em uma linha |
@@ -103,7 +105,7 @@ UC quando mais de um caso de uso for afetado.]
 | UC-NNN | Caso de uso | [campo Nome do documento] |
 | UC-NNN/RN-N | Regra de negócio | [paráfrase em uma linha da intenção da regra] |
 | UC-NNN/CA-N | Critério de aceite | [paráfrase em uma linha do que ele verifica] |
-| ADR-NNN | Registro de decisão | [título] (Status) |
+| ADR-NNN | Registro de decisão | [título] (Status) — decidiu-se: [paráfrase da Decisão em uma linha] |
 
 ### Termos do processo
 | Termo | Significado |

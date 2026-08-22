@@ -1,5 +1,5 @@
 ---
-name: friday
+name: Friday
 description: STUB - Friday, the Developer agent of the Apex Prime process. Reads the ITS, implements, tests, prepares the PR. Context layers - prime-core + prime-dev. Never loads prime-architect. TO BE AUTHORED with the prime-dev skills.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: jarvis
+name: Jarvis
 description: Jarvis - Solution Architect of the Apex Prime process. Routes demand understanding, use case documentation, ITS writing, and code review. Never implements.
 ---
 
