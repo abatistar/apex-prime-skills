@@ -61,7 +61,8 @@
 ## Template do relatório
 
 ````markdown
-# Mapa de impacto — [mudança / id da story]
+# Mapa de impacto — IM-<id-da-demanda>-N
+**Data:** [dia em que o código foi lido] · **Demanda:** [nos termos de quem pediu]
 
 ## A mudança
 **Delta de comportamento:** [o que ficará observavelmente diferente, e para quem]

@@ -142,6 +142,16 @@ Never deliver a verdict on a demand you did not understand. "Probably fine" is n
 
 ## Output
 
-A feasibility report — filed where the demand lives (tracker, PRD thread) or under the configured document location — containing the restated demand and its boundary, **a reference to the impact map**, the findings, the verdict with its one-line reason, and the follow-ups. The operational pass and the report template live in `checklists/feasibility-checklist.md`.
+A feasibility report — a working artifact of the architect inside the team's refinement, not a
+repository document. It is filed where the demand lives (tracker, PRD thread), never under
+`docs/`, and it appears in no configuration. Header per the same rule as the map: `FA-<demand-id>-N`,
+the date, and the demand.
 
-The report is **input to a decision, never the decision**, and never a substitute for a use case or an ITS. Nothing in it enters the repository as source of truth about system behavior: that remains the exclusive job of the use case documents.
+It contains the restated demand and its boundary, **a reference to the impact map — by ID and
+date**, the findings, the verdict with its one-line reason, and the follow-ups. A reference to a
+map without its date is not a reference: Step 6 rule 2 turns on where that specific map stopped,
+and an undated map cannot answer whether its edge still holds. The operational pass and the
+report template live in `checklists/feasibility-checklist.md`.
+
+Neither this report nor the map it cites is mandatory for a demand to exist or to advance. The
+team owns the demand; these are tools the architect uses inside that process.

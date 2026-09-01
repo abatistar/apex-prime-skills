@@ -81,7 +81,21 @@ Then write the edge down: what was deliberately not traced, and what would justi
 
 ## Output
 
-An impact map report, filed wherever the demand lives, containing:
+An impact map report — a working artifact of the architect, not a repository document. It is
+filed where the demand lives (tracker, refinement thread, PRD), never under `docs/`: the use
+case repository is the source of truth about system behavior, and nothing here competes with
+it. It carries no sequential number, appears in no configuration, and is not maintained after
+the demand moves on.
+
+Its header is mandatory, because a map that cannot be cited cannot be consumed:
+
+- **ID** — `IM-<demand-id>-N`, where `<demand-id>` is the demand's own identifier in the team's
+  refinement process and `N` distinguishes successive maps of the same demand. Derived, never
+  sequential: the map has the demand's lifetime, not the repository's.
+- **Date** — the day the code was read. A map without a date is not citable; reach decays.
+- **Demand** — what was mapped, in the demander's own terms.
+
+The body contains:
 
 1. **The change**, restated as behavior, with its explicit boundary.
 2. **The map**, separated by degree — direct, coupled, contract surface — each entry anchored, located, and justified in one line.

@@ -17,7 +17,7 @@
 ## 2. The map
 
 - [ ] `impact-mapping` run on the restated demand.
-- [ ] Map **referenced, not restated** in this report.
+- [ ] Map cited by **ID and data**. Map without data is not a citable reference.    
 - [ ] Three degrees read: direct, coupled, contract surface.
 - [ ] Area states read from the map's register overlay.
 - [ ] Documented layer read: coverage, divergences, ADR incidence.
@@ -93,7 +93,10 @@ Resolve in order, first match wins:
 ## Template do relatório
 
 ````markdown
-# Viabilidade — [ID / título da demanda]
+# Viabilidade — FA-<id-da-demanda>-N
+**Data:** [data] · **Demanda:** [nos termos de quem pediu]
+**Veredito:** Viable | Viable with conditions | Not viable as specified | Undecidable with current evidence
+**Razão:** [uma linha]
 
 **Veredito:** Viable | Viable with conditions | Not viable as specified | Undecidable with current evidence
 **Razão:** [uma linha]
@@ -103,7 +106,7 @@ Resolve in order, first match wins:
 - Explicitamente fora do escopo: [fronteira]
 
 ## Base de evidência
-- **Mapa de impacto:** [referência ao relatório — não reproduzir aqui]
+- **Mapa de impacto:** IM-<id>-N de [data] — [referência; não reproduzir aqui]
 - Baseline: [documentada | parcial — extractor exigido em X | divergência aberta em UC-NNN | green-field]
 - Borda do mapa: [o veredito depende de algo além dela? sim/não — se sim, veredito é Undecidable (§6, regra 2)]
 
