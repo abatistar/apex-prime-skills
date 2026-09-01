@@ -77,7 +77,7 @@ Reach is transitive; a useful map is not. Stop deliberately, and say where:
 - Stop where there is **no behavioral dependence** — sharing a package is not reach.
 - Stop when the next hop **adds nothing a decision would turn on**.
 
-Then write the edge down: what was deliberately not traced, and what would justify tracing it. An unbounded map is unusable; a silently truncated one is worse, because its reader believes the reach is complete. Stating the edge is what lets `feasibility-analysis` say *insufficient input* instead of ruling on a partial picture.
+Then write the edge down: what was deliberately not traced, and what would justify tracing it. An unbounded map is unusable; a silently truncated one is worse, because its reader believes the reach is complete. Stating the edge is what lets `feasibility-analysis` return *Undecidable with current evidence* instead of ruling on a partial picture — an edge short of what a verdict turns on is one of that skill's named grounds for undecidability, and it can only be read if this map declared it.
 
 ## Output
 
@@ -96,6 +96,19 @@ The operational pass and the report template live in `checklists/impact-map-chec
 
 ## Consumers
 
-- **`feasibility-analysis`** — runs this map first and never judges without it. It reads degrees, area states, ADR incidence, and the stated edge; the edge is what lets it return *insufficient input* honestly.
-- **`its-generator`** — the direct set seeds the scope, the contract surface and the untouched-but-coupled set seed *"Out of scope — do not touch"*, and the divergences seed the use case revisions the story owes.
+- **`feasibility-analysis`** — runs this map first and never judges without it. It reads degrees,
+  area states, ADR incidence, and the stated edge; the edge is what lets it return *Undecidable
+  with current evidence* honestly instead of ruling over a picture it cannot see the end of.
 - **The architect**, reading it directly to decide where to look next.
+
+**Not a consumer: `its-generator`.** A map is scoped to a *demand* under refinement; an ITS is
+scoped to *exactly one story*, and refinement can run for months between the two. Feeding a
+demand-scoped map into a story-scoped plan pushes against the one discipline that skill is built
+on — one delta, the story's — and by the time the ITS exists the map is old enough that verifying
+it costs what deriving it fresh would. The `its-generator` inspects the code itself, every time.
+The architect may of course have read this map; what does not happen is a plan inheriting reach
+it never verified.
+
+**Divergences found here route to prime-docs, never to an ITS.** A code × use case divergence is
+resolved by `use-case-creator` or `use-case-extractor` before specification, not carried forward
+into an implementation plan.
