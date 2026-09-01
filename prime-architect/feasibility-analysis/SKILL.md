@@ -1,0 +1,108 @@
+---
+name: feasibility-analysis
+description: Judge a demand against the system that would have to absorb it, before any specification exists - producing classified findings and exactly one verdict. Architect-layer skill, invoked on the architect's demand, never as a mandatory gate. Always runs impact-mapping first and judges over that map instead of re-deriving reach. Use when the architect brings a story, PRD, epic, or informal proposal and asks whether it can be done, what it would break, or what stands in the way - "is this doable", "can we absorb this", "what blocks this story", "should we take this into refinement", "the product owner wants X, what breaks". Do NOT use to map reach without judging it (impact-mapping alone answers what a change touches), to estimate effort or duration (this skill never estimates - cost is evidence, not a criterion), to write use cases (prime-docs skills), to plan an approved change (its-generator), to judge an implementation already written (code-review), or to write application code (dev layer - this skill never writes code).
+---
+
+# Feasibility Analysis (prime-architect)
+
+`code-review` judges **code against a plan, after**. This skill judges **a demand against the system, before** — same shape, opposite end of the pipeline. Both turn versioned criteria into classified findings and exactly one verdict; neither writes the artifact it judges.
+
+It exists because the rest of the process assumes the demand will be built. The `use-case-creator` elicits, the `its-generator` plans, and impossibility surfaces only after both have been paid for. This skill is the cheap place to find out.
+
+It is **invoked, never obligatory**. Nothing downstream requires a feasibility verdict, and a verdict never authorizes skipping the specification pipeline: *Viable* means the demand may enter refinement, not that it is specified.
+
+## Evidence and judgment are separate acts
+
+This skill does not derive reach. `impact-mapping` produces the evidence — what the demand touches, in which registered state, against which documented behavior — and this skill rules on it. The split is deliberate and it is the same one the repository already draws between `prime-core/quality-model` and `prime-architect/code-review`: defining and judging fail in different ways, and a skill that produces its own evidence and then rules on it has no one checking the first half.
+
+Practically: **reference the map, never restate it.** The report cites the map; it does not copy the surface into itself.
+
+## What this skill does not do
+
+- **It does not estimate effort.** No hours, no story points, no sprint counts. Sizing belongs to the team that will do the work. What this skill delivers is the **cost drivers** — the facts an estimate is built from — read off the map.
+- **It does not design the solution.** Naming a viable path is part of the verdict's reasoning; specifying it is the `its-generator`'s job, and only after the use cases exist.
+- **It does not decide whether the demand is worth doing.** Value is the demander's call. This skill answers *can it be absorbed, at what structural cost, and what must be true first*.
+
+## Step 0 — Load the configuration and the criteria
+
+Read `docs/prime-config.md` per **prime-core/prime-config** — location, fallback, precedence, divergence handling, and bootstrap all live in that contract; never re-derive them here. From the config this skill uses: the stack and versions (the ceiling every proposed path must fit under), the **area register**, the **slot overrides**, the document locations including the ADR repository, and the verification commands.
+
+Then load, as the criteria the judgment is anchored in: **prime-core/quality-model** (`QM-XX-N`), **prime-core/coding-standards** (`CS-XX-N`), and the **Accepted ADRs**.
+
+**Cost is evidence, never a criterion.** The quality model answers *what good is*, not *what this costs*; do not stretch it into a cost vocabulary it does not own. Where the confrontation needs a criterion that does not exist — a convention slot with neither a stack default nor a project override — **report the gap** per `coding-standards` and never improvise the value. A criterion missing in three separate runs is the trigger for a governance PR against the core, not for a local invention.
+
+## Step 1 — Restate the demand as something checkable
+
+State in one or two sentences what observable outcome the demand claims, and confirm it with the architect. If the demand cannot be reduced to an observable change in system behavior — if it names a technology, a preference, or an aspiration instead of an outcome — **stop here** and return it. There is nothing to judge, and judging it anyway is how this skill would degrade into opinion.
+
+Record explicitly what the demand does **not** claim. A boundary asserted at this step is what keeps the analysis from expanding into a system-wide review.
+
+## Step 2 — Run the map
+
+Run `impact-mapping` on the restated demand. What this skill consumes from it:
+
+- the **three degrees** of reach — direct, coupled, contract surface;
+- the **area states** overlay (`current`, `legacy-maintained`, `strangler`);
+- the **documented layer** — use case coverage, divergences found, ADR incidence;
+- the **procedence marking** on every line (anchored, `[INFERRED]`, `[UNVERIFIED]`, gap), whose vocabulary is defined by that skill and reused here unchanged;
+- and, decisively, the **stated edge** — where the map deliberately stopped.
+
+The edge is what makes *Undecidable* an honest verdict instead of an evasion. Ruling over a map that silently truncated its reach produces a confident verdict on a partial picture, which is the worst output this skill can produce.
+
+Two findings from the map are read before any lens runs, because they change what a verdict can mean:
+
+- **Undocumented affected area** → a `Condition:` with a route to `prime-docs/use-case-extractor`, not an unknown to absorb. Feasibility judged against code nobody has described is judged in the dark. Green-field addition touching no existing behavior needs no baseline; note it and proceed.
+- **Divergence between code and use case** → where the two already disagree, **neither is a safe baseline**, and a verdict resting on the wrong one dissolves on contact. This alone can carry the run to *Undecidable*.
+
+## Step 3 — The lenses, in decreasing order of what kills a demand
+
+Each lens points to where its criterion lives — never redefines it. Run them over the map; do not re-walk the code the map already walked.
+
+- **Constraint** — the hard ceilings: stack and version (config), platform, data that does not exist, an external dependency or license the project does not hold, a regulatory boundary. This lens produces the only findings that make something genuinely impossible, which is why it is read first and why it is usually the shortest.
+- **Structural fit** — does the demand fight the shape of the system? `CS-AR-1..5`, `QM-CC-1..5`, and the ADR incidence carried in from the map. **A demand that contradicts an Accepted ADR is not infeasible** — it is an ADR question. Route it as a proposed ADR (superseding the existing one) with the architect's approval; never treat a recorded decision as a wall, and never let it be overturned silently inside an analysis.
+- **Contract surface** — of everything the map placed outside this codebase (API shapes, database schema, event payloads, exported files, shared signatures), can every known consumer be migrated, and can the consumer set be enumerated at all? An unenumerable consumer set is a finding in its own right.
+- **Verification** — can the claimed outcome be proven done? The config's verification commands, the observability the affected areas actually have, and the test obligation the change would carry (`CS-TS-1`). A demand nobody can verify as delivered is feasible only under the condition that a way to verify it is built.
+- **Erosion risk** — does the cheapest viable path introduce a *second* way of doing something the project already does one way (`QM-CN-1`)? Answering yes does not block; it names the debt the demand would create, so it can be taken deliberately (`QM-MT-1`) rather than discovered later in review.
+- **Concurrency and scale** — only where the demand's outcome implies them (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`). Do not manufacture this lens for changes that do not carry it.
+- **Security surface** — every new boundary the demand would open: `QM-SR-*`, `CS-SC-*`. A demand that opens one is not blocked by it, but the boundary is a condition with an owner.
+
+## Step 4 — Evidence discipline
+
+Every finding inherits its anchor from the map and carries it visibly. The vocabulary is `impact-mapping`'s; this skill adds one rule of its own:
+
+**A `Blocker:` requires anchored evidence.** A blocker resting on `[INFERRED]` or `[UNVERIFIED]` evidence is not a blocker — it is the reason the verdict is *Undecidable with current evidence*. Anything asserted by the demand and never checked against code stays `[UNVERIFIED]` no matter how plausible it sounds.
+
+## Step 5 — Classify every finding
+
+A finding states **where**, **what**, **why** — citing an ID or an evidence anchor — and **what it implies for the demand**.
+
+- **`Blocker:`** — the demand cannot be absorbed as specified. A hard constraint, or an outcome that contradicts an invariant with no path around it. Requires anchored evidence.
+- **`Condition:`** — feasible, but only if something is true first. Every condition carries an **owner** and a **route** (a skill to run, a decision to take, a dependency to acquire). A condition without a route is a `Blocker:` in disguise.
+- **`Cost driver:`** — does not block and does not condition; changes the size. Area state, breadth of the coupled set, contract surfaces crossed, missing observability, debt the path would create.
+- **`FYI:`** — context the demander should have. No obligation.
+
+Aggregate: several findings caused by one structural fact are one finding, stated where it can actually be addressed.
+
+## Step 6 — The verdict, exactly one
+
+- **Viable** — no blocker, no condition. The demand may enter the specification pipeline as written.
+- **Viable with conditions** — no blocker; every condition named, owned, and routed. This is the common verdict and it is not a hedge: it is the list of what to do first.
+- **Not viable as specified** — at least one `Blocker:`, listed separately. Never delivered as a bare refusal: state **what would have to change in the demand** for the blocker to dissolve. A demand returned without a door is an obstacle, not a gate.
+- **Undecidable with current evidence** — the analysis cannot honestly reach the other three, because the evidence needed does not exist: an undocumented area, an unresolved divergence, a map whose edge stops short of what the verdict would turn on, a dependency nobody has tested. Name the **one run that would decide it** (extractor on area X, a timeboxed spike on Y, a measurement of Z). This verdict is a result, not a failure — an invented verdict costs more than an honest gap.
+
+Never deliver a verdict on a demand you did not understand. "Probably fine" is not a verdict.
+
+## Step 7 — Follow-ups to register before closing
+
+- Extractor run required to establish a baseline.
+- Divergence routed to prime-docs (`QM-DO-1`) — never patched from inside this skill.
+- ADR to propose — including one that would supersede an Accepted ADR the demand challenges (architect approves).
+- Unfilled slot to report (`coding-standards`) — never improvised.
+- Config gap: a fact about the project the analysis needed and `docs/prime-config.md` does not carry.
+- Debt the viable path would create, named with a prospective owner (`QM-MT-1`).
+
+## Output
+
+A feasibility report — filed where the demand lives (tracker, PRD thread) or under the configured document location — containing the restated demand and its boundary, **a reference to the impact map**, the findings, the verdict with its one-line reason, and the follow-ups. The operational pass and the report template live in `checklists/feasibility-checklist.md`.
+
+The report is **input to a decision, never the decision**, and never a substitute for a use case or an ITS. Nothing in it enters the repository as source of truth about system behavior: that remains the exclusive job of the use case documents.
