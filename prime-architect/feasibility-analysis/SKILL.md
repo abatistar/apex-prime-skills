@@ -51,7 +51,8 @@ The edge is what makes *Undecidable* an honest verdict instead of an evasion. Ru
 
 Two findings from the map are read before any lens runs, because they change what a verdict can mean:
 
-- **Undocumented affected area** → a `Condition:` with a route to `prime-docs/use-case-extractor`, not an unknown to absorb. Feasibility judged against code nobody has described is judged in the dark. Green-field addition touching no existing behavior needs no baseline; note it and proceed.
+- **Undocumented affected area** → a `Condition:` with an owner and a route to `prime-docs/use-case-extractor`, not an unknown to absorb. Feasibility judged against code nobody has described is judged in the dark, but an undescribed area is a known gap with a known route — that is what a condition is for. Green-field addition touching no existing behavior needs no baseline; note it and proceed.
+The one exception: when the undocumented area is where a Blocker: would rest — the map places the demand's hardest constraint inside behavior nobody has described — the run is Undecidable with current evidence, naming the extractor run as the one that would decide it. Absence of a blocker carries the same evidentiary burden as a blocker: Viable with conditions asserts that nothing blocks, and asserting that over unread code is the failure this skill exists to prevent. This exception is stated and justified in the report, never assumed silently.
 - **Divergence between code and use case** → where the two already disagree, **neither is a safe baseline**, and a verdict resting on the wrong one dissolves on contact. This alone can carry the run to *Undecidable*.
 
 ## Step 3 — The lenses, in decreasing order of what kills a demand
@@ -85,10 +86,48 @@ Aggregate: several findings caused by one structural fact are one finding, state
 
 ## Step 6 — The verdict, exactly one
 
-- **Viable** — no blocker, no condition. The demand may enter the specification pipeline as written.
-- **Viable with conditions** — no blocker; every condition named, owned, and routed. This is the common verdict and it is not a hedge: it is the list of what to do first.
-- **Not viable as specified** — at least one `Blocker:`, listed separately. Never delivered as a bare refusal: state **what would have to change in the demand** for the blocker to dissolve. A demand returned without a door is an obstacle, not a gate.
-- **Undecidable with current evidence** — the analysis cannot honestly reach the other three, because the evidence needed does not exist: an undocumented area, an unresolved divergence, a map whose edge stops short of what the verdict would turn on, a dependency nobody has tested. Name the **one run that would decide it** (extractor on area X, a timeboxed spike on Y, a measurement of Z). This verdict is a result, not a failure — an invented verdict costs more than an honest gap.
+The verdict is not read off the findings alone. It resolves from two inputs — the findings
+classified in Step 5 and the **state of the evidence base** carried in from the map — applied
+in this order, first match wins:
+
+1. **An anchored `Blocker:` exists** → *Not viable as specified*. An anchored blocker is
+   self-sufficient: gaps elsewhere in the evidence do not soften it, because nothing still to
+   be discovered dissolves it — only a change in the demand does. Register the gaps as
+   follow-ups and rule.
+2. **No anchored blocker, and the evidence base does not support asserting that none exists**
+   → *Undecidable with current evidence*. A blocker resting on `[INFERRED]` or `[UNVERIFIED]`
+   evidence lands here, not in rule 1 (Step 4).
+3. **Otherwise, at least one `Condition:`** → *Viable with conditions*.
+4. **Otherwise** → *Viable*.
+
+`Cost driver:` and `FYI:` never move the verdict. There is no *"viable but expensive"* verdict —
+size is evidence handed to whoever decides, never a ruling.
+
+### When the evidence base is insufficient
+
+Rule 2 fires when, and only when, one of these holds:
+
+- the map's **edge** stops short of what the verdict turns on;
+- an unresolved **code × use case divergence** leaves no safe baseline;
+- an **undocumented area carries the demand's hardest constraint** (Step 2) — a merely
+  undocumented area is a `Condition:`, not an undecidability;
+- a **dependency the outcome rests on** has never been tested.
+
+This list is closed. A run that meets a fifth legitimate case adds it here by PR, with the run
+that found it named — never by widening the rule locally. Same discipline `coding-standards`
+applies to an unfilled slot: the gap is reported, not improvised.
+
+### What each verdict obliges you to deliver
+
+- **Viable** — the demand may enter the specification pipeline as written.
+- **Viable with conditions** — every condition named, owned, and routed. This is the common
+  verdict and it is not a hedge: it is the list of what to do first.
+- **Not viable as specified** — blockers listed separately. Never delivered as a bare refusal:
+  state **what would have to change in the demand** for the blocker to dissolve. A demand
+  returned without a door is an obstacle, not a gate.
+- **Undecidable with current evidence** — name the **one run that would decide it** (extractor
+  on area X, a timeboxed spike on Y, a measurement of Z). This verdict is a result, not a
+  failure — an invented verdict costs more than an honest gap.
 
 Never deliver a verdict on a demand you did not understand. "Probably fine" is not a verdict.
 

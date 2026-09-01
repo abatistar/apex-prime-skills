@@ -22,7 +22,7 @@
 - [ ] Area states read from the map's register overlay.
 - [ ] Documented layer read: coverage, divergences, ADR incidence.
 - [ ] **Stated edge** read — where the map stopped, and whether the verdict turns on anything beyond it.
-- [ ] Undocumented affected area → `Condition:` with route to `use-case-extractor`. Green-field touching nothing existing → noted, no baseline required.
+- [ ] Undocumented affected area → `Condition:` with owner and route to `use-case-extractor`. Exception: the undocumented area is where a Blocker: would rest → Undecidable, exception stated and justified. Green-field touching nothing existing → noted, no baseline required.
 - [ ] Code × use case divergence → recorded; neither side is a safe baseline. May carry the run to *Undecidable*.
 
 ## 3. Lenses, in order
@@ -44,12 +44,15 @@
 
 ## 5. Classification
 
-| Severity | Use for | Effect on the verdict |
+| Severity | Use for | Contributes to |
 |---|---|---|
 | `Blocker:` | hard constraint; invariant contradicted with no path around it. Anchored evidence required | Not viable as specified |
 | `Condition:` | feasible once something is true first. **Owner + route mandatory** | Viable with conditions |
 | `Cost driver:` | changes the size, not the answer: area state, breadth of the coupled set, contract surfaces crossed, missing observability, debt created | none |
 | `FYI:` | context for the demander | none |
+
+*This table classifies findings; it does not decide the verdict. Verdict resolution is §6 —
+the evidence base can override rules 3 and 4 regardless of what was classified here.*
 
 - [ ] Every finding cites an ID or an evidence anchor.
 - [ ] Every `Condition:` has an owner and a route (a condition without a route is a blocker in disguise).
@@ -58,10 +61,20 @@
 
 ## 6. Verdict — exactly one
 
-- [ ] **Viable** — no blocker, no condition.
-- [ ] **Viable with conditions** — conditions listed, each owned and routed.
-- [ ] **Not viable as specified** — blockers listed separately **and** what would have to change in the demand.
-- [ ] **Undecidable with current evidence** — names the single run that would decide it.
+Resolve in order, first match wins:
+
+- [ ] **1. Anchored `Blocker:` present** → *Not viable as specified*. Blockers listed separately
+      **and** what would have to change in the demand. Evidence gaps elsewhere registered as
+      follow-ups, never used to soften the ruling.
+- [ ] **2. No anchored blocker + evidence base insufficient** → *Undecidable with current evidence*.
+      Insufficient means exactly one of: edge short of what the verdict turns on · open divergence,
+      no safe baseline · undocumented area carrying the demand's hardest constraint · untested
+      dependency the outcome rests on. Names the single run that would decide it. A blocker resting
+      on `[INFERRED]` or `[UNVERIFIED]` evidence lands here, not in rule 1.
+- [ ] **3. At least one `Condition:`** → *Viable with conditions*, each condition owned and routed.
+- [ ] **4. None of the above** → *Viable*.
+
+- [ ] `Cost driver:` and `FYI:` did not move the verdict.
 
 *Never deliver a verdict on a demand you did not understand.*
 *Viable authorizes refinement, never skipping the specification pipeline.*
@@ -92,7 +105,7 @@
 ## Base de evidência
 - **Mapa de impacto:** [referência ao relatório — não reproduzir aqui]
 - Baseline: [documentada | parcial — extractor exigido em X | divergência aberta em UC-NNN | green-field]
-- Borda do mapa: [o veredito depende de algo além dela? sim/não]
+- Borda do mapa: [o veredito depende de algo além dela? sim/não — se sim, veredito é Undecidable (§6, regra 2)]
 
 ## Achados
 | # | Severidade | Onde | Critério / evidência | Achado e implicação |
