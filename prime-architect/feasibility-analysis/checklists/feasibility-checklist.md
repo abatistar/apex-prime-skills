@@ -28,7 +28,7 @@
 ## 3. Lenses, in order
 
 - [ ] **Constraint** — stack/version ceiling, platform, missing data, external dependency, license, regulation. The only source of true impossibility.
-- [ ] **Structural fit** — `CS-AR-1..5`, `QM-CC-1..5`, ADR incidence from the map. Contradicting an ADR is an **ADR question**, not a blocker.
+- [ ] **Structural fit** — `CS-AR-1..5`, `QM-CC-1..5`, ADR incidence from the map. Contradicting an ADR is an **ADR question**, not a blocker: `Condition:` naming the ADR, owner architect, route to the ADR lifecycle. No ADR drafted here.
 - [ ] **Contract surface** — can every known consumer be migrated? Is the consumer set enumerable at all?
 - [ ] **Verification** — verification commands, observability present, test obligation (`CS-TS-1`).
 - [ ] **Erosion risk** — does the cheapest path create a second way of doing something (`QM-CN-1`)?
@@ -83,7 +83,7 @@ Resolve in order, first match wins:
 
 - [ ] Extractor run required for a baseline.
 - [ ] Divergence routed to prime-docs (`QM-DO-1`) — never patched here.
-- [ ] ADR to propose (including one superseding an Accepted ADR the demand challenges) — architect approves.
+- [ ] ADR decision to raise (`Condition:`, owner architect) — the ADR is drafted by whoever takes the decision, never in this report.
 - [ ] Unfilled slot to report (`coding-standards`) — never improvised.
 - [ ] Config gap: a project fact the analysis needed and the config does not carry.
 - [ ] Debt the viable path would create, with a prospective owner (`QM-MT-1`).

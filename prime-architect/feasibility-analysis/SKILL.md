@@ -60,7 +60,7 @@ The one exception: when the undocumented area is where a Blocker: would rest —
 Each lens points to where its criterion lives — never redefines it. Run them over the map; do not re-walk the code the map already walked.
 
 - **Constraint** — the hard ceilings: stack and version (config), platform, data that does not exist, an external dependency or license the project does not hold, a regulatory boundary. This lens produces the only findings that make something genuinely impossible, which is why it is read first and why it is usually the shortest.
-- **Structural fit** — does the demand fight the shape of the system? `CS-AR-1..5`, `QM-CC-1..5`, and the ADR incidence carried in from the map. **A demand that contradicts an Accepted ADR is not infeasible** — it is an ADR question. Route it as a proposed ADR (superseding the existing one) with the architect's approval; never treat a recorded decision as a wall, and never let it be overturned silently inside an analysis.
+- **Structural fit** — does the demand fight the shape of the system? `CS-AR-1..5`, `QM-CC-1..5`, and the ADR incidence carried in from the map. **A demand that contradicts an Accepted ADR is not infeasible** — it is an ADR question. It becomes a `Condition:` naming the ADR, owned by the architect and routed to the ADR lifecycle: the decision must be revisited before the demand enters specification. This skill does not draft the ADR. Drafting requires a Decision, and this skill designs nothing — it judges. The ADR is proposed later, by whoever takes the decision, through the flow the its-contract defines. Never treat a recorded decision as a wall, and never let one be overturned silently inside an analysis.
 - **Contract surface** — of everything the map placed outside this codebase (API shapes, database schema, event payloads, exported files, shared signatures), can every known consumer be migrated, and can the consumer set be enumerated at all? An unenumerable consumer set is a finding in its own right.
 - **Verification** — can the claimed outcome be proven done? The config's verification commands, the observability the affected areas actually have, and the test obligation the change would carry (`CS-TS-1`). A demand nobody can verify as delivered is feasible only under the condition that a way to verify it is built.
 - **Erosion risk** — does the cheapest viable path introduce a *second* way of doing something the project already does one way (`QM-CN-1`)? Answering yes does not block; it names the debt the demand would create, so it can be taken deliberately (`QM-MT-1`) rather than discovered later in review.
@@ -135,7 +135,7 @@ Never deliver a verdict on a demand you did not understand. "Probably fine" is n
 
 - Extractor run required to establish a baseline.
 - Divergence routed to prime-docs (`QM-DO-1`) — never patched from inside this skill.
-- ADR to propose — including one that would supersede an Accepted ADR the demand challenges (architect approves).
+- **ADR decision to raise** — a recorded decision the demand challenges, including an Accepted ADR it would supersede. Raised as a `Condition:` with the architect as owner; the ADR itself is drafted by whoever takes the decision, never here.
 - Unfilled slot to report (`coding-standards`) — never improvised.
 - Config gap: a fact about the project the analysis needed and `docs/prime-config.md` does not carry.
 - Debt the viable path would create, named with a prospective owner (`QM-MT-1`).

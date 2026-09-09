@@ -13,13 +13,10 @@ Formatting constraints (from the contract's writing rules): maximum 3 heading le
 - **Casos de uso afetados:** UC-NNN (criação|alteração), ...
 - **Snapshot de configuração:** stack + versões relevantes para este plano
 - **ADRs referenciados:** ADR-NNN (status), ou "nenhum"
-  [Decisões que sobrevivem à story vivem em ADRs e são apenas referenciadas aqui — ver a
-  fronteira de decisão no contrato. ADRs com status Accepted são vinculantes para o implementador.]
+  [Decisões que sobrevivem à story vivem em ADRs e são apenas referenciadas aqui — ver a fronteira de decisão no contrato. ADRs com status Accepted são vinculantes para o implementador.]
 
 ### Verificação de rastreabilidade
-[Escrita por último, junto com o sumário executivo. Evidência, não prosa: duas listas de
-identificadores e as linhas de alternativa descartada. Dirigida ao revisor e à auditoria — quem
-implementa não depende dela para trabalhar, e por isso ela não fica no corpo do documento.]
+[Escrita por último, junto com o sumário executivo. Evidência, não prosa: duas listas de identificadores e as linhas de alternativa descartada. Dirigida ao revisor e à auditoria — quem implementa não depende dela para trabalhar, e por isso ela não fica no corpo do documento.]
 
 | Item de delta | Atendido por |
 |---|---|
@@ -36,27 +33,16 @@ implementa não depende dela para trabalhar, e por isso ela não fica no corpo d
 - **Fronteira de decisão:** nenhuma decisão arquitetural embutida neste documento.
 
 ## Sumário executivo
-[3–5 linhas, linguagem de negócio, sem identificadores de código. O que a story muda, em
-quais casos de uso, e o efeito observável para o usuário/sistema. Escreva esta seção POR
-ÚLTIMO, depois de fechado o plano. É a porta de entrada para lideranças técnicas e
-compliance — o teste do leitor frio se aplica aqui.]
+[3–5 linhas, linguagem de negócio, sem identificadores de código. O que a story muda, em quais casos de uso, e o efeito observável para o usuário/sistema. Escreva esta seção POR ÚLTIMO, depois de fechado o plano. É a porta de entrada para lideranças técnicas e compliance — o teste do leitor frio se aplica aqui.]
 
 ## O que muda no comportamento
-[Só o que existe neste eixo: a síntese, o delta e o que precisa continuar funcionando.
-O mapeamento para código vive uma vez, no plano.]
+[Só o que existe neste eixo: a síntese, o delta e o que precisa continuar funcionando. O mapeamento para código vive uma vez, no plano.]
 
-### UC-NNN — [título] (criação | alteração)
-[UMA frase de síntese em linguagem de comportamento, legível por quem não implementa.
-Ex.: "Este caso de uso passa a validar o limite de crédito antes de confirmar o pedido."]
-
-**Delta** [copiado da entrada de revisão do caso de uso referente a esta story; para criação,
-"documento inteiro" desdobrado em itens. Numere: os identificadores são citados pelas unidades
-do plano e pela verificação de rastreabilidade.]
+**Delta** [copiado da entrada de revisão do caso de uso referente a esta story; para criação, "documento inteiro" desdobrado em itens. Numere: os identificadores são citados pelas unidades do plano e pela verificação de rastreabilidade.]
 - **D1:** [item adicionado/alterado/removido, referenciando passo, extensão ou seção]
 - **D2:** ...
 
-**Pontos de regressão** [apenas em cenário de alteração — comportamento inalterado que
-compartilha código com as mudanças. Cada ponto é reivindicado por uma unidade do plano.]
+**Pontos de regressão** [apenas em cenário de alteração — comportamento inalterado que compartilha código com as mudanças. Cada ponto é reivindicado por uma unidade do plano.]
 - **RG-1:** [comportamento que precisa continuar funcionando]
 
 ## Plano de implementação
@@ -65,13 +51,17 @@ precisa sair do documento. Toda exigência citada é escrita na linha, com o ide
 como procedência.]
 
 ### 1. [Título da unidade]
-- **Arquivos:** `caminho/Arquivo.java` (modificar) · `caminho/Novo.java` (criar)
-- **O que fazer:** [instrução com a exigência em linha — ex.: "rejeitar quando o total exceder
-  o limite de crédito vigente (UC-042/RN-3)"]
-- **Atende:** UC-042/D1 · [ou: "consequência técnica — <uma linha>"]
-- **Testes:** [ex.: "pedido acima do limite retorna erro de negócio sem persistir (UC-042/CA-2)";
-  quando a unidade toca código compartilhado com um ponto de regressão, o teste de não
-  regressão que ela deve — ex.: "UC-042/RG-1: pedido dentro do limite continua sendo confirmado"]
+**Arquivos:**
+  1 - `caminho/Arquivo.java` (modificar)
+  2 - `caminho/Novo.java` (criar)
+  3 - ...
+**O que fazer:** [instrução com a exigência em linha]
+  1 - "rejeitar quando o total exceder o limite de crédito vigente (RN-3)"
+  2 - ...
+**Atende:** D1 · [ou: "consequência técnica — <uma linha>"]
+**Testes:**
+  - "pedido acima do limite retorna erro de negócio sem persistir (CA-2)"; quando a unidade toca código compartilhado com um ponto de regressão, o teste de não regressão que ela deve
+  - "pedido dentro do limite continua sendo confirmado (RG-1)"
 
 ### 2. [Título da unidade]
 [...]
