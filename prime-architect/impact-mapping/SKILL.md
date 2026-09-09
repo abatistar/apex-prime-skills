@@ -5,7 +5,7 @@ description: Map the reach of an intended change across the codebase and the doc
 
 # Impact Mapping (prime-architect)
 
-This skill answers one question and refuses the next one: **what does this change reach?** It produces evidence — anchored, bounded, and classified by confidence — and hands it to whoever must decide. Deciding is somebody else's job: `feasibility-analysis` turns this map into a verdict, `its-generator` turns it into scope and out-of-scope boundaries, and the architect may simply read it.
+This skill answers one question and refuses the next one: **what does this change reach?** It produces evidence — anchored, bounded, and classified by confidence — and hands it to whoever must decide. Deciding is somebody else's job: `feasibility-analysis` turns this map into a verdict, and the architect may simply read it.
 
 The separation is the same one the repository already draws between `prime-core/quality-model` and `prime-architect/code-review`: defining and judging are different acts with different failure modes. A map that recommends has stopped being evidence, because a reader can no longer tell which lines are observations and which are opinions.
 

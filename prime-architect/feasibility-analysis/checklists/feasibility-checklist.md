@@ -17,12 +17,12 @@
 ## 2. The map
 
 - [ ] `impact-mapping` run on the restated demand.
-- [ ] Map cited by **ID and data**. Map without data is not a citable reference.    
+- [ ] Map cited by **ID and date**. A map without a date is not a citable reference.
 - [ ] Three degrees read: direct, coupled, contract surface.
 - [ ] Area states read from the map's register overlay.
 - [ ] Documented layer read: coverage, divergences, ADR incidence.
 - [ ] **Stated edge** read — where the map stopped, and whether the verdict turns on anything beyond it.
-- [ ] Undocumented affected area → `Condition:` with owner and route to `use-case-extractor`. Exception: the undocumented area is where a Blocker: would rest → Undecidable, exception stated and justified. Green-field touching nothing existing → noted, no baseline required.
+- [ ] Undocumented affected area → `Condition:` with owner and route to `use-case-extractor`. Exception: the undocumented area is where a `Blocker:` would rest → Undecidable, exception stated and justified. Green-field touching nothing existing → noted, no baseline required.
 - [ ] Code × use case divergence → recorded; neither side is a safe baseline. May carry the run to *Undecidable*.
 
 ## 3. Lenses, in order
@@ -98,9 +98,6 @@ Resolve in order, first match wins:
 **Veredito:** Viable | Viable with conditions | Not viable as specified | Undecidable with current evidence
 **Razão:** [uma linha]
 
-**Veredito:** Viable | Viable with conditions | Not viable as specified | Undecidable with current evidence
-**Razão:** [uma linha]
-
 ## A demanda, como julgada
 - Resultado observável: [uma ou duas frases]
 - Explicitamente fora do escopo: [fronteira]
@@ -124,5 +121,5 @@ Resolve in order, first match wins:
 - [extractor na área X | spike em Y | medição de Z]
 
 ## Follow-ups
-- [corrida do extractor / divergência para prime-docs / ADR a propor / lacuna de slot / lacuna de config / dívida com responsável]
+- [corrida do extractor / divergência para prime-docs / decisão de ADR a levantar / lacuna de slot / lacuna de config / dívida com responsável]
 ````
