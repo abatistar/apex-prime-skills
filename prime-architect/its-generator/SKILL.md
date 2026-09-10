@@ -48,9 +48,19 @@ Number the delta items as you locate them (`D1`, `D2`, ...), qualified by use ca
 
 Throughout the inspection, note every point where more than one viable implementation path exists. These notes feed Step 5 (discarded-alternative lines) and Step 4.5 (ADR candidates).
 
-## Step 4 — Repository-wide risk check
+## Step 4 — Repository-wide risk check and the out-of-scope boundary
 
-For every component slated for modification, check whether it also serves other documented use cases (search the repository). List those use cases as risk areas. Optionally, if a delta touches a step that also appears in the last 1–2 revision entries of the same document, flag it as a **hot area** (frequently changed → deserves extra test attention). This is a targeted lookup, not a re-reading of history.
+For every component slated for modification, check whether it also serves other documented use cases (search the repository). This single sweep yields two different outputs, and merging them is the error to avoid.
+
+**Risk areas.** The use cases that share the component and stay in the plan's path. List them; they raise the test attention the affected units owe. Optionally, if a delta touches a step that also appears in the last 1–2 revision entries of the same document, flag it as a **hot area** (frequently changed → deserves extra test attention). This is a targeted lookup, not a re-reading of history.
+
+**Out-of-scope boundaries.** The contract requires the consolidated plan to name what must not be touched, and this is where those borders are derived. Three sources, each entry naming *why it is a border*:
+
+- **Shared but untouched.** Code the inspection reached, serving another use case, that the delta   does not require changing — the most likely place for an unrequested improvement to land. Distinct from a regression point: `RG-N` is code the plan **does** touch and that must keep working; a boundary is code the plan **must not** touch at all.
+- **Contract surfaces this story does not change.** API shapes, schema, event payloads reached by the inspection whose consumers the story has no mandate to migrate. Naming them is what keeps a convenient signature change from arriving unannounced.
+- **Legacy deliberately left alone.** Inherited code in a `legacy-maintained` or `strangler` area the plan runs alongside without correcting — the vehicle Step 4.6 routes such departures into.
+
+An empty boundary list is legitimate and is written as such ("nenhuma identificada"), never omitted: a story genuinely confined to code nobody else uses has no borders to name. What is not legitimate is a border with no reason — the implementer must be able to tell a boundary from an oversight, and the reviewer checks the section item by item.
 
 ## Step 4.5 — Detect and propose ADRs
 
@@ -88,6 +98,7 @@ Run the contract's checks and record them in the ITS's Metadata section:
 - Plan → delta: every unit names its `D-N` or a stated technical consequence.
 - Regression → plan: every `RG-N` is claimed by exactly one unit, with the non-regression test named there.
 - Boundary check: no architectural decision (per the contract's criteria) embedded in the document body — each one lives in a referenced ADR.
+- Out-of-scope check: every entry in "Out of scope — do not touch" states why it is a border (shared but untouched · contract surface not migrated · legacy left alone), and no entry duplicates a regression point — `RG-N` is touched code that must keep working, a boundary is code that must not be touched.
 - Quality check: every departure from a prime-core/quality-model criterion surfaced in Step 4.6 is recorded as a named exception (discarded-alternative line, out-of-scope boundary, or referenced ADR). No silent non-negotiable violation remains.
 
 If any check fails, fix the plan — do not deliver an ITS with unexplained scope or buried decisions.
