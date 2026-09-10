@@ -6,6 +6,7 @@ Canonical template owned by prime-core/its-contract. The architect writes it; th
 
 Formatting constraints (from the contract's writing rules): maximum 3 heading levels, 2 list-nesting levels, simple tables (no multi-line cells, no embedded HTML), simple non-nested code fences, no diagrams. The document must survive copy-paste into the company's documentation platform as-is.
 
+````markdown
 # ITS-<story-id> — [Título da story]
 
 ## Metadados
@@ -106,4 +107,4 @@ decidido. Contexto, Consequências e alternativas consideradas permanecem no ADR
 | CA | Critério de aceite dentro de um caso de uso |
 | ADR | Architecture Decision Record — uma decisão que sobrevive à story |
 | Delta | O conjunto de mudanças que uma story aplica a um caso de uso |
-```
+````

@@ -43,7 +43,7 @@ Then load, in this order:
 
 ## Step 1 — Understand the change before reading it
 
-Broad view first. Read the ITS's executive summary, the per-use-case syntheses, and the consolidated plan; then the pull request's own description. You must be able to state, before the first line of diff, what the change should do, which files it should touch, and which behavior must keep working (the ITS's regression points).
+Broad view first. Read the ITS's executive summary, the per-use-case syntheses, and the implementation plan; then the pull request's own description. You must be able to state, before the first line of diff, what the change should do, which files it should touch, and which behavior must keep working (the ITS's regression points).
 
 Then walk the diff **unit by unit, in the plan's order**, not in the file tree's alphabetical order. The plan already sequenced dependencies, and each unit declares the files it should have touched — the answer to "which files should this change contain" is the walk itself, not a separate list.
 
@@ -68,7 +68,7 @@ Design first, always: a naming comment on code that must be restructured is wast
 - **Design** — do the pieces belong where they are, and does the change fit the system rather than fight it? `QM-CC-1..5`, `CS-AR-1..5`. The most expensive thing to fix after merge, and the reason it is read first.
 - **Functionality** — does it do what the delta says, for the user and not only for the author? Concurrency, edge cases, failure paths (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`). Judge against the use case's `CA-N`, not against your own reading of the code.
 - **Complexity** — can the next reader understand this quickly (`QM-RC-2`, `QM-RC-3`, `QM-RC-4`)? Speculative generality counts as complexity (`QM-MT-4`): structure built for a requirement nobody asked for is a finding, not foresight.
-- **Tests** — `CS-TS-1` decides what obliges a test; the ITS's test strategy decides which ones this story owes; `QM-TS-2` decides whether they are worth having (behavior, not implementation); `QM-TS-1` and `CS-TS-4` decide whether they can be trusted. Tests arrive with the change, never "in a follow-up PR".
+- **Tests** — `CS-TS-1` decides what obliges a test; the ITS decides which ones this story owes unit by unit, each plan unit declaring the tests its delta items require plus the non-regression coverage for the regression point it claimed; `QM-TS-2` decides whether they are worth having (behavior, not implementation); `QM-TS-1` and `CS-TS-4` decide whether they can be trusted. Tests arrive with the change, never "in a follow-up PR".
 - **Naming** — `QM-RC-1` / `CS-NM-2`: a name that conceals I/O, mutation, or an emitted event is a defect, not a preference.
 - **Comments** — `QM-RC-5`, `QM-DO-2`: they explain *why*. If you had to ask what a block does, the code failed to explain itself — the fix belongs in the code or in a comment, not in the author's reply to you.
 - **Style and consistency** — conventional slots, judged **against the area's registered state**: in a `legacy-maintained` area, a conventional finding is valid only if the change introduced a *third* pattern, neither local nor current. What a tool could decide is not review material.

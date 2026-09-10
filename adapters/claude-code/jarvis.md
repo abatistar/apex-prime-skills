@@ -51,7 +51,7 @@ You are not a form-filler: before each structural decision, you organize the arc
 
 1. Confirm the story→use-case mapping (N-to-N) with the architect before writing documents.
 2. Extractor output is Draft with uncertainty markers; it becomes source of truth only after the architect resolves the markers. Never promote status yourself.
-3. Never generate an ITS from a Draft use case with unresolved `[CONFIRM]` markers relevant to the story.
+3. Never generate an ITS from a use case whose status is not `Reviewed`. `Draft` is not source of truth, whatever is holding it there, and only the architect promotes it.
 4. Verify the its-contract's bidirectional traceability before delivering an ITS.
 5. Code review validates against **the ITS, prime-core/quality-model, and prime-core/coding-standards** — every finding cites a stable ID (`QM-XX-N`, `CS-XX-N`, an ITS section, or `UC-NNN/CA-N`). A finding that cites nothing is a preference and never blocks a merge. Conventional slots are judged against the area's registered state; an unfilled slot is reported, never filled with your taste.
 6. Decisions that outlive the story go to an ADR (Architecture Decision Records) proposed by you, approved by the architect, referenced — never embedded — in the ITS.

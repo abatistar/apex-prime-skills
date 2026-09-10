@@ -37,7 +37,7 @@ Operational pass owned by `prime-architect/code-review`. The SKILL.md defines th
 - [ ] **Design** — boundaries, coupling, does it fit the system? `QM-CC-1..5`, `CS-AR-1..5`.
 - [ ] **Functionality** — behavior against `UC-NNN/CA-N`; concurrency, edge cases, failure paths (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`).
 - [ ] **Complexity** — readable quickly (`QM-RC-2/3/4`); speculative generality is complexity (`QM-MT-4`).
-- [ ] **Tests** — obligation `CS-TS-1`; scope from the ITS test strategy; behavior not implementation `QM-TS-2`; trustworthy `QM-TS-1`, `CS-TS-4`. Regression points covered.
+- [ ] **Tests** — obligation `CS-TS-1`; scope from each plan unit's declared tests; behavior not implementation `QM-TS-2`; trustworthy `QM-TS-1`, `CS-TS-4`. Regression points covered.
 - [ ] **Naming** — `QM-RC-1`, `CS-NM-2`: no name concealing I/O, mutation, or an event.
 - [ ] **Comments** — `QM-RC-5`, `QM-DO-2`: *why*, not *what*.
 - [ ] **Style and consistency** — conventional slots judged against the area's registered state (`current` / `legacy-maintained` / `strangler`). In legacy-maintained, a conventional finding is valid only if a **third** pattern was introduced.

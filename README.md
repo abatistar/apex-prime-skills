@@ -57,7 +57,9 @@ apex-prime-skills/
 │   │   └── checklists/
 │   │       └── feasibility-checklist.md
 │   ├── its-generator/
-│   │   └── SKILL.md              # how to write the ITS using the core contract
+│   │   ├── SKILL.md              # how to write the ITS using the core contract
+│   │   └── checklists/
+│   │       └── its-checklist.md
 │   └── code-review/
 │       ├── SKILL.md              # review script: validates implementation against ITS + core standards
 │       └── checklists/

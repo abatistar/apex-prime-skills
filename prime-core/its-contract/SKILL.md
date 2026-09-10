@@ -76,7 +76,7 @@ References are resolvable in the repository, but the document is also read where
 - The fixed process-term table (ITS, UC, RN, CA, ADR, delta) ships with the template as boilerplate — the cold reader learns the vocabulary without leaving the page.
 
 **Explicit negative scope.**
-The consolidated plan states what must **not** change: one line per untouchable area, with the reason and the regression coverage that protects it ("Do not modify `PaymentService` — refund flow unchanged, covered by non-regression tests"). For the implementer this is a hard boundary ("all of it and nothing beyond it" requires named borders); for the reviewer, a checklist; for compliance, evidence of risk containment.
+The implementation plan states what must **not** change: one line per untouchable area, with the reason and the regression coverage that protects it ("Do not modify `PaymentService` — refund flow unchanged, covered by non-regression tests"). For the implementer this is a hard boundary ("all of it and nothing beyond it" requires named borders); for the reviewer, a checklist; for compliance, evidence of risk containment.
 
 **Publication-ready formatting.**
 The ITS must survive copy-paste into the company's documentation platform without rework — and these constraints improve readability everywhere:
@@ -118,7 +118,7 @@ ADR location and naming come from `docs/prime-config.md` (default: `docs/adr/ADR
 
 ## Consumption rules (for the implementer)
 
-- The ITS is the scope. Implement all of it and nothing beyond it — including respecting the out-of-scope boundaries stated in the consolidated plan.
+- The ITS is the scope. Implement all of it and nothing beyond it — including respecting the out-of-scope boundaries stated in the implementation plan.
 - Referenced ADRs are binding context: read them before implementing; never contradict an Accepted ADR. A conflict between the ITS and an ADR is ambiguity — return it as a question.
 - Ambiguity, contradiction, or missing detail → do not fill the gap by assumption; return questions to the architect referencing the ITS section.
 - Deviations discovered mid-implementation (the plan doesn't survive contact with the code) → report back; the architect revises the ITS. The document stays the source of truth of what was agreed. Copies published elsewhere are views; validating divergence between them and the repository is the architect's responsibility, not the implementer's.
