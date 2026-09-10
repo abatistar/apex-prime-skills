@@ -17,6 +17,7 @@
 ## 2. The map
 
 - [ ] `impact-mapping` run on the restated demand.
+- [ ] Map returned **Insufficient input** → this run stops and returns the map's questions. No verdict is issued — *Undecidable* is a ruling, and nothing was ruled on.
 - [ ] Map cited by **ID and date**. A map without a date is not a citable reference.
 - [ ] Three degrees read: direct, coupled, contract surface.
 - [ ] Area states read from the map's register overlay.

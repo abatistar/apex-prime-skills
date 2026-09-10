@@ -39,7 +39,7 @@ Record explicitly what the demand does **not** claim. A boundary asserted at thi
 
 ## Step 2 — Run the map
 
-Run `impact-mapping` on the restated demand. What this skill consumes from it:
+Run `impact-mapping` on the demand **as restated in Step 1** — that restatement is the map's subject line, and the map's own Step 1 is not re-run. What this skill consumes from it:
 
 - the **three degrees** of reach — direct, coupled, contract surface;
 - the **area states** overlay (`current`, `legacy-maintained`, `strangler`);
@@ -47,7 +47,7 @@ Run `impact-mapping` on the restated demand. What this skill consumes from it:
 - the **procedence marking** on every line (anchored, `[INFERRED]`, `[UNVERIFIED]`, gap), whose vocabulary is defined by that skill and reused here unchanged;
 - and, decisively, the **stated edge** — where the map deliberately stopped.
 
-The edge is what makes *Undecidable* an honest verdict instead of an evasion. Ruling over a map that silently truncated its reach produces a confident verdict on a partial picture, which is the worst output this skill can produce.
+The edge is what makes *Undecidable* an honest verdict instead of an evasion. Ruling over a map that silently truncated its reach produces a confident verdict on a partial picture, which is the worst output this skill can produce. If the map itself stops at **Insufficient input** — its Step 1 could not restate the change without inventing intent — this run stops too, and returns the map's questions. That is not a verdict and must not be reported as one: there is no *Undecidable* here, because nothing was judged. A demand nobody could describe as a change to the system has not reached this skill yet.
 
 Two findings from the map are read before any lens runs, because they change what a verdict can mean:
 
