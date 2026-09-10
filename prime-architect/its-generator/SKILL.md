@@ -1,6 +1,6 @@
 ---
 name: its-generator
-description: Generate an ITS (Instrucao de Trabalho de Software) - the implementation plan mapping a user story and its use case documents to concrete code changes, written against the prime-core/its-contract. Architect-layer skill. Use whenever the architect asks for an implementation plan, impact analysis, "what needs to change in the code", "generate the ITS for story S-NNN", or provides a story plus use case documents. Requires the use case repository as input. Do NOT use for writing or updating use case documents (prime-docs skills) or for reviewing an implementation (code-review).
+description: Generate an ITS (Instrucao de Trabalho de Software) - the implementation plan mapping a user story and its use case documents to concrete code changes, written against the prime-core/its-contract. Architect-layer skill. Use whenever the architect asks for an implementation plan, impact analysis, "what needs to change in the code", "generate the ITS for story S-NNN", or provides a story plus use case documents. Requires the use case repository as input. Do NOT use for writing or updating use case documents (use-case-creator, use-case-extractor) or for reviewing an implementation (code-review).
 ---
 
 # ITS Generator (prime-architect)
@@ -19,7 +19,7 @@ Then load the core contracts this skill writes against: **prime-core/its-contrac
 
 Required inputs: the story (ID + description) and the use case documents it created or revised. If the architect did not list the affected use cases, find them by searching Revision History entries for the story ID in the use case repository.
 
-Validate each document against the prime-core/use-case format. If a document is missing mandatory sections, or is in Draft status with unresolved `[CONFIRM: ...]` markers relevant to the story, report the gaps and stop — a plan built on unvalidated behavior is worse than no plan. If the story modifies behavior whose use case does not exist at all, recommend running prime-docs/use-case-extractor on that area first.
+Validate each document against the prime-core/use-case format. If a document is missing mandatory sections, or is in Draft status with unresolved `[CONFIRM: ...]` markers relevant to the story, report the gaps and stop — a plan built on unvalidated behavior is worse than no plan. If the story modifies behavior whose use case does not exist at all, recommend running use-case-extractor on that area first.
 
 Also scan the ADR repository for Accepted ADRs touching the affected area — they constrain the plan the same way the config's conventions do.
 

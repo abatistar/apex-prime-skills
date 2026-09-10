@@ -1,6 +1,6 @@
 ---
 name: feasibility-analysis
-description: Judge a demand against the system that would have to absorb it, before any specification exists - producing classified findings and exactly one verdict. Architect-layer skill, invoked on the architect's demand, never as a mandatory gate. Always runs impact-mapping first and judges over that map instead of re-deriving reach. Use when the architect brings a story, PRD, epic, or informal proposal and asks whether it can be done, what it would break, or what stands in the way - "is this doable", "can we absorb this", "what blocks this story", "should we take this into refinement", "the product owner wants X, what breaks". Do NOT use to map reach without judging it (impact-mapping alone answers what a change touches), to estimate effort or duration (this skill never estimates - cost is evidence, not a criterion), to write use cases (prime-docs skills), to plan an approved change (its-generator), to judge an implementation already written (code-review), or to write application code (dev layer - this skill never writes code).
+description: Judge a demand against the system that would have to absorb it, before any specification exists - producing classified findings and exactly one verdict. Architect-layer skill, invoked on the architect's demand, never as a mandatory gate. Always runs impact-mapping first and judges over that map instead of re-deriving reach. Use when the architect brings a story, PRD, epic, or informal proposal and asks whether it can be done, what it would break, or what stands in the way - "is this doable", "can we absorb this", "what blocks this story", "should we take this into refinement", "the product owner wants X, what breaks". Do NOT use to map reach without judging it (impact-mapping alone answers what a change touches), to estimate effort or duration (this skill never estimates - cost is evidence, not a criterion), to write use cases (use-case-creator, use-case-extractor), to plan an approved change (its-generator), to judge an implementation already written (code-review), or to write application code (dev layer - this skill never writes code).
 ---
 
 # Feasibility Analysis (prime-architect)
@@ -51,7 +51,7 @@ The edge is what makes *Undecidable* an honest verdict instead of an evasion. Ru
 
 Two findings from the map are read before any lens runs, because they change what a verdict can mean:
 
-- **Undocumented affected area** → a `Condition:` with an owner and a route to `prime-docs/use-case-extractor`, not an unknown to absorb. Feasibility judged against code nobody has described is judged in the dark, but an undescribed area is a known gap with a known route — that is what a condition is for. Green-field addition touching no existing behavior needs no baseline; note it and proceed.
+- **Undocumented affected area** → a `Condition:` with an owner and a route to `use-case-extractor`, not an unknown to absorb. Feasibility judged against code nobody has described is judged in the dark, but an undescribed area is a known gap with a known route — that is what a condition is for. Green-field addition touching no existing behavior needs no baseline; note it and proceed.
 - **The one exception:** when the undocumented area is where a `Blocker:` would rest — the map places the demand's hardest constraint inside behavior nobody has described — the run is Undecidable with current evidence, naming the extractor run as the one that would decide it. Absence of a blocker carries the same evidentiary burden as a blocker: Viable with conditions asserts that nothing blocks, and asserting that over unread code is the failure this skill exists to prevent. This exception is stated and justified in the report, never assumed silently.
 - **Divergence between code and use case** → where the two already disagree, **neither is a safe baseline**, and a verdict resting on the wrong one dissolves on contact. This alone can carry the run to *Undecidable*.
 
@@ -134,7 +134,7 @@ Never deliver a verdict on a demand you did not understand. "Probably fine" is n
 ## Step 7 — Follow-ups to register before closing
 
 - Extractor run required to establish a baseline.
-- Divergence routed to prime-docs (`QM-DO-1`) — never patched from inside this skill.
+- Divergence routed to the use case skills (`QM-DO-1`) — never patched from inside this skill.
 - **ADR decision to raise** — a recorded decision the demand challenges, including an Accepted ADR it would supersede. Raised as a `Condition:` with the architect as owner; the ADR itself is drafted by whoever takes the decision, never here.
 - Unfilled slot to report (`coding-standards`) — never improvised.
 - Config gap: a fact about the project the analysis needed and `docs/prime-config.md` does not carry.

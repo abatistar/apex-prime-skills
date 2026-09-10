@@ -1,9 +1,9 @@
 ---
 name: use-case-creator
-description: Create new use case documents or update existing ones from user stories, PRDs, or informal change descriptions, writing against the prime-core/use-case format. Docs-layer skill. Use whenever the user wants to write, refine, derive, or maintain use cases - e.g., "write the use case for this story", "this story changes the checkout flow, update the docs", "derive use cases from this PRD", "add an exception to UC-042". The use case repository is the living source of truth for system behavior; this skill keeps it alive. Do NOT use for documenting already-implemented behavior with no prior docs (use-case-extractor) or for generating an ITS (its-generator).
+description: Create new use case documents or update existing ones from user stories, PRDs, or informal change descriptions, writing against the prime-core/use-case format. Architect-layer skill. Use whenever the user wants to write, refine, derive, or maintain use cases - e.g., "write the use case for this story", "this story changes the checkout flow, update the docs", "derive use cases from this PRD", "add an exception to UC-042". The use case repository is the living source of truth for system behavior; this skill keeps it alive. Do NOT use for documenting already-implemented behavior with no prior docs (use-case-extractor) or for generating an ITS (its-generator).
 ---
 
-# Use Case Creator (prime-docs)
+# Use Case Creator (prime-architect)
 
 Create and maintain the project's use case repository — the living documentation of system behavior. Stories are units of change; use cases are the state those changes apply to. Every story that alters behavior must leave the repository updated, with an explicit delta recorded so the its-generator can plan the implementation.
 

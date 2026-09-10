@@ -1,6 +1,6 @@
 ---
 name: use-case
-description: The canonical use case document format owned by prime-core - template, quality rules, revision-history (delta) rules, and uncertainty markers. Consult whenever creating, updating, validating, or consuming a use case document. Writers (prime-docs/use-case-creator, prime-docs/use-case-extractor) write against this format; readers (prime-architect/its-generator, prime-architect/code-review) validate against it. Never duplicate its content elsewhere - reference it.
+description: The canonical use case document format owned by prime-core - template, quality rules, revision-history (delta) rules, and uncertainty markers. Consult whenever creating, updating, validating, or consuming a use case document. Writers (prime-architect/use-case-creator, prime-architect/use-case-extractor) write against this format; readers (prime-architect/its-generator, prime-architect/code-review) validate against it. Never duplicate its content elsewhere - reference it.
 ---
 
 # Use Case Format (prime-core)

@@ -1,9 +1,9 @@
 ---
 name: use-case-extractor
-description: Reverse-engineer use case documents from an existing codebase, writing against the prime-core/use-case format. Docs-layer skill. Use whenever the user wants to document behavior that is already implemented but has no standardized use case documentation - mapping a module, a user journey, a set of endpoints, or a single flow. Also use when the its-generator reports a missing use case for a change story, or when the user says things like "document how X currently works", "map the use cases of module Y". Do NOT use for writing use cases for new/planned behavior (use-case-creator) or for generating an ITS (its-generator).
+description: Reverse-engineer use case documents from an existing codebase, writing against the prime-core/use-case format. Architect-layer skill. Use whenever the user wants to document behavior that is already implemented but has no standardized use case documentation - mapping a module, a user journey, a set of endpoints, or a single flow. Also use when the its-generator reports a missing use case for a change story, or when the user says things like "document how X currently works", "map the use cases of module Y". Do NOT use for writing use cases for new/planned behavior (use-case-creator) or for generating an ITS (its-generator).
 ---
 
-# Use Case Extractor (prime-docs)
+# Use Case Extractor (prime-architect)
 
 Produce use case documents that describe behavior **already implemented** in the codebase, by reading the code — not by inventing intent. The output populates the project's use case repository, which the use-case-creator maintains and the its-generator consumes.
 

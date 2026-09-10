@@ -66,7 +66,7 @@ For each finding: **where · what · why (ID) · what is expected**.
 - [ ] **Approve** — no blocking finding.
 - [ ] **Approve with comments** — nothing blocking; Considers left to the author, no second round required.
 - [ ] **Request changes** — at least one `Blocking:`, listed separately from everything else.
-- [ ] **Return to the architect** — the plan is wrong, incomplete, or overtaken; or a decision needs an ADR. Routes back to its-generator or prime-docs.
+- [ ] **Return to the architect** — the plan is wrong, incomplete, or overtaken; or a decision needs an ADR. Routes back to its-generator or the use case skills.
 
 *Never approve a change you did not understand.*
 

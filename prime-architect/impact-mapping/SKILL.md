@@ -1,6 +1,6 @@
 ---
 name: impact-mapping
-description: Map the reach of an intended change across the codebase and the documented layer, producing anchored evidence and never a verdict. Architect-layer skill - it answers what a change touches, what depends on it, which registered areas it enters, which use cases cover it, and which Accepted ADRs bear on it. Use whenever the architect asks what a change would reach or affect - "what does changing the pricing rule touch", "what depends on this module", "map the blast radius of S-131", "what breaks if we change this payload", "where does this behavior live" - and always as the first pass of feasibility-analysis, which never judges without this map. Do NOT use to decide whether a change should be made or is worth it (feasibility-analysis owns the verdict), to write or revise an ITS (its-generator), to document behavior as use cases (prime-docs skills), to review an implementation already written (code-review), or to write or fix application code (dev layer - this skill never writes code).
+description: Map the reach of an intended change across the codebase and the documented layer, producing anchored evidence and never a verdict. Architect-layer skill - it answers what a change touches, what depends on it, which registered areas it enters, which use cases cover it, and which Accepted ADRs bear on it. Use whenever the architect asks what a change would reach or affect - "what does changing the pricing rule touch", "what depends on this module", "map the blast radius of S-131", "what breaks if we change this payload", "where does this behavior live" - and always as the first pass of feasibility-analysis, which never judges without this map. Do NOT use to decide whether a change should be made or is worth it (feasibility-analysis owns the verdict), to write or revise an ITS (its-generator), to document behavior as use cases (use-case-creator, use-case-extractor), to review an implementation already written (code-review), or to write or fix application code (dev layer - this skill never writes code).
 ---
 
 # Impact Mapping (prime-architect)
@@ -66,7 +66,7 @@ The overlay matters because identical reach costs differently by state: the same
 Cross the reach against what the repository claims to be true.
 
 - **Use case coverage.** Which `UC-NNN` cover the touched behavior, cited by `CA-N` where the coverage is specific. Touched behavior with no use case is a **documentation gap**: record it, name the area, and note that `use-case-extractor` is the route. It does not block this map — the map states its own reduced confidence and lists what a use case would settle.
-- **Divergence.** Where the code's behavior differs from the documented use case, that is a finding in its own right, and often the most valuable line in the report: the repository has stopped being the source of truth for that area (`QM-DO-1`). Record it and route it to prime-docs. **Never patch a use case from inside this skill.**
+- **Divergence.** Where the code's behavior differs from the documented use case, that is a finding in its own right, and often the most valuable line in the report: the repository has stopped being the source of truth for that area (`QM-DO-1`). Record it and route it to the use case skills. **Never patch a use case from inside this skill.**
 - **ADR incidence.** Which Accepted ADRs bear on the touched areas. Where the intended change appears to contradict one, state the contradiction and cite the ADR. Do not resolve it: a conflict with an Accepted ADR is a decision, and decisions belong to the architect and the ADR lifecycle, never to a map.
 
 ## Step 6 — Bound the map and state the edge
@@ -123,6 +123,6 @@ it costs what deriving it fresh would. The `its-generator` inspects the code its
 The architect may of course have read this map; what does not happen is a plan inheriting reach
 it never verified.
 
-**Divergences found here route to prime-docs, never to an ITS.** A code × use case divergence is
+**Divergences found here route to the use case skills, never to an ITS.** A code × use case divergence is
 resolved by `use-case-creator` or `use-case-extractor` before specification, not carried forward
 into an implementation plan.

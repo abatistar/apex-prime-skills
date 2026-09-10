@@ -83,7 +83,7 @@ Resolve in order, first match wins:
 ## 7. Follow-ups to register before closing
 
 - [ ] Extractor run required for a baseline.
-- [ ] Divergence routed to prime-docs (`QM-DO-1`) — never patched here.
+- [ ] Divergence routed to the use case skills (`QM-DO-1`) — never patched here.
 - [ ] ADR decision to raise (`Condition:`, owner architect) — the ADR is drafted by whoever takes the decision, never in this report.
 - [ ] Unfilled slot to report (`coding-standards`) — never improvised.
 - [ ] Config gap: a project fact the analysis needed and the config does not carry.
@@ -122,5 +122,5 @@ Resolve in order, first match wins:
 - [extractor na área X | spike em Y | medição de Z]
 
 ## Follow-ups
-- [corrida do extractor / divergência para prime-docs / decisão de ADR a levantar / lacuna de slot / lacuna de config / dívida com responsável]
+- [corrida do extractor / divergência para as skills de caso de uso / decisão de ADR a levantar / lacuna de slot / lacuna de config / dívida com responsável]
 ````

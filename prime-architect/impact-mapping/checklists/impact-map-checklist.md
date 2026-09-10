@@ -35,7 +35,7 @@
 
 - [ ] Use case coverage listed (`UC-NNN`, `CA-N` where specific).
 - [ ] Touched behavior with no use case → documentation gap, area named, `use-case-extractor` noted as the route.
-- [ ] Code × use case divergence recorded as a finding and routed to prime-docs (`QM-DO-1`). No use case patched here.
+- [ ] Code × use case divergence recorded as a finding and routed to the use case skills (`QM-DO-1`). No use case patched here.
 - [ ] Accepted ADRs bearing on the touched areas listed; apparent contradiction stated and cited, **not resolved**.
 
 ## Procedence
@@ -94,7 +94,7 @@
 ## Camada documentada
 - **Cobertura:** UC-NNN (CA-N, CA-N) cobre [o quê]
 - **Lacuna de documentação:** [área] — sem caso de uso para [comportamento]. Rota: `use-case-extractor`.
-- **Divergência:** UC-NNN/CA-N afirma [X]; `caminho/Arquivo.ext:120` faz [Y] (`QM-DO-1`). Rota: prime-docs.
+- **Divergência:** UC-NNN/CA-N afirma [X]; `caminho/Arquivo.ext:120` faz [Y] (`QM-DO-1`). Rota: `use-case-creator`.
 - **Incidência de ADR:** ADR-NNN incide sobre [área]. [Contradição aparente, declarada e citada — não resolvida.]
 
 ## Lacunas e questões em aberto

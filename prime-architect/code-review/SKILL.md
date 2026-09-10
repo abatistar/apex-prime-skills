@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review an implementation against its ITS and the prime-core standards, producing classified findings and one explicit verdict. Architect-layer skill - it owns the enforcement role that prime-core/quality-model and prime-core/coding-standards deliberately leave open. Use whenever the architect brings a pull request, a diff, a branch, or an implementation back from the Developer - "review the PR for S-131", "check this implementation against the ITS", "is this ready to merge", "the dev finished the story". Do NOT use for writing or revising an ITS (its-generator), for writing or updating use cases (prime-docs skills), or for implementing or fixing code (dev layer - the reviewer never writes application code).
+description: Review an implementation against its ITS and the prime-core standards, producing classified findings and one explicit verdict. Architect-layer skill - it owns the enforcement role that prime-core/quality-model and prime-core/coding-standards deliberately leave open. Use whenever the architect brings a pull request, a diff, a branch, or an implementation back from the Developer - "review the PR for S-131", "check this implementation against the ITS", "is this ready to merge", "the dev finished the story". Do NOT use for writing or revising an ITS (its-generator), for writing or updating use cases (use-case-creator, use-case-extractor), or for implementing or fixing code (dev layer - the reviewer never writes application code).
 ---
 
 # Code Review (prime-architect)
@@ -27,7 +27,7 @@ Four principles settle every disagreement:
 - **It never writes application code.** The architect's deliverables are findings and, where the plan itself was wrong, a revised ITS. Jarvis's role boundary holds inside the review.
 - **It never restates a criterion.** Every finding points at an ID owned elsewhere. A rule that exists only in a review comment is a rule the next author cannot read.
 - **It does not redo the pipeline's job.** The checks the config declares as required are a precondition of the human review, not its subject. Attention spent re-litigating what a formatter, linter, or scanner decides is waste (`QM-CN-3`); the *absence* of that automation from the toolchain is the finding worth raising.
-- **It does not promote use case status, rewrite documentation, or edit the config as a side effect.** Those routes belong to prime-docs, to the human, and to prime-config respectively.
+- **It does not promote use case status, rewrite documentation, or edit the config as a side effect.** Those routes belong to the use case skills, to the human, and to prime-config respectively.
 
 ## Step 0 — Load configuration, contracts, and the agreed plan
 
@@ -72,7 +72,7 @@ Design first, always: a naming comment on code that must be restructured is wast
 - **Naming** — `QM-RC-1` / `CS-NM-2`: a name that conceals I/O, mutation, or an emitted event is a defect, not a preference.
 - **Comments** — `QM-RC-5`, `QM-DO-2`: they explain *why*. If you had to ask what a block does, the code failed to explain itself — the fix belongs in the code or in a comment, not in the author's reply to you.
 - **Style and consistency** — conventional slots, judged **against the area's registered state**: in a `legacy-maintained` area, a conventional finding is valid only if the change introduced a *third* pattern, neither local nor current. What a tool could decide is not review material.
-- **Documentation** — `QM-DO-1`: a behavior change that leaves a co-located document lying is a defect. If the delivered behavior differs from the use case, the repository stopped being the source of truth: route it to prime-docs; never patch a use case from inside a review.
+- **Documentation** — `QM-DO-1`: a behavior change that leaves a co-located document lying is a defect. If the delivered behavior differs from the use case, the repository stopped being the source of truth: route it to the use case skills; never patch a use case from inside a review.
 
 Read every line a human is expected to maintain. The author may be the Friday agent rather than a person: the standard is identical, and so is the reading — what changes is only the channel (findings return as a new implementation round) and the audience (the report is still written to be read by the human who owns the pull request).
 
@@ -100,7 +100,7 @@ Exactly one, stated explicitly, with its reason:
 - **Approve** — no blocking finding. Nits and Considers are the author's call; do not hold a merge for them.
 - **Approve with comments** — nothing blocking, but Considers you expect handled; you trust the author to close them without another round. Use this liberally: an extra round costs the flow more than the residual risk.
 - **Request changes** — at least one `Blocking:`. List the blocking items numbered and separated from everything else, so the author knows precisely what gates the merge.
-- **Return to the architect** — the review found that the *plan* is wrong, incomplete, or overtaken by the code, or that a decision needs an ADR. This is not a finding against the author: it leaves the review and re-enters at its-generator (revise the ITS) or prime-docs (the use case no longer describes the system). State what must change, in which document, before the implementation can be judged at all.
+- **Return to the architect** — the review found that the *plan* is wrong, incomplete, or overtaken by the code, or that a decision needs an ADR. This is not a finding against the author: it leaves the review and re-enters at its-generator (revise the ITS) or the use case skills (the use case no longer describes the system). State what must change, in which document, before the implementation can be judged at all.
 
 Never approve a change you did not understand. "It probably works" is not a verdict.
 

@@ -43,12 +43,19 @@ apex-prime-skills/
 │       ├── SKILL.md              # the ITS format: mandatory sections, level of detail
 │       └── templates/
 │           └── its-template.md   # the canonical template the architect writes and the dev consumes
-├── prime-docs/                   # documentation layer
+├── prime-architect/              # Solution Architect layer ("Jarvis Skills")
 │   ├── use-case-creator/
 │   │   └── SKILL.md              # how to create and update use cases
-│   └── use-case-extractor/
-│       └── SKILL.md              # reverse engineering to create use cases
-├── prime-architect/              # Solution Architect layer ("Jarvis Skills")
+│   ├── use-case-extractor/
+│   │   └── SKILL.md              # reverse engineering to create use cases
+│   ├── impact-mapping/
+│   │   ├── SKILL.md              # what a change reaches: anchored evidence, never a verdict
+│   │   └── checklists/
+│   │       └── impact-map-checklist.md
+│   ├── feasibility-analysis/
+│   │   ├── SKILL.md              # judges a demand against the system, before any specification
+│   │   └── checklists/
+│   │       └── feasibility-checklist.md
 │   ├── its-generator/
 │   │   └── SKILL.md              # how to write the ITS using the core contract
 │   └── code-review/
@@ -69,8 +76,7 @@ apex-prime-skills/
 | Layer | Status |
 |---|---|
 | `prime-core` | Authored — quality-model v1.0, coding-standards v1.0, prime-config, use-case, its-contract |
-| `prime-docs` | Authored — use-case-creator, use-case-extractor |
-| `prime-architect` | Authored — its-generator, code-review |
+| `prime-architect` | Authored — use-case-creator, use-case-extractor, impact-mapping, feasibility-analysis, its-generator, code-review |
 | `prime-dev` | **Stubs.** The three skills and the Friday adapters are placeholders so the layer structure and cross-references stay valid |
 
 Jarvis is therefore operable end to end (documentation → ITS → review); Friday waits on the dev layer.
@@ -79,10 +85,10 @@ Jarvis is therefore operable end to end (documentation → ITS → review); Frid
 
 | Agent | Layers loaded | Responsibility in the workflow |
 |---|---|---|
-| **Jarvis** (Architect) | `prime-core` + `prime-architect` + `prime-docs` | Understands the demand, documents the use cases, creates the ITS, performs the code review |
+| **Jarvis** (Architect) | `prime-core` + `prime-architect` | Understands the demand, documents the use cases, creates the ITS, performs the code review |
 | **Friday** (Dev) | `prime-core` + `prime-dev` | Implements from the ITS, tests, and prepares the PR |
 
-> Golden rule: an agent **never** loads the other role's layer. Jarvis never loads `prime-dev`; Friday never loads `prime-architect` or `prime-docs`.
+> Golden rule: an agent **never** loads the other role's layer. Jarvis never loads `prime-dev`; Friday never loads `prime-architect`.
 
 ## The ITS contract
 
