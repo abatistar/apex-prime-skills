@@ -37,13 +37,18 @@ Formatting constraints (from the contract's writing rules): maximum 3 heading le
 [3–5 linhas, linguagem de negócio, sem identificadores de código. O que a story muda, em quais casos de uso, e o efeito observável para o usuário/sistema. Escreva esta seção POR ÚLTIMO, depois de fechado o plano. É a porta de entrada para lideranças técnicas e compliance — o teste do leitor frio se aplica aqui.]
 
 ## O que muda no comportamento
-[Só o que existe neste eixo: a síntese, o delta e o que precisa continuar funcionando. O mapeamento para código vive uma vez, no plano.]
+[Uma subseção por caso de uso afetado. Só o que existe neste eixo: a síntese, o delta e o que
+precisa continuar funcionando. O mapeamento para código vive uma vez, no plano. Com mais de um
+caso de uso afetado, qualifique os identificadores: UC-NNN/D1, UC-NNN/RG-1.]
+
+### UC-NNN — [Nome do caso de uso]
+**Síntese:** [uma frase em linguagem de comportamento — o que o sistema passa a fazer de diferente neste caso de uso. Sem identificador de código.]
 
 **Delta** [copiado da entrada de revisão do caso de uso referente a esta story; para criação, "documento inteiro" desdobrado em itens. Numere: os identificadores são citados pelas unidades do plano e pela verificação de rastreabilidade.]
 - **D1:** [item adicionado/alterado/removido, referenciando passo, extensão ou seção]
 - **D2:** ...
 
-**Pontos de regressão** [apenas em cenário de alteração — comportamento inalterado que compartilha código com as mudanças. Cada ponto é reivindicado por uma unidade do plano.]
+**Pontos de regressão** [apenas em cenário de alteração — comportamento inalterado que compartilha código com as mudanças. Cada ponto é reivindicado por exatamente uma unidade do plano.]
 - **RG-1:** [comportamento que precisa continuar funcionando]
 
 ## Plano de implementação

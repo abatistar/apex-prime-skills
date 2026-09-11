@@ -77,7 +77,7 @@ An empty boundary list is legitimate and is written as such ("nenhuma identifica
 
 Review the decision points noted in Step 3 against the contract's decision boundary: does any choice constrain future implementations, affect more than one use case or module, or need a rationale readable outside this ITS? If yes:
 
-1. Draft the ADR (Context, Decision, Consequences, Status: Proposed) in the configured ADR location, presenting the alternatives considered.
+1. Draft the ADR per the contract's `templates/adr-template.md`, status `Proposed`, in the configured ADR location. The alternatives considered are the point of the record, not padding.
 2. **Present it to the architect for approval before delivering the ITS.** The architect decides; you propose. An ITS is not delivered while an ADR it references is still Proposed. If rejected as "story-scoped", the decision falls back to a discarded-alternative line in the ITS.
 3. Reference the approved ADR's ID in the ITS metadata, and at every plan unit the decision constrains, state the constraint it imposes there — per the contract's reference rule. The implementer must not need to open the ADR to know what to do; they read it to know why, and because Accepted ADRs are binding context.
 

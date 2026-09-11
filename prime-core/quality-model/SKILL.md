@@ -69,4 +69,4 @@ The maturity this encodes is the one the source material closes on: knowing the 
 
 **For `its-implementation` (questioning the implementation it delivers)** — the same discipline on the code side: measure the implementation and its tests against the criteria, meet the floor in new and changed code, and where inherited legacy violates a non-negotiable, name it rather than adopt it silently. Ambiguity about which bar applies is a question to return to the architect, not an assumption.
 
-**For `code-review` (later)** — the reviewer will turn these criteria into precise findings and an approve/reject recommendation for the PR, judging each against the change's context and its named exceptions. That enforcement role is owned there and defined when that skill is authored; this skill only supplies the versioned definition it will cite.
+**For `code-review`** — the reviewer turns these criteria into precise findings and an approve/reject recommendation for the PR, judging each against the change's context and its named exceptions. That enforcement role is owned there; this skill only supplies the versioned definition it cites.

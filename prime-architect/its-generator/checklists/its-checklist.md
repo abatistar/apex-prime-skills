@@ -48,7 +48,7 @@ The operational pass for `prime-architect/its-generator`. **No document template
 ## Decisions (ADR)
 
 - [ ] Each decision point tested against the contract's decision boundary: constrains future implementations · affects more than one use case or module · needs rationale readable outside this ITS.
-- [ ] Candidate drafted as Proposed (Context, Decision, Consequences, Status) in the configured location, with the alternatives considered.
+- [ ] Candidate drafted per `its-contract` (`templates/adr-template.md`), status `Proposed`, in the configured location, with the alternatives considered and the consequences stating costs as well as gains.
 - [ ] Presented to the architect. No ITS delivered while an ADR it references is still Proposed.
 - [ ] Rejected as story-scoped → falls back to a discarded-alternative line.
 - [ ] Approved → referenced by ID in Metadata, and its constraint stated at every unit it binds.

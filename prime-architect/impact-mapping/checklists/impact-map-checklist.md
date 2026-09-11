@@ -60,6 +60,8 @@
 
 ## Template do relatório
 
+**Language.** The block below is the artifact the architect files, and it is written in the document language the core templates use: `pt-BR`. The checklist above is skill-facing and stays in English. Section titles are translated; the stable tokens — `IM-<demand-id>-N`, the procedence markers (`[INFERRED]`, `[UNVERIFIED]`), the area states (`current`, `legacy-maintained`, `strangler`), `UC-NNN`, `CA-N`, `ADR-NNN`, `QM-XX-N`, file paths and identifiers — are never translated.
+
 ````markdown
 # Mapa de impacto — IM-<id-da-demanda>-N
 **Data:** [dia em que o código foi lido] · **Demanda:** [nos termos de quem pediu]

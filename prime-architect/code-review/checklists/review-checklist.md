@@ -80,30 +80,32 @@ For each finding: **where · what · why (ID) · what is expected**.
 
 ---
 
-## Report template
+## Template do relatório
+
+**Language.** The block below is the artifact the reviewer files, and it is written in the document language the core templates use: `pt-BR`. The checklist above is skill-facing and stays in English. Section titles are translated; the stable tokens — the four verdicts, the four severities, `QM-XX-N`, `CS-XX-N`, `UC-NNN`, `ADR-NNN`, `ITS-<story-id>`, file paths and identifiers — are never translated.
 
 ````markdown
-# Review — [PR / branch] · ITS-<story-id>
+# Revisão — [PR / branch] · ITS-<story-id>
 
-**Verdict:** Approve | Approve with comments | Request changes | Return to the architect
-**Reason:** [one line]
+**Veredito:** Approve | Approve with comments | Request changes | Return to the architect
+**Razão:** [uma linha]
 
-## Scope conformance
-- Plan → diff: [complete | gaps listed below]
-- Diff → plan: [clean | scope creep listed below]
-- Out-of-scope boundaries: [respected | crossed at ...]
-- ADRs: [consistent | conflict with ADR-NNN | ADR to propose]
+## Conformidade de escopo
+- Plano → diff: [completo | lacunas listadas abaixo]
+- Diff → plano: [limpo | escopo excedido listado abaixo]
+- Fronteiras de fora de escopo: [respeitadas | cruzadas em ...]
+- ADRs: [consistente | conflito com ADR-NNN | ADR a propor]
 
-## Findings
-| # | Severity | Location | Criterion | Finding and expectation |
+## Achados
+| # | Severidade | Local | Critério | Achado e expectativa |
 |---|---|---|---|---|
-| 1 | Blocking | `path/File.java:42` | QM-EO-1 / CS-ER-6 | [what is wrong and what is expected] |
-| 2 | Consider | `path/Other.java:88` | QM-RC-4 | [argument, author may decline with a reason] |
-| 3 | Nit | `path/Third.java:12` | CS-NM-1 | [trivial, author's option] |
+| 1 | Blocking | `caminho/Arquivo.java:42` | QM-EO-1 / CS-ER-6 | [o que está errado e o que se espera] |
+| 2 | Consider | `caminho/Outro.java:88` | QM-RC-4 | [argumento; o autor pode declinar com uma razão] |
+| 3 | Nit | `caminho/Terceiro.java:12` | CS-NM-1 | [trivial, opção do autor] |
 
 ## Follow-ups
-- [ADR to propose / ITS section to revise / slot gap / toolchain gap / debt registered with owner]
+- [ADR a propor / seção do ITS a revisar / lacuna de slot / lacuna de toolchain / dívida registrada com responsável]
 
-## Done well
-- [what should be repeated]
+## Feito bem
+- [o que deve ser repetido]
 ````

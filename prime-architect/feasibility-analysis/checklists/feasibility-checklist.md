@@ -93,6 +93,8 @@ Resolve in order, first match wins:
 
 ## Template do relatório
 
+**Language.** The block below is the artifact the architect files, and it is written in the document language the core templates use: `pt-BR`. The checklist above is skill-facing and stays in English. Section titles are translated; the stable tokens — `FA-<demand-id>-N`, `IM-<demand-id>-N`, the four verdicts, the four severities, the procedence markers (`[INFERRED]`, `[UNVERIFIED]`), `UC-NNN`, `ADR-NNN`, `QM-XX-N`, `CS-XX-N`, file paths and identifiers — are never translated.
+
 ````markdown
 # Viabilidade — FA-<id-da-demanda>-N
 **Data:** [data] · **Demanda:** [nos termos de quem pediu]

@@ -30,7 +30,7 @@ If the story clearly modifies existing behavior but no corresponding use case ex
    - What is guaranteed after success (Success Guarantees)? What holds even on failure (Minimal Guarantees — e.g., audit trail, no partial state)?
 2. Stakeholders and Interests is **optional**: fill it only when the input (story, PRD, elicitation) reveals stakeholder interests. Do not invent stakeholders to fill the section — omit it instead.
 3. If a PRD is available, use it as context for the Name/goal and to respect declared non-scope — do not design behavior the PRD excludes.
-4. Fill the core template completely, including the UML graphical summary scoped to this use case and its direct relations. Pick the next free UC number. Status: Draft (or Reviewed, if the user validates in the same session).
+4. Fill the core template completely, including the UML graphical summary scoped to this use case and its direct relations. Pick the next free UC number. Status: `Draft`. Promotion to `Reviewed` is the architect's act and happens on their word, never on your judgment that the document looks complete — including when they validate it in the same session.
 5. First Revision History entry references the originating story ID and date.
 
 ## Step 2b — Update mode

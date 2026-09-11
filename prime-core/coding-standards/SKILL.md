@@ -62,15 +62,13 @@ A migration is how a conventional slot's value changes for code that already exi
 
 A slot with no value — neither a stack default nor a config override — is a **reportable gap**, not a free choice. Consuming skills surface it the way `prime-config` surfaces a missing mandatory section: report and offer to fill, do not improvise a value and do not proceed silently on a task that depends on it. The catalog exists so that "nobody ever decided where transactions begin" becomes visible instead of becoming thirty inconsistent decisions.
 
-## Health signals
+## The health signal
 
-Conformance of the whole codebase is the wrong measurement: it never reaches 100%, it is not actionable, and it punishes areas the register already exempted. Three signals, with distinct jobs:
+Conformance of the whole codebase is the wrong measurement: it never reaches 100%, it is not actionable, and it punishes areas the register already exempted. One signal carries the job instead:
 
-- **Per-change conformance (gate).** Measured over the diff, never the file. A change is conformant when it meets every invariant slot and the applicable conventional value for its area. Binary, checked at the pull request — which makes legacy irrelevant to the merge decision.
-- **Churn × non-conformance (priority).** The migration queue is the intersection of change frequency (repository history over the last months) and density of findings, normalized per line so that large old files do not monopolize the ranking. Legacy nobody touches costs nothing; legacy touched weekly is where the standard is actually paying or costing. **If only one signal is tracked, track this one.**
-- **Migration monotonicity (honesty).** For each declared migration, the share of the scope on the new value only rises. Flat across two review cycles means the migration is dead and the honest move is to resume it or cancel it.
+- **Per-change conformance.** Measured over the diff, never the file. A change is conformant when it meets every invariant slot and the applicable conventional value for its area. Binary, checked at the pull request — which makes legacy irrelevant to the merge decision.
 
-None of the three approves or rejects anything by itself; enforcement belongs to `code-review`.
+The signal approves and rejects nothing by itself; enforcement belongs to `code-review`.
 
 ## Versioning
 
