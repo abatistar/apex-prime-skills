@@ -89,9 +89,9 @@ file diverges from the build files, the skills will flag it.
 <!-- If nothing is declared yet, write "none declared yet" — never omit the subsection. -->
 
 ## Document repository
-- Use cases: `docs/use-cases/UC-NNN-title.md`
-- ITS: `docs/its/ITS-<story-id>-title.md`
-- ADRs (architecture decision records): `docs/adr/ADR-NNN-title.md`
+- Use cases: `docs/use-cases/UC-NNN-short-title.md`
+- ITS: `docs/its/ITS-<story-id>-short-title.md`
+- ADRs (architecture decision records): `docs/adr/ADR-NNN-short-title.md`
   <!-- Sequential, never renumbered. Structure and lifecycle defined by prime-core/its-contract (decision boundary section) -->
 - Custom use case template: none (use the skill's bundled default)
   <!-- To override: point to e.g. docs/use-cases/TEMPLATE.md and list extra mandatory sections -->

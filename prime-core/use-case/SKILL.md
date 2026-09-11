@@ -9,7 +9,7 @@ This skill owns the use case document format. It has one address and one owner; 
 
 ## The canonical template
 
-`references/use-case-template.md` defines: file naming (`docs/use-cases/UC-NNN-title.md`), document structure (metadata, stakeholders and interests — optional, conditions with preconditions and minimal/success guarantees, main success scenario, extensions, business rules, acceptance criteria, UML graphical summary, revision history), the status lifecycle (Draft · Reviewed), the quality rules every document must satisfy, and the uncertainty markers (`[INFERRED]`, `[CONFIRM: ...]`) used for reverse-engineered content.
+`references/use-case-template.md` defines: file naming (`docs/use-cases/UC-NNN-short-title.md`), document structure (metadata, stakeholders and interests — optional, conditions with preconditions and minimal/success guarantees, main success scenario, extensions, business rules, acceptance criteria, UML graphical summary, revision history), the status lifecycle (Draft · Reviewed), the quality rules every document must satisfy, and the uncertainty markers (`[INFERRED]`, `[CONFIRM: ...]`) used for reverse-engineered content.
 
 Read the template in full before writing or validating any use case document.
 

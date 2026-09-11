@@ -51,4 +51,4 @@ Present the created/updated documents. For updates, summarize the delta explicit
 
 ## Output
 
-Created and/or revised `UC-NNN-title.md` files in the configured repository, each revision carrying a story-identified delta in its Revision History, plus a reported list of any cross-document conflicts.
+Created and/or revised `UC-NNN-short-title.md` files in the configured repository, each revision carrying a story-identified delta in its Revision History, plus a reported list of any cross-document conflicts.

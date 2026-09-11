@@ -13,8 +13,14 @@ Neither platform can include a shared file, so the body of the architect prompt 
 
 What follows from that:
 
-- **A change to one is a change to both, in the same commit.** The bodies must stay byte-identical. A fix that lands in only one adapter is a silent fork, and the platform that missed it will route differently from the platform that got it.
-- **Only the frontmatter and the invocation line may differ.** Claude Code carries `description` and closes with the `$ARGUMENTS` line; Copilot carries `name` and `description`, opens with an `#` title, and has no arguments line. Everything between is the same text.
-- **Verify before committing.** `diff` the bodies past the frontmatter; the only expected differences are the ones listed above.
+- **A change to one is a change to both, in the same commit.** Every line of prose must stay identical. A fix that lands in only one adapter is a silent fork, and the platform that missed it will route differently from the platform that got it.
+- **Only the frontmatter, the invocation line, and the blank lines around them may differ.** Claude Code carries `description` and closes with the `$ARGUMENTS` line; Copilot carries `name` and `description`, opens with an `#` title, and has no arguments line. Everything between is the same text.
+- **Verify before committing**, ignoring blank lines and the invocation line:
+
+```bash
+diff <(grep -v '^\s*$' adapters/claude-code/jarvis.md | grep -v '^Task from the architect') <(grep -v '^\s*$' adapters/copilot/jarvis.agent.md | grep -v '^# Jarvis')
+```
+
+The expected output is the frontmatter difference and nothing else.
 
 The Friday stubs carry the same rule once the dev layer is authored.

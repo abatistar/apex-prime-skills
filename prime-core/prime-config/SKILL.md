@@ -27,14 +27,13 @@ The config answers one question: **what is true about this project that the skil
   - **Declared migrations** — each in-flight migration with its new slot value, owner, scope, and completion condition.
   - **Quality model posture** — project-specific non-negotiables, tightened calibrated thresholds, and the standing posture toward legacy and debt, per prime-core/quality-model.
   - **Project rules** — layer rules, error handling, test requirements, forbidden areas, feature-flag policy, and anything else that maps onto no slot.
-- **Document repository** — locations and naming for use cases, ITS, and ADRs. Defaults exist in the core contracts, but the config states them explicitly so overrides have one address.
+- **Document repository** — locations and naming for use cases, ITS, and ADRs, plus the two use case overrides that live here as fields rather than as a section of their own: a custom template path, and extra mandatory sections. Defaults exist in the core contracts, but the config states them explicitly so overrides have one address.
 - **Verification commands** — how to build and test. Referenced by test strategies and PR preparation.
 
 **Optional:**
 
 - **Story identifiers** — tracker ID format. Default when absent: `S-NNN`.
-- **Pipeline** — CI/CD stages and required checks. Needed by pr-preparation and code-review when the project has a pipeline; omit for projects without one.
-- **Custom use case template / extra mandatory sections** — overrides consumed per prime-core/use-case. Absent means the core defaults apply.
+- **Pipeline** — CI/CD stages and required checks. Needed by pr-preparation and code-review when the project has a pipeline; omit for projects without one. Where it is omitted, the Verification commands take its place as the precondition of a review.
 
 Projects may add sections beyond these (e.g., compliance requirements). Unknown sections are preserved, never deleted by any skill.
 
@@ -57,6 +56,8 @@ A core contract declares an override point when it names a default the project m
 | Story identifier format | this contract | Story identifiers |
 
 A core contract that wants a new override point adds a row here in the same PR that declares it. Two contracts describing the same override in two places is the drift this skill exists to prevent.
+
+**Only the use case template is overridable, and that is a decision rather than an omission.** A use case describes one project's behavior, and the shape that describes it well may legitimately vary. The ITS and the ADR are handoff and audit artifacts, read by an implementer, a reviewer, and by people outside the project and outside the repository — their structure is fixed by prime-core precisely so a reader arriving cold finds the same document every time. A project that needs a different one is asking for a change to the contract, through the governance PR, not for a config entry.
 
 ## Precedence rules
 

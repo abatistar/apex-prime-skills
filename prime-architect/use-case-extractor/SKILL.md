@@ -58,4 +58,4 @@ Close the run by listing, per document: the uncertainty markers that need resolu
 
 ## Output
 
-One or more `UC-NNN-title.md` files in the configured use case repository, each in Draft status with explicit uncertainty markers, plus the list of markers per document that the architect must resolve before promoting it.
+One or more `UC-NNN-short-title.md` files in the configured use case repository, each in Draft status with explicit uncertainty markers, plus the list of markers per document that the architect must resolve before promoting it.

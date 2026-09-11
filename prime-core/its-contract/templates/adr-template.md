@@ -18,6 +18,7 @@ Only the architect moves an ADR between statuses. The its-generator drafts and p
 
 ## Scope rules
 
+- **Who files it.** A decision a plan must commit to is drafted by the its-generator and approved by the architect. A decision taken where no plan exists yet, at refinement or in architectural counsel, is drafted by the architect directly and needs no story. The `Origem` field records which of the two happened. No other skill drafts one.
 - One decision per record. A document carrying two decisions cannot be superseded by half.
 - **Consequences are not a disclaimer.** State what the decision costs as well as what it buys, including what it forecloses. A record that lists only benefits is advocacy, not a decision record.
 - **The rationale lives here and only here.** An ITS citing this record carries one line of the operational constraint the decision imposes on its plan, never the context or the alternatives. That single ownership is why a reader who needs the why comes to this document.

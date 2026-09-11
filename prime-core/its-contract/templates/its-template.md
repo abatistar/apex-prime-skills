@@ -102,6 +102,7 @@ decidido. Contexto, Consequências e alternativas consideradas permanecem no ADR
 | UC-NNN/RN-N | Regra de negócio | [paráfrase em uma linha da intenção da regra] |
 | UC-NNN/CA-N | Critério de aceite | [paráfrase em uma linha do que ele verifica] |
 | ADR-NNN | Registro de decisão | [título] (Status) — decidiu-se: [paráfrase da Decisão em uma linha] |
+| QM-XX-N · CS-XX-N | Critério de qualidade · slot de convenção | [nome no catálogo] ([NON-NEGOTIABLE] · [CALIBRATED] · INVARIANT · CONVENTIONAL) |
 
 ### Termos do processo
 | Termo | Significado |
