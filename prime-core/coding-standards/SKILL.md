@@ -78,7 +78,7 @@ Same discipline as the quality model, for the same reason — a departure or an 
 
 - The slot catalog carries a version; slot **IDs are stable and never renumbered**. A retired slot leaves its ID retired.
 - Changing a slot's *value* in a defaults file is a normal change. Adding, retiring, or reclassifying a *slot* changes the contract and goes through the governance PR reviewed by the quality model's owner.
-- Evolution is recorded in the repository `CHANGELOG.md`. This skill keeps no parallel history.
+- Evolution is recorded by the governance PR itself, in version control. This skill keeps no parallel history.
 
 ## Consumption rules
 

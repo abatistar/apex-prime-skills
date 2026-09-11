@@ -29,8 +29,8 @@ The operational pass for `prime-architect/its-generator`. **No document template
 
 ## Inspection
 
-- [ ] An existing `impact-mapping` map, if any, read first and used as the index — its procedence vocabulary unchanged, its stated edge respected.
-- [ ] Nothing planned against code that was not opened. `[INFERRED]` and `[UNVERIFIED]` lines are not read code.
+- [ ] The inspection performed here in full. No `impact-mapping` map used as an input, however recent.
+- [ ] Nothing planned against code that was not opened.
 - [ ] Creation: entry points, layers and models located; similar features found for pattern reuse; every main-flow step and exception flow mapped to a component classified as exists as-is / modify / create.
 - [ ] Creation: every component classified **modify** carries the non-regression test owed by the unit that touches it.
 - [ ] Change: only the delta items mapped to code.

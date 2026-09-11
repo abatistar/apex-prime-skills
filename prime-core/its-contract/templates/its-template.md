@@ -2,7 +2,7 @@
 
 Canonical template owned by prime-core/its-contract. The architect writes it; the developer implements from it; code review validates against it. See the its-contract SKILL.md for level-of-detail, writing rules, traceability, and ITS-vs-ADR boundary rules.
 
-**Language.** The block below is the artifact and is written in the project's document language (`docs/prime-config.md` › Document repository; default `pt-BR`); the guidance around it is skill-facing and stays in English. Section titles are translated; the stable tokens declared by prime-core/prime-config — `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `ITS-<story-id>`, `S-NNN`, `QM-XX-N`, `CS-XX-N`, ADR status values (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), use case status values (`Draft`, `Reviewed`), file paths and identifiers — are never translated.
+**Language.** The block below is the artifact and is written in the document language of this format: `pt-BR`; the guidance around it is skill-facing and stays in English. Section titles are translated; the stable tokens cited here — `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `ITS-<story-id>`, `S-NNN`, `QM-XX-N`, `CS-XX-N`, ADR status values (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), use case status values (`Draft`, `Reviewed`), file paths and identifiers — are never translated. Each token stays owned by the contract that declares it; this note only states that none of them is translated.
 
 Formatting constraints (from the contract's writing rules): maximum 3 heading levels, 2 list-nesting levels, simple tables (no multi-line cells, no embedded HTML), simple non-nested code fences, no diagrams. The document must survive copy-paste into the company's documentation platform as-is.
 

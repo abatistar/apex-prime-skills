@@ -1,6 +1,6 @@
 # Quality Criteria — v1.0
 
-Canonical criteria catalog owned by `prime-core/quality-model`. The SKILL.md defines the tiers, the exception discipline, the versioning, the boundaries, and the consumption rules — this file is the criteria. This is a **definition** of the target, not an enforcement gate: new code is built against it, and the role skills reference it to question their deliverables. Cite criteria by ID (`QM-XX-N`). IDs are stable and never renumbered; version changes go through the governance PR and are recorded in the repository `CHANGELOG.md`.
+Canonical criteria catalog owned by `prime-core/quality-model`. The SKILL.md defines the tiers, the exception discipline, the versioning, the boundaries, and the consumption rules — this file is the criteria. This is a **definition** of the target, not an enforcement gate: new code is built against it, and the role skills reference it to question their deliverables. Cite criteria by ID (`QM-XX-N`). IDs are stable and never renumbered; version changes go through the governance PR, which is the record of what changed and why.
 
 **North star.** Quality is one property — *the system is safe, predictable, and cheap to change over time* — seen from eight angles. The dimensions below are lenses on it, not an independent checklist.
 

@@ -44,7 +44,7 @@ Number the delta items as you locate them (`D1`, `D2`, ...), qualified by use ca
 
 ## Step 3 — Inspect the codebase (per use case)
 
-**When a map already exists.** If `impact-mapping` ran for this story, on its own or inside a feasibility analysis, read it first and use it as the index: its entry points, its three degrees of reach, its area overlay, and its ADR incidence are search already performed, and re-deriving them puts two answers to the same question in one repository. Two rules bound the reuse. Its procedence vocabulary holds here unchanged — a line marked `[INFERRED]` or `[UNVERIFIED]` is not code anyone has read, and this skill plans no change to code it has not inspected, so everything the plan touches is opened here regardless of how the map reached it. And the map's stated edge is where its silence stops being evidence: reach it deliberately excluded is unexamined, not absent. A map is never a prerequisite of an ITS — absent one, this step is the inspection.
+**The inspection always happens here.** An `impact-mapping` map is not an input to this step, even when one exists for the demand this story came from. A map is scoped to a demand under refinement and an ITS to exactly one story; refinement can run for months between the two, and by the time the plan exists, verifying the map costs what deriving the reach fresh would. `impact-mapping` states the same boundary from its own side. The architect may of course have read the map; what does not happen is a plan inheriting reach it never verified.
 
 **Creation scenario** — broad, directed exploration:
 - Locate entry points, layers, and models related to the actor/action, guided by the config's structure map.
@@ -61,7 +61,7 @@ Throughout the inspection, note every point where more than one viable implement
 
 ## Step 4 — Repository-wide risk check and the out-of-scope boundary
 
-For every component slated for modification, check whether it also serves other documented use cases (search the repository). Where a map exists, its coupled degree and its contract surface are the sweep's starting set, confirmed against the code here rather than searched for again. This single sweep yields two different outputs, and merging them is the error to avoid.
+For every component slated for modification, check whether it also serves other documented use cases (search the repository). This single sweep yields two different outputs, and merging them is the error to avoid.
 
 **Risk areas.** The use cases that share the component and stay in the plan's path. List them; they raise the test attention the affected units owe. Optionally, if a delta touches a step that also appears in the last 1–2 revision entries of the same document, flag it as a **hot area** (frequently changed → deserves extra test attention). This is a targeted lookup, not a re-reading of history.
 

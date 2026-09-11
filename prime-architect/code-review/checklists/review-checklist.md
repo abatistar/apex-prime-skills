@@ -11,7 +11,7 @@ Operational pass owned by `prime-architect/code-review`. The SKILL.md defines th
 - [ ] The **ITS for the story** is located and read, together with every ADR it references.
 - [ ] The **use cases** it names are read: the delta for this story and the acceptance criteria the delta touches.
 - [ ] `docs/prime-config.md` is loaded (pipeline and required checks, verification commands, area register, slot overrides).
-- [ ] The **required checks are green**. Red pipeline → the review does not start. Red because of a flaky test → that is a `Blocking:` finding on its own (`QM-TS-1`).
+- [ ] The **required checks are green**, per Step 0. No pipeline declared → the config's verification commands ran in their place. Red because of a flaky test → the review starts and that is a `Blocking:` finding on its own (`QM-TS-1`).
 - [ ] The diff is reviewable in one sitting. If not: ask for a split, or declare the plan units you will review and in which order.
 
 *No ITS → report and stop, unless the change is declared out-of-process; then state that scope conformance was not checkable.*

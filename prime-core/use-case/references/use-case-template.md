@@ -2,7 +2,7 @@
 
 This is the canonical template — the single copy, owned by prime-core. If the project's `prime-config.md` declares a custom template path or additional mandatory sections, the project configuration takes precedence.
 
-**Language.** The artifact block below is the document the writer produces, and it is written in the project's document language (`docs/prime-config.md` › Document repository; default `pt-BR`). The guidance around it is skill-facing and stays in English. Section titles are part of the artifact and are therefore translated; the **stable tokens** declared by prime-core/prime-config — identifiers (`UC-NNN`, `RN-N`, `CA-N`, `S-NNN`), status values (`Draft`, `Reviewed`), the uncertainty markers (`[INFERRED]`, `[CONFIRM: ...]`), file naming patterns and paths — are never translated, in any language.
+**Language.** The artifact block below is the document the writer produces, and it is written in the document language of this format: `pt-BR`. The guidance around it is skill-facing and stays in English. Section titles are part of the artifact and are therefore translated; the **stable tokens** this format declares — identifiers (`UC-NNN`, `RN-N`, `CA-N`, `S-NNN`), status values (`Draft`, `Reviewed`), the uncertainty markers (`[INFERRED]`, `[CONFIRM: ...]`), file naming patterns and paths — are never translated, in any language.
 
 ## File naming convention
 
@@ -116,7 +116,7 @@ Enforce all of these before considering a document done:
 6. `Garantias mínimas` state what holds even on failure.
 7. The UML diagram covers this use case and its direct relations only, and is consistent with the `Atores` field and the `Extensões`.
 8. `Histórico de revisões` entries always carry the originating story ID and reference the affected step, extension, and section identifiers — the ITS Generator depends on this to locate the delta. Diagram-only updates are never delta items.
-9. The document is written end to end in the project's document language, with no stable token translated (`RN-N` never becomes `BR-N`, `Draft` never becomes `Rascunho`).
+9. The document is written end to end in the format's document language, with no stable token translated (`RN-N` never becomes `BR-N`, `Draft` never becomes `Rascunho`).
 
 ## Uncertainty markers (used by Use Case Extractor)
 

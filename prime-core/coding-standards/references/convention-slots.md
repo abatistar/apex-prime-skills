@@ -16,7 +16,7 @@ Cite slots by ID. IDs are stable and never renumbered.
 
 The slots that hold regardless of what surrounds the change. Everything else in the catalog defers to the area's registered state.
 
-`CS-AR-1` layer direction · `CS-AR-3` boundary types · `CS-NM-2` honest names · `CS-ER-4` two audiences · `CS-ER-5` cause chain · `CS-ER-6` no silent swallow · `CS-OB-3` logging denylist · `CS-DA-4` applied migrations immutable · `CS-CT-1` no silent breaking change · `CS-TS-1` what obliges a test · `CS-TS-4` deterministic tests · `CS-SC-1` authorization placement · `CS-SC-2` boundary validation · `CS-SC-3` secrets · `CS-SC-4` cryptography · `CS-DP-2` one library per concern · `CS-DP-3` vulnerable dependencies
+`CS-AR-1` layer direction · `CS-AR-2` where business rules live · `CS-AR-3` boundary types · `CS-NM-2` honest names · `CS-ER-4` two audiences · `CS-ER-5` cause chain · `CS-ER-6` no silent swallow · `CS-OB-3` logging denylist · `CS-DA-4` applied migrations immutable · `CS-CT-1` no silent breaking change · `CS-TS-1` what obliges a test · `CS-TS-4` deterministic tests · `CS-SC-1` authorization placement · `CS-SC-2` boundary validation · `CS-SC-3` secrets · `CS-SC-4` cryptography · `CS-DP-2` one library per concern · `CS-DP-3` vulnerable dependencies · `CS-PR-2` prohibited patterns
 
 ---
 

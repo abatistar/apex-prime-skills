@@ -55,7 +55,7 @@ The maturity this encodes is the one the source material closes on: knowing the 
 
 - The catalog carries a **version** (e.g., `v1.0`).
 - Criterion **IDs are stable and never renumbered**, like use case numbers and ADRs. A retired criterion leaves its ID retired, not reused.
-- Changes go through the governance PR **reviewed by the quality model's owner**. The evolution is recorded in the repository `CHANGELOG.md` — the model keeps no parallel changelog, to avoid two histories drifting.
+- Changes go through the governance PR **reviewed by the quality model's owner**. That PR is the record of the evolution, in version control — the model keeps no parallel history, to avoid two histories drifting.
 
 ## Project overrides
 

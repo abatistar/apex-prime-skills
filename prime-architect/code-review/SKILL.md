@@ -31,7 +31,9 @@ Four principles settle every disagreement:
 
 ## Step 0 — Load configuration, contracts, and the agreed plan
 
-Read `docs/prime-config.md` per **prime-core/prime-config** — location, fallback, precedence, divergence, and bootstrap all live in that contract; never re-derive them here. From the config this skill uses: the **pipeline and its required checks**, the **verification commands**, the **area register and slot overrides** (Conventions and constraints), the document locations, and the stack versions the plan assumed.
+Read `docs/prime-config.md` per **prime-core/prime-config** — location, fallback, precedence, divergence, and bootstrap all live in that contract; never re-derive them here. From the config this skill uses: the **pipeline and its required checks** where the project declares one, the **verification commands**, the **area register and slot overrides** (Conventions and constraints), the document locations, and the stack versions the plan assumed.
+
+**The automated checks run before the review, not during it.** A red pipeline is the author's round, not the reviewer's: the human review starts once the config's required checks are green. Pipeline is an optional config section, and a project without one substitutes the config's **verification commands** — run them, or have the author report their result, before starting. The single exception to waiting is red caused by a flaky test: that does not go back for another round, it is a `Blocking:` finding in its own right (`QM-TS-1`), because a suite that is occasionally red is what trains a team to ignore red.
 
 Then load, in this order:
 
@@ -72,6 +74,7 @@ Design first, always: a naming comment on code that must be restructured is wast
 - **Naming** — `QM-RC-1` / `CS-NM-2`: a name that conceals I/O, mutation, or an emitted event is a defect, not a preference.
 - **Comments** — `QM-RC-5`, `QM-DO-2`: they explain *why*. If you had to ask what a block does, the code failed to explain itself — the fix belongs in the code or in a comment, not in the author's reply to you.
 - **Style and consistency** — conventional slots, judged **against the area's registered state**: in a `legacy-maintained` area, a conventional finding is valid only if the change introduced a *third* pattern, neither local nor current. What a tool could decide is not review material.
+- **Security** — every boundary the change opens or touches, against `QM-SR-*` and `CS-SC-*`: input validated and neutralized at the boundary, authorization enforced at the layer that owns it, no credential in source, nothing on the denylist reaching a log (`CS-OB-3`). This dimension carries the highest exception bar in the model, so a gap here is never a calibrated item to weigh against delivery.
 - **Documentation** — `QM-DO-1`: a behavior change that leaves a co-located document lying is a defect. If the delivered behavior differs from the use case, the repository stopped being the source of truth: route it to the use case skills; never patch a use case from inside a review.
 
 Read every line a human is expected to maintain. The author may be the Friday agent rather than a person: the standard is identical, and so is the reading — what changes is only the channel (findings return as a new implementation round) and the audience (the report is still written to be read by the human who owns the pull request).

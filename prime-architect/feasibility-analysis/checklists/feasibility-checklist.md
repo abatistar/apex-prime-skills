@@ -17,7 +17,7 @@
 ## 2. The map
 
 - [ ] `impact-mapping` run on the restated demand.
-- [ ] Map returned **Insufficient input** → this run stops and returns the map's questions. No verdict is issued — *Undecidable* is a ruling, and nothing was ruled on.
+- [ ] A map brought in already stopped at **Insufficient input** → this run stops and returns its questions. No verdict is issued — *Undecidable* is a ruling, and nothing was ruled on. On the path where this skill commissions the map, that stop happens at §1 instead, before the map is run.
 - [ ] Map cited by **ID and date**. A map without a date is not a citable reference.
 - [ ] Three degrees read: direct, coupled, contract surface.
 - [ ] Area states read from the map's register overlay.
@@ -84,7 +84,7 @@ Resolve in order, first match wins:
 
 - [ ] Extractor run required for a baseline.
 - [ ] Divergence routed to the use case skills (`QM-DO-1`) — never patched here.
-- [ ] ADR decision to raise (`Condition:`, owner architect) — the ADR is drafted by whoever takes the decision, never in this report.
+- [ ] ADR decision to raise (`Condition:`, owner architect). The ADR is drafted through the its-contract flow, by the plan the decision binds, never in this report.
 - [ ] Unfilled slot to report (`coding-standards`) — never improvised.
 - [ ] Config gap: a project fact the analysis needed and the config does not carry.
 - [ ] Debt the viable path would create, with a prospective owner (`QM-MT-1`).
