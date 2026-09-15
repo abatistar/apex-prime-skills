@@ -84,16 +84,24 @@ Resolve in order, first match wins:
 
 - [ ] Extractor run required for a baseline.
 - [ ] Divergence routed to the use case skills (`QM-DO-1`) — never patched here.
-- [ ] ADR decision to raise (`Condition:`, owner architect). The ADR is drafted through the its-contract flow, by the plan the decision binds, never in this report.
+- [ ] ADR decision to raise (`Condition:`, owner architect). The ADR is drafted through the its-contract flow, by the architect at this stage or by the its-generator once a plan commits to it, never in this report.
 - [ ] Unfilled slot to report (`coding-standards`) — never improvised.
 - [ ] Config gap: a project fact the analysis needed and the config does not carry.
 - [ ] Debt the viable path would create, with a prospective owner (`QM-MT-1`).
+
+## 8. Boundary check before delivering
+
+- [ ] No application code written or proposed.
+- [ ] No solution designed: a viable path may be named inside the verdict's reasoning, never specified.
+- [ ] No ruling on whether the demand is worth doing — value is the demander's call.
+- [ ] No effort anywhere: not in hours, points, or sprints, and not as a range dressed up as a cost driver.
+- [ ] No use case, ITS, ADR, or configuration file modified.
 
 ---
 
 ## Template do relatório
 
-**Language.** The block below is the artifact the architect files, and it is written in the document language the core templates use: `pt-BR`. The checklist above is skill-facing and stays in English. Section titles are translated; the stable tokens — `FA-<demand-id>-N`, `IM-<demand-id>-N`, the four verdicts, the four severities, the procedence markers (`[INFERRED]`, `[UNVERIFIED]`), `UC-NNN`, `ADR-NNN`, `QM-XX-N`, `CS-XX-N`, file paths and identifiers — are never translated.
+**Language.** The block below is the artifact the architect files, and it is written in the document language the core templates use: `pt-BR`. The checklist above is skill-facing and stays in English. Section titles are translated; the stable tokens — `FA-<demand-id>-N`, `IM-<demand-id>-N`, the four verdicts, the four severities, the provenance markers (`[INFERRED]`, `[UNVERIFIED]`), `UC-NNN`, `ADR-NNN`, `QM-XX-N`, `CS-XX-N`, file paths and identifiers — are never translated.
 
 ````markdown
 # Viabilidade — FA-<id-da-demanda>-N
@@ -114,8 +122,9 @@ Resolve in order, first match wins:
 | # | Severidade | Onde | Critério / evidência | Achado e implicação |
 |---|---|---|---|---|
 | 1 | Blocker | `pom.xml` (ancorado) | teto de stack — config | [o que é impossível e por quê] |
-| 2 | Condition | UC-042 ausente | baseline | [o que precisa ser verdade antes] · responsável: [x] · rota: use-case-extractor |
-| 3 | Cost driver | `billing/legacy` | area register | [o que aumenta o tamanho] |
+| 2 | Condition | UC-042 ausente (ancorado) | baseline | [o que precisa ser verdade antes] · responsável: [x] · rota: use-case-extractor |
+| 3 | Cost driver | `billing/legacy` (ancorado) | area register | [o que aumenta o tamanho] |
+| 4 | FYI | `[INFERRED]` [o que foi deduzido] | [o raciocínio, na própria linha] | [contexto; evidência assim nunca sustenta um Blocker — §6, regra 2] |
 
 ## Se Not viable — o que teria de mudar na demanda
 - [a porta de saída]

@@ -17,19 +17,19 @@ Formatting constraints (from the contract's writing rules): maximum 3 heading le
   [Decisões que sobrevivem à story vivem em ADRs e são apenas referenciadas aqui — ver a fronteira de decisão no contrato. ADRs com status Accepted são vinculantes para o implementador.]
 
 ### Verificação de rastreabilidade
-[Escrita por último, junto com o sumário executivo. Evidência, não prosa: duas listas de identificadores e as linhas de alternativa descartada. Dirigida ao revisor e à auditoria — quem implementa não depende dela para trabalhar, e por isso ela não fica no corpo do documento.]
+[Escrita por último, junto com o sumário executivo. Evidência, não prosa: duas listas de identificadores e as linhas de alternativa descartada. Dirigida ao revisor e à auditoria — quem implementa não depende dela para trabalhar, e por isso ela não fica no corpo do documento. O exemplo abaixo é de uma story que afeta um único caso de uso; com mais de um, qualifique todo identificador aqui também: UC-NNN/D1, UC-NNN/RG-1.]
 
 | Item de delta | Atendido por |
 |---|---|
-| UC-NNN/D1 | unidade 3 |
-| UC-NNN/D2 | já coberto — [justificativa em uma linha] |
+| D1 | unidade 3 |
+| D2 | já coberto — [justificativa em uma linha] |
 
 | Unidade | Justificativa |
 |---|---|
-| 1 | UC-NNN/D1 |
+| 1 | D1 |
 | 4 | consequência técnica — [uma linha] |
 
-- **Pontos de regressão:** UC-NNN/RG-1 → unidade 3; UC-NNN/RG-2 → unidade 5.
+- **Pontos de regressão:** RG-1 → unidade 3; RG-2 → unidade 5.
 - **Alternativa descartada (unidade 3):** [caminho viável descartado e o motivo decisivo, em uma linha]
 - **Fronteira de decisão:** nenhuma decisão arquitetural embutida neste documento.
 
@@ -65,9 +65,9 @@ como procedência.]
   1 - "rejeitar quando o total exceder o limite de crédito vigente (RN-3)"
   2 - ...
 **Atende:** D1 · [ou: "consequência técnica — <uma linha>"]
-**Testes:**
-  - "pedido acima do limite retorna erro de negócio sem persistir (CA-2)"; quando a unidade toca código compartilhado com um ponto de regressão, o teste de não regressão que ela deve
-  - "pedido dentro do limite continua sendo confirmado (RG-1)"
+**Testes:** [um por critério de aceite que os itens de delta desta unidade tocam, mais o teste de não regressão quando a unidade toca código compartilhado com um ponto de regressão]
+  1 - "pedido acima do limite retorna erro de negócio sem persistir (CA-2)"
+  2 - "pedido dentro do limite continua sendo confirmado (RG-1)"
 
 ### 2. [Título da unidade]
 [...]
@@ -99,8 +99,8 @@ decidido. Contexto, Consequências e alternativas consideradas permanecem no ADR
 | ID | Tipo | Nome / glosa em uma linha |
 |---|---|---|
 | UC-NNN | Caso de uso | [campo Nome do documento] |
-| UC-NNN/RN-N | Regra de negócio | [paráfrase em uma linha da intenção da regra] |
-| UC-NNN/CA-N | Critério de aceite | [paráfrase em uma linha do que ele verifica] |
+| RN-N | Regra de negócio | [paráfrase em uma linha da intenção da regra] |
+| CA-N | Critério de aceite | [paráfrase em uma linha do que ele verifica] |
 | ADR-NNN | Registro de decisão | [título] (Status) — decidiu-se: [paráfrase da Decisão em uma linha] |
 | QM-XX-N · CS-XX-N | Critério de qualidade · slot de convenção | [nome no catálogo] ([NON-NEGOTIABLE] · [CALIBRATED] · INVARIANT · CONVENTIONAL) |
 

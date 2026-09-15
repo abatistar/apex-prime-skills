@@ -8,6 +8,8 @@
 
 ## The change, as behavior
 
+*Standalone runs only. Commissioned by `feasibility-analysis`, the restatement and its boundary arrive already made and this whole block is skipped, **Insufficient input** included.*
+
 - [ ] Restated as an observable behavior delta, not as a solution.
 - [ ] Boundary stated: what is explicitly **not** changing.
 - [ ] If the restatement required inventing intent → **Insufficient input**, with the specific questions. Stop here.
@@ -38,7 +40,7 @@
 - [ ] Code × use case divergence recorded as a finding and routed to the use case skills (`QM-DO-1`). No use case patched here.
 - [ ] Accepted ADRs bearing on the touched areas listed; apparent contradiction stated and cited, **not resolved**.
 
-## Procedence
+## Provenance
 
 - [ ] Every line is exactly one of: **anchored** (`path/File.ext:line` or `UC-NNN/CA-N`, read), **`[INFERRED]`** with the reasoning on the line, **`[UNVERIFIED]`** (asserted, not checked), or **gap** with what would resolve it.
 - [ ] No unmarked inference anywhere in the report.
@@ -60,7 +62,7 @@
 
 ## Template do relatório
 
-**Language.** The block below is the artifact the architect files, and it is written in the document language the core templates use: `pt-BR`. The checklist above is skill-facing and stays in English. Section titles are translated; the stable tokens — `IM-<demand-id>-N`, the procedence markers (`[INFERRED]`, `[UNVERIFIED]`), the area states (`current`, `legacy-maintained`, `strangler`), `UC-NNN`, `CA-N`, `ADR-NNN`, `QM-XX-N`, file paths and identifiers — are never translated.
+**Language.** The block below is the artifact the architect files, and it is written in the document language the core templates use: `pt-BR`. The checklist above is skill-facing and stays in English. Section titles are translated; the stable tokens — `IM-<demand-id>-N`, the provenance markers (`[INFERRED]`, `[UNVERIFIED]`), the area states (`current`, `legacy-maintained`, `strangler`), `UC-NNN`, `CA-N`, `ADR-NNN`, `QM-XX-N`, file paths and identifiers — are never translated.
 
 ````markdown
 # Mapa de impacto — IM-<id-da-demanda>-N
@@ -73,15 +75,22 @@
 
 ## Alcance
 
+[Toda linha carrega exatamente um estado, e o estado vai na coluna Local: ancorada
+(`caminho/Arquivo.ext:linha` ou UC-NNN/CA-N, lida), `[INFERRED]` com o raciocínio escrito na
+própria linha, ou `[UNVERIFIED]` (afirmado pela demanda, não conferido no código). O que não foi
+possível determinar não entra aqui — vai para Lacunas.]
+
 ### Direto — precisa mudar
 | Local | Por que está no mapa |
 |---|---|
 | `caminho/Arquivo.ext:42` | [uma linha] |
+| `[INFERRED]` `caminho/Outro.ext` | [uma linha, com o raciocínio: o padrão em `caminho/Terceiro.ext:70` indica que...] |
 
 ### Acoplado — não muda, mas depende do que muda
 | Local | Relação | Por que está no mapa |
 |---|---|---|
 | `caminho/Outro.ext:88` | chamador / assinante / teste / estado compartilhado | [uma linha] |
+| `[UNVERIFIED]` [o componente que a demanda citou] | [relação afirmada] | [uma linha; afirmado na demanda e não conferido — nunca sustenta conclusão bloqueante] |
 
 ### Superfície de contrato — visível fora desta base de código
 | Superfície | Consumidores conhecidos | Por que está no mapa |

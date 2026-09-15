@@ -2,7 +2,7 @@
 
 Default slot values for the team's Java stack, owned by `prime-core/coding-standards`. Applied when `docs/prime-config.md` states nothing for the slot; any value the project declares wins. Slot definitions and application classes live in `convention-slots.md` — this file only supplies answers.
 
-Entries marked **(Spring)** assume Spring Boot and are skipped by projects that do not use it; those projects declare the slot in their config instead. Baseline: Java 17.
+A **(Spring)** mark scopes to the mechanism it follows, never to the entry that carries it. `@RestControllerAdvice`, `@Transactional`, `@PreAuthorize`, `spring.jpa.open-in-view` and the like are how a Spring Boot project meets the slot; a project on another framework substitutes an equivalent mechanism and keeps everything else the entry says — the layer the decision belongs to, the prohibitions, and the non-Spring alternatives named alongside. No marked entry loses its substance under that substitution, so none of them sends a project to declare the slot from scratch in its config. A Spring type named *without* the mark is illustration rather than a dependency: the rule around it holds as written. Baseline: Java 17.
 
 ---
 

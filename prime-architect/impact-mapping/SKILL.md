@@ -13,7 +13,7 @@ The separation is the same one the repository already draws between `prime-core/
 
 A map is good when a reader who disagrees with every conclusion can still use it. That requires three properties, and each of them is a rule below: every line is **anchored or explicitly marked as inference**, every degree of reach is **named** rather than merged into one list, and the map's **edge is stated** instead of implied.
 
-**Procedence is the discipline.** This skill produces no document governed by a core contract and passes no gate, so the only thing separating it from a confident guess is that every claim about behavior resolves to a location. Four states, and every line carries exactly one:
+**Provenance is the discipline.** This skill produces no document governed by a core contract and passes no gate, so the only thing separating it from a confident guess is that every claim about behavior resolves to a location. Four states, and every line carries exactly one:
 
 - **Anchored** — cites `path/File.ext:line` or `UC-NNN/CA-N`. Read, not assumed. The reader can verify it without asking, and it is the only state that can carry a blocking conclusion downstream.
 - **`[INFERRED]`** — reasoned from a pattern observed elsewhere in the codebase, not from the affected code itself, with the reasoning stated on the line. Same marker the `use-case-extractor` uses, for the same reason: an inference read as a fact is worse than a gap, because nobody investigates it.
@@ -29,6 +29,8 @@ Read `docs/prime-config.md` per the **prime-core/prime-config** contract (locati
 A slot with no value or an area with no registered state is a **gap reported per `coding-standards`**, never improvised. In this skill the consequence is direct: an unregistered area cannot be overlaid in Step 4, and the map says so instead of guessing from the directory name.
 
 ## Step 1 — Restate the change as behavior
+
+**This step belongs to the standalone run.** Commissioned by `feasibility-analysis`, the restatement arrives already made and already confirmed with the architect: it becomes the subject line as it stands, its boundary comes with it, and this step is skipped whole — which is why **Insufficient input** cannot be reached on that path. There, a demand nobody could restate was returned before any map was commissioned. Everything below governs the run the architect asks for directly.
 
 The input usually arrives as a solution: *"add a column"*, *"cache the customer lookup"*, *"change the endpoint"*. Restate it as the observable behavior delta — what a user, a caller, or a downstream system will see differently. Then bound it: state explicitly what is **not** changing, in the same terms.
 

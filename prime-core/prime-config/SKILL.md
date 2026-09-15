@@ -21,14 +21,14 @@ The config answers one question: **what is true about this project that the skil
 
 - **Stack** — language and version, framework, build tool, database, migrations, messaging (when present). Versions are load-bearing: skills plan and review against them.
 - **Structure** — where each architectural layer lives. This is the its-generator's map for code inspection and the extractor's map for entry-point inventory.
-- **Conventions and constraints** — the project rules that constrain every plan and review. This section is the home of every override point the core contracts declare about code (see Override points below), and carries four named subsections plus free-prose project rules:
+- **Conventions and constraints** — the project rules that constrain every plan and review. This section is the home of every override point the core contracts declare about code (see Override points below), and carries five named subsections, the last of which holds the free-prose rules that map onto no slot:
   - **Area register** — each area classified `current` | `legacy-maintained` | `strangler`, per prime-core/coding-standards. Unregistered means `current`; classification is declared here, never inferred.
   - **Slot overrides** — the convention slots (`CS-XX-N`) this project decides differently from the team defaults.
   - **Declared migrations** — each in-flight migration with its new slot value, owner, scope, and completion condition.
   - **Quality model posture** — project-specific non-negotiables, tightened calibrated thresholds, and the standing posture toward legacy and debt, per prime-core/quality-model.
-  - **Project rules** — layer rules, error handling, test requirements, forbidden areas, feature-flag policy, and anything else that maps onto no slot.
+  - **Project rules** — what constrains every plan and review and maps onto no slot: forbidden areas, approval requirements, operational and compliance constraints, feature-flag policy. A question the slot catalog already asks is answered under Slot overrides, never here as well; two copies of one decision is what the catalog exists to prevent.
 - **Document repository** — locations and naming for use cases, ITS, and ADRs, plus the two use case overrides that live here as fields rather than as a section of their own: a custom template path, and extra mandatory sections. Defaults exist in the core contracts, but the config states them explicitly so overrides have one address.
-- **Verification commands** — how to build and test. Referenced by test strategies and PR preparation.
+- **Verification commands** — how to build and test. Read by every skill that plans, judges, or verifies: its-generator closes the ITS plan with them, impact-mapping and feasibility-analysis read them as coverage evidence, pr-preparation runs them before the PR, and code-review runs them as the precondition of a review in projects that declare no pipeline.
 
 **Optional:**
 

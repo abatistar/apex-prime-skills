@@ -30,20 +30,16 @@ file diverges from the build files, the skills will flag it.
 ## Conventions and constraints
 
 <!-- This section is the home of everything prime-core/coding-standards and
-     prime-core/quality-model declare as a project override point. The four
+     prime-core/quality-model declare as a project override point. The five
      subsections below are read by its-generator, its-implementation and
      code-review; keep them even when empty, with an explicit "none declared yet".
      Free-prose project rules that fit no slot go under "Project rules". -->
 
 ### Area register
-<!-- Per prime-core/coding-standards (Legacy: the area register). Classification is
-     DECLARED here, never inferred from directory names or file age. Anything
-     unregistered is `current`. Three states only:
-       current            — full standard: invariant and conventional slots alike
-       legacy-maintained  — invariants apply to what you write; conventional slots
-                            defer to the local pattern
-       strangler          — as legacy-maintained, plus no new behavior; name the
-                            replacement module and the migration ID -->
+<!-- Per prime-core/coding-standards › Legacy: the area register. Read it before
+     filling this in: it defines the three states, the rule that classification is
+     declared and never inferred, and what an unregistered area means. One line per
+     area, the state named in its own words. -->
 - `src/main/java/com/acme/app/**` — current
 - `src/main/java/com/acme/app/billing` — legacy-maintained (pre-2023 conventions; invariants apply)
 - `src/main/java/com/acme/app/legacy` — strangler (replaced by `billing.v2`; MIG-003)
@@ -52,47 +48,49 @@ file diverges from the build files, the skills will flag it.
 <!-- Per prime-core/coding-standards. One line per slot where this project decides
      differently from references/defaults-<stack>.md. Cite the slot ID — the value
      stated here wins over the team default. A slot with neither a default nor an
-     override is a REPORTABLE GAP: consuming skills report and offer to fill it,
-     never improvise a value. Write "none — team defaults apply" when that is true. -->
+     override is handled per that skill's "Unfilled slots" section. Write
+     "none — team defaults apply" when that is true. -->
 - `CS-CT-2` — cursor pagination (`cursor`/`limit`) on `/api/v1/events`; page-based everywhere else
 - `CS-SC-5` — OWASP ASVS Level 3 for the payments module (regulatory threat model)
 <!-- Or, if nothing is overridden: "none — team defaults apply (defaults-java.md)" -->
 
 ### Declared migrations
-<!-- Per prime-core/coding-standards (Declared migrations). Four fields or it is not
-     a migration, it is erosion with a name: new slot value, owner, scope,
-     completion condition. A migration that stops advancing is cancelled explicitly
-     and the area returns to legacy-maintained. -->
+<!-- Per prime-core/coding-standards › Declared migrations, which defines the
+     mandatory fields, what a missing one makes this entry instead, and what
+     happens to a migration that stops advancing. One entry per migration in
+     flight, following the shape below. -->
 - **MIG-003** — slot `CS-AR-4`: technical-layer packaging → feature-first packaging.
   Owner: [name]. Scope: `src/main/java/com/acme/app/legacy` → `billing.v2`.
   Complete when: no production traffic reaches `legacy` and the package is deleted.
 <!-- Or: "none in flight" -->
 
 ### Quality model posture
-<!-- Per prime-core/quality-model (Project overrides). This project may RAISE the bar
-     — add a project-specific non-negotiable, tighten a calibrated threshold — and may
-     record a standing posture toward legacy or debt. It may NOT silently waive a core
-     non-negotiable: relaxing one is a deliberate, owned decision (an ADR), never a
-     config edit. -->
+<!-- Per prime-core/quality-model › Project overrides, which states exactly what
+     this section may add or tighten, what standing posture it may record, and what
+     it may never waive here. Read it before adding a line. -->
 - Added non-negotiable: every endpoint touching payment data carries an audit log entry
-- Standing posture: `billing` is under strangler-fig migration (MIG-003) — match its local
+- Standing posture: `legacy` is under strangler-fig migration (MIG-003) — match its local
   patterns, do not extend them; new capability is born in `billing.v2`
 <!-- Or: "none declared yet" -->
 
 ### Project rules
-<!-- Rules that constrain every plan and review and do not map onto a slot. -->
-- Layer rule: api → service → persistence. Controllers never call repositories directly.
-- Business errors via `BusinessException` subclasses; never catch generic `Exception`.
-- Every new endpoint requires an integration test.
-- DTOs are records; entities are never exposed by the API layer.
+<!-- Rules that constrain every plan and review and map onto no slot. If the slot
+     catalog already asks the question — layer direction, error representation, what
+     obliges a test, the serialization boundary — the answer belongs under Slot
+     overrides, or nowhere at all when the stack default already says it. Writing it
+     here as well is how the two copies drift apart. -->
 - Feature flags via `@ConditionalOnProperty`; new user-facing behavior ships behind a flag.
+- `payments` is never changed without the security owner in the review.
+- Customer data stays in the `sa-east-1` region; no test fixture carries production records.
+- No deploy between the 25th and the 1st — the billing close window.
 <!-- If nothing is declared yet, write "none declared yet" — never omit the subsection. -->
 
 ## Document repository
 - Use cases: `docs/use-cases/UC-NNN-short-title.md`
 - ITS: `docs/its/ITS-<story-id>-short-title.md`
 - ADRs (architecture decision records): `docs/adr/ADR-NNN-short-title.md`
-  <!-- Sequential, never renumbered. Structure and lifecycle defined by prime-core/its-contract (decision boundary section) -->
+  <!-- Sequential, never renumbered. Structure, lifecycle, and who drafts are defined by
+       prime-core/its-contract (decision boundary) and its templates/adr-template.md -->
 - Custom use case template: none (use the skill's bundled default)
   <!-- To override: point to e.g. docs/use-cases/TEMPLATE.md and list extra mandatory sections -->
 - Extra mandatory use case sections: none

@@ -42,7 +42,7 @@ Operational pass owned by `prime-architect/code-review`. The SKILL.md defines th
 - [ ] **Comments** — `QM-RC-5`, `QM-DO-2`: *why*, not *what*.
 - [ ] **Style and consistency** — conventional slots judged against the area's registered state (`current` / `legacy-maintained` / `strangler`). In legacy-maintained, a conventional finding is valid only if a **third** pattern was introduced.
 - [ ] **Security** — `QM-SR-*` and `CS-SC-*` on every new boundary: input validated, secrets absent, authorization at the right layer, nothing sensitive in logs (`CS-OB-3`).
-- [ ] **Documentation** — `QM-DO-1`: no co-located document left lying by the change.
+- [ ] **Documentation** — `QM-DO-1`: no co-located document left lying by the change. Delivered behavior diverging from the use case routes to the use case skills, never patched here.
 - [ ] **Every line** a human will maintain was actually read.
 - [ ] **One thing done well** is identified and named.
 
@@ -78,6 +78,13 @@ For each finding: **where · what · why (ID) · what is expected**.
 - [ ] Toolchain gap (a check a human made that a tool should own — `QM-CN-3`).
 - [ ] Deliberate debt to register, with an owner (`QM-MT-1`).
 
+## 7. Boundary check before delivering
+
+- [ ] No application code written: the deliverables are findings and, where the plan itself was wrong, a revised ITS.
+- [ ] No criterion restated in a comment. Every finding points at an ID owned elsewhere.
+- [ ] No use case status promoted, no documentation rewritten, no configuration file edited as a side effect.
+- [ ] Nothing re-litigated that the toolchain already owns (`QM-CN-3`); its absence recorded as a gap instead.
+
 ---
 
 ## Template do relatório
@@ -100,8 +107,10 @@ For each finding: **where · what · why (ID) · what is expected**.
 | # | Severidade | Local | Critério | Achado e expectativa |
 |---|---|---|---|---|
 | 1 | Blocking | `caminho/Arquivo.java:42` | QM-EO-1 / CS-ER-6 | [o que está errado e o que se espera] |
-| 2 | Consider | `caminho/Outro.java:88` | QM-RC-4 | [argumento; o autor pode declinar com uma razão] |
-| 3 | Nit | `caminho/Terceiro.java:12` | CS-NM-1 | [trivial, opção do autor] |
+| 2 | Blocking | `caminho/Novo.java` (arquivo inteiro) | ITS › Plano, unidade 4 | [nenhuma unidade do plano pede este arquivo: escopo excedido] |
+| 3 | Blocking | `caminho/Pedido.java:120` | UC-042/CA-2 | [o comportamento entregue diverge do critério de aceite] |
+| 4 | Consider | `caminho/Outro.java:88` | QM-RC-4 | [argumento; o autor pode declinar com uma razão] |
+| 5 | Nit | `caminho/Terceiro.java:12` | CS-NM-1 | [trivial, opção do autor] |
 
 ## Follow-ups
 - [ADR a propor / seção do ITS a revisar / lacuna de slot / lacuna de toolchain / dívida registrada com responsável]

@@ -44,20 +44,25 @@ This is the canonical template — the single copy, owned by prime-core. If the 
 ## Cenário principal de sucesso
 
 1. <Ator> <ação no presente simples, voz ativa>.
-2. <Sistema> <ação>.
+2. <Sistema> <ação, citando a regra que a governa quando houver — ex.: conforme RN-1>.
 3. <Ator> <ação>.
 4. <Sistema> <ação>.
 5. <Sistema> <ação que conclui o objetivo>.
 
 ## Extensões
 
+[Toda extensão fecha com um desfecho explícito: retorna a um passo numerado ou encerra o caso
+de uso, em sucesso ou em falha. Extensão sem desfecho é defeito, não abreviação.]
+
 - **2a.** <Condição alternativa ou de falha no passo 2>:
   - 2a1. <Ação de tratamento>.
   - 2a2. <Retorna ao passo X | Caso de uso termina em falha>.
 - **4a.** <Condição>:
   - 4a1. <Ação>.
+  - 4a2. <Retorna ao passo X | Caso de uso termina em falha>.
 - ***a.** <Condição que pode ocorrer a qualquer momento>:
   - *a1. <Ação>.
+  - *a2. <Retorna ao passo X | Caso de uso termina em falha>.
 
 ## Regras de negócio
 - **RN-1:** [Regra referenciada pelos fluxos, enunciada de forma precisa e testável]

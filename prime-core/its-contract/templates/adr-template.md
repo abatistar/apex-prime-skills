@@ -1,6 +1,6 @@
 # ADR Template
 
-Canonical template owned by prime-core/its-contract. The its-generator drafts against it; the architect approves it; code-review blocks on a decision that landed in code without one. See the its-contract SKILL.md for the decision boundary that says when a decision is owed an ADR at all, and for the glossary rule that governs how an ITS cites one.
+Canonical template owned by prime-core/its-contract. The its-generator drafts against it when a plan must commit to the decision, and the architect drafts against it directly when no plan exists yet; the architect approves either way, and code-review blocks on a decision that landed in code without a record. See the its-contract SKILL.md for the decision boundary that says when a decision is owed an ADR at all, and for the glossary rule that governs how an ITS cites one.
 
 **Language.** The block below is the artifact and is written in the document language of this format: `pt-BR`; the guidance around it is skill-facing and stays in English. Section titles are translated; the stable tokens cited here — `ADR-NNN`, the status values (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), `UC-NNN`, `ITS-<story-id>`, `QM-XX-N`, `CS-XX-N`, file paths and identifiers — are never translated.
 
@@ -14,11 +14,11 @@ Canonical template owned by prime-core/its-contract. The its-generator drafts ag
 - **Accepted** — approved by the architect. Binding context for every implementer and every later plan. The config does not override it; a conflict between the two is reported, not resolved silently.
 - **Superseded by ADR-NNN** — replaced. The record stays in place with its rationale intact, pointing at its replacement. The status changes only when the architect approves the replacement.
 
-Only the architect moves an ADR between statuses. The its-generator drafts and proposes.
+Only the architect moves an ADR between statuses, whoever wrote the record. Drafting is a separate act; **Who files it** below says who performs it.
 
 ## Scope rules
 
-- **Who files it.** A decision a plan must commit to is drafted by the its-generator and approved by the architect. A decision taken where no plan exists yet, at refinement or in architectural counsel, is drafted by the architect directly and needs no story. The `Origem` field records which of the two happened. No other skill drafts one.
+- **Who files it.** A decision a plan must commit to is drafted by the its-generator and approved by the architect. A decision taken where no plan exists yet, at refinement or in architectural counsel, is drafted by the architect directly and needs no story. The `Origem` field names where the decision came from, and with it which of the two paths filed the record. No other skill drafts one.
 - One decision per record. A document carrying two decisions cannot be superseded by half.
 - **Consequences are not a disclaimer.** State what the decision costs as well as what it buys, including what it forecloses. A record that lists only benefits is advocacy, not a decision record.
 - **The rationale lives here and only here.** An ITS citing this record carries one line of the operational constraint the decision imposes on its plan, never the context or the alternatives. That single ownership is why a reader who needs the why comes to this document.

@@ -34,15 +34,7 @@ The consequence, stated plainly so nobody has to infer it: **old code staying ol
 
 ## Legacy: the area register
 
-Classification is declared, not judged per pull request. `docs/prime-config.md` registers each area in one of three states; anything unregistered is `current`.
-
-```markdown
-## Conventions and constraints
-### Area register
-- `src/main/java/com/acme/app/**` — current
-- `src/main/java/com/acme/app/billing` — legacy-maintained (pre-2023 conventions; invariants apply)
-- `src/main/java/com/acme/app/legacy` — strangler (replaced by `billing.v2`; MIG-003)
-```
+Classification is declared, not judged per pull request. `docs/prime-config.md` registers each area in one of the three states below, under *Conventions and constraints › Area register*. That section's shape and its worked example belong to prime-core/prime-config and its template; what belongs here is what the three states mean.
 
 - **current** — the full standard applies: invariant and conventional slots alike.
 - **legacy-maintained** — invariant slots apply to what you write and change; conventional slots defer to the local pattern. The area is fixed, extended, and maintained normally.
