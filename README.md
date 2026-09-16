@@ -10,6 +10,7 @@ O Apex Prime é a fonte única de verdade dos padrões de qualidade, convençõe
 
 - [Por que existe](#por-que-existe)
 - [Estrutura do repositório](#estrutura-do-repositório)
+- [Instalação](#instalação)
 - [Primeiros passos](#primeiros-passos)
 - [Montagem dos agentes](#montagem-dos-agentes)
 - [Status de autoria](#status-de-autoria)
@@ -33,6 +34,9 @@ Quando os padrões de qualidade vivem espalhados — na cabeça das pessoas, em 
 apex-prime-skills/
 ├── README.md
 ├── LICENSE                                 # AGPL-3.0
+├── install.ps1                             # bootstrap: clona a versão pedida e chama o instalador
+├── scripts/
+│   └── Install-ApexPrime.ps1               # instala e desinstala a camada Jarvis
 ├── adapters/                               # prompt de entrada por plataforma
 │   ├── README.md                           # regras dos adapters (os arquivos do Jarvis são cópias deliberadas)
 │   ├── claude-code/
@@ -96,15 +100,88 @@ apex-prime-skills/
 
 Toda skill é um diretório com um `SKILL.md` cujo frontmatter traz `name` e `description`. As skills do core mantêm seu material normativo em `references/` ou `templates/`; as skills de papel mantêm suas listas operacionais em `checklists/`.
 
+## Instalação
+
+O [`scripts/Install-ApexPrime.ps1`](scripts/Install-ApexPrime.ps1) achata `prime-core` + `prime-architect` em um único diretório de skills, instala o adapter da plataforma e grava um manifesto com o hash de cada arquivo. O recorte é estrutural: a camada `prime-dev` e os adapters da Friday não são lidos pelo instalador.
+
+### Onde cada plataforma descobre as skills
+
+| Caminho | Claude Code | Copilot |
+|---|---|---|
+| `.claude/skills/<skill>/SKILL.md` | sim | sim |
+| `.github/skills/<skill>/SKILL.md` | não | sim |
+| `~/.claude/skills/<skill>/SKILL.md` | sim | sim |
+| `~/.copilot/skills/<skill>/SKILL.md` | não | sim |
+| `.claude/commands/jarvis.md` (`/jarvis`) | sim | não |
+| `.github/agents/jarvis.agent.md` | não | sim |
+
+O `.claude/skills/` é lido pelas duas plataformas — é por isso que `-Target both` instala a carga **uma única vez**, ali, e não em dois lugares: duas cópias das mesmas skills registrariam nomes duplicados no Copilot.
+
+### Parâmetros
+
+`-Target` escolhe o formato: `copilot` (padrão) usa `.github`/`~/.copilot`, `claude` usa `.claude`, e `both` instala as skills em `.claude` mais os dois adapters. O padrão é Copilot porque é o formato que não deixa rastro de outra ferramenta em um repositório corporativo; quem usa Claude Code precisa de `-Target both`.
+
+`-Scope` escolhe o alcance: `user` (padrão) instala no perfil e não toca em repositório nenhum; `project` instala na raiz de `-Destination`, para ser commitado.
+
+### Uso
+
+Sempre confira antes, com `-WhatIf`:
+
+```powershell
+.\scripts\Install-ApexPrime.ps1 -WhatIf
+```
+
+Instalar no perfil, formato Copilot:
+
+```powershell
+.\scripts\Install-ApexPrime.ps1
+```
+
+Instalar no perfil servindo as duas plataformas:
+
+```powershell
+.\scripts\Install-ApexPrime.ps1 -Target both
+```
+
+Vendorizar em um projeto, para commitar:
+
+```powershell
+.\scripts\Install-ApexPrime.ps1 -Scope project -Destination C:\repos\meu-projeto
+```
+
+Desinstalar:
+
+```powershell
+.\scripts\Install-ApexPrime.ps1 -Uninstall -Target both
+```
+
+### Sem clonar o repositório
+
+O [`install.ps1`](install.ps1) baixa a versão pedida em um diretório temporário, chama o instalador e limpa o temporário. São dois passos, deliberadamente — não há one-liner com `iex`:
+
+```powershell
+irm https://raw.githubusercontent.com/abatistar/apex-prime-skills/main/install.ps1 -OutFile install.ps1
+```
+
+```powershell
+.\install.ps1 -Ref v1.0.0 -Target both
+```
+
+O `-Ref` aceita tag ou branch, e a tag é o que se deve usar: `main` instala o topo do branch, que é justamente o que o versionamento existe para evitar.
+
+### Reinstalação e edições locais
+
+O manifesto (`apex-prime.json`) é o que torna a reinstalação segura. Arquivo cujo hash divergiu do gravado foi editado no destino e é **preservado**, com aviso, a menos que `-Force`. Skill removida em uma versão nova é podada. O `-Uninstall` remove exatamente o que o manifesto registra e nada além — arquivos que não vieram do Apex Prime ficam intactos.
+
+> O instalador roda sob ConstrainedLanguage mode, o modo imposto por WDAC/AppLocker em Windows corporativo. Uma consequência: `-WhatIf` funciona, `-Confirm` não.
+
 ## Primeiros passos
 
 Este repositório guarda as skills, não os projetos em que elas se aplicam. Configurá-lo significa tornar as camadas certas visíveis para um agente e, depois, dar ao projeto-alvo um arquivo de configuração.
 
-**1. Exponha as camadas ao agente.** Carregue `prime-core` + `prime-architect` para o arquiteto, e `prime-core` + `prime-dev` para o dev — copiando ou criando symlinks desses diretórios para onde a sua plataforma descobre skills. Nunca exponha as duas camadas de papel ao mesmo agente; veja [Montagem dos agentes](#montagem-dos-agentes).
+**1. Instale a camada do seu papel.** Veja [Instalação](#instalação). O instalador cobre o arquiteto: expõe `prime-core` + `prime-architect` e instala o adapter da plataforma — no Claude Code o `jarvis.md`, cuja linha final `$ARGUMENTS` recebe a tarefa; no Copilot o `jarvis.agent.md`, como agente customizado. Os adapters roteiam para as skills; nunca repetem os procedimentos delas. Nunca exponha as duas camadas de papel ao mesmo agente; veja [Montagem dos agentes](#montagem-dos-agentes).
 
-**2. Instale o adapter da sua plataforma.** Cada arquivo em [`adapters/`](adapters/) é o prompt de entrada que uma plataforma carrega: o Claude Code usa `jarvis.md` (a linha final `$ARGUMENTS` recebe a tarefa), o Copilot usa `jarvis.agent.md` como agente customizado. Os adapters roteiam para as skills; nunca repetem os procedimentos delas.
-
-**3. Faça o bootstrap da configuração do projeto.** Toda execução, em qualquer camada, começa lendo o `docs/prime-config.md` do *projeto-alvo* — stack, estrutura, convenções, registro de áreas, overrides de slots, localização dos documentos, comandos de verificação. O template canônico é o [`prime-core/prime-config/references/prime-config-template.md`](prime-core/prime-config/references/prime-config-template.md), e o procedimento que o preenche — detectar a stack, percorrer o catálogo de slots, classificar as áreas, elicitar o que o código não conta — pertence ao [`prime-core/prime-config`](prime-core/prime-config/SKILL.md). Peça ao agente arquiteto que o execute; o resultado é um rascunho que um humano valida antes do commit.
+**2. Faça o bootstrap da configuração do projeto.** Toda execução, em qualquer camada, começa lendo o `docs/prime-config.md` do *projeto-alvo* — stack, estrutura, convenções, registro de áreas, overrides de slots, localização dos documentos, comandos de verificação. O template canônico é o [`prime-core/prime-config/references/prime-config-template.md`](prime-core/prime-config/references/prime-config-template.md), e o procedimento que o preenche — detectar a stack, percorrer o catálogo de slots, classificar as áreas, elicitar o que o código não conta — pertence ao [`prime-core/prime-config`](prime-core/prime-config/SKILL.md). Peça ao agente arquiteto que o execute; o resultado é um rascunho que um humano valida antes do commit.
 
 A partir daí, toque a pipeline: peça ao arquiteto para documentar como um módulo sem documentação se comporta hoje, para escrever os casos de uso de uma story, para gerar a ITS correspondente e, mais tarde, para revisar a implementação que voltar.
 
