@@ -1,123 +1,181 @@
 # Apex Prime
 
-**Skills platform for engineering agents — delivering solutions at the highest standard, from demand understanding to deploy.**
+**Plataforma de skills para agentes de engenharia — entregando soluções no mais alto padrão, do entendimento da demanda ao deploy.**
 
-Apex Prime is the single source of truth for the quality standards, conventions, and workflows that guide the team's AI agents across the entire delivery cycle. It turns our process — **Solution Architect understands the demand and creates the ITS → Dev implements → Architect reviews and validates → pipeline takes it to deploy** — into a skills architecture with explicit boundaries, where each role operates with the right context and everyone answers to the same standard.
+[![Licença: AGPL v3](https://img.shields.io/badge/Licen%C3%A7a-AGPL%20v3-blue.svg)](LICENSE)
 
-## Why it exists
+O Apex Prime é a fonte única de verdade dos padrões de qualidade, convenções e fluxos de trabalho que guiam os agentes de IA do time ao longo de todo o ciclo de entrega. Ele transforma o nosso processo — **o Arquiteto de Soluções entende a demanda e cria a ITS → o Dev implementa → o Arquiteto revisa e valida → a pipeline leva ao deploy** — em uma arquitetura de skills com fronteiras explícitas, na qual cada papel opera com o contexto certo e todos respondem ao mesmo padrão.
 
-When quality standards live scattered — in people's heads, in loose documents, duplicated across tools — they diverge. The dev implements against one version of the standard, the review demands another, and friction appears exactly where the process should provide flow. Apex Prime solves this with two principles:
+## Sumário
 
-1. **Single foundation.** The quality model, the coding conventions, the ITS contract, and the project configuration contract have a single owner and a single address: the `prime-core` layer. Every agent consumes the same foundation — update the standard once, and it updates for everyone.
-2. **Boundaries per role.** Each agent loads only its role's layers plus the foundation. The dev's agent doesn't write the ITS; the architect's agent doesn't implement. The workflow gates stop being convention and become architecture.
+- [Por que existe](#por-que-existe)
+- [Estrutura do repositório](#estrutura-do-repositório)
+- [Primeiros passos](#primeiros-passos)
+- [Montagem dos agentes](#montagem-dos-agentes)
+- [Status de autoria](#status-de-autoria)
+- [Os contratos do core](#os-contratos-do-core)
+- [Identificadores estáveis](#identificadores-estáveis)
+- [Princípios de design das skills](#princípios-de-design-das-skills)
+- [Governança](#governança)
+- [Como contribuir](#como-contribuir)
+- [Licença](#licença)
 
-## Layered architecture
+## Por que existe
+
+Quando os padrões de qualidade vivem espalhados — na cabeça das pessoas, em documentos soltos, duplicados entre ferramentas — eles divergem. O dev implementa contra uma versão do padrão, a revisão cobra outra, e o atrito aparece exatamente onde o processo deveria dar fluidez. O Apex Prime resolve isso com dois princípios:
+
+1. **Fundação única.** O modelo de qualidade, as convenções de código, o contrato da ITS e o contrato de configuração do projeto têm um único dono e um único endereço: a camada `prime-core`. Todo agente consome a mesma fundação — atualize o padrão uma vez, e ele se atualiza para todos.
+2. **Fronteiras por papel.** Cada agente carrega apenas as camadas do seu papel mais a fundação. O agente do dev não escreve a ITS; o agente do arquiteto não implementa. Os gates do fluxo deixam de ser convenção e passam a ser arquitetura.
+
+## Estrutura do repositório
 
 ```
 apex-prime-skills/
 ├── README.md
-├── CHANGELOG.md
-├── prime-config.example.md       # pointer to the canonical template (prime-core/prime-config)
-├── adapters/                     # agent configuration per platform
+├── LICENSE                                 # AGPL-3.0
+├── adapters/                               # prompt de entrada por plataforma
+│   ├── README.md                           # regras dos adapters (os arquivos do Jarvis são cópias deliberadas)
 │   ├── claude-code/
+│   │   ├── jarvis.md                       # prompt de entrada do arquiteto
+│   │   └── friday.md                       # [stub] prompt de entrada do dev
 │   └── copilot/
-├── prime-core/                   # foundation — consumed by ALL agents
+│       ├── jarvis.agent.md
+│       └── friday.agent.md                 # [stub]
+├── prime-core/                             # fundação — consumida por TODOS os agentes
 │   ├── quality-model/
-│   │   ├── SKILL.md              # what "good" is: the eight lenses, tiers, exception discipline
+│   │   ├── SKILL.md                        # o que é "bom": as oito lentes, os níveis, a disciplina de exceção
 │   │   └── references/
-│   │       └── quality-criteria.md   # the versioned criteria catalog (QM-XX-N)
+│   │       └── quality-criteria.md         # o catálogo versionado de critérios (QM-XX-N)
 │   ├── coding-standards/
-│   │   ├── SKILL.md              # what good looks like here: application classes, legacy register, migrations
+│   │   ├── SKILL.md                        # como o bom se parece aqui: classes de aplicação, registro de legado, migrações
 │   │   └── references/
-│   │       ├── convention-slots.md   # the closed slot catalog (CS-XX-N)
-│   │       └── defaults-java.md      # team default values for the Java stack
+│   │       ├── convention-slots.md         # o catálogo fechado de slots (CS-XX-N)
+│   │       └── defaults-java.md            # valores padrão do time para a stack Java
 │   ├── prime-config/
-│   │   ├── SKILL.md              # contract for docs/prime-config.md: sections, override points, precedence, bootstrap
+│   │   ├── SKILL.md                        # contrato do docs/prime-config.md: seções, pontos de override, precedência, bootstrap
 │   │   └── references/
-│   │       └── prime-config-template.md
+│   │       └── prime-config-template.md    # o template canônico de configuração do projeto
 │   ├── use-case/
-│   │   ├── SKILL.md
+│   │   ├── SKILL.md                        # o formato de caso de uso: regras de qualidade, regras de delta, marcadores de incerteza
 │   │   └── references/
 │   │       └── use-case-template.md
 │   └── its-contract/
-│       ├── SKILL.md              # the ITS format: mandatory sections, level of detail
+│       ├── SKILL.md                        # o formato da ITS, o nível de detalhe e a fronteira com os ADRs
 │       └── templates/
-│           └── its-template.md   # the canonical template the architect writes and the dev consumes
-├── prime-architect/              # Solution Architect layer ("Jarvis Skills")
+│           ├── its-template.md             # a ITS canônica que o arquiteto escreve e o dev consome
+│           └── adr-template.md             # os registros de decisão que uma ITS referencia
+├── prime-architect/                        # camada do Arquiteto de Soluções ("Jarvis Skills")
 │   ├── use-case-creator/
-│   │   └── SKILL.md              # how to create and update use cases
+│   │   └── SKILL.md                        # como criar e atualizar casos de uso
 │   ├── use-case-extractor/
-│   │   └── SKILL.md              # reverse engineering to create use cases
+│   │   └── SKILL.md                        # engenharia reversa para criar casos de uso
 │   ├── impact-mapping/
-│   │   ├── SKILL.md              # what a change reaches: anchored evidence, never a verdict
+│   │   ├── SKILL.md                        # o que uma mudança alcança: evidência ancorada, nunca um veredito
 │   │   └── checklists/
 │   │       └── impact-map-checklist.md
 │   ├── feasibility-analysis/
-│   │   ├── SKILL.md              # judges a demand against the system, before any specification
+│   │   ├── SKILL.md                        # julga uma demanda contra o sistema, antes de qualquer especificação
 │   │   └── checklists/
 │   │       └── feasibility-checklist.md
 │   ├── its-generator/
-│   │   ├── SKILL.md              # how to write the ITS using the core contract
+│   │   ├── SKILL.md                        # como escrever a ITS usando o contrato do core
 │   │   └── checklists/
 │   │       └── its-checklist.md
 │   └── code-review/
-│       ├── SKILL.md              # review script: validates implementation against ITS + core standards
+│       ├── SKILL.md                        # roteiro de revisão: valida a implementação contra a ITS + os padrões do core
 │       └── checklists/
 │           └── review-checklist.md
-└── prime-dev/                    # Dev layer ("Friday Skills") — STUBS, to be authored
+└── prime-dev/                              # camada do Dev ("Friday Skills") — STUBS, a serem escritos
     ├── its-implementation/
-    │   └── SKILL.md              # [stub] how to read the ITS, plan, and implement following the core
+    │   └── SKILL.md                        # [stub] como ler a ITS, planejar e implementar seguindo o core
     ├── testing/
-    │   └── SKILL.md              # [stub] test standard required before the PR
+    │   └── SKILL.md                        # [stub] padrão de testes exigido antes do PR
     └── pr-preparation/
-        └── SKILL.md              # [stub] how to prepare the PR for the review and the Azure pipeline
+        └── SKILL.md                        # [stub] como preparar o PR para a revisão e a pipeline do Azure
 ```
 
-### Authoring status
+Toda skill é um diretório com um `SKILL.md` cujo frontmatter traz `name` e `description`. As skills do core mantêm seu material normativo em `references/` ou `templates/`; as skills de papel mantêm suas listas operacionais em `checklists/`.
 
-| Layer | Status |
-|---|---|
-| `prime-core` | Authored — quality-model v1.0, coding-standards v1.0, prime-config, use-case, its-contract |
-| `prime-architect` | Authored — use-case-creator, use-case-extractor, impact-mapping, feasibility-analysis, its-generator, code-review |
-| `prime-dev` | **Stubs.** The three skills and the Friday adapters are placeholders so the layer structure and cross-references stay valid |
+## Primeiros passos
 
-Jarvis is therefore operable end to end (documentation → ITS → review); Friday waits on the dev layer.
+Este repositório guarda as skills, não os projetos em que elas se aplicam. Configurá-lo significa tornar as camadas certas visíveis para um agente e, depois, dar ao projeto-alvo um arquivo de configuração.
 
-### Agent assembly
+**1. Exponha as camadas ao agente.** Carregue `prime-core` + `prime-architect` para o arquiteto, e `prime-core` + `prime-dev` para o dev — copiando ou criando symlinks desses diretórios para onde a sua plataforma descobre skills. Nunca exponha as duas camadas de papel ao mesmo agente; veja [Montagem dos agentes](#montagem-dos-agentes).
 
-| Agent | Layers loaded | Responsibility in the workflow |
+**2. Instale o adapter da sua plataforma.** Cada arquivo em [`adapters/`](adapters/) é o prompt de entrada que uma plataforma carrega: o Claude Code usa `jarvis.md` (a linha final `$ARGUMENTS` recebe a tarefa), o Copilot usa `jarvis.agent.md` como agente customizado. Os adapters roteiam para as skills; nunca repetem os procedimentos delas.
+
+**3. Faça o bootstrap da configuração do projeto.** Toda execução, em qualquer camada, começa lendo o `docs/prime-config.md` do *projeto-alvo* — stack, estrutura, convenções, registro de áreas, overrides de slots, localização dos documentos, comandos de verificação. O template canônico é o [`prime-core/prime-config/references/prime-config-template.md`](prime-core/prime-config/references/prime-config-template.md), e o procedimento que o preenche — detectar a stack, percorrer o catálogo de slots, classificar as áreas, elicitar o que o código não conta — pertence ao [`prime-core/prime-config`](prime-core/prime-config/SKILL.md). Peça ao agente arquiteto que o execute; o resultado é um rascunho que um humano valida antes do commit.
+
+A partir daí, toque a pipeline: peça ao arquiteto para documentar como um módulo sem documentação se comporta hoje, para escrever os casos de uso de uma story, para gerar a ITS correspondente e, mais tarde, para revisar a implementação que voltar.
+
+## Montagem dos agentes
+
+| Agente | Camadas carregadas | Responsabilidade no fluxo |
 |---|---|---|
-| **Jarvis** (Architect) | `prime-core` + `prime-architect` | Understands the demand, documents the use cases, creates the ITS, performs the code review |
-| **Friday** (Dev) | `prime-core` + `prime-dev` | Implements from the ITS, tests, and prepares the PR |
+| **Jarvis** (Arquiteto) | `prime-core` + `prime-architect` | Entende a demanda, documenta os casos de uso, cria a ITS, faz o code review |
+| **Friday** (Dev) | `prime-core` + `prime-dev` | Implementa a partir da ITS, testa e prepara o PR |
 
-> Golden rule: an agent **never** loads the other role's layer. Jarvis never loads `prime-dev`; Friday never loads `prime-architect`.
+> Regra de ouro: um agente **nunca** carrega a camada do outro papel. O Jarvis nunca carrega `prime-dev`; a Friday nunca carrega `prime-architect`.
 
-## The ITS contract
+Duas capacidades do arquiteto ficam fora dessa linha e são invocadas, nunca obrigatórias: **impact-mapping**, que produz evidência sobre o que uma mudança alcançaria, e **feasibility-analysis**, que julga uma demanda contra o sistema antes que ela entre em especificação. Nenhuma das duas é um gate; ambas alimentam a mesma pipeline.
 
-The centerpiece of the platform. The ITS (Instrução de Trabalho de Software — Software Work Instruction) format lives in `prime-core` and is consumed by both sides: the architect writes to it, the dev reads from it. A change in the contract updates writing and reading at the same time, eliminating drift between specification and implementation.
+## Status de autoria
 
-## The standard: two contracts, one enforcement point
+| Camada | Status |
+|---|---|
+| `prime-core` | Escrita — quality-model (catálogo de critérios v1.0), coding-standards (catálogo de slots v1.0), prime-config, use-case, its-contract |
+| `prime-architect` | Escrita — use-case-creator, use-case-extractor, impact-mapping, feasibility-analysis, its-generator, code-review |
+| `prime-dev` | **Stubs.** As três skills e os adapters da Friday são placeholders para que a estrutura de camadas e as referências cruzadas continuem válidas |
 
-`prime-core/quality-model` answers *what good is* — eight lenses, a non-negotiable floor with stable IDs (`QM-XX-N`), and an exception discipline that distinguishes deliberate debt from the silent shortcut. `prime-core/coding-standards` answers *what good looks like here* — the closed catalog of convention slots (`CS-XX-N`) every project must have decided, the team defaults per stack, and the legacy area register. Neither approves or rejects anything: enforcement is owned by `prime-architect/code-review`, which turns both into classified findings and one verdict, always citing an ID instead of a preference.
+O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → revisão); a Friday depende da camada de dev.
 
-## The project configuration
+## Os contratos do core
 
-Every run, in every layer, starts by reading `docs/prime-config.md` — the file that answers what is true about the project that the skills must not guess (stack, structure, conventions, area register, slot overrides, document locations, verification commands). Its contract — mandatory sections, the closed list of override points, precedence rules, divergence handling, and the bootstrap procedure — is owned by `prime-core/prime-config`; every skill's Step 0 references that contract instead of re-describing the procedure.
+**A ITS.** A peça central da plataforma. O formato da ITS (Instrução de Trabalho de Software) vive em `prime-core/its-contract` e é consumido pelos dois lados: o arquiteto escreve contra ele, o dev lê a partir dele. Uma mudança no contrato atualiza a escrita e a leitura ao mesmo tempo, eliminando o descolamento entre especificação e implementação. O mesmo contrato é dono da fronteira com os ADRs — uma decisão que sobrevive à story é referenciada por uma ITS, nunca embutida nela.
 
-## Skill design principles
+**O padrão: dois contratos, um único ponto de enforcement.** O `prime-core/quality-model` responde *o que é qualidade* — oito lentes, um piso inegociável com IDs estáveis (`QM-XX-N`) e uma disciplina de exceção que distingue dívida deliberada de atalho silencioso. O `prime-core/coding-standards` responde *como a qualidade se parece aqui* — o catálogo fechado de slots de convenção (`CS-XX-N`) que todo projeto precisa ter decidido, os padrões do time por stack e o registro de áreas legadas. Nenhum dos dois aprova ou reprova nada: o enforcement pertence ao `prime-architect/code-review`, que transforma ambos em achados classificados e um veredito, sempre citando um ID em vez de uma preferência.
 
-- **Reference, never duplicate.** Role skills point to `prime-core` instead of copying its criteria. The standard has a single owner and a single address.
-- **Ambiguity returns, it is not assumed.** If the ITS is ambiguous, the dev's agent does not fill the gaps on its own — it returns questions to the architect.
-- **Quality as a gate, not as an opinion.** Code review validates against versioned criteria in `quality-model` and `coding-standards`, not against preferences of the moment.
-- **Unfilled is a gap, not a free choice.** A decision nobody took is reported, never improvised.
+**A configuração do projeto.** O `docs/prime-config.md` responde o que é verdade sobre o projeto e as skills não podem adivinhar. Seu contrato — seções obrigatórias, a lista fechada de pontos de override, as regras de precedência, o tratamento de divergências e o procedimento de bootstrap — pertence ao `prime-core/prime-config`; o Passo 0 de cada skill referencia esse contrato em vez de redescrever o procedimento. A configuração pode **elevar** a régua; nunca pode revogar em silêncio um inegociável do core.
 
-## Governance
+## Identificadores estáveis
 
-- Changes to `prime-core` affect every agent and go through a PR reviewed by the quality model's owner.
-- The role layers (`prime-architect`, `prime-dev`) evolve with more freedom, as long as they respect the foundation.
-- Criterion and slot IDs are stable and never renumbered; a retired ID stays retired.
-- The core's `CHANGELOG.md` records every evolution of the standard, so the team knows when and why it changed. The core skills keep no parallel history.
+| ID | Significado | Dono |
+|---|---|---|
+| `QM-XX-N` | Critério de qualidade | `prime-core/quality-model` |
+| `CS-XX-N` | Slot de convenção | `prime-core/coding-standards` |
+| `UC-NNN` · `UC-NNN/CA-N` | Caso de uso · um de seus critérios de aceite | `prime-core/use-case` |
+| `ITS-<story-id>` | Instrução de trabalho de uma story | `prime-core/its-contract` |
+| ADR | Decisão que sobrevive à story | `prime-core/its-contract` |
+
+Todo achado, toda exceção e todo elo de rastreabilidade cita um desses. Uma afirmação que não cita nada é uma preferência.
+
+## Princípios de design das skills
+
+- **Referenciar, nunca duplicar.** As skills de papel apontam para o `prime-core` em vez de copiar seus critérios. O padrão tem um único dono e um único endereço.
+- **Evidência e julgamento permanecem separados.** Um mapa declara alcance e nunca recomenda; um veredito julga sobre um mapa e nunca o refaz.
+- **Ambiguidade volta, não é presumida.** Se a ITS é ambígua, o agente do dev não preenche as lacunas por conta própria — devolve perguntas ao arquiteto.
+- **Qualidade como gate, não como opinião.** O code review valida contra critérios versionados do `quality-model` e do `coding-standards`, não contra preferências do momento.
+- **Não preenchido é lacuna, não escolha livre.** Uma decisão que ninguém tomou é reportada, nunca improvisada.
+
+## Governança
+
+- Mudanças no `prime-core` afetam todos os agentes e passam por um PR revisado pelo dono do modelo de qualidade.
+- As camadas de papel (`prime-architect`, `prime-dev`) evoluem com mais liberdade, desde que respeitem a fundação.
+- IDs de critérios e de slots são estáveis e nunca renumerados; um ID aposentado permanece aposentado.
+- Os catálogos carregam a própria linha de versão — `quality-criteria.md` e `convention-slots.md`, ambos v1.0. Suba a versão ali quando o padrão mudar.
+- **O histórico do padrão é o controle de versão.** O PR de governança é o registro de cada evolução; o repositório deliberadamente não mantém um changelog paralelo, para que dois históricos não se descolem.
+
+## Como contribuir
+
+- Abra um PR contra a `main`. Qualquer coisa que toque o `prime-core` precisa da revisão do dono do modelo de qualidade.
+- Mantenha o texto normativo na skill que é dona dele e referencie a partir de todo o resto.
+- **Os dois adapters do Jarvis são cópias literais deliberadas** — alterar um é alterar os dois, no mesmo commit. O [`adapters/README.md`](adapters/README.md) explica o porquê e traz o comando de diff que verifica isso.
+- Ao adicionar, mover ou remover um arquivo, atualize a seção [Estrutura do repositório](#estrutura-do-repositório) no mesmo commit.
+
+## Licença
+
+[GNU Affero General Public License v3.0](LICENSE).
 
 ---
 
-*Apex Prime — quality comes first.*
+*Apex Prime — a qualidade vem primeiro.*
