@@ -1,8 +1,8 @@
 ---
 name: testing
-description: STUB - Test standard required before the PR. Dev-layer skill. TO BE AUTHORED.
+description: STUB - Padrão de testes exigido antes do PR. Skill da camada do dev. A SER ESCRITA.
 ---
 
 # testing
 
-TODO: to be authored separately. This file exists so the layer structure and cross-references are valid.
+TODO: a ser escrita separadamente. Este arquivo existe para que a estrutura de camadas e as referências cruzadas sejam válidas.

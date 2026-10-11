@@ -1,8 +1,8 @@
 ---
 name: its-implementation
-description: STUB - How to read the ITS (per prime-core/its-contract), plan, and implement following the core. If the ITS is ambiguous, do not assume - return questions to the architect. Dev-layer skill. TO BE AUTHORED.
+description: STUB - Como ler a ITS (conforme o prime-core/its-contract), planejar e implementar seguindo o core. Se a ITS for ambígua, não presuma - devolva perguntas ao arquiteto. Skill da camada do dev. A SER ESCRITA.
 ---
 
 # its-implementation
 
-TODO: to be authored separately. This file exists so the layer structure and cross-references are valid.
+TODO: a ser escrita separadamente. Este arquivo existe para que a estrutura de camadas e as referências cruzadas sejam válidas.

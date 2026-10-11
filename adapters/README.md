@@ -1,26 +1,26 @@
 # Adapters
 
-Agent configuration per platform. Each file is the entry prompt one platform loads; the process itself lives in the skills, and an adapter routes to them instead of restating their procedures.
+Configuração dos agentes por plataforma. Cada arquivo é o prompt de entrada que uma plataforma carrega; o processo em si vive nas skills, e um adapter roteia para elas em vez de repetir os procedimentos delas.
 
-| Platform | Architect | Developer |
+| Plataforma | Arquiteto | Desenvolvedor |
 |---|---|---|
 | Claude Code | `claude-code/jarvis.md` | `claude-code/friday.md` (stub) |
 | Copilot | `copilot/jarvis.agent.md` | `copilot/friday.agent.md` (stub) |
 
-## The two Jarvis files are deliberate copies
+## Os dois arquivos do Jarvis são cópias deliberadas
 
-Neither platform can include a shared file, so the body of the architect prompt exists twice, verbatim. That duplication is accepted, and it is the one place in this repository where "reference, never duplicate" does not apply — there is nothing to reference from.
+Nenhuma das plataformas consegue incluir um arquivo compartilhado, então o corpo do prompt do arquiteto existe duas vezes, literalmente. Essa duplicação é aceita, e é o único lugar deste repositório em que "referenciar, nunca duplicar" não se aplica — não há nada de onde referenciar.
 
-What follows from that:
+O que decorre disso:
 
-- **A change to one is a change to both, in the same commit.** Every line of prose must stay identical. A fix that lands in only one adapter is a silent fork, and the platform that missed it will route differently from the platform that got it.
-- **Only the frontmatter, the invocation line, and the blank lines around them may differ.** Claude Code carries `description` and closes with the `$ARGUMENTS` line; Copilot carries `name` and `description`, opens with an `#` title, and has no arguments line. Everything between is the same text.
-- **Verify before committing**, ignoring blank lines and the invocation line:
+- **Uma mudança em um é uma mudança nos dois, no mesmo commit.** Toda linha de prosa precisa permanecer idêntica. Uma correção que cai em apenas um adapter é um fork silencioso, e a plataforma que a perdeu vai rotear de forma diferente da que a recebeu.
+- **Somente o frontmatter, a linha de invocação e as linhas em branco ao redor delas podem diferir.** O Claude Code carrega `description` e fecha com a linha `$ARGUMENTS`; o Copilot carrega `name` e `description`, abre com um título `#` e não tem linha de argumentos. Tudo o que fica entre eles é o mesmo texto.
+- **Verifique antes de commitar**, ignorando linhas em branco e a linha de invocação:
 
 ```bash
-diff <(grep -v '^\s*$' adapters/claude-code/jarvis.md | grep -v '^Task from the architect') <(grep -v '^\s*$' adapters/copilot/jarvis.agent.md | grep -v '^# Jarvis')
+diff <(grep -v '^\s*$' adapters/claude-code/jarvis.md | grep -v '^Tarefa do arquiteto') <(grep -v '^\s*$' adapters/copilot/jarvis.agent.md | grep -v '^# Jarvis')
 ```
 
-The expected output is the frontmatter difference and nothing else.
+A saída esperada é a diferença de frontmatter e nada mais.
 
-The Friday stubs carry the same rule once the dev layer is authored.
+Os stubs da Friday seguem a mesma regra quando a camada do dev for escrita.

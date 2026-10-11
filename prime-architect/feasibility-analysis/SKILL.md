@@ -1,159 +1,157 @@
 ---
 name: feasibility-analysis
-description: Judge a demand against the system that would have to absorb it, before any specification exists - producing classified findings and exactly one verdict. Architect-layer skill, invoked, never a mandatory gate. Always runs impact-mapping first and judges over that map instead of re-deriving reach. Use when the architect brings a story, PRD, epic, or informal proposal and asks whether it can be done, what it would break, or what stands in the way - "is this doable", "can we absorb this", "what blocks this story", "the product owner wants X, what breaks". Do NOT use to map reach without judging it (impact-mapping alone answers what a change touches), to estimate effort or duration (cost is evidence, not a criterion), to write use cases (use-case-creator, use-case-extractor), to plan an approved change (its-generator), to judge an implementation already written (code-review), or to write application code (dev layer - this skill never writes code).
+description: Julga uma demanda contra o sistema que teria de absorvê-la, antes de existir qualquer especificação - produzindo achados classificados e exatamente um veredito. Skill da camada do arquiteto, invocada, nunca um gate obrigatório. Sempre executa o impact-mapping primeiro e julga sobre esse mapa em vez de rederivar o alcance. Use quando o arquiteto trouxer uma story, PRD, épico ou proposta informal e perguntar se é possível fazer, o que quebraria ou o que está no caminho - "isso é factível", "conseguimos absorver isto", "o que bloqueia esta story", "o product owner quer X, o que quebra". NÃO use para mapear o alcance sem julgá-lo (o impact-mapping sozinho responde o que uma mudança toca), para estimar esforço ou duração (custo é evidência, não critério), para escrever casos de uso (use-case-creator, use-case-extractor), para planejar uma mudança aprovada (its-generator), para julgar uma implementação já escrita (code-review) nem para escrever código de aplicação (camada do dev - esta skill nunca escreve código).
 ---
 
 # Feasibility Analysis (prime-architect)
 
-`code-review` judges **code against a plan, after**. This skill judges **a demand against the system, before** — same shape, opposite end of the pipeline. Both turn versioned criteria into classified findings and exactly one verdict; neither writes the artifact it judges.
+O `code-review` julga **código contra um plano, depois**. Esta skill julga **uma demanda contra o sistema, antes** — mesmo formato, extremo oposto do pipeline. Ambos transformam critérios versionados em achados classificados e exatamente um veredito; nenhum escreve o artefato que julga.
 
-It exists because the rest of the process assumes the demand will be built. The `use-case-creator` elicits, the `its-generator` plans, and impossibility surfaces only after both have been paid for. This skill is the cheap place to find out.
+Ela existe porque o resto do processo presume que a demanda será construída. O `use-case-creator` elicita, o `its-generator` planeja, e a impossibilidade só aparece depois que os dois já foram pagos. Esta skill é o lugar barato para descobrir.
 
-It is **invoked, never obligatory**. Nothing downstream requires a feasibility verdict, and a verdict never authorizes skipping the specification pipeline: *Viable* means the demand may enter refinement, not that it is specified.
+Ela é **invocada, nunca obrigatória**. Nada adiante exige um veredito de viabilidade, e um veredito nunca autoriza pular o pipeline de especificação: *Viable* significa que a demanda pode entrar no refinamento, não que está especificada.
 
-## Evidence and judgment are separate acts
+## Evidência e julgamento são atos separados
 
-This skill does not derive reach. `impact-mapping` produces the evidence — what the demand touches, in which registered state, against which documented behavior — and this skill rules on it. The split is deliberate and it is the same one the repository already draws between `prime-core/quality-model` and `prime-architect/code-review`: defining and judging fail in different ways, and a skill that produces its own evidence and then rules on it has no one checking the first half.
+Esta skill não deriva alcance. O `impact-mapping` produz a evidência — o que a demanda toca, em qual estado registrado, contra qual comportamento documentado — e esta skill decide sobre ela. A divisão é deliberada e é a mesma que o repositório já traça entre o `prime-core/quality-model` e o `prime-architect/code-review`: definir e julgar falham de modos diferentes, e uma skill que produz sua própria evidência e depois decide sobre ela não tem ninguém conferindo a primeira metade.
 
-Practically: **reference the map, never restate it.** The report cites the map; it does not copy the surface into itself.
+Na prática: **referencie o mapa, nunca o repita.** O relatório cita o mapa; não copia a superfície para dentro de si.
 
-## What this skill does not do
+## O que esta skill não faz
 
-- **It does not estimate effort.** No hours, no story points, no sprint counts. Sizing belongs to the team that will do the work. What this skill delivers is the **cost drivers** — the facts an estimate is built from — read off the map.
-- **It does not design the solution.** Naming a viable path is part of the verdict's reasoning; specifying it is the `its-generator`'s job, and only after the use cases exist.
-- **It does not decide whether the demand is worth doing.** Value is the demander's call. This skill answers *can it be absorbed, at what structural cost, and what must be true first*.
+- **Não estima esforço.** Sem horas, sem story points, sem contagem de sprints. Dimensionar pertence ao time que fará o trabalho. O que esta skill entrega são os **direcionadores de custo** — os fatos com que uma estimativa é construída — lidos do mapa.
+- **Não projeta a solução.** Nomear um caminho viável faz parte do raciocínio do veredito; especificá-lo é trabalho do `its-generator`, e só depois que os casos de uso existirem.
+- **Não decide se a demanda vale a pena.** Valor é decisão de quem demanda. Esta skill responde *pode ser absorvida, a que custo estrutural, e o que precisa ser verdade antes*.
 
-## Step 0 — Load the configuration and the criteria
+## Passo 0 — Carregar a configuração e os critérios
 
-Read `docs/prime-config.md` per **prime-core/prime-config** — location, fallback, precedence, divergence handling, and bootstrap all live in that contract; never re-derive them here. From the config this skill uses: the stack and versions (the ceiling every proposed path must fit under), the **area register**, the **slot overrides**, the document locations including the ADR repository, and the verification commands.
+Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localização, alternativa, precedência, tratamento de divergências e bootstrap vivem todos nesse contrato; nunca os rederive aqui. Da configuração esta skill usa: a stack e as versões (o teto sob o qual todo caminho proposto precisa caber), o **registro de áreas**, os **overrides de slots**, as localizações de documentos, incluindo o repositório de ADRs, e os comandos de verificação.
 
-Then load, as the criteria the judgment is anchored in: **prime-core/quality-model** (`QM-XX-N`), **prime-core/coding-standards** (`CS-XX-N`), and the **Accepted ADRs**.
+Em seguida carregue, como os critérios em que o julgamento se ancora: o **prime-core/quality-model** (`QM-XX-N`), o **prime-core/coding-standards** (`CS-XX-N`) e os **ADRs Accepted**.
 
-**Cost is evidence, never a criterion.** The quality model answers *what good is*, not *what this costs*; do not stretch it into a cost vocabulary it does not own. Where the confrontation needs a criterion that does not exist — a convention slot with neither a stack default nor a project override — **report the gap** per `coding-standards` and never improvise the value. A criterion missing in three separate runs is the trigger for a governance PR against the core, not for a local invention.
+**Custo é evidência, nunca um critério.** O modelo de qualidade responde *o que é bom*, não *quanto isto custa*; não o estique até virar um vocabulário de custo que ele não possui. Onde a confrontação precisa de um critério que não existe — um slot de convenção sem padrão da stack nem override do projeto — **reporte a lacuna** conforme o `coding-standards` e nunca improvise o valor. Um critério ausente em três execuções distintas é o gatilho para um PR de governança contra o core, não para uma invenção local.
 
-## Step 1 — Restate the demand as something checkable
+## Passo 1 — Reformular a demanda como algo verificável
 
-State in one or two sentences what observable outcome the demand claims, and confirm it with the architect. If the demand cannot be reduced to an observable change in system behavior — if it names a technology, a preference, or an aspiration instead of an outcome — **stop here** and return it. There is nothing to judge, and judging it anyway is how this skill would degrade into opinion.
+Declare em uma ou duas frases qual resultado observável a demanda afirma, e confirme com o arquiteto. Se a demanda não pode ser reduzida a uma mudança observável no comportamento do sistema — se nomeia uma tecnologia, uma preferência ou uma aspiração em vez de um resultado — **pare aqui** e devolva-a. Não há nada a julgar, e julgá-la mesmo assim é como esta skill degeneraria em opinião.
 
-Record explicitly what the demand does **not** claim. A boundary asserted at this step is what keeps the analysis from expanding into a system-wide review.
+Registre explicitamente o que a demanda **não** afirma. Uma fronteira declarada neste passo é o que impede a análise de se expandir numa revisão do sistema inteiro.
 
-## Step 2 — Run the map
+## Passo 2 — Executar o mapa
 
-Run `impact-mapping` on the demand **as restated in Step 1** — that restatement is the map's subject line, and the map's own Step 1 is not re-run. What this skill consumes from it:
+Execute o `impact-mapping` sobre a demanda **como reformulada no Passo 1** — essa reformulação é a linha de assunto do mapa, e o Passo 1 do próprio mapa não é reexecutado. O que esta skill consome dele:
 
-- the **three degrees** of reach — direct, coupled, contract surface;
-- the **area states** overlay (`current`, `legacy-maintained`, `strangler`);
-- the **documented layer** — use case coverage, divergences found, ADR incidence;
-- the **provenance marking** on every line (anchored, `[INFERRED]`, `[UNVERIFIED]`, gap), whose vocabulary is defined by that skill and reused here unchanged;
-- and, decisively, the **stated edge** — where the map deliberately stopped.
+- os **três graus** de alcance — direto, acoplado, superfície de contrato;
+- a sobreposição de **estados de área** (`current`, `legacy-maintained`, `strangler`);
+- a **camada documentada** — cobertura por casos de uso, divergências encontradas, incidência de ADR;
+- a **marcação de proveniência** em cada linha (ancorada, `[INFERRED]`, `[UNVERIFIED]`, lacuna), cujo vocabulário é definido por aquela skill e reutilizado aqui sem alteração;
+- e, decisivamente, a **borda declarada** — onde o mapa deliberadamente parou.
 
-The edge is what makes *Undecidable* an honest verdict instead of an evasion. Ruling over a map that silently truncated its reach produces a confident verdict on a partial picture, which is the worst output this skill can produce.
+A borda é o que faz de *Undecidable* um veredito honesto em vez de uma evasiva. Decidir sobre um mapa que truncou o próprio alcance em silêncio produz um veredito confiante sobre um quadro parcial, que é a pior saída que esta skill pode produzir.
 
-**Insufficient input stops the run without a verdict.** On this path the map cannot reach that finding: it is produced by the map's Step 1, which does not run here because Step 1 above supplied the restatement. A demand that could not be restated was already returned at Step 1, before any map was commissioned. The finding still arrives one way — the architect brings a map run standalone that stopped there — and the response is the same: stop, return the questions, and report no verdict. There is no *Undecidable* in either case, because nothing was judged. A demand nobody could describe as a change to the system has not reached this skill yet.
+**`Insufficient input` interrompe a execução sem veredito.** Neste caminho o mapa não consegue chegar a esse achado: ele é produzido pelo Passo 1 do mapa, que não roda aqui porque o Passo 1 acima forneceu a reformulação. Uma demanda que não pôde ser reformulada já foi devolvida no Passo 1, antes de qualquer mapa ser comissionado. O achado ainda chega de uma maneira — o arquiteto traz um mapa executado de forma avulsa que parou ali — e a resposta é a mesma: pare, devolva as perguntas e não reporte veredito. Não existe *Undecidable* em nenhum dos casos, porque nada foi julgado. Uma demanda que ninguém soube descrever como uma mudança no sistema ainda não chegou a esta skill.
 
-Two findings from the map are read before any lens runs, because they change what a verdict can mean:
+Dois achados do mapa são lidos antes de qualquer lente rodar, porque mudam o que um veredito pode significar:
 
-- **Undocumented affected area** → a `Condition:` with an owner and a route to `use-case-extractor`, not an unknown to absorb. Feasibility judged against code nobody has described is judged in the dark, but an undescribed area is a known gap with a known route — that is what a condition is for. Green-field addition touching no existing behavior needs no baseline; note it and proceed.
-- **The one exception:** when the undocumented area is where a `Blocker:` would rest — the map places the demand's hardest constraint inside behavior nobody has described — the run is Undecidable with current evidence, naming the extractor run as the one that would decide it. Absence of a blocker carries the same evidentiary burden as a blocker: Viable with conditions asserts that nothing blocks, and asserting that over unread code is the failure this skill exists to prevent. This exception is stated and justified in the report, never assumed silently.
-- **Divergence between code and use case** → where the two already disagree, **neither is a safe baseline**, and a verdict resting on the wrong one dissolves on contact. This alone can carry the run to *Undecidable*.
+- **Área afetada não documentada** → uma `Condition:` com responsável e rota para o `use-case-extractor`, não uma incógnita a absorver. Viabilidade julgada contra código que ninguém descreveu é julgada no escuro, mas uma área não descrita é uma lacuna conhecida com rota conhecida — é para isso que serve uma condição. Adição green-field que não toca nenhum comportamento existente dispensa baseline; anote e prossiga.
+- **A única exceção:** quando a área não documentada é onde um `Blocker:` se apoiaria — o mapa coloca a restrição mais dura da demanda dentro de comportamento que ninguém descreveu —, a execução é Undecidable with current evidence, nomeando a execução do extractor como a que decidiria. A ausência de um blocker carrega o mesmo ônus de evidência que um blocker: Viable with conditions afirma que nada bloqueia, e afirmar isso sobre código não lido é a falha que esta skill existe para prevenir. Essa exceção é declarada e justificada no relatório, nunca presumida em silêncio.
+- **Divergência entre código e caso de uso** → onde os dois já discordam, **nenhum dos dois é um baseline seguro**, e um veredito apoiado no errado se dissolve ao primeiro contato. Isso sozinho pode levar a execução a *Undecidable*.
 
-## Step 3 — The lenses, in decreasing order of what kills a demand
+## Passo 3 — As lentes, em ordem decrescente do que mata uma demanda
 
-Each lens points to where its criterion lives — never redefines it. Run them over the map; do not re-walk the code the map already walked.
+Cada lente aponta para onde seu critério vive — nunca o redefine. Rode-as sobre o mapa; não reande o código que o mapa já andou.
 
-- **Constraint** — the hard ceilings: stack and version (config), platform, data that does not exist, an external dependency or license the project does not hold, a regulatory boundary. This lens produces the only findings that make something genuinely impossible, which is why it is read first and why it is usually the shortest.
-- **Structural fit** — does the demand fight the shape of the system? `CS-AR-1..5`, `QM-CC-1..5`, and the ADR incidence carried in from the map. **A demand that contradicts an Accepted ADR is not infeasible** — it is an ADR question. It becomes a `Condition:` naming the ADR, owned by the architect and routed to the ADR lifecycle: the decision must be revisited before the demand enters specification. This skill does not draft the ADR. Drafting requires a Decision, and this skill designs nothing — it judges. The record is filed through the flow the its-contract defines: by the architect directly at this stage, where no plan exists yet, or by the its-generator once a plan has to commit to it. Never treat a recorded decision as a wall, and never let one be overturned silently inside an analysis.
-- **Contract surface** — of everything the map placed outside this codebase (API shapes, database schema, event payloads, exported files, shared signatures), can every known consumer be migrated, and can the consumer set be enumerated at all? An unenumerable consumer set is a finding in its own right.
-- **Verification** — can the claimed outcome be proven done? The config's verification commands, the observability the affected areas actually have, and the test obligation the change would carry (`CS-TS-1`). A demand nobody can verify as delivered is feasible only under the condition that a way to verify it is built.
-- **Erosion risk** — does the cheapest viable path introduce a *second* way of doing something the project already does one way (`QM-CN-1`)? Answering yes does not block; it names the debt the demand would create, so it can be taken deliberately (`QM-MT-1`) rather than discovered later in review.
-- **Concurrency and scale** — only where the demand's outcome implies them (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`). Do not manufacture this lens for changes that do not carry it.
-- **Security surface** — every new boundary the demand would open: `QM-SR-*`, `CS-SC-*`. A demand that opens one is not blocked by it, but the boundary is a condition with an owner.
+- **Restrição** — os tetos rígidos: stack e versão (configuração), plataforma, dados que não existem, uma dependência externa ou licença que o projeto não possui, uma fronteira regulatória. Esta lente produz os únicos achados que tornam algo genuinamente impossível, razão pela qual é lida primeiro e costuma ser a mais curta.
+- **Encaixe estrutural** — a demanda briga com a forma do sistema? `CS-AR-1..5`, `QM-CC-1..5` e a incidência de ADR trazida do mapa. **Uma demanda que contradiz um ADR Accepted não é inviável** — é uma questão de ADR. Ela vira uma `Condition:` nomeando o ADR, de responsabilidade do arquiteto e roteada ao ciclo de vida do ADR: a decisão precisa ser revisitada antes de a demanda entrar em especificação. Esta skill não redige o ADR. Redigir exige uma Decisão, e esta skill não projeta nada — ela julga. O registro é arquivado pelo fluxo que o its-contract define: pelo arquiteto diretamente nesta etapa, em que ainda não existe plano, ou pelo its-generator quando um plano precisar se comprometer com ele. Nunca trate uma decisão registrada como um muro, e nunca deixe uma ser derrubada em silêncio dentro de uma análise.
+- **Superfície de contrato** — de tudo que o mapa colocou fora desta base de código (formatos de API, esquema de banco, payloads de eventos, arquivos exportados, assinaturas compartilhadas), todo consumidor conhecido pode ser migrado, e o conjunto de consumidores pode ser enumerado? Um conjunto de consumidores não enumerável é um achado por si só.
+- **Verificação** — o resultado afirmado pode ser provado como entregue? Os comandos de verificação da configuração, a observabilidade que as áreas afetadas realmente têm e a obrigação de teste que a mudança carregaria (`CS-TS-1`). Uma demanda que ninguém consegue verificar como entregue é viável apenas sob a condição de que se construa uma forma de verificá-la.
+- **Risco de erosão** — o caminho viável mais barato introduz uma *segunda* forma de fazer algo que o projeto já faz de uma só (`QM-CN-1`)? Responder sim não bloqueia; nomeia a dívida que a demanda criaria, para que possa ser assumida deliberadamente (`QM-MT-1`) em vez de descoberta depois na revisão.
+- **Concorrência e escala** — apenas onde o resultado da demanda as implica (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`). Não fabrique esta lente para mudanças que não a carregam.
+- **Superfície de segurança** — toda nova fronteira que a demanda abriria: `QM-SR-*`, `CS-SC-*`. Uma demanda que abre uma não é bloqueada por isso, mas a fronteira é uma condição com responsável.
 
-## Step 4 — Evidence discipline
+## Passo 4 — Disciplina de evidência
 
-Every finding inherits its anchor from the map and carries it visibly. The vocabulary is `impact-mapping`'s; this skill adds one rule of its own:
+Todo achado herda sua âncora do mapa e a carrega de forma visível. O vocabulário é o do `impact-mapping`; esta skill acrescenta uma regra própria:
 
-**A `Blocker:` requires anchored evidence.** A blocker resting on `[INFERRED]` or `[UNVERIFIED]` evidence is not a blocker — it is the reason the verdict is *Undecidable with current evidence*. Anything asserted by the demand and never checked against code stays `[UNVERIFIED]` no matter how plausible it sounds.
+**Um `Blocker:` exige evidência ancorada.** Um blocker apoiado em evidência `[INFERRED]` ou `[UNVERIFIED]` não é um blocker — é o motivo pelo qual o veredito é *Undecidable with current evidence*. Qualquer coisa afirmada pela demanda e nunca conferida contra o código permanece `[UNVERIFIED]`, por mais plausível que soe.
 
-## Step 5 — Classify every finding
+## Passo 5 — Classificar cada achado
 
-A finding states **where**, **what**, **why** — citing an ID or an evidence anchor — and **what it implies for the demand**.
+Um achado declara **onde**, **o quê**, **por quê** — citando um ID ou uma âncora de evidência — e **o que implica para a demanda**.
 
-- **`Blocker:`** — the demand cannot be absorbed as specified. A hard constraint, or an outcome that contradicts an invariant with no path around it. Requires anchored evidence.
-- **`Condition:`** — feasible, but only if something is true first. Every condition carries an **owner** and a **route** (a skill to run, a decision to take, a dependency to acquire). A condition without a route is a `Blocker:` in disguise.
-- **`Cost driver:`** — does not block and does not condition; changes the size. Area state, breadth of the coupled set, contract surfaces crossed, missing observability, debt the path would create.
-- **`FYI:`** — context the demander should have. No obligation.
+- **`Blocker:`** — a demanda não pode ser absorvida como especificada. Uma restrição rígida, ou um resultado que contradiz um invariante sem caminho para contornar. Exige evidência ancorada.
+- **`Condition:`** — viável, mas só se algo for verdade antes. Toda condição carrega um **responsável** e uma **rota** (uma skill a executar, uma decisão a tomar, uma dependência a adquirir). Uma condição sem rota é um `Blocker:` disfarçado.
+- **`Cost driver:`** — não bloqueia e não condiciona; muda o tamanho. Estado da área, amplitude do conjunto acoplado, superfícies de contrato cruzadas, observabilidade ausente, dívida que o caminho criaria.
+- **`FYI:`** — contexto que quem demanda deveria ter. Sem obrigação.
 
-Aggregate: several findings caused by one structural fact are one finding, stated where it can actually be addressed.
+Agregação: vários achados causados por um único fato estrutural são um achado, declarado onde ele pode realmente ser endereçado.
 
-## Step 6 — The verdict, exactly one
+## Passo 6 — O veredito, exatamente um
 
-The verdict is not read off the findings alone. It resolves from two inputs — the findings
-classified in Step 5 and the **state of the evidence base** carried in from the map — applied
-in this order, first match wins:
+O veredito não é lido apenas dos achados. Ele se resolve a partir de duas entradas — os achados classificados no Passo 5 e o **estado da base de evidência** trazido do mapa —, aplicadas nesta ordem, vale a primeira que casar:
 
-1. **An anchored `Blocker:` exists** → *Not viable as specified*. An anchored blocker is
-   self-sufficient: gaps elsewhere in the evidence do not soften it, because nothing still to
-   be discovered dissolves it — only a change in the demand does. Register the gaps as
-   follow-ups and rule.
-2. **No anchored blocker, and the evidence base does not support asserting that none exists**
-   → *Undecidable with current evidence*. A blocker resting on `[INFERRED]` or `[UNVERIFIED]`
-   evidence lands here, not in rule 1 (Step 4).
-3. **Otherwise, at least one `Condition:`** → *Viable with conditions*.
-4. **Otherwise** → *Viable*.
+1. **Existe um `Blocker:` ancorado** → *Not viable as specified*. Um blocker ancorado é
+   autossuficiente: lacunas em outros pontos da evidência não o suavizam, porque nada que ainda
+   falte descobrir o dissolve — só uma mudança na demanda. Registre as lacunas como
+   follow-ups e decida.
+2. **Nenhum blocker ancorado, e a base de evidência não sustenta afirmar que nenhum existe**
+   → *Undecidable with current evidence*. Um blocker apoiado em evidência `[INFERRED]` ou
+   `[UNVERIFIED]` cai aqui, não na regra 1 (Passo 4).
+3. **Caso contrário, pelo menos uma `Condition:`** → *Viable with conditions*.
+4. **Caso contrário** → *Viable*.
 
-`Cost driver:` and `FYI:` never move the verdict. There is no *"viable but expensive"* verdict —
-size is evidence handed to whoever decides, never a ruling.
+`Cost driver:` e `FYI:` nunca movem o veredito. Não existe veredito *"viável mas caro"* —
+tamanho é evidência entregue a quem decide, nunca um julgamento.
 
-### When the evidence base is insufficient
+### Quando a base de evidência é insuficiente
 
-Rule 2 fires when, and only when, one of these holds:
+A regra 2 dispara quando, e somente quando, uma destas condições se verifica:
 
-- the map's **edge** stops short of what the verdict turns on;
-- an unresolved **code × use case divergence** leaves no safe baseline;
-- an **undocumented area carries the demand's hardest constraint** (Step 2) — a merely
-  undocumented area is a `Condition:`, not an undecidability;
-- a **dependency the outcome rests on** has never been tested.
+- a **borda** do mapa para aquém do que o veredito exige;
+- uma **divergência código × caso de uso** não resolvida não deixa baseline seguro;
+- uma **área não documentada carrega a restrição mais dura da demanda** (Passo 2) — uma área meramente
+  não documentada é uma `Condition:`, não uma indecidibilidade;
+- uma **dependência em que o resultado se apoia** nunca foi testada.
 
-This list is closed. A run that meets a fifth legitimate case adds it here by PR, with the run
-that found it named — never by widening the rule locally. Same discipline `coding-standards`
-applies to an unfilled slot: the gap is reported, not improvised.
+Esta lista é fechada. Uma execução que encontre um quinto caso legítimo o adiciona aqui por PR, com a
+execução que o encontrou nomeada — nunca ampliando a regra localmente. É a mesma disciplina que o
+`coding-standards` aplica a um slot não preenchido: a lacuna é reportada, não improvisada.
 
-### What each verdict obliges you to deliver
+### O que cada veredito obriga você a entregar
 
-- **Viable** — the demand may enter the specification pipeline as written.
-- **Viable with conditions** — every condition named, owned, and routed. This is the common
-  verdict and it is not a hedge: it is the list of what to do first.
-- **Not viable as specified** — blockers listed separately. Never delivered as a bare refusal:
-  state **what would have to change in the demand** for the blocker to dissolve. A demand
-  returned without a door is an obstacle, not a gate.
-- **Undecidable with current evidence** — name the **one run that would decide it** (extractor
-  on area X, a timeboxed spike on Y, a measurement of Z). This verdict is a result, not a
-  failure — an invented verdict costs more than an honest gap.
+- **Viable** — a demanda pode entrar no pipeline de especificação como escrita.
+- **Viable with conditions** — toda condição nomeada, com responsável e rota. É o veredito comum
+  e não é um hedge: é a lista do que fazer primeiro.
+- **Not viable as specified** — blockers listados separadamente. Nunca entregue como uma recusa seca:
+  declare **o que teria de mudar na demanda** para que o blocker se dissolva. Uma demanda
+  devolvida sem uma porta é um obstáculo, não um gate.
+- **Undecidable with current evidence** — nomeie a **única execução que decidiria** (extractor
+  na área X, um spike com tempo limitado em Y, uma medição de Z). Este veredito é um resultado, não uma
+  falha — um veredito inventado custa mais que uma lacuna honesta.
 
-Never deliver a verdict on a demand you did not understand. "Probably fine" is not a verdict.
+Nunca entregue um veredito sobre uma demanda que você não entendeu. "Provavelmente está bem" não é um veredito.
 
-## Step 7 — Follow-ups to register before closing
+## Passo 7 — Follow-ups a registrar antes de encerrar
 
-- Extractor run required to establish a baseline.
-- Divergence routed to the use case skills (`QM-DO-1`) — never patched from inside this skill.
-- **ADR decision to raise** — a recorded decision the demand challenges, including an Accepted ADR it would supersede. Raised as a `Condition:` with the architect as owner. The ADR itself is drafted through the its-contract flow, by the architect directly at this stage or by the its-generator once a plan must commit to it, never here.
-- Unfilled slot to report (`coding-standards`) — never improvised.
-- Config gap: a fact about the project the analysis needed and `docs/prime-config.md` does not carry.
-- Debt the viable path would create, named with a prospective owner (`QM-MT-1`).
+- Execução do extractor necessária para estabelecer um baseline.
+- Divergência roteada às skills de caso de uso (`QM-DO-1`) — nunca remendada de dentro desta skill.
+- **Decisão de ADR a levantar** — uma decisão registrada que a demanda desafia, incluindo um ADR Accepted que ela substituiria. Levantada como uma `Condition:` com o arquiteto como responsável. O ADR em si é redigido pelo fluxo do its-contract, pelo arquiteto diretamente nesta etapa ou pelo its-generator quando um plano precisar se comprometer com ele, nunca aqui.
+- Slot não preenchido a reportar (`coding-standards`) — nunca improvisado.
+- Lacuna de configuração: um fato sobre o projeto de que a análise precisou e que o `docs/prime-config.md` não carrega.
+- Dívida que o caminho viável criaria, nomeada com um responsável prospectivo (`QM-MT-1`).
 
-## Output
+## Saída
 
-A feasibility report — a working artifact of the architect inside the team's refinement, not a
-repository document. It is filed where the demand lives (tracker, PRD thread), never under
-`docs/`, and it appears in no configuration. Header per the same rule as the map: `FA-<demand-id>-N`,
-the date, and the demand.
+Um relatório de viabilidade — um artefato de trabalho do arquiteto dentro do refinamento do time, não um
+documento do repositório. É arquivado onde a demanda vive (tracker, thread do PRD), nunca sob
+`docs/`, e não aparece em nenhuma configuração. Cabeçalho pela mesma regra do mapa: `FA-<demand-id>-N`,
+a data e a demanda.
 
-It contains the restated demand and its boundary, **a reference to the impact map — by ID and
-date**, the findings, the verdict with its one-line reason, and the follow-ups. A reference to a
-map without its date is not a reference: Step 6 rule 2 turns on where that specific map stopped,
-and an undated map cannot answer whether its edge still holds. The operational pass and the
-report template live in `checklists/feasibility-checklist.md`.
+Contém a demanda reformulada e sua fronteira, **uma referência ao mapa de impacto — por ID e
+data**, os achados, o veredito com sua razão de uma linha e os follow-ups. Uma referência a um
+mapa sem sua data não é uma referência: a regra 2 do Passo 6 depende de onde aquele mapa específico
+parou, e um mapa sem data não consegue responder se sua borda ainda vale. A passada operacional e o
+template do relatório vivem em `checklists/feasibility-checklist.md`.
 
-Neither this report nor the map it cites is mandatory for a demand to exist or to advance. The
-team owns the demand; these are tools the architect uses inside that process.
+Nem este relatório nem o mapa que ele cita são obrigatórios para que uma demanda exista ou avance. O
+time é dono da demanda; são ferramentas que o arquiteto usa dentro desse processo.

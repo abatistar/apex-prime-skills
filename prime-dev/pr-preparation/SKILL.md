@@ -1,8 +1,8 @@
 ---
 name: pr-preparation
-description: STUB - How to prepare the PR for the architect review and the Azure pipeline. Dev-layer skill. TO BE AUTHORED.
+description: STUB - Como preparar o PR para a revisão do arquiteto e para o pipeline do Azure. Skill da camada do dev. A SER ESCRITA.
 ---
 
 # pr-preparation
 
-TODO: to be authored separately. This file exists so the layer structure and cross-references are valid.
+TODO: a ser escrita separadamente. Este arquivo existe para que a estrutura de camadas e as referências cruzadas sejam válidas.

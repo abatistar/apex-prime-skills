@@ -1,79 +1,79 @@
 ---
 name: coding-standards
-description: The canonical contract for concrete code conventions owned by prime-core - the catalog of convention slots every project must have decided, the team defaults per stack, the two application classes (invariant vs conventional), and the rules for living with legacy code and for declared migrations. This skill owns the concrete answers that prime-core/quality-model's criteria defer to; project-specific values live in docs/prime-config.md and take precedence. Consult whenever planning, writing, reviewing, or validating code, whenever a quality criterion needs a concrete convention to be checkable, and whenever a change touches an area registered as legacy. Never duplicate its content elsewhere - reference slots by ID.
+description: O contrato canônico das convenções concretas de código, de propriedade do prime-core - o catálogo de slots de convenção que todo projeto precisa ter decidido, os padrões do time por stack, as duas classes de aplicação (invariante vs convencional) e as regras para conviver com código legado e com migrações declaradas. Esta skill é dona das respostas concretas a que os critérios do prime-core/quality-model remetem; os valores específicos do projeto vivem no docs/prime-config.md e têm precedência. Consulte sempre que for planejar, escrever, revisar ou validar código, sempre que um critério de qualidade precisar de uma convenção concreta para ser verificável e sempre que uma mudança tocar uma área registrada como legado. Nunca duplique seu conteúdo em outro lugar - referencie os slots por ID.
 ---
 
-# Coding Standards (prime-core)
+# Padrões de Código (prime-core)
 
-`quality-model` answers *what good is*. This skill answers *what good looks like here* — the concrete conventions its criteria defer to. Where the model says "names must not lie" (`QM-RC-1`), this skill says which naming carries which promise; where it says "the local pattern wins" (`QM-CN-2`), this skill says how an area is classified as local-pattern territory in the first place.
+O `quality-model` responde *o que é bom*. Esta skill responde *como o bom se parece aqui* — as convenções concretas a que os critérios dele remetem. Onde o modelo diz "nomes não podem mentir" (`QM-RC-1`), esta skill diz qual nomenclatura carrega qual promessa; onde ele diz "o padrão local vence" (`QM-CN-2`), esta skill diz como uma área é classificada, em primeiro lugar, como território de padrão local.
 
-The skill does not hold every project's values. It holds three things:
+A skill não guarda os valores de todos os projetos. Guarda três coisas:
 
-1. **The slot catalog** (`references/convention-slots.md`) — the closed list of decisions every project must have taken, each with a stable ID (`CS-XX-N`). A slot is a question, not an answer.
-2. **The team defaults** (`references/defaults-<stack>.md`) — the answer the team uses when a project says nothing. Java is the default stack: `references/defaults-java.md`.
-3. **The rules of engagement** — application classes, legacy handling, migration discipline, and how a departure is made.
+1. **O catálogo de slots** (`references/convention-slots.md`) — a lista fechada de decisões que todo projeto precisa ter tomado, cada uma com um ID estável (`CS-XX-N`). Um slot é uma pergunta, não uma resposta.
+2. **Os padrões do time** (`references/defaults-<stack>.md`) — a resposta que o time usa quando um projeto nada diz. Java é a stack padrão: `references/defaults-java.md`.
+3. **As regras de engajamento** — classes de aplicação, tratamento de legado, disciplina de migração e como um desvio é feito.
 
-Read the slot catalog before planning or reviewing code. Read the defaults file for the project's stack; where `docs/prime-config.md` states a value for a slot, that value wins.
+Leia o catálogo de slots antes de planejar ou revisar código. Leia o arquivo de padrões da stack do projeto; onde o `docs/prime-config.md` declara um valor para um slot, esse valor vence.
 
-## Boundaries
+## Fronteiras
 
-- **prime-core/quality-model** owns the principles and the non-negotiable floor. This skill never restates a criterion — it references `QM-XX-N` and supplies the concrete form that makes it checkable.
-- **prime-core/prime-config** owns the project's values: the *Conventions and constraints* section holds slot overrides and the legacy area register. Precedence is the config contract's: explicit beats detected, config overrides declared defaults, config never waives a core rule.
-- **prime-core/its-contract** owns decisions that outlive the story. A convention adopted repo-wide is an ADR that then updates a slot value — never a preference asserted inside an ITS.
-- **prime-architect/code-review** owns enforcement. This skill defines the convention; the reviewer decides whether a given change met it.
+- O **prime-core/quality-model** é dono dos princípios e do piso inegociável. Esta skill nunca repete um critério — ela referencia o `QM-XX-N` e fornece a forma concreta que o torna verificável.
+- O **prime-core/prime-config** é dono dos valores do projeto: a seção *Convenções e restrições* guarda os overrides de slots e o registro de áreas legadas. A precedência é a do contrato da configuração: explícito vence detectado, a configuração sobrescreve padrões declarados, a configuração nunca dispensa uma regra do core.
+- O **prime-core/its-contract** é dono das decisões que sobrevivem à story. Uma convenção adotada em todo o repositório é um ADR que então atualiza o valor de um slot — nunca uma preferência afirmada dentro de uma ITS.
+- O **prime-architect/code-review** é dono do enforcement. Esta skill define a convenção; o revisor decide se uma dada mudança a cumpriu.
 
-## Two application classes
+## Duas classes de aplicação
 
-Every slot is tagged **INVARIANT** or **CONVENTIONAL**, and the tag decides what happens when the surrounding code disagrees with the standard. This resolves the tension between `QM-CN-2` (the local pattern beats your opinion) and the exception discipline (meet the floor in what you write): both are right, over different slots.
+Todo slot é marcado como **INVARIANT** ou **CONVENTIONAL**, e a marca decide o que acontece quando o código ao redor discorda do padrão. Isso resolve a tensão entre o `QM-CN-2` (o padrão local vence a sua opinião) e a disciplina de exceção (cumpra o piso no que você escreve): ambos estão certos, sobre slots diferentes.
 
-**INVARIANT** — applies to every line written or changed, regardless of what surrounds it. These are the slots that carry a `[NON-NEGOTIABLE]` criterion into concrete form: swallowed errors, leaked secrets, unvalidated boundary input, unparameterized queries. There is no such thing as "the local pattern here is to swallow the exception". Departure is possible only as a named, owned exception per the quality model's discipline — never by inheritance.
+**INVARIANT** — vale para toda linha escrita ou alterada, independentemente do que a cerca. São os slots que levam um critério `[NON-NEGOTIABLE]` à forma concreta: erros engolidos, segredos vazados, entrada de fronteira não validada, queries não parametrizadas. Não existe "o padrão local aqui é engolir a exceção". O desvio só é possível como uma exceção nomeada e com responsável, conforme a disciplina do modelo de qualidade — nunca por herança.
 
-**CONVENTIONAL** — the local pattern wins, always. In an area written to an older convention, following the current standard in your fragment introduces the second way of doing things that `QM-CN-1` forbids. Consistency with the surroundings is itself the criterion. The current standard reaches old code through one route only: a declared migration.
+**CONVENTIONAL** — o padrão local vence, sempre. Numa área escrita sob uma convenção mais antiga, seguir o padrão atual no seu fragmento introduz a segunda forma de fazer as coisas que o `QM-CN-1` proíbe. A consistência com o entorno é, ela mesma, o critério. O padrão atual chega ao código antigo por uma única via: uma migração declarada.
 
-The consequence, stated plainly so nobody has to infer it: **old code staying old is correct, not debt.** What is debt is old code that a declared migration abandoned halfway.
+A consequência, dita às claras para que ninguém precise inferi-la: **código antigo continuar antigo é correto, não é dívida.** Dívida é o código antigo que uma migração declarada abandonou pela metade.
 
-## Legacy: the area register
+## Legado: o registro de áreas
 
-Classification is declared, not judged per pull request. `docs/prime-config.md` registers each area in one of the three states below, under *Conventions and constraints › Area register*. That section's shape and its worked example belong to prime-core/prime-config and its template; what belongs here is what the three states mean.
+A classificação é declarada, não julgada a cada pull request. O `docs/prime-config.md` registra cada área em um dos três estados abaixo, em *Convenções e restrições › Registro de áreas*. A forma dessa seção e seu exemplo trabalhado pertencem ao prime-core/prime-config e ao seu template; o que pertence aqui é o que os três estados significam.
 
-- **current** — the full standard applies: invariant and conventional slots alike.
-- **legacy-maintained** — invariant slots apply to what you write and change; conventional slots defer to the local pattern. The area is fixed, extended, and maintained normally.
-- **strangler** — as above, plus: no new behavior. New capability is born in the replacement module. Name the replacement and the migration ID, or the label means nothing.
+- **current** — o padrão completo se aplica: slots invariantes e convencionais.
+- **legacy-maintained** — os slots invariantes se aplicam ao que você escreve e altera; os slots convencionais seguem o padrão local. A área é corrigida, estendida e mantida normalmente.
+- **strangler** — como acima, mais: nenhum comportamento novo. A capacidade nova nasce no módulo substituto. Nomeie o substituto e o ID da migração, ou o rótulo não significa nada.
 
-Never infer these states from directory names or file age. An unregistered area is `current`, and a project that needs a fourth state is telling you the register is wrong, not that the rule is.
+Nunca infira esses estados de nomes de diretórios ou da idade dos arquivos. Uma área não registrada é `current`, e um projeto que precisa de um quarto estado está dizendo que o registro está errado, não a regra.
 
-## Declared migrations
+## Migrações declaradas
 
-A migration is how a conventional slot's value changes for code that already exists. It carries a **new slot value, an owner, a scope, and a completion condition**. Absent any of the four, it is not a migration — it is erosion with a name (`QM-CN-1`).
+Uma migração é como o valor de um slot convencional muda para código que já existe. Carrega um **novo valor de slot, um responsável, um escopo e uma condição de conclusão**. Faltando qualquer um dos quatro, não é uma migração — é erosão com nome (`QM-CN-1`).
 
-- Deliberate and wholesale, never file-by-file opportunism. Automated where the change is mechanical.
-- The old value stays valid inside the scope until the migration completes; both values are correct simultaneously, and this is the only situation where that is true.
-- A migration that stops advancing is cancelled explicitly and the area returns to `legacy-maintained`. Half-migrated is the worst state; leaving it undeclared is worse than reverting.
+- Deliberada e em bloco, nunca oportunismo arquivo a arquivo. Automatizada onde a mudança for mecânica.
+- O valor antigo continua válido dentro do escopo até a migração concluir; os dois valores estão corretos simultaneamente, e esta é a única situação em que isso é verdade.
+- Uma migração que para de avançar é cancelada explicitamente e a área volta a `legacy-maintained`. Meio migrado é o pior estado; deixá-lo não declarado é pior do que reverter.
 
-## Unfilled slots
+## Slots não preenchidos
 
-A slot with no value — neither a stack default nor a config override — is a **reportable gap**, not a free choice. Consuming skills surface it the way `prime-config` surfaces a missing mandatory section: report and offer to fill, do not improvise a value and do not proceed silently on a task that depends on it. The catalog exists so that "nobody ever decided where transactions begin" becomes visible instead of becoming thirty inconsistent decisions.
+Um slot sem valor — nem padrão da stack nem override da configuração — é uma **lacuna reportável**, não uma escolha livre. As skills consumidoras a expõem do jeito que o `prime-config` expõe uma seção obrigatória ausente: reportam e oferecem preencher, não improvisam um valor e não prosseguem em silêncio numa tarefa que dependa dele. O catálogo existe para que "ninguém nunca decidiu onde as transações começam" se torne visível em vez de virar trinta decisões inconsistentes.
 
-## The health signal
+## O sinal de saúde
 
-Conformance of the whole codebase is the wrong measurement: it never reaches 100%, it is not actionable, and it punishes areas the register already exempted. One signal carries the job instead:
+A conformidade da base de código inteira é a medida errada: nunca chega a 100%, não é acionável e pune áreas que o registro já isentou. Um sinal faz o trabalho em seu lugar:
 
-- **Per-change conformance.** Measured over the diff, never the file. A change is conformant when it meets every invariant slot and the applicable conventional value for its area. Binary, checked at the pull request — which makes legacy irrelevant to the merge decision.
+- **Conformidade por mudança.** Medida sobre o diff, nunca sobre o arquivo. Uma mudança é conforme quando cumpre todo slot invariante e o valor convencional aplicável à sua área. Binária, verificada no pull request — o que torna o legado irrelevante para a decisão de merge.
 
-The signal approves and rejects nothing by itself; enforcement belongs to `code-review`.
+O sinal não aprova nem reprova nada por si só; o enforcement pertence ao `code-review`.
 
-## Versioning
+## Versionamento
 
-Same discipline as the quality model, for the same reason — a departure or an improvement note must cite a stable, dated thing.
+A mesma disciplina do modelo de qualidade, pelo mesmo motivo — um desvio ou uma nota de melhoria precisa citar algo estável e datado.
 
-- The slot catalog carries a version; slot **IDs are stable and never renumbered**. A retired slot leaves its ID retired.
-- Changing a slot's *value* in a defaults file is a normal change. Adding, retiring, or reclassifying a *slot* changes the contract and goes through the governance PR reviewed by the quality model's owner.
-- Evolution is recorded by the governance PR itself, in version control. This skill keeps no parallel history.
+- O catálogo de slots carrega uma versão; os **IDs dos slots são estáveis e nunca renumerados**. Um slot aposentado deixa seu ID aposentado.
+- Mudar o *valor* de um slot em um arquivo de padrões é uma mudança normal. Adicionar, aposentar ou reclassificar um *slot* muda o contrato e passa pelo PR de governança revisado pelo dono do modelo de qualidade.
+- A evolução é registrada pelo próprio PR de governança, no controle de versão. Esta skill não mantém histórico paralelo.
 
-## Consumption rules
+## Regras de consumo
 
-**For `its-generator`** — load the slot catalog and the project's effective values before planning. The plan conforms to the slots that govern the touched areas: a change landing in a `legacy-maintained` area plans against the local pattern, and saying so belongs in the ITS (an out-of-scope boundary or a discarded-alternative line), not in the implementer's head. A slot the plan needs and cannot resolve is a gap to report, not to invent.
+**Para o `its-generator`** — carregue o catálogo de slots e os valores efetivos do projeto antes de planejar. O plano se conforma aos slots que governam as áreas tocadas: uma mudança que cai numa área `legacy-maintained` planeja contra o padrão local, e dizê-lo pertence à ITS (uma fronteira de fora de escopo ou uma linha de alternativa descartada), não à cabeça do implementador. Um slot de que o plano precisa e que não consegue resolver é uma lacuna a reportar, não a inventar.
 
-**For `its-implementation`** — the effective value for the area you are touching is the value you follow, and the area register tells you which. Meet every invariant slot in new and changed code. Where an invariant is already violated around you, name it as inherited debt rather than adopt it. Ambiguity about which value applies is a question returned to the architect, never an assumption.
+**Para o `its-implementation`** — o valor efetivo para a área que você está tocando é o valor que você segue, e o registro de áreas diz qual. Cumpra todo slot invariante em código novo e alterado. Onde um invariante já é violado ao seu redor, nomeie-o como dívida herdada em vez de adotá-lo. Ambiguidade sobre qual valor se aplica é uma pergunta devolvida ao arquiteto, nunca uma suposição.
 
-**For `code-review`** — findings cite slot IDs alongside criterion IDs (`CS-ER-4` / `QM-EO-2`), so the conversation is about a versioned decision instead of a reviewer's taste. Judge conventional slots against the area's registered state, not against the current standard. A conventional finding in a `legacy-maintained` area is only valid if the change introduced a *third* pattern — neither local nor current.
+**Para o `code-review`** — os achados citam IDs de slots junto com IDs de critérios (`CS-ER-4` / `QM-EO-2`), de modo que a conversa seja sobre uma decisão versionada em vez do gosto de um revisor. Julgue slots convencionais contra o estado registrado da área, não contra o padrão atual. Um achado convencional numa área `legacy-maintained` só é válido se a mudança introduziu um *terceiro* padrão — nem local, nem atual.

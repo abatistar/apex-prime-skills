@@ -1,127 +1,127 @@
-# Quality Criteria — v1.0
+# Critérios de Qualidade — v1.0
 
-Canonical criteria catalog owned by `prime-core/quality-model`. The SKILL.md defines the tiers, the exception discipline, the versioning, the boundaries, and the consumption rules — this file is the criteria. This is a **definition** of the target, not an enforcement gate: new code is built against it, and the role skills reference it to question their deliverables. Cite criteria by ID (`QM-XX-N`). IDs are stable and never renumbered; version changes go through the governance PR, which is the record of what changed and why.
+Catálogo canônico de critérios de propriedade do `prime-core/quality-model`. O SKILL.md define os níveis, a disciplina de exceção, o versionamento, as fronteiras e as regras de consumo — este arquivo são os critérios. Esta é uma **definição** do alvo, não um gate de enforcement: o código novo é construído contra ela, e as skills de papel a referenciam para questionar seus entregáveis. Cite os critérios por ID (`QM-XX-N`). Os IDs são estáveis e nunca renumerados; mudanças de versão passam pelo PR de governança, que é o registro do que mudou e por quê.
 
-**North star.** Quality is one property — *the system is safe, predictable, and cheap to change over time* — seen from eight angles. The dimensions below are lenses on it, not an independent checklist.
+**Estrela-guia.** Qualidade é uma única propriedade — *o sistema é seguro, previsível e barato de mudar ao longo do tempo* — vista de oito ângulos. As dimensões abaixo são lentes sobre ela, não um checklist independente.
 
-**Tiers (the nature of a criterion, not an automatic consequence).**
-- **[NON-NEGOTIABLE]** — a cardinal sin: the floor for new code. Not *silently* negotiable — met, or departed from as a named, deliberate, owned exception (see below).
-- **[CALIBRATED]** — judgment against context, stated with its honest tension. The model gives the criterion and the trade-off; the reader calibrates. Never a rule to apply mechanically.
-- **[AUTOMATE]** — owned by tooling. Human attention re-litigating it is waste; its absence from the toolchain is what's worth raising.
+**Níveis (a natureza de um critério, não uma consequência automática).**
+- **[NON-NEGOTIABLE]** — um pecado capital: o piso para código novo. Não negociável *em silêncio* — cumprido, ou desrespeitado como uma exceção nomeada, deliberada e com responsável (veja abaixo).
+- **[CALIBRATED]** — julgamento contra o contexto, declarado com sua tensão honesta. O modelo dá o critério e o trade-off; o leitor calibra. Nunca uma regra a aplicar mecanicamente.
+- **[AUTOMATE]** — de responsabilidade das ferramentas. A atenção humana gasta rediscutindo-o é desperdício; o que vale levantar é a sua ausência na toolchain.
 
-**The calibration rule (applies to every dimension).** Excess is as harmful as deficiency. The bar is proportional to the code's expected lifetime and importance and to the realistic threat model. Maturity is knowing when a criterion stops applying.
+**A regra de calibração (vale para toda dimensão).** O excesso é tão danoso quanto a deficiência. A régua é proporcional à vida útil esperada e à importância do código e ao modelo de ameaças realista. Maturidade é saber quando um critério deixa de se aplicar.
 
-**Exceptions (legacy and deliberate debt).** The model describes the target; real code departs from it for legacy and for chosen debt, and that is legitimate. The rule is *silent versus deliberate*: a departure is acceptable when named, justified, and owned (a comment, a backlog item, or an ADR) — the sin is the invisible departure, not the debt. The model applies to code you **write and change**, not retroactively to all legacy; in existing code, matching the local pattern (`QM-CN-2`) is itself a criterion. Security criteria (`QM-SR-*`) carry the highest exception bar — a silent gap there can be fatal on its own.
-
----
-
-## The core floor — cardinal sins at a glance
-
-The non-negotiables, gathered for scanning. Each is the floor for new code and may be departed from only as a named, deliberate, owned exception. Everything else in the catalog is structured judgment.
-
-- **QM-RC-1** — No lying names, no hidden side effects; code does what it appears to do.
-- **QM-TS-1** — No flaky test left in the suite: fix immediately or remove.
-- **QM-TS-2** — Tests verify behavior, not implementation.
-- **QM-TS-4** — Coverage is never a merge gate; read only as a negative signal.
-- **QM-CC-1** — No shared mutable state coupling between modules.
-- **QM-CN-1** — No erosion: established patterns change deliberately and wholesale, never piecemeal.
-- **QM-CN-2** — Consistency with the surrounding code beats personal preference.
-- **QM-EO-1** — Never swallow an error silently.
-- **QM-EO-2** — Never leak sensitive data in logs or error messages, or expose internals to end users.
-- **QM-EO-3** — Preserve the cause chain and stack trace when propagating.
-- **QM-MT-1** — No invisible deliberate debt: a shortcut taken on purpose is named when taken.
-- **QM-DO-1** — Documentation must not lie; it lives beside what it describes.
-- **QM-SR-1** — Never trust external input: validate at the boundary, keep data separated from code.
-- **QM-SR-2** — No secrets in source or version control.
-- **QM-SR-3** — Don't roll your own crypto; never store passwords plaintext or reversibly.
-- **QM-SR-4** — Don't ship known-vulnerable dependencies.
+**Exceções (legado e dívida deliberada).** O modelo descreve o alvo; o código real se desvia dele por legado e por dívida escolhida, e isso é legítimo. A regra é *silencioso versus deliberado*: um desvio é aceitável quando nomeado, justificado e com responsável (um comentário, um item de backlog ou um ADR) — o pecado é o desvio invisível, não a dívida. O modelo se aplica ao código que você **escreve e altera**, não retroativamente a todo o legado; no código existente, seguir o padrão local (`QM-CN-2`) é, ele mesmo, um critério. Os critérios de segurança (`QM-SR-*`) carregam a régua de exceção mais alta — uma lacuna silenciosa ali pode ser fatal por si só.
 
 ---
 
-## RC — Readability & clarity
-*Unifying principle: minimize cognitive load — how much a reader must hold in working memory to understand a piece in isolation.*
+## O piso do core — pecados capitais num relance
 
-- **QM-RC-1 [NON-NEGOTIABLE]** — Principle of least surprise. Code does what it appears to do. A name or signature must not conceal state mutation, I/O, or events (no `getX` that also writes; no "read" that mutates global state or fires an event). Names must not lie.
-- **QM-RC-2 [CALIBRATED]** — Functions are short, do one thing, at a single level of abstraction (no byte-level detail mixed into high-level orchestration). *Tension: this is not a line-count rule; over-fragmentation into tiny functions harms readability as much as monoliths.*
-- **QM-RC-3 [CALIBRATED]** — Flatten nesting with guard clauses / early returns; high cyclomatic complexity is the measurable symptom. *Tension: threshold, not absolute — judge by the reader's load.*
-- **QM-RC-4 [CALIBRATED]** — Keep things that change together close (locality). Duplication is cheaper than the wrong abstraction; abstractions must be "deep" (simple interface hiding real complexity), not "shallow" (indirection that hides nothing). *Tension: DRY taken to the extreme destroys locality — a little duplication can be the right price.*
-- **QM-RC-5 [CALIBRATED]** — Comments explain *why*, not *what*; self-explanatory code first, comments for the irreducible remainder (external constraint, avoided bug, non-obvious choice). *Tension: a comment restating the code rots into a lie; a comment explaining *what* a confusing block does usually signals the block should be rewritten.*
-- **QM-RC-6 [CALIBRATED]** — No cleverness that optimizes the writer's ego over the reader's time (dense one-liners, language-trick golf). Optimize for the reader — the more frequent audience.
-- **Audience note.** Readability is relative to the team that maintains the code; there is no absolute. The most reliable test is not a metric but review: every "what does this do?" / "why this way?" is a point where the code failed to explain itself.
-- **[AUTOMATE]** — Complexity metrics as signals (not verdicts). Formatting belongs to CN.
+Os inegociáveis, reunidos para varredura. Cada um é o piso para código novo e só pode ser desrespeitado como uma exceção nomeada, deliberada e com responsável. Todo o resto do catálogo é julgamento estruturado.
 
-## TS — Reliable automated tests
-*Unifying principle: confidence to change. A test is worth the degree to which it lets you alter code knowing that a real break will be caught and a pass means behavior is preserved.*
+- **QM-RC-1** — Sem nomes que mentem, sem efeitos colaterais ocultos; o código faz o que parece fazer.
+- **QM-TS-1** — Nenhum teste instável (flaky) deixado na suíte: corrija imediatamente ou remova.
+- **QM-TS-2** — Testes verificam comportamento, não implementação.
+- **QM-TS-4** — Cobertura nunca é gate de merge; lida apenas como sinal negativo.
+- **QM-CC-1** — Sem acoplamento entre módulos por estado mutável compartilhado.
+- **QM-CN-1** — Sem erosão: padrões estabelecidos mudam de forma deliberada e em bloco, nunca aos poucos.
+- **QM-CN-2** — A consistência com o código ao redor vence a preferência pessoal.
+- **QM-EO-1** — Nunca engula um erro em silêncio.
+- **QM-EO-2** — Nunca vaze dados sensíveis em logs ou mensagens de erro, nem exponha detalhes internos ao usuário final.
+- **QM-EO-3** — Preserve a cadeia de causas e o stack trace ao propagar.
+- **QM-MT-1** — Sem dívida deliberada invisível: um atalho tomado de propósito é nomeado quando tomado.
+- **QM-DO-1** — A documentação não pode mentir; vive ao lado do que descreve.
+- **QM-SR-1** — Nunca confie em entrada externa: valide na fronteira, mantenha dados separados de código.
+- **QM-SR-2** — Sem segredos no código-fonte ou no controle de versão.
+- **QM-SR-3** — Não invente criptografia; nunca armazene senhas em texto claro ou de forma reversível.
+- **QM-SR-4** — Não entregue dependências com vulnerabilidades conhecidas.
 
-- **QM-TS-1 [NON-NEGOTIABLE]** — A flaky test is fixed immediately or removed. Leaving it trains the team to ignore red, which destroys the authority of the whole suite.
-- **QM-TS-2 [NON-NEGOTIABLE]** — Tests verify observable behavior, not internal implementation. Golden test: *if I rewrite the implementation preserving behavior, does this test still pass?* If not, it tests the wrong thing and punishes the refactoring it should enable.
-- **QM-TS-4 [NON-NEGOTIABLE]** — A coverage percentage is never used as a merge gate (Goodhart). Coverage is read only as a negative signal: low coverage flags weak testing; high coverage proves nothing about assertions.
-- **QM-TS-3 [CALIBRATED]** — Favor testing real code within the speed/stability budget; mock the boundaries you don't control, test the core you do. *Tension: pyramid vs. trophy is weight-tuning, not law; mocks buy speed and isolation at the price of realism — use where the price is worth it.*
-- **QM-TS-5 [CALIBRATED]** — Test readability: one reason to fail, clear arrange-act-assert, names stating scenario and expected result. *Tension: a test asserting fifteen things tells you nothing when it fails.*
-- **QM-TS-6 [CALIBRATED]** — Determinism and isolation: each test builds and tears down its own world, order-independent. Also cover error/failure paths, not just the happy path — untested error handling is usually code that has never run.
-- **Governing question.** *Does this suite let me change the system with confidence and speed?* If touching code hurts because of the tests, something in them is wrong, however green. (Guard against "test-induced design damage": tests serve the code, not the reverse.)
-- **[AUTOMATE]** — Suite in CI; flaky detection; mutation testing as the deeper signal of test quality.
+---
 
-## CC — Coupling & cohesion
-*Unifying principle: contain the blast radius of a change — a business change should fit a small, predictable region of code.*
+## RC — Legibilidade e clareza
+*Princípio unificador: minimizar a carga cognitiva — quanto um leitor precisa manter na memória de trabalho para entender um trecho isoladamente.*
 
-- **QM-CC-1 [NON-NEGOTIABLE]** — No coupling through shared mutable state (global or shared mutable memory) between modules. It is the worst kind because it is invisible in the interface — nothing in the signatures reveals the tie, and it surfaces as bugs at a distance. Hidden temporal coupling and shared-database-table coupling fall under the same prohibition when left implicit.
-- **QM-CC-2 [CALIBRATED]** — Cohesion by "changes for the same reason, at the request of the same stakeholder" (SRP correctly understood). Prefer feature/domain grouping over technical-layer grouping. *Tension: a module serving two different stakeholders has two reasons to change and they will collide — but forcing unrelated things together to look tidy is worse.*
-- **QM-CC-3 [CALIBRATED]** — Coupling *type* matters more than amount (zero is impossible). Avoid control coupling (flags that switch hidden behavior) and structure coupling; dependencies point toward stability (volatile depends on stable, never the reverse); apply dependency inversion where volatility differs. *Tension: the coupling you foresaw and contained at a clean boundary is rarely the problem.*
-- **QM-CC-4 [CALIBRATED]** — Law of Demeter as a smell, not a law: long dot-chains (`a.b.c.d`) couple you to the internal shape of things you don't own. *Tension: chaining is fine for pure data structures — treat it as a reliable smell, not a ban.*
-- **QM-CC-5 [CALIBRATED]** — Decouple by *probability of independent change*. Decoupling things that always change together is pure cost; every indirection is an enemy of locality. *Tension: premature abstraction / speculative generality is indistinguishable from debt — YAGNI.*
-- **Signal.** "A change that should be small but spreads" is the map to a joint cut in the wrong place. These three dimensions (readability, tests, coupling) are consequences of the same act: cutting the system at the right joints.
-- **[AUTOMATE]** — Dependency-direction / architecture-fitness checks (concrete layering rules live in `coding-standards`).
+- **QM-RC-1 [NON-NEGOTIABLE]** — Princípio da menor surpresa. O código faz o que parece fazer. Um nome ou assinatura não pode ocultar mutação de estado, I/O ou eventos (nenhum `getX` que também escreve; nenhum "read" que muta estado global ou dispara um evento). Nomes não podem mentir.
+- **QM-RC-2 [CALIBRATED]** — Funções são curtas, fazem uma coisa, em um único nível de abstração (sem detalhe em nível de byte misturado a orquestração de alto nível). *Tensão: não é uma regra de contagem de linhas; a fragmentação excessiva em funções minúsculas prejudica a legibilidade tanto quanto os monólitos.*
+- **QM-RC-3 [CALIBRATED]** — Achate o aninhamento com guard clauses / retornos antecipados; a complexidade ciclomática alta é o sintoma mensurável. *Tensão: limiar, não absoluto — julgue pela carga do leitor.*
+- **QM-RC-4 [CALIBRATED]** — Mantenha próximo o que muda junto (localidade). Duplicação é mais barata que a abstração errada; abstrações devem ser "profundas" (interface simples escondendo complexidade real), não "rasas" (indireção que não esconde nada). *Tensão: o DRY levado ao extremo destrói a localidade — um pouco de duplicação pode ser o preço certo.*
+- **QM-RC-5 [CALIBRATED]** — Comentários explicam o *porquê*, não o *quê*; código autoexplicativo primeiro, comentários para o resíduo irredutível (restrição externa, bug evitado, escolha não óbvia). *Tensão: um comentário que repete o código apodrece e vira mentira; um comentário que explica o *quê* um bloco confuso faz geralmente sinaliza que o bloco deve ser reescrito.*
+- **QM-RC-6 [CALIBRATED]** — Sem esperteza que otimiza o ego de quem escreve em vez do tempo de quem lê (one-liners densos, golfe de truques da linguagem). Otimize para o leitor — a audiência mais frequente.
+- **Nota de audiência.** A legibilidade é relativa ao time que mantém o código; não há absoluto. O teste mais confiável não é uma métrica, e sim a revisão: cada "o que isto faz?" / "por que assim?" é um ponto em que o código falhou em se explicar.
+- **[AUTOMATE]** — Métricas de complexidade como sinais (não veredito). A formatação pertence a CN.
 
-## CN — Consistency
-*Unifying principle: make the code predictable — learn a pattern once and trust it everywhere. Inconsistency is systematized surprise.*
+## TS — Testes automatizados confiáveis
+*Princípio unificador: confiança para mudar. Um teste vale o quanto permite alterar o código sabendo que uma quebra real será detectada e que um teste verde significa comportamento preservado.*
 
-- **QM-CN-1 [NON-NEGOTIABLE]** — No erosion. You do not introduce a second way of doing something already established, one file at a time. Pattern migration is deliberate and repo-wide (ideally automated), or it does not happen. Half-old/half-new is the worst state.
-- **QM-CN-2 [NON-NEGOTIABLE]** — In existing code, the local pattern beats your opinion of the "better" pattern. Writing your own fragment the "better" way introduces a second convention and makes the base worse. First question on entering code: "how does *this* base do it?"
-- **QM-CN-3 [CALIBRATED]** — Four levels: formatting → naming/conventions → idiomatic patterns → architectural/conceptual. The shallower, the more mechanizable and the less it matters; the deeper, the more it matters and the more it needs human judgment. Push the mechanizable to tools to free attention for the deep levels. *(Concrete conventions are owned by `coding-standards`; this criterion defers to it.)*
-- **QM-CN-4 [CALIBRATED]** — Consistency is not blind uniformity: things that genuinely differ should look different (beware false symmetry — same-looking, different-behaving). A convention is uniform-at-a-moment, not permanent — it must not ossify the base. *Tension: the escape from "foolish consistency" is deliberate, wholesale change, never erosion.*
-- **[AUTOMATE]** — Formatters, linters, type checkers, CI-enforced conventions. Style debate in review is process debt: the tool decides impersonally, and the reviewer's attention goes to logic and design.
+- **QM-TS-1 [NON-NEGOTIABLE]** — Um teste instável (flaky) é corrigido imediatamente ou removido. Deixá-lo treina o time a ignorar o vermelho, o que destrói a autoridade de toda a suíte.
+- **QM-TS-2 [NON-NEGOTIABLE]** — Testes verificam comportamento observável, não a implementação interna. Teste de ouro: *se eu reescrever a implementação preservando o comportamento, este teste ainda passa?* Se não, ele testa a coisa errada e pune o refactoring que deveria viabilizar.
+- **QM-TS-4 [NON-NEGOTIABLE]** — Um percentual de cobertura nunca é usado como gate de merge (Goodhart). A cobertura é lida apenas como sinal negativo: cobertura baixa sinaliza teste fraco; cobertura alta não prova nada sobre as asserções.
+- **QM-TS-3 [CALIBRATED]** — Prefira testar código real dentro do orçamento de velocidade/estabilidade; faça mock das fronteiras que você não controla, teste o núcleo que você controla. *Tensão: pirâmide vs. troféu é ajuste de pesos, não lei; mocks compram velocidade e isolamento ao preço do realismo — use onde o preço compensa.*
+- **QM-TS-5 [CALIBRATED]** — Legibilidade do teste: um motivo para falhar, arrange-act-assert claro, nomes que declaram o cenário e o resultado esperado. *Tensão: um teste que afirma quinze coisas não diz nada quando falha.*
+- **QM-TS-6 [CALIBRATED]** — Determinismo e isolamento: cada teste monta e desmonta seu próprio mundo, independente de ordem. Cubra também os caminhos de erro/falha, não só o caminho feliz — tratamento de erro não testado costuma ser código que nunca rodou.
+- **Pergunta orientadora.** *Esta suíte me deixa mudar o sistema com confiança e velocidade?* Se mexer no código dói por causa dos testes, algo neles está errado, por mais verdes que estejam. (Cuidado com o "dano de design induzido por testes": os testes servem ao código, não o contrário.)
+- **[AUTOMATE]** — Suíte no CI; detecção de testes instáveis; teste de mutação como o sinal mais profundo da qualidade dos testes.
 
-## EO — Error handling & observability
-*Unifying principle: preserve the ability to understand the system when it fails — diagnosability. You write error-handling code in calm and use it in panic.*
+## CC — Acoplamento e coesão
+*Princípio unificador: conter o raio de impacto de uma mudança — uma mudança de negócio deve caber numa região pequena e previsível do código.*
 
-- **QM-EO-1 [NON-NEGOTIABLE]** — Never swallow an error silently: no empty catch, no caught-and-ignored, no returning null in place of signaling failure. It destroys information at the source and the failure re-emerges later, elsewhere, disguised. It is the maximum violation of predictability — the system lies about having worked.
-- **QM-EO-2 [NON-NEGOTIABLE]** — Never leak sensitive data (passwords, tokens, PII, keys) in logs or error messages, and never expose internal detail or stack traces to end users. Error messages have two audiences: the user gets something generic and safe; the operator gets full detail in internal logs. (Cross-referenced by SR.)
-- **QM-EO-3 [NON-NEGOTIABLE]** — Preserve the cause chain and original stack trace when propagating. Catching a rich exception and rethrowing a context-less generic one destroys the root cause.
-- **QM-EO-4 [CALIBRATED]** — Fail fast on invalid/impossible state; validate at the system boundary so the core can trust its inputs. *Tension: shorten the distance between cause and symptom — that distance is what sets diagnosis cost.*
-- **QM-EO-5 [CALIBRATED]** — Distinguish expected errors (domain situations — model as return values / `Result` / `Option` that the signature forces the caller to handle) from bugs (violated invariants — fail loud). Reserve exceptions for the exceptional. *Tension: treating the two alike either masks defects that should scream or floods alerts with routine events.*
-- **QM-EO-6 [CALIBRATED]** — Concentrate recovery at a layer with enough context to decide (retry, default, degrade, notify); don't smear partial, uninformed handling across every layer.
-- **QM-EO-7 [CALIBRATED]** — Observability: the three pillars answer different questions (logs = what happened here; metrics = overall health/trend; traces = a request across services) and are complementary, not substitutable. Instrument for the *unforeseen*, not only the predicted — the incidents that hurt are the ones you didn't foresee.
-- **QM-EO-8 [CALIBRATED]** — Logs: disciplined, consistent levels; structured (key-value) context so you can search and aggregate; a correlation ID stitching a request's lines; respect signal-to-noise. *Tension: verbosity is not observability — the line that explained the bug drowns in ten thousand "processing..." lines. Instrument critical paths with intention; it has real cost.*
-- **Governing question.** *When this breaks at 3am, can on-call find out why from what the system recorded?*
+- **QM-CC-1 [NON-NEGOTIABLE]** — Sem acoplamento por estado mutável compartilhado (memória global ou mutável compartilhada) entre módulos. É o pior tipo porque é invisível na interface — nada nas assinaturas revela o vínculo, e ele aflora como bugs à distância. O acoplamento temporal oculto e o acoplamento por tabela de banco compartilhada caem sob a mesma proibição quando deixados implícitos.
+- **QM-CC-2 [CALIBRATED]** — Coesão por "muda pelo mesmo motivo, a pedido do mesmo envolvido" (SRP corretamente entendido). Prefira agrupamento por feature/domínio a agrupamento por camada técnica. *Tensão: um módulo que atende dois envolvidos diferentes tem dois motivos para mudar e eles vão colidir — mas forçar coisas não relacionadas a ficar juntas para parecer arrumado é pior.*
+- **QM-CC-3 [CALIBRATED]** — O *tipo* de acoplamento importa mais que a quantidade (zero é impossível). Evite acoplamento de controle (flags que alternam comportamento oculto) e acoplamento de estrutura; as dependências apontam para a estabilidade (o volátil depende do estável, nunca o contrário); aplique inversão de dependência onde a volatilidade difere. *Tensão: o acoplamento que você previu e conteve numa fronteira limpa raramente é o problema.*
+- **QM-CC-4 [CALIBRATED]** — Lei de Demeter como cheiro, não como lei: cadeias longas de pontos (`a.b.c.d`) acoplam você à forma interna de coisas que não são suas. *Tensão: o encadeamento é aceitável em estruturas de dados puras — trate-o como um cheiro confiável, não como proibição.*
+- **QM-CC-5 [CALIBRATED]** — Desacople pela *probabilidade de mudança independente*. Desacoplar coisas que sempre mudam juntas é custo puro; toda indireção é inimiga da localidade. *Tensão: abstração prematura / generalidade especulativa é indistinguível de dívida — YAGNI.*
+- **Sinal.** "Uma mudança que deveria ser pequena mas se espalha" é o mapa para uma junta cortada no lugar errado. Estas três dimensões (legibilidade, testes, acoplamento) são consequências do mesmo ato: cortar o sistema nas juntas certas.
+- **[AUTOMATE]** — Verificações de direção de dependência / fitness de arquitetura (as regras concretas de camadas vivem no `coding-standards`).
 
-## MT — Maintainability & technical debt
-*Unifying principle: keep the cost of change low over time — the effort per change must not grow with the system's age. This dimension is largely the others' effect seen on the time axis.*
+## CN — Consistência
+*Princípio unificador: tornar o código previsível — aprender um padrão uma vez e confiar nele em todo lugar. Inconsistência é surpresa sistematizada.*
 
-- **QM-MT-1 [NON-NEGOTIABLE]** — No invisible deliberate debt. A shortcut taken on purpose is named when taken — honest comment, backlog item, or ADR. The debt that kills is the tacit one that lives as diffuse dread and never enters a prioritization conversation.
-- **QM-MT-2 [CALIBRATED]** — Watch the effort-per-change curve: healthy is roughly flat (the 100th feature costs like the 10th); sick is exponential. The two regimes start identical — cutting corners is faster at first, which is why it's done. *Tension: debt is a legitimate instrument when deliberate and prudent (Fowler's quadrant); it is only damage when imprudent.*
-- **QM-MT-3 [CALIBRATED]** — Pay debt continuously via in-place refactoring: boy-scout rule + "first make the change easy, then make the easy change." Cleanup is part of the feature's legitimate cost, not a separate project. *Tension: avoid big-bang refactoring campaigns and total rewrites (Spolsky) — prefer strangler-fig incremental replacement; and "better" must not mean imposing personal style piecemeal (see QM-CN-1).*
-- **QM-MT-4 [CALIBRATED]** — Maintainability is a context choice: care must match expected lifetime and importance. A prototype discarded in two weeks and a ten-year core are not held to the same bar. *Tension: over-engineering / speculative flexibility (YAGNI) is its own debt — it raises today's cost of change for a future that never came.* **This is the calibration rule made concrete; every other criterion inherits it.**
-- **QM-MT-5 [CALIBRATED]** — Non-code factors count: can a new dev run the project in minutes; are dependencies alive and patched; are build/CI times short. Maintainability is a property of the whole development system, not only the source text.
-- **[AUTOMATE]** — Dependency freshness/health (shared with SR), build and CI time monitoring.
+- **QM-CN-1 [NON-NEGOTIABLE]** — Sem erosão. Você não introduz uma segunda forma de fazer algo já estabelecido, um arquivo por vez. A migração de padrão é deliberada e abrange o repositório inteiro (idealmente automatizada), ou não acontece. Meio antigo/meio novo é o pior estado.
+- **QM-CN-2 [NON-NEGOTIABLE]** — No código existente, o padrão local vence a sua opinião sobre o padrão "melhor". Escrever o seu fragmento do jeito "melhor" introduz uma segunda convenção e piora a base. Primeira pergunta ao entrar num código: "como *esta* base faz isso?"
+- **QM-CN-3 [CALIBRATED]** — Quatro níveis: formatação → nomenclatura/convenções → padrões idiomáticos → arquitetural/conceitual. Quanto mais raso, mais mecanizável e menos importa; quanto mais profundo, mais importa e mais exige julgamento humano. Empurre o mecanizável para as ferramentas, para liberar atenção para os níveis profundos. *(As convenções concretas são de propriedade do `coding-standards`; este critério remete a ele.)*
+- **QM-CN-4 [CALIBRATED]** — Consistência não é uniformidade cega: coisas que realmente diferem devem parecer diferentes (cuidado com a falsa simetria — igual na aparência, diferente no comportamento). Uma convenção é uniforme num momento, não permanente — não pode ossificar a base. *Tensão: a saída da "consistência tola" é a mudança deliberada e em bloco, nunca a erosão.*
+- **[AUTOMATE]** — Formatadores, linters, verificadores de tipos, convenções impostas pelo CI. Debate de estilo na revisão é dívida de processo: a ferramenta decide de forma impessoal, e a atenção do revisor vai para lógica e design.
 
-## DO — Proportional documentation
-*Unifying principle: preserve the knowledge the code cannot carry — specifically the knowledge that does not fit in code.*
+## EO — Tratamento de erros e observabilidade
+*Princípio unificador: preservar a capacidade de entender o sistema quando ele falha — diagnosticabilidade. Você escreve o código de tratamento de erros com calma e o usa em pânico.*
 
-- **QM-DO-1 [NON-NEGOTIABLE]** — Documentation must not lie. Outdated docs are worse than none (an active trap versus an honest gap). Docs live as close as possible to what they describe — in the repo, versioned together, reviewed in the same PR — because physical distance is what permits desync. Prefer documentation that *cannot* lie: tests, types, examples that run in CI. A behavior change that leaves a co-located doc contradicting it is a defect.
-- **QM-DO-2 [CALIBRATED]** — Document the *why*, not the *what*: the code is the source of truth for the *how* and, if readable, the *what*; the *why* (discarded alternatives, external constraints, avoided traps) is the sovereign territory of docs. Self-explanatory code first; a comment explaining a confusing block usually means the block should be rewritten. *Tension: the legitimate exception is essential complexity (a dense formula, a third-party workaround).*
-- **QM-DO-3 [CALIBRATED]** — Triage: document only what the code cannot carry **and** what changes slowly enough to be worth syncing. *Tension: over-documentation drowns the important (signal-to-noise) and multiplies the surface that can rot; low-value, high-volatility docs are pure debt.*
-- **QM-DO-4 [CALIBRATED]** — Write for a defined audience (user of the API / maintainer / newcomer / operator); don't mix Diátaxis modes (tutorial, how-to, reference, explanation). Newcomer onboarding (README, working "getting started") is the most neglected and highest-return. *(Decision records are ADRs, owned by `its-contract`'s decision boundary — this criterion references them, does not redefine them.)*
-- **[AUTOMATE]** — Runnable-example tests in CI; link checkers.
+- **QM-EO-1 [NON-NEGOTIABLE]** — Nunca engula um erro em silêncio: sem catch vazio, sem capturar-e-ignorar, sem retornar null no lugar de sinalizar a falha. Isso destrói informação na origem e a falha reaparece depois, em outro lugar, disfarçada. É a violação máxima da previsibilidade — o sistema mente sobre ter funcionado.
+- **QM-EO-2 [NON-NEGOTIABLE]** — Nunca vaze dados sensíveis (senhas, tokens, PII, chaves) em logs ou mensagens de erro, e nunca exponha detalhes internos ou stack traces ao usuário final. Mensagens de erro têm duas audiências: o usuário recebe algo genérico e seguro; o operador recebe todo o detalhe nos logs internos. (Referenciado por SR.)
+- **QM-EO-3 [NON-NEGOTIABLE]** — Preserve a cadeia de causas e o stack trace original ao propagar. Capturar uma exceção rica e relançar uma genérica sem contexto destrói a causa raiz.
+- **QM-EO-4 [CALIBRATED]** — Falhe rápido diante de estado inválido/impossível; valide na fronteira do sistema para que o núcleo possa confiar nas suas entradas. *Tensão: encurte a distância entre causa e sintoma — essa distância é o que define o custo do diagnóstico.*
+- **QM-EO-5 [CALIBRATED]** — Distinga erros esperados (situações de domínio — modele como valores de retorno / `Result` / `Option` que a assinatura obriga o chamador a tratar) de bugs (invariantes violados — falhe alto). Reserve exceções para o excepcional. *Tensão: tratar os dois igualmente ou mascara defeitos que deveriam gritar ou inunda os alertas com eventos rotineiros.*
+- **QM-EO-6 [CALIBRATED]** — Concentre a recuperação numa camada com contexto suficiente para decidir (retry, valor padrão, degradar, notificar); não espalhe tratamento parcial e desinformado por todas as camadas.
+- **QM-EO-7 [CALIBRATED]** — Observabilidade: os três pilares respondem a perguntas diferentes (logs = o que aconteceu aqui; métricas = saúde geral/tendência; traces = uma requisição através de serviços) e são complementares, não substituíveis. Instrumente para o *imprevisto*, não só para o previsto — os incidentes que doem são os que você não previu.
+- **QM-EO-8 [CALIBRATED]** — Logs: níveis disciplinados e consistentes; contexto estruturado (chave-valor) para poder buscar e agregar; um ID de correlação costurando as linhas de uma requisição; respeite a relação sinal-ruído. *Tensão: verbosidade não é observabilidade — a linha que explicava o bug se afoga em dez mil linhas de "processing...". Instrumente os caminhos críticos com intenção; isso tem custo real.*
+- **Pergunta orientadora.** *Quando isto quebrar às 3 da manhã, o plantão consegue descobrir por quê a partir do que o sistema registrou?*
 
-## SR — Security & robustness
-*Unifying principle: assume everything from outside is hostile until proven otherwise — disciplined distrust of the boundary. Security asymmetry: the defender must be right everywhere; the attacker needs one miss.*
+## MT — Manutenibilidade e dívida técnica
+*Princípio unificador: manter baixo o custo de mudança ao longo do tempo — o esforço por mudança não pode crescer com a idade do sistema. Esta dimensão é, em boa parte, o efeito das outras vistas no eixo do tempo.*
 
-- **QM-SR-1 [NON-NEGOTIABLE]** — Never trust external input (user, network, file, another service, even another part of your own system). Validate at the boundary and keep the data/code separation: parameterized queries against SQL injection, context-aware output encoding against XSS, never interpolate input into a command. Most classic vulnerabilities are the same sin: data crossed the data→code boundary un-neutralized.
-- **QM-SR-2 [NON-NEGOTIABLE]** — No secrets (passwords, API keys, tokens, credentials) in source or version control. Git history is permanent; "private repo" is not protection. Secrets live in dedicated vaults or injected env vars, and must be rotatable.
-- **QM-SR-3 [NON-NEGOTIABLE]** — Don't invent cryptography: use established, maintained libraries the standard way. Passwords are stored with a password-appropriate hash (slow, salted), never plaintext and never "encrypted" (reversible); sensitive traffic goes over encrypted channels.
-- **QM-SR-4 [NON-NEGOTIABLE]** — Don't ship known-vulnerable dependencies. Your system is all the code you imported, transitively; an outdated dependency is an unlocked door whose location is published. Keep patched and scan automatically.
-- **QM-SR-5 [CALIBRATED]** — Least privilege: every part (service, process, credential, user) gets only the access its function needs, to contain the blast radius when — not if — something is compromised. *Tension: as tight as practical without sabotaging work.*
-- **QM-SR-6 [CALIBRATED]** — Defense in depth: multiple independent layers, so one breach is not total. Prefer several fences to one high wall.
-- **QM-SR-7 [CALIBRATED]** — Robustness (the non-adversarial cousin): idempotency for operations that will be repeated (timeouts, retries), graceful degradation (reduced service over total collapse), timeouts and limits on every external wait and unbounded growth. *Tension: assume everything that can go wrong in the environment eventually will, without turning every local hiccup into a global failure.*
-- **The mature question.** Not "is this secure?" (nothing is, absolutely) but "is this secure enough against the realistic threats for *this* system, without friction that sabotages use?" Security users bypass (the impossible password on a post-it) is worse than moderate security they follow. This is threat modeling, the opposite of security theater. Security must be systematic (forced by architecture), not heroic (depending on every dev remembering).
+- **QM-MT-1 [NON-NEGOTIABLE]** — Sem dívida deliberada invisível. Um atalho tomado de propósito é nomeado quando tomado — comentário honesto, item de backlog ou ADR. A dívida que mata é a tácita, que vive como apreensão difusa e nunca entra numa conversa de priorização.
+- **QM-MT-2 [CALIBRATED]** — Observe a curva de esforço por mudança: saudável é aproximadamente plana (a 100ª funcionalidade custa como a 10ª); doente é exponencial. Os dois regimes começam idênticos — cortar caminho é mais rápido no início, e é por isso que se faz. *Tensão: dívida é um instrumento legítimo quando deliberada e prudente (quadrante de Fowler); só é dano quando imprudente.*
+- **QM-MT-3 [CALIBRATED]** — Pague a dívida continuamente por refactoring no próprio lugar: regra do escoteiro + "primeiro facilite a mudança, depois faça a mudança fácil". A limpeza faz parte do custo legítimo da funcionalidade, não é um projeto separado. *Tensão: evite campanhas de refactoring big-bang e reescritas totais (Spolsky) — prefira a substituição incremental strangler-fig; e "melhor" não pode significar impor estilo pessoal aos poucos (veja QM-CN-1).*
+- **QM-MT-4 [CALIBRATED]** — Manutenibilidade é uma escolha de contexto: o cuidado deve corresponder à vida útil esperada e à importância. Um protótipo descartado em duas semanas e um núcleo de dez anos não são cobrados pela mesma régua. *Tensão: over-engineering / flexibilidade especulativa (YAGNI) é dívida por si só — eleva hoje o custo de mudança por um futuro que nunca veio.* **Esta é a regra de calibração tornada concreta; todo outro critério a herda.**
+- **QM-MT-5 [CALIBRATED]** — Fatores não relacionados a código contam: um dev novo consegue rodar o projeto em minutos; as dependências estão vivas e atualizadas; os tempos de build/CI são curtos. Manutenibilidade é uma propriedade do sistema de desenvolvimento inteiro, não só do texto-fonte.
+- **[AUTOMATE]** — Frescor/saúde das dependências (compartilhado com SR), monitoramento de tempo de build e CI.
+
+## DO — Documentação proporcional
+*Princípio unificador: preservar o conhecimento que o código não consegue carregar — especificamente o conhecimento que não cabe em código.*
+
+- **QM-DO-1 [NON-NEGOTIABLE]** — A documentação não pode mentir. Documentação desatualizada é pior que nenhuma (uma armadilha ativa versus uma lacuna honesta). A documentação vive o mais perto possível do que descreve — no repositório, versionada junto, revisada no mesmo PR — porque a distância física é o que permite o descompasso. Prefira documentação que *não pode* mentir: testes, tipos, exemplos que rodam no CI. Uma mudança de comportamento que deixa uma documentação co-localizada contradizendo-a é um defeito.
+- **QM-DO-2 [CALIBRATED]** — Documente o *porquê*, não o *quê*: o código é a fonte de verdade do *como* e, se legível, do *quê*; o *porquê* (alternativas descartadas, restrições externas, armadilhas evitadas) é território soberano da documentação. Código autoexplicativo primeiro; um comentário que explica um bloco confuso geralmente significa que o bloco deve ser reescrito. *Tensão: a exceção legítima é a complexidade essencial (uma fórmula densa, um workaround de terceiros).*
+- **QM-DO-3 [CALIBRATED]** — Triagem: documente apenas o que o código não consegue carregar **e** o que muda devagar o bastante para valer a sincronização. *Tensão: a documentação em excesso afoga o importante (sinal-ruído) e multiplica a superfície que pode apodrecer; documentação de baixo valor e alta volatilidade é dívida pura.*
+- **QM-DO-4 [CALIBRATED]** — Escreva para uma audiência definida (usuário da API / mantenedor / recém-chegado / operador); não misture os modos do Diátaxis (tutorial, how-to, referência, explicação). O onboarding de recém-chegados (README, "getting started" funcional) é o mais negligenciado e o de maior retorno. *(Registros de decisão são ADRs, de propriedade da fronteira de decisão do `its-contract` — este critério os referencia, não os redefine.)*
+- **[AUTOMATE]** — Testes de exemplos executáveis no CI; verificadores de links.
+
+## SR — Segurança e robustez
+*Princípio unificador: assumir que tudo que vem de fora é hostil até prova em contrário — desconfiança disciplinada da fronteira. Assimetria da segurança: o defensor precisa acertar em todo lugar; o atacante precisa de uma única falha.*
+
+- **QM-SR-1 [NON-NEGOTIABLE]** — Nunca confie em entrada externa (usuário, rede, arquivo, outro serviço, até outra parte do seu próprio sistema). Valide na fronteira e mantenha a separação dados/código: queries parametrizadas contra SQL injection, codificação de saída sensível ao contexto contra XSS, nunca interpole entrada em um comando. A maioria das vulnerabilidades clássicas é o mesmo pecado: o dado cruzou a fronteira dado→código sem ser neutralizado.
+- **QM-SR-2 [NON-NEGOTIABLE]** — Sem segredos (senhas, chaves de API, tokens, credenciais) no código-fonte ou no controle de versão. O histórico do Git é permanente; "repositório privado" não é proteção. Segredos vivem em cofres dedicados ou em variáveis de ambiente injetadas, e precisam ser rotacionáveis.
+- **QM-SR-3 [NON-NEGOTIABLE]** — Não invente criptografia: use bibliotecas estabelecidas e mantidas, do modo padrão. Senhas são armazenadas com um hash apropriado para senhas (lento, com salt), nunca em texto claro e nunca "criptografadas" (reversíveis); tráfego sensível trafega por canais criptografados.
+- **QM-SR-4 [NON-NEGOTIABLE]** — Não entregue dependências com vulnerabilidades conhecidas. Seu sistema é todo o código que você importou, transitivamente; uma dependência desatualizada é uma porta destrancada cuja localização é pública. Mantenha atualizado e varra automaticamente.
+- **QM-SR-5 [CALIBRATED]** — Privilégio mínimo: cada parte (serviço, processo, credencial, usuário) recebe apenas o acesso que sua função exige, para conter o raio de impacto quando — não se — algo for comprometido. *Tensão: o mais restrito que for prático, sem sabotar o trabalho.*
+- **QM-SR-6 [CALIBRATED]** — Defesa em profundidade: múltiplas camadas independentes, para que uma brecha não seja total. Prefira várias cercas a um muro alto.
+- **QM-SR-7 [CALIBRATED]** — Robustez (a prima não adversarial): idempotência para operações que serão repetidas (timeouts, retries), degradação graciosa (serviço reduzido em vez de colapso total), timeouts e limites em toda espera externa e crescimento ilimitado. *Tensão: assuma que tudo que pode dar errado no ambiente eventualmente dará, sem transformar todo soluço local numa falha global.*
+- **A pergunta madura.** Não "isto é seguro?" (nada é, absolutamente), mas "isto é seguro o bastante contra as ameaças realistas para *este* sistema, sem atrito que sabote o uso?" A segurança que os usuários contornam (a senha impossível no post-it) é pior que uma segurança moderada que eles seguem. Isto é modelagem de ameaças, o oposto do teatro de segurança. A segurança deve ser sistemática (forçada pela arquitetura), não heroica (dependente de cada dev lembrar).

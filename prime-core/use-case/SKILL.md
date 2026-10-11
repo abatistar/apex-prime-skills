@@ -1,21 +1,21 @@
 ---
 name: use-case
-description: The canonical use case document format owned by prime-core - template, quality rules, revision-history (delta) rules, and uncertainty markers. Consult whenever creating, updating, validating, or consuming a use case document. Writers (prime-architect/use-case-creator, prime-architect/use-case-extractor) write against this format; readers (prime-architect/its-generator, prime-architect/code-review) validate against it. Never duplicate its content elsewhere - reference it.
+description: O formato canônico do documento de caso de uso, de propriedade do prime-core - template, regras de qualidade, regras de histórico de revisões (delta) e marcadores de incerteza. Consulte sempre que for criar, atualizar, validar ou consumir um documento de caso de uso. Quem escreve (prime-architect/use-case-creator, prime-architect/use-case-extractor) escreve contra este formato; quem lê (prime-architect/its-generator, prime-architect/code-review) valida contra ele. Nunca duplique seu conteúdo em outro lugar - referencie-o.
 ---
 
-# Use Case Format (prime-core)
+# Formato de Caso de Uso (prime-core)
 
-This skill owns the use case document format. It has one address and one owner; every other skill references it instead of copying it. A change here updates writing and reading at the same time.
+Esta skill é dona do formato do documento de caso de uso. Tem um endereço e um dono; toda outra skill o referencia em vez de copiá-lo. Uma mudança aqui atualiza escrita e leitura ao mesmo tempo.
 
-## The canonical template
+## O template canônico
 
-`references/use-case-template.md` defines: file naming (`docs/use-cases/UC-NNN-short-title.md`), document structure (metadata, stakeholders and interests — optional, conditions with preconditions and minimal/success guarantees, main success scenario, extensions, business rules, acceptance criteria, UML graphical summary, revision history), the status lifecycle (Draft · Reviewed), the quality rules every document must satisfy, and the uncertainty markers (`[INFERRED]`, `[CONFIRM: ...]`) used for reverse-engineered content.
+`references/use-case-template.md` define: a nomenclatura de arquivo (`docs/use-cases/UC-NNN-titulo-curto.md`), a estrutura do documento (metadados, envolvidos e interesses — opcional, condições com pré-condições e garantias mínimas/de sucesso, cenário principal de sucesso, extensões, regras de negócio, critérios de aceite, resumo gráfico em UML, histórico de revisões), o ciclo de vida de status (Draft · Reviewed), as regras de qualidade que todo documento precisa satisfazer e os marcadores de incerteza (`[INFERRED]`, `[CONFIRM: ...]`) usados em conteúdo obtido por engenharia reversa.
 
-Read the template in full before writing or validating any use case document.
+Leia o template integralmente antes de escrever ou validar qualquer documento de caso de uso.
 
-## Non-negotiable rules (summary — the template is authoritative)
+## Regras inegociáveis (resumo — o template é a autoridade)
 
-- Use cases are the living source of truth for system behavior. Stories are diffs applied to them.
-- Every revision carries a story-identified delta in the Revision History (max 5 entries; full history in version control). The delta is the its-generator's primary input. Diagram-only updates are never delta items.
-- Documents with unresolved uncertainty markers stay in Draft status and are not source of truth. Only Reviewed documents feed the ITS Generator. Status promotion is always a human act.
-- The project's `docs/prime-config.md` may override the template path or add mandatory sections; project configuration takes precedence.
+- Casos de uso são a fonte de verdade viva do comportamento do sistema. Stories são diffs aplicados a eles.
+- Toda revisão carrega um delta identificado pela story no Histórico de revisões (máximo de 5 entradas; histórico completo no controle de versão). O delta é a principal entrada do its-generator. Atualizações apenas de diagrama nunca são itens de delta.
+- Documentos com marcadores de incerteza não resolvidos permanecem em status Draft e não são fonte de verdade. Somente documentos Reviewed alimentam o ITS Generator. A promoção de status é sempre um ato humano.
+- O `docs/prime-config.md` do projeto pode sobrescrever o caminho do template ou adicionar seções obrigatórias; a configuração do projeto tem precedência.

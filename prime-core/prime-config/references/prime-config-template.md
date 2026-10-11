@@ -1,114 +1,115 @@
-# Prime Config Template
+# Template do Prime Config
 
-Canonical template owned by prime-core/prime-config. The SKILL.md defines which sections are mandatory, the precedence rules, and the bootstrap procedure — this file is the structure. Replace the example values (shown for a Java/Spring project) with the target project's facts; delete nothing mandatory.
+Template canônico de propriedade do prime-core/prime-config. O SKILL.md define quais seções são obrigatórias, as regras de precedência e o procedimento de bootstrap — este arquivo é a estrutura. Substitua os valores de exemplo (mostrados para um projeto Java/Spring) pelos fatos do projeto-alvo; não apague nada obrigatório.
 
 ````markdown
-# Prime Configuration — [Project Name]
+# Configuração do Prime — [Nome do Projeto]
 
-This file is read by every Apex Prime skill (all layers) as their first step, per the
-prime-core/prime-config contract. Keep it versioned with the code it describes.
-Explicit values here take precedence over anything the skills auto-detect; if this
-file diverges from the build files, the skills will flag it.
+Este arquivo é lido por toda skill do Apex Prime (todas as camadas) como primeiro passo,
+conforme o contrato prime-core/prime-config. Mantenha-o versionado junto com o código que
+descreve. Os valores explícitos aqui têm precedência sobre tudo o que as skills detectam
+automaticamente; se este arquivo divergir dos arquivos de build, as skills vão sinalizar.
 
 ## Stack
-- Language: Java 17
+- Linguagem: Java 17
 - Framework: Spring Boot 3.2.x
 - Build: Maven (`./mvnw`)
-- Database: PostgreSQL 15
-- Migrations: Flyway, at `src/main/resources/db/migration`, versioned `V<n>__description.sql`
-- Messaging: RabbitMQ (spring-amqp)
+- Banco de dados: PostgreSQL 15
+- Migrações: Flyway, em `src/main/resources/db/migration`, versionadas `V<n>__descricao.sql`
+- Mensageria: RabbitMQ (spring-amqp)
 
-## Structure
-- Domain / business rules: `src/main/java/com/acme/app/domain`
-- API layer (controllers, DTOs): `src/main/java/com/acme/app/api`
-- Application services: `src/main/java/com/acme/app/service`
-- Persistence (repositories, entities): `src/main/java/com/acme/app/persistence`
-- Messaging consumers: `src/main/java/com/acme/app/messaging`
-- Unit tests: `src/test/java`
-- Integration tests: `src/test/java/**/*IT.java` (Testcontainers)
+## Estrutura
+- Domínio / regras de negócio: `src/main/java/com/acme/app/domain`
+- Camada de API (controllers, DTOs): `src/main/java/com/acme/app/api`
+- Serviços de aplicação: `src/main/java/com/acme/app/service`
+- Persistência (repositórios, entidades): `src/main/java/com/acme/app/persistence`
+- Consumidores de mensageria: `src/main/java/com/acme/app/messaging`
+- Testes unitários: `src/test/java`
+- Testes de integração: `src/test/java/**/*IT.java` (Testcontainers)
 
-## Conventions and constraints
+## Convenções e restrições
 
-<!-- This section is the home of everything prime-core/coding-standards and
-     prime-core/quality-model declare as a project override point. The five
-     subsections below are read by its-generator, its-implementation and
-     code-review; keep them even when empty, with an explicit "none declared yet".
-     Free-prose project rules that fit no slot go under "Project rules". -->
+<!-- Esta seção é o lar de tudo o que o prime-core/coding-standards e o
+     prime-core/quality-model declaram como ponto de override do projeto. As cinco
+     subseções abaixo são lidas pelo its-generator, pelo its-implementation e pelo
+     code-review; mantenha-as mesmo vazias, com um "nenhuma declarada ainda" explícito.
+     Regras do projeto em prosa livre que não se encaixam em nenhum slot ficam em
+     "Regras do projeto". -->
 
-### Area register
-<!-- Per prime-core/coding-standards › Legacy: the area register. Read it before
-     filling this in: it defines the three states, the rule that classification is
-     declared and never inferred, and what an unregistered area means. One line per
-     area, the state named in its own words. -->
+### Registro de áreas
+<!-- Conforme prime-core/coding-standards › Legado: o registro de áreas. Leia-o antes
+     de preencher: ele define os três estados, a regra de que a classificação é
+     declarada e nunca inferida, e o que significa uma área não registrada. Uma linha
+     por área, com o estado nomeado em suas próprias palavras. -->
 - `src/main/java/com/acme/app/**` — current
-- `src/main/java/com/acme/app/billing` — legacy-maintained (pre-2023 conventions; invariants apply)
-- `src/main/java/com/acme/app/legacy` — strangler (replaced by `billing.v2`; MIG-003)
+- `src/main/java/com/acme/app/billing` — legacy-maintained (convenções pré-2023; os invariantes se aplicam)
+- `src/main/java/com/acme/app/legacy` — strangler (substituído por `billing.v2`; MIG-003)
 
-### Slot overrides
-<!-- Per prime-core/coding-standards. One line per slot where this project decides
-     differently from references/defaults-<stack>.md. Cite the slot ID — the value
-     stated here wins over the team default. A slot with neither a default nor an
-     override is handled per that skill's "Unfilled slots" section. Write
-     "none — team defaults apply" when that is true. -->
-- `CS-CT-2` — cursor pagination (`cursor`/`limit`) on `/api/v1/events`; page-based everywhere else
-- `CS-SC-5` — OWASP ASVS Level 3 for the payments module (regulatory threat model)
-<!-- Or, if nothing is overridden: "none — team defaults apply (defaults-java.md)" -->
+### Overrides de slots
+<!-- Conforme prime-core/coding-standards. Uma linha por slot em que este projeto decide
+     diferente de references/defaults-<stack>.md. Cite o ID do slot — o valor declarado
+     aqui vence o padrão do time. Um slot sem padrão nem override é tratado conforme a
+     seção "Slots não preenchidos" dessa skill. Escreva "nenhum — valem os padrões do
+     time" quando for o caso. -->
+- `CS-CT-2` — paginação por cursor (`cursor`/`limit`) em `/api/v1/events`; paginação por página em todo o resto
+- `CS-SC-5` — OWASP ASVS Nível 3 para o módulo de pagamentos (modelo de ameaças regulatório)
+<!-- Ou, se nada for sobrescrito: "nenhum — valem os padrões do time (defaults-java.md)" -->
 
-### Declared migrations
-<!-- Per prime-core/coding-standards › Declared migrations, which defines the
-     mandatory fields, what a missing one makes this entry instead, and what
-     happens to a migration that stops advancing. One entry per migration in
-     flight, following the shape below. -->
-- **MIG-003** — slot `CS-AR-4`: technical-layer packaging → feature-first packaging.
-  Owner: [name]. Scope: `src/main/java/com/acme/app/legacy` → `billing.v2`.
-  Complete when: no production traffic reaches `legacy` and the package is deleted.
-<!-- Or: "none in flight" -->
+### Migrações declaradas
+<!-- Conforme prime-core/coding-standards › Migrações declaradas, que define os campos
+     obrigatórios, no que a ausência de um deles transforma esta entrada e o que
+     acontece com uma migração que para de avançar. Uma entrada por migração em
+     andamento, no formato abaixo. -->
+- **MIG-003** — slot `CS-AR-4`: empacotamento por camada técnica → empacotamento por feature.
+  Responsável: [nome]. Escopo: `src/main/java/com/acme/app/legacy` → `billing.v2`.
+  Concluída quando: nenhum tráfego de produção alcançar `legacy` e o pacote for removido.
+<!-- Ou: "nenhuma em andamento" -->
 
-### Quality model posture
-<!-- Per prime-core/quality-model › Project overrides, which states exactly what
-     this section may add or tighten, what standing posture it may record, and what
-     it may never waive here. Read it before adding a line. -->
-- Added non-negotiable: every endpoint touching payment data carries an audit log entry
-- Standing posture: `legacy` is under strangler-fig migration (MIG-003) — match its local
-  patterns, do not extend them; new capability is born in `billing.v2`
-<!-- Or: "none declared yet" -->
+### Postura do modelo de qualidade
+<!-- Conforme prime-core/quality-model › Overrides do projeto, que declara exatamente o
+     que esta seção pode adicionar ou endurecer, que postura permanente ela pode
+     registrar e o que ela nunca pode dispensar aqui. Leia-o antes de adicionar uma linha. -->
+- Inegociável adicionado: todo endpoint que toca dados de pagamento carrega uma entrada de log de auditoria
+- Postura permanente: `legacy` está em migração strangler-fig (MIG-003) — siga seus padrões
+  locais, não os estenda; capacidade nova nasce em `billing.v2`
+<!-- Ou: "nenhuma declarada ainda" -->
 
-### Project rules
-<!-- Rules that constrain every plan and review and map onto no slot. If the slot
-     catalog already asks the question — layer direction, error representation, what
-     obliges a test, the serialization boundary — the answer belongs under Slot
-     overrides, or nowhere at all when the stack default already says it. Writing it
-     here as well is how the two copies drift apart. -->
-- Feature flags via `@ConditionalOnProperty`; new user-facing behavior ships behind a flag.
-- `payments` is never changed without the security owner in the review.
-- Customer data stays in the `sa-east-1` region; no test fixture carries production records.
-- No deploy between the 25th and the 1st — the billing close window.
-<!-- If nothing is declared yet, write "none declared yet" — never omit the subsection. -->
+### Regras do projeto
+<!-- Regras que restringem todo plano e toda revisão e não se mapeiam em nenhum slot. Se o
+     catálogo de slots já faz a pergunta — direção das camadas, representação de erros, o
+     que obriga um teste, a fronteira de serialização — a resposta pertence a Overrides
+     de slots, ou a lugar nenhum quando o padrão da stack já a diz. Escrevê-la também aqui
+     é como as duas cópias se descolam. -->
+- Feature flags via `@ConditionalOnProperty`; todo comportamento novo voltado ao usuário sai atrás de uma flag.
+- `payments` nunca é alterado sem o responsável de segurança na revisão.
+- Dados de clientes permanecem na região `sa-east-1`; nenhuma fixture de teste carrega registros de produção.
+- Sem deploy entre os dias 25 e 1º — a janela de fechamento do faturamento.
+<!-- Se nada foi declarado ainda, escreva "nenhuma declarada ainda" — nunca omita a subseção. -->
 
-## Document repository
-- Use cases: `docs/use-cases/UC-NNN-short-title.md`
-- ITS: `docs/its/ITS-<story-id>-short-title.md`
-- ADRs (architecture decision records): `docs/adr/ADR-NNN-short-title.md`
-  <!-- Sequential, never renumbered. Structure, lifecycle, and who drafts are defined by
-       prime-core/its-contract (decision boundary) and its templates/adr-template.md -->
-- Custom use case template: none (use the skill's bundled default)
-  <!-- To override: point to e.g. docs/use-cases/TEMPLATE.md and list extra mandatory sections -->
-- Extra mandatory use case sections: none
-  <!-- Example: "Audit requirements" for projects under compliance -->
+## Repositório de documentos
+- Casos de uso: `docs/use-cases/UC-NNN-titulo-curto.md`
+- ITS: `docs/its/ITS-<story-id>-titulo-curto.md`
+- ADRs (registros de decisão de arquitetura): `docs/adr/ADR-NNN-titulo-curto.md`
+  <!-- Sequenciais, nunca renumerados. Estrutura, ciclo de vida e quem redige são definidos pelo
+       prime-core/its-contract (fronteira de decisão) e seu templates/adr-template.md -->
+- Template de caso de uso customizado: nenhum (usar o padrão que acompanha a skill)
+  <!-- Para sobrescrever: aponte para p. ex. docs/use-cases/TEMPLATE.md e liste as seções obrigatórias extras -->
+- Seções obrigatórias extras de caso de uso: nenhuma
+  <!-- Exemplo: "Requisitos de auditoria" para projetos sob compliance -->
 
-## Verification commands
-- Full build with tests: `./mvnw clean verify`
-- Unit tests only: `./mvnw test`
-- Single test class: `./mvnw test -Dtest=ClassName`
+## Comandos de verificação
+- Build completo com testes: `./mvnw clean verify`
+- Apenas testes unitários: `./mvnw test`
+- Uma única classe de teste: `./mvnw test -Dtest=NomeDaClasse`
 
-## Story identifiers
-<!-- Optional section. Default when absent: S-NNN. -->
-- Format: `S-NNN` (e.g., S-127), matching the tracker ID
+## Identificadores de story
+<!-- Seção opcional. Padrão quando ausente: S-NNN. -->
+- Formato: `S-NNN` (p. ex., S-127), igual ao ID do tracker
 
 ## Pipeline (Azure DevOps)
-<!-- Optional section. Omit for projects without a pipeline. -->
-- PR validation build: [pipeline name / trigger]
-- Required checks before merge: [build, tests, quality gates]
-- Deploy flow after merge: [stages]
-  <!-- Referenced by prime-dev/pr-preparation and prime-architect/code-review -->
+<!-- Seção opcional. Omita em projetos sem pipeline. -->
+- Build de validação de PR: [nome do pipeline / gatilho]
+- Verificações obrigatórias antes do merge: [build, testes, quality gates]
+- Fluxo de deploy após o merge: [estágios]
+  <!-- Referenciado por prime-dev/pr-preparation e prime-architect/code-review -->
 ````

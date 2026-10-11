@@ -1,91 +1,91 @@
 ---
 name: prime-config
-description: The canonical contract for docs/prime-config.md - the project configuration file every Apex Prime skill reads as its first step. Owns the file's structure, the mandatory and optional sections, the closed list of override points the core contracts declare, the precedence and divergence rules, and the bootstrap procedure when the file does not exist. Consult whenever reading, validating, bootstrapping, or updating a project's prime-config.md, and whenever a skill's Step 0 finds the file missing or contradicting the codebase. Never duplicate its rules elsewhere - reference it.
+description: O contrato canônico do docs/prime-config.md - o arquivo de configuração do projeto que toda skill do Apex Prime lê como primeiro passo. É dono da estrutura do arquivo, das seções obrigatórias e opcionais, da lista fechada de pontos de override que os contratos do core declaram, das regras de precedência e divergência e do procedimento de bootstrap quando o arquivo não existe. Consulte sempre que for ler, validar, fazer o bootstrap ou atualizar o prime-config.md de um projeto, e sempre que o Passo 0 de uma skill encontrar o arquivo ausente ou contradizendo o código. Nunca duplique suas regras em outro lugar - referencie-o.
 ---
 
-# Prime Config Contract (prime-core)
+# Contrato do Prime Config (prime-core)
 
-`docs/prime-config.md` is the entry point of every Apex Prime run: all skills, in every layer, read it as their first step. This skill owns its contract — structure, override points, precedence, divergence handling, and bootstrap. Because every consumer reads against the same contract, a change here updates all of them at once; no skill re-defines what the config means.
+O `docs/prime-config.md` é o ponto de entrada de toda execução do Apex Prime: todas as skills, em todas as camadas, o leem como primeiro passo. Esta skill é dona do seu contrato — estrutura, pontos de override, precedência, tratamento de divergências e bootstrap. Como todo consumidor lê contra o mesmo contrato, uma mudança aqui atualiza todos de uma vez; nenhuma skill redefine o que a configuração significa.
 
-The config answers one question: **what is true about this project that the skills must not guess?** Stack and versions, folder structure, conventions, document locations, verification commands, pipeline. Everything else belongs to the core contracts (formats, quality) or to the role skills (process).
+A configuração responde a uma pergunta: **o que é verdade sobre este projeto que as skills não devem adivinhar?** Stack e versões, estrutura de pastas, convenções, localização dos documentos, comandos de verificação, pipeline. Todo o resto pertence aos contratos do core (formatos, qualidade) ou às skills de papel (processo).
 
-## File location and template
+## Localização do arquivo e template
 
-- Canonical path: `docs/prime-config.md`. Fallback: repository root (`prime-config.md`). No other locations.
-- Canonical template: `references/prime-config-template.md`. Read it in full before bootstrapping or validating a config.
-- The file is versioned with the code it describes. It changes by PR, like the code.
+- Caminho canônico: `docs/prime-config.md`. Alternativa: raiz do repositório (`prime-config.md`). Nenhum outro local.
+- Template canônico: `references/prime-config-template.md`. Leia-o integralmente antes de fazer o bootstrap ou validar uma configuração.
+- O arquivo é versionado junto com o código que descreve. Muda por PR, como o código.
 
-## Sections
+## Seções
 
-**Mandatory** — a config missing any of these is incomplete (see Divergence and gaps):
+**Obrigatórias** — uma configuração sem qualquer uma delas está incompleta (veja Divergências e lacunas):
 
-- **Stack** — language and version, framework, build tool, database, migrations, messaging (when present). Versions are load-bearing: skills plan and review against them.
-- **Structure** — where each architectural layer lives. This is the its-generator's map for code inspection and the extractor's map for entry-point inventory.
-- **Conventions and constraints** — the project rules that constrain every plan and review. This section is the home of every override point the core contracts declare about code (see Override points below), and carries five named subsections, the last of which holds the free-prose rules that map onto no slot:
-  - **Area register** — each area classified `current` | `legacy-maintained` | `strangler`, per prime-core/coding-standards. Unregistered means `current`; classification is declared here, never inferred.
-  - **Slot overrides** — the convention slots (`CS-XX-N`) this project decides differently from the team defaults.
-  - **Declared migrations** — each in-flight migration with its new slot value, owner, scope, and completion condition.
-  - **Quality model posture** — project-specific non-negotiables, tightened calibrated thresholds, and the standing posture toward legacy and debt, per prime-core/quality-model.
-  - **Project rules** — what constrains every plan and review and maps onto no slot: forbidden areas, approval requirements, operational and compliance constraints, feature-flag policy. A question the slot catalog already asks is answered under Slot overrides, never here as well; two copies of one decision is what the catalog exists to prevent.
-- **Document repository** — locations and naming for use cases, ITS, and ADRs, plus the two use case overrides that live here as fields rather than as a section of their own: a custom template path, and extra mandatory sections. Defaults exist in the core contracts, but the config states them explicitly so overrides have one address.
-- **Verification commands** — how to build and test. Read by every skill that plans, judges, or verifies: its-generator closes the ITS plan with them, impact-mapping and feasibility-analysis read them as coverage evidence, pr-preparation runs them before the PR, and code-review runs them as the precondition of a review in projects that declare no pipeline.
+- **Stack** — linguagem e versão, framework, ferramenta de build, banco de dados, migrações, mensageria (quando houver). As versões têm peso: as skills planejam e revisam contra elas.
+- **Estrutura** — onde vive cada camada arquitetural. É o mapa do its-generator para inspeção de código e o mapa do extractor para o inventário de pontos de entrada.
+- **Convenções e restrições** — as regras do projeto que restringem todo plano e toda revisão. Esta seção é o lar de todo ponto de override que os contratos do core declaram sobre código (veja Pontos de override abaixo), e carrega cinco subseções nomeadas, a última das quais guarda as regras em prosa livre que não se encaixam em nenhum slot:
+  - **Registro de áreas** — cada área classificada como `current` | `legacy-maintained` | `strangler`, conforme o prime-core/coding-standards. Não registrada significa `current`; a classificação é declarada aqui, nunca inferida.
+  - **Overrides de slots** — os slots de convenção (`CS-XX-N`) que este projeto decide de forma diferente dos padrões do time.
+  - **Migrações declaradas** — cada migração em andamento com seu novo valor de slot, responsável, escopo e condição de conclusão.
+  - **Postura do modelo de qualidade** — inegociáveis específicos do projeto, limiares calibrados endurecidos e a postura permanente diante de legado e dívida, conforme o prime-core/quality-model.
+  - **Regras do projeto** — o que restringe todo plano e toda revisão e não se mapeia em nenhum slot: áreas proibidas, exigências de aprovação, restrições operacionais e de compliance, política de feature flags. Uma pergunta que o catálogo de slots já faz é respondida em Overrides de slots, nunca aqui também; duas cópias de uma decisão é justamente o que o catálogo existe para prevenir.
+- **Repositório de documentos** — localização e nomenclatura de casos de uso, ITS e ADRs, mais os dois overrides de caso de uso que vivem aqui como campos, e não como uma seção própria: o caminho de um template customizado e as seções obrigatórias extras. Existem padrões nos contratos do core, mas a configuração os declara explicitamente para que os overrides tenham um único endereço.
+- **Comandos de verificação** — como compilar e testar. Lidos por toda skill que planeja, julga ou verifica: o its-generator fecha o plano da ITS com eles, o impact-mapping e a feasibility-analysis os leem como evidência de cobertura, o pr-preparation os executa antes do PR, e o code-review os executa como pré-condição de uma revisão em projetos que não declaram pipeline.
 
-**Optional:**
+**Opcionais:**
 
-- **Story identifiers** — tracker ID format. Default when absent: `S-NNN`.
-- **Pipeline** — CI/CD stages and required checks. Needed by pr-preparation and code-review when the project has a pipeline; omit for projects without one. Where it is omitted, the Verification commands take its place as the precondition of a review.
+- **Identificadores de story** — formato do ID no tracker. Padrão quando ausente: `S-NNN`.
+- **Pipeline** — estágios de CI/CD e verificações obrigatórias. Necessário ao pr-preparation e ao code-review quando o projeto tem pipeline; omita em projetos sem um. Onde for omitido, os Comandos de verificação ocupam seu lugar como pré-condição de uma revisão.
 
-Projects may add sections beyond these (e.g., compliance requirements). Unknown sections are preserved, never deleted by any skill.
+Projetos podem adicionar seções além destas (p. ex., requisitos de compliance). Seções desconhecidas são preservadas, nunca apagadas por nenhuma skill.
 
-An empty subsection is written with an explicit "none declared yet" (or "none — team defaults apply"), never omitted. Silence and absence are different facts, and only one of them is a decision.
+Uma subseção vazia é escrita com um "nenhuma declarada ainda" (ou "nenhuma — valem os padrões do time") explícito, nunca omitida. Silêncio e ausência são fatos diferentes, e só um deles é uma decisão.
 
-## Override points (the closed list)
+## Pontos de override (a lista fechada)
 
-A core contract declares an override point when it names a default the project may replace. The config may override **only** what appears below; anything else in the core is a rule, not a default.
+Um contrato do core declara um ponto de override quando nomeia um padrão que o projeto pode substituir. A configuração pode sobrescrever **apenas** o que aparece abaixo; qualquer outra coisa no core é regra, não padrão.
 
-| Override point | Owner contract | Where it lives in the config |
+| Ponto de override | Contrato dono | Onde vive na configuração |
 |---|---|---|
-| Use case template path | prime-core/use-case | Document repository |
-| Extra mandatory use case sections | prime-core/use-case | Document repository |
-| Document and ADR locations and naming | prime-core/use-case, prime-core/its-contract | Document repository |
-| Convention slot values (`CS-XX-N`) | prime-core/coding-standards | Conventions and constraints › Slot overrides |
-| Area classification (`current` / `legacy-maintained` / `strangler`) | prime-core/coding-standards | Conventions and constraints › Area register |
-| Declared migrations | prime-core/coding-standards | Conventions and constraints › Declared migrations |
-| Added non-negotiables and tightened calibrated thresholds | prime-core/quality-model | Conventions and constraints › Quality model posture |
-| Standing posture toward legacy and deliberate debt | prime-core/quality-model | Conventions and constraints › Quality model posture |
-| Story identifier format | this contract | Story identifiers |
+| Caminho do template de caso de uso | prime-core/use-case | Repositório de documentos |
+| Seções obrigatórias extras de caso de uso | prime-core/use-case | Repositório de documentos |
+| Localização e nomenclatura de documentos e ADRs | prime-core/use-case, prime-core/its-contract | Repositório de documentos |
+| Valores de slots de convenção (`CS-XX-N`) | prime-core/coding-standards | Convenções e restrições › Overrides de slots |
+| Classificação de área (`current` / `legacy-maintained` / `strangler`) | prime-core/coding-standards | Convenções e restrições › Registro de áreas |
+| Migrações declaradas | prime-core/coding-standards | Convenções e restrições › Migrações declaradas |
+| Inegociáveis adicionados e limiares calibrados endurecidos | prime-core/quality-model | Convenções e restrições › Postura do modelo de qualidade |
+| Postura permanente diante de legado e dívida deliberada | prime-core/quality-model | Convenções e restrições › Postura do modelo de qualidade |
+| Formato do identificador de story | este contrato | Identificadores de story |
 
-A core contract that wants a new override point adds a row here in the same PR that declares it. Two contracts describing the same override in two places is the drift this skill exists to prevent.
+Um contrato do core que queira um novo ponto de override adiciona uma linha aqui no mesmo PR que o declara. Dois contratos descrevendo o mesmo override em dois lugares é o descolamento que esta skill existe para prevenir.
 
-**Only the use case template is overridable, and that is a decision rather than an omission.** A use case describes one project's behavior, and the shape that describes it well may legitimately vary. The ITS and the ADR are handoff and audit artifacts, read by an implementer, a reviewer, and by people outside the project and outside the repository — their structure is fixed by prime-core precisely so a reader arriving cold finds the same document every time. A project that needs a different one is asking for a change to the contract, through the governance PR, not for a config entry.
+**Somente o template de caso de uso é sobrescrevível, e isso é uma decisão, não uma omissão.** Um caso de uso descreve o comportamento de um projeto, e a forma que o descreve bem pode legitimamente variar. A ITS e o ADR são artefatos de passagem de bastão e de auditoria, lidos por um implementador, um revisor e por pessoas de fora do projeto e do repositório — sua estrutura é fixada pelo prime-core justamente para que um leitor que chega frio encontre sempre o mesmo documento. Um projeto que precise de um diferente está pedindo uma mudança no contrato, pelo PR de governança, não uma entrada de configuração.
 
-## Precedence rules
+## Regras de precedência
 
-1. **Explicit beats detected.** What the config states wins over anything a skill infers from build files or directory trees.
-2. **Config overrides core defaults at the declared override points only** (the table above). At those points the config's value wins outright — a slot override beats the stack default, a registered area state beats the current standard for conventional slots.
-3. **Config never overrides a core rule.** It cannot waive traceability, the status lifecycle, the quality gates, or a `[NON-NEGOTIABLE]` criterion. The config may **raise** the bar; relaxing a non-negotiable is a deliberate, owned decision recorded in an ADR, never a config edit.
-4. **Config does not override an Accepted ADR.** A conflict between them is reported, not resolved silently.
+1. **Explícito vence detectado.** O que a configuração declara vence qualquer coisa que a skill infira de arquivos de build ou árvores de diretórios.
+2. **A configuração sobrescreve os padrões do core apenas nos pontos de override declarados** (a tabela acima). Nesses pontos, o valor da configuração vence de forma absoluta — um override de slot vence o padrão da stack, o estado registrado de uma área vence o padrão atual para slots convencionais.
+3. **A configuração nunca sobrescreve uma regra do core.** Não pode dispensar a rastreabilidade, o ciclo de vida de status, os gates de qualidade nem um critério `[NON-NEGOTIABLE]`. A configuração pode **elevar** a régua; relaxar um inegociável é uma decisão deliberada, com responsável, registrada em um ADR, nunca uma edição de configuração.
+4. **A configuração não sobrescreve um ADR Accepted.** Um conflito entre eles é reportado, não resolvido em silêncio.
 
-## Divergence and gaps (rules for every consumer)
+## Divergências e lacunas (regras para todo consumidor)
 
-- **Config exists but contradicts the codebase** (says Java 11, `pom.xml` says 17): report the divergence and ask which is correct before proceeding. Never silently trust either side.
-- **Config exists but a mandatory section is missing:** proceed only if the running task does not need that section; otherwise report the gap and offer to complete it via the bootstrap procedure (scoped to the missing section).
-- **Config exists but a slot the task needs has no value** — neither a stack default nor an override: that is a reportable gap per prime-core/coding-standards (Unfilled slots). Report it and offer to fill it; never improvise a value and never proceed silently on a task that depends on it.
-- **Config does not exist:** offer to bootstrap it (below). Skills do not proceed on pure detection without giving the user a config to review — undetectable facts (conventions, forbidden areas, area classification) would be silently absent.
-- **No skill edits the config as a side effect of another task.** Updating it is always an explicit act with user review, through this skill.
+- **A configuração existe mas contradiz o código** (diz Java 11, o `pom.xml` diz 17): reporte a divergência e pergunte qual está correta antes de prosseguir. Nunca confie em silêncio em qualquer um dos lados.
+- **A configuração existe mas falta uma seção obrigatória:** prossiga só se a tarefa em andamento não precisar dessa seção; caso contrário, reporte a lacuna e ofereça completá-la pelo procedimento de bootstrap (restrito à seção ausente).
+- **A configuração existe mas um slot de que a tarefa precisa não tem valor** — nem padrão da stack nem override: é uma lacuna reportável conforme o prime-core/coding-standards (Slots não preenchidos). Reporte-a e ofereça preenchê-la; nunca improvise um valor e nunca prossiga em silêncio numa tarefa que dependa dele.
+- **A configuração não existe:** ofereça fazer o bootstrap (abaixo). As skills não prosseguem com pura detecção sem dar ao usuário uma configuração para revisar — fatos indetectáveis (convenções, áreas proibidas, classificação de áreas) estariam silenciosamente ausentes.
+- **Nenhuma skill edita a configuração como efeito colateral de outra tarefa.** Atualizá-la é sempre um ato explícito, com revisão do usuário, por meio desta skill.
 
-## Bootstrap procedure
+## Procedimento de bootstrap
 
-Run when the config is missing, or scoped to specific sections when they are absent.
+Execute quando a configuração estiver ausente, ou restrito a seções específicas quando elas estiverem ausentes.
 
-1. **Detect.** Read build files (`pom.xml`, `build.gradle`, `package.json`, ...), directory tree, framework markers, migration folders, CI definitions. Draft the Stack, Structure, and Verification commands sections from evidence — cite the evidence (which file told you what) so the user can audit the detection.
-2. **Walk the slot catalog.** Load `prime-core/coding-standards` (`references/convention-slots.md`) and the defaults file for the detected stack. For each slot: if the team default answers it and the project agrees, nothing is written; if the project decides differently, record the override; if no default exists for the stack and the project has not decided, record it as an unfilled slot with `[CONFIRM: ...]`. The catalog is a closed list precisely so "nobody ever decided where transactions begin" becomes visible instead of becoming thirty inconsistent decisions — the bootstrap is where that list is walked.
-3. **Classify the areas.** Elicit the area register: which paths are `current`, which are `legacy-maintained`, which are `strangler` (with the replacement module and migration ID). Never infer these from directory names or file age. A project that declares nothing gets `current` everywhere — write that explicitly rather than leaving the subsection out.
-4. **Ask what code cannot tell.** Project rules, forbidden areas, feature-flag policy, quality model posture, story ID format, pipeline stages are human knowledge. Elicit them; never invent. If the user has nothing to declare, write the subsection with an explicit "none declared yet" rather than omitting it.
-5. **Propose document locations.** Default to the core conventions (`docs/use-cases/`, `docs/its/`, `docs/adr/`). Offer to create the directories if absent.
-6. **Deliver as draft for review.** The user validates before the file is committed. A config nobody reviewed is detection, not configuration — and explicit-beats-detected only means something if a human made it explicit.
-7. Mark anything deduced but unconfirmed with `[CONFIRM: ...]` (same marker discipline as prime-core/use-case). A config with unresolved markers is usable, but every consumer must surface the relevant marker when a task depends on it.
+1. **Detectar.** Leia arquivos de build (`pom.xml`, `build.gradle`, `package.json`, ...), árvore de diretórios, marcadores de framework, pastas de migração, definições de CI. Redija as seções Stack, Estrutura e Comandos de verificação a partir de evidência — cite a evidência (qual arquivo disse o quê) para que o usuário possa auditar a detecção.
+2. **Percorrer o catálogo de slots.** Carregue o `prime-core/coding-standards` (`references/convention-slots.md`) e o arquivo de padrões da stack detectada. Para cada slot: se o padrão do time o responde e o projeto concorda, nada é escrito; se o projeto decide diferente, registre o override; se não existe padrão para a stack e o projeto não decidiu, registre-o como slot não preenchido com `[CONFIRM: ...]`. O catálogo é uma lista fechada justamente para que "ninguém nunca decidiu onde as transações começam" se torne visível em vez de virar trinta decisões inconsistentes — o bootstrap é onde essa lista é percorrida.
+3. **Classificar as áreas.** Elicite o registro de áreas: quais caminhos são `current`, quais são `legacy-maintained`, quais são `strangler` (com o módulo substituto e o ID da migração). Nunca infira isso de nomes de diretórios ou da idade dos arquivos. Um projeto que não declara nada recebe `current` em tudo — escreva isso explicitamente em vez de deixar a subseção de fora.
+4. **Perguntar o que o código não conta.** Regras do projeto, áreas proibidas, política de feature flags, postura do modelo de qualidade, formato do ID de story, estágios do pipeline são conhecimento humano. Elicite-os; nunca invente. Se o usuário não tem nada a declarar, escreva a subseção com um "nenhuma declarada ainda" explícito em vez de omiti-la.
+5. **Propor localizações de documentos.** Use como padrão as convenções do core (`docs/use-cases/`, `docs/its/`, `docs/adr/`). Ofereça criar os diretórios se ausentes.
+6. **Entregar como rascunho para revisão.** O usuário valida antes de o arquivo ser commitado. Uma configuração que ninguém revisou é detecção, não configuração — e explícito-vence-detectado só significa algo se um humano o tornou explícito.
+7. Marque tudo o que foi deduzido mas não confirmado com `[CONFIRM: ...]` (mesma disciplina de marcadores do prime-core/use-case). Uma configuração com marcadores não resolvidos é utilizável, mas todo consumidor precisa expor o marcador relevante quando uma tarefa depender dele.
 
-## Consumption rule (for every skill's Step 0)
+## Regra de consumo (para o Passo 0 de toda skill)
 
-Skills reference this contract instead of describing the procedure: *"Read `docs/prime-config.md` per prime-core/prime-config (fallback, divergence, and bootstrap rules live there)."* The three sentences currently repeated across Step 0s collapse into that one.
+As skills referenciam este contrato em vez de descrever o procedimento: *"Leia o `docs/prime-config.md` conforme o prime-core/prime-config (as regras de alternativa, divergência e bootstrap vivem lá)."* As três frases hoje repetidas nos Passos 0 se reduzem a essa.

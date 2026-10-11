@@ -1,72 +1,72 @@
 ---
 name: quality-model
-description: The canonical quality model owned by prime-core - the versioned definition of what "high quality" means for this team, plus its non-negotiables and its exception discipline. It is a shared definition and reference, not an enforcement gate: new code is built against it, and its-generator and its-implementation reference it to question the artifacts they deliver and surface improvements. Enforcement (precise findings, approve/reject a PR) is owned later by code-review. Declares the boundary to coding-standards (concrete conventions live there) and to its-contract (ADRs live there). Never duplicate its criteria elsewhere - reference them by ID.
+description: O modelo de qualidade canônico de propriedade do prime-core - a definição versionada do que "alta qualidade" significa para este time, mais seus inegociáveis e sua disciplina de exceção. É uma definição e uma referência compartilhadas, não um gate de enforcement: o código novo é construído contra ele, e o its-generator e o its-implementation o referenciam para questionar os artefatos que entregam e apontar melhorias. O enforcement (achados precisos, aprovar/reprovar um PR) pertence ao code-review. Declara a fronteira com o coding-standards (as convenções concretas vivem lá) e com o its-contract (os ADRs vivem lá). Nunca duplique seus critérios em outro lugar - referencie-os por ID.
 ---
 
-# Quality Model (prime-core)
+# Modelo de Qualidade (prime-core)
 
-This skill owns the team's definition of quality. It has one address and one owner; every other skill references it by criterion ID instead of restating it, so the standard new code is built against and the standard used to question a deliverable are the same standard, at the same version. A change here updates everyone at once.
+Esta skill é dona da definição de qualidade do time. Tem um endereço e um dono; toda outra skill a referencia pelo ID do critério em vez de repeti-la, de modo que o padrão contra o qual o código novo é construído e o padrão usado para questionar um entregável sejam o mesmo padrão, na mesma versão. Uma mudança aqui atualiza todos de uma vez.
 
-## One definition, eight lenses
+## Uma definição, oito lentes
 
-Quality is not a sum of properties you tick off a list. It is a single property — **the system is safe, predictable, and cheap to change over time** — observed from eight angles: readability (the property seen by the reader), tests (seen by whoever changes it), coupling and cohesion (seen by the structure), consistency (seen by the team), error handling and observability (seen under failure), maintainability (seen across time), documentation (seen by knowledge transfer), and security and robustness (seen under an adversary). They rise and fall together because they are symptoms of the same underlying cause: the system was cut at the right joints and that clarity was held against the entropy of time.
+Qualidade não é uma soma de propriedades que se marcam em uma lista. É uma única propriedade — **o sistema é seguro, previsível e barato de mudar ao longo do tempo** — observada de oito ângulos: legibilidade (a propriedade vista por quem lê), testes (vista por quem muda), acoplamento e coesão (vistos pela estrutura), consistência (vista pelo time), tratamento de erros e observabilidade (vistos sob falha), manutenibilidade (vista ao longo do tempo), documentação (vista pela transferência de conhecimento) e segurança e robustez (vistas sob um adversário). Sobem e descem juntas porque são sintomas da mesma causa de fundo: o sistema foi cortado nas juntas certas e essa clareza foi mantida contra a entropia do tempo.
 
-Two consequences follow, and they shape how this model is used:
+Duas consequências decorrem disso, e moldam como este modelo é usado:
 
-- The core of quality is **irreducibly judgment** — where to draw boundaries, what to abstract versus duplicate, which debt to assume, how much care a given piece of code deserves. This skill **structures** that judgment; it does not replace it. A model that pretended to remove judgment would betray the thing it measures.
-- Every dimension has a **cardinal sin** and an **honest tension**. The cardinal sins are the few failures that are almost never acceptable — the non-negotiables. The tension is that **excess is as harmful as deficiency**: the virtue is never maximizing a dimension, it is calibrating it to context. Applying a criterion without regard to the code's expected lifetime and importance is misapplying this model.
+- O núcleo da qualidade é **irredutivelmente julgamento** — onde traçar fronteiras, o que abstrair em vez de duplicar, que dívida assumir, quanto cuidado um dado trecho de código merece. Esta skill **estrutura** esse julgamento; não o substitui. Um modelo que fingisse eliminar o julgamento trairia aquilo que mede.
+- Toda dimensão tem um **pecado capital** e uma **tensão honesta**. Os pecados capitais são as poucas falhas quase nunca aceitáveis — os inegociáveis. A tensão é que **o excesso é tão danoso quanto a deficiência**: a virtude nunca é maximizar uma dimensão, é calibrá-la ao contexto. Aplicar um critério sem considerar a vida útil esperada e a importância do código é aplicar mal este modelo.
 
-## A definition, not a verdict
+## Uma definição, não um veredito
 
-This model defines the **target**. It is the base against which new code is built, and the reference `its-generator` and `its-implementation` use to interrogate the artifacts they deliver — an ITS, an implementation, a test strategy — and point out where they can be better. It does not, by itself, approve or reject anything.
+Este modelo define o **alvo**. É a base contra a qual o código novo é construído e a referência que o `its-generator` e o `its-implementation` usam para interrogar os artefatos que entregam — uma ITS, uma implementação, uma estratégia de testes — e apontar onde podem ser melhores. Ele não aprova nem reprova nada por si só.
 
-Turning the model into precise findings and an approve/reject recommendation on a pull request is a distinct job, owned by `prime-architect/code-review`. Keep the two separated: this skill answers *what good is*; the reviewer answers *did this particular change clear the bar, given its context*. Collapsing them would make the definition carry enforcement decisions it should not own.
+Transformar o modelo em achados precisos e numa recomendação de aprovar/reprovar um pull request é um trabalho distinto, de propriedade do `prime-architect/code-review`. Mantenha os dois separados: esta skill responde *o que é bom*; o revisor responde *esta mudança em particular superou a régua, dado o seu contexto*. Fundi-los faria a definição carregar decisões de enforcement que ela não deve possuir.
 
-## How the criteria are classified
+## Como os critérios são classificados
 
-Each criterion in the catalog (`references/quality-criteria.md`) is tagged with one of three tiers. The tier is about the criterion's **nature**, not about any automatic consequence:
+Cada critério do catálogo (`references/quality-criteria.md`) é marcado com um de três níveis. O nível diz respeito à **natureza** do critério, não a qualquer consequência automática:
 
-- **NON-NEGOTIABLE** — a cardinal sin: the floor for new code. "Non-negotiable" means *not silently negotiable* — you meet it, or you depart from it as a **named, deliberate, owned exception** (see Exceptions). Each carries a stable ID (`QM-XX-N`) so a discussion cites the criterion, not a mood.
-- **CALIBRATED** — a judgment item, always paired with its honest tension. The model gives the criterion and the trade-off; the reader calibrates to context. It is never a rule to apply mechanically.
-- **AUTOMATED** — a mechanical level (formatting, dependency scanning, coverage-as-signal, secret scanning) that belongs to tools. Human attention spent re-litigating it is waste; its absence from the toolchain is the thing worth raising.
+- **NON-NEGOTIABLE** — um pecado capital: o piso para código novo. "Inegociável" significa *não negociável em silêncio* — você o cumpre, ou se desvia dele como uma **exceção nomeada, deliberada e com responsável** (veja Exceções). Cada um carrega um ID estável (`QM-XX-N`) para que uma discussão cite o critério, não um humor.
+- **CALIBRATED** — um item de julgamento, sempre pareado com sua tensão honesta. O modelo dá o critério e o trade-off; o leitor calibra ao contexto. Nunca é uma regra a aplicar mecanicamente.
+- **AUTOMATED** — um nível mecânico (formatação, varredura de dependências, cobertura como sinal, varredura de segredos) que pertence a ferramentas. A atenção humana gasta rediscutindo-o é desperdício; o que vale levantar é a sua ausência na toolchain.
 
-Above all three sits the calibration rule: the bar is **proportional** to the code's expected lifetime and importance and to the realistic threat model. A throwaway prototype and a ten-year core are not held to the same standard. Maturity is knowing when a criterion stops applying — the catalog states each tension so the model calibrates instead of being read as absolute.
+Acima dos três está a regra de calibração: a régua é **proporcional** à vida útil esperada e à importância do código e ao modelo de ameaças realista. Um protótipo descartável e um núcleo de dez anos não são cobrados pelo mesmo padrão. Maturidade é saber quando um critério deixa de se aplicar — o catálogo declara cada tensão para que o modelo calibre em vez de ser lido como absoluto.
 
-## Exceptions: legacy and deliberate debt
+## Exceções: legado e dívida deliberada
 
-A quality model that admitted no exceptions would be useless in a real codebase, which always contains legacy written to a lower bar and debt the project chose to take on. The model handles this not by weakening the criteria but by governing **how a departure is made**. The distinction that runs through the whole model is *silent versus deliberate*:
+Um modelo de qualidade que não admitisse exceções seria inútil num código real, que sempre contém legado escrito para uma régua mais baixa e dívida que o projeto escolheu assumir. O modelo trata disso não enfraquecendo os critérios, mas governando **como um desvio é feito**. A distinção que atravessa o modelo inteiro é *silencioso versus deliberado*:
 
-- **Deliberate debt is legitimate.** Choosing a simplification consciously — to ship, to validate a market, to defer a decision until you know more — is a valid engineering move (the deliberate-and-prudent quadrant, `QM-MT-2`). What the model forbids is the **invisible** departure: the shortcut nobody named, the non-negotiable quietly skipped. A departure is acceptable when it is **deliberate, named, justified, and owned** — a comment at the site, a backlog item, or an ADR when it outlives the story (`QM-MT-1`). The sin is never the debt; it is the debt no one can see or discuss.
-- **Legacy is not retroactively condemned.** The model applies to the code you **write and change**, not to every line that predates it. Adding a feature to a low-quality area does not oblige you to bring the whole area to standard; it obliges you to meet the bar in what you add, leave the area no worse, and — where a non-negotiable is already violated around you — name it as inherited debt rather than adopt it silently. In existing code, the local pattern also wins over preference (`QM-CN-2`): consistency with the surroundings is itself a quality criterion, so "improving" by introducing a second way is usually a net loss.
-- **Not all exceptions cost the same.** Calibrated criteria bend readily to context. Non-negotiables bend only as explicit, owned exceptions — and the **security** criteria (`QM-SR-*`) carry the highest bar of all, because their asymmetry means a single silent gap can be fatal regardless of how good everything else is. A deliberate security exception is a threat-model decision with the owner in the loop, not a routine debt line.
+- **A dívida deliberada é legítima.** Escolher conscientemente uma simplificação — para entregar, para validar um mercado, para adiar uma decisão até saber mais — é uma jogada de engenharia válida (o quadrante deliberado-e-prudente, `QM-MT-2`). O que o modelo proíbe é o desvio **invisível**: o atalho que ninguém nomeou, o inegociável silenciosamente pulado. Um desvio é aceitável quando é **deliberado, nomeado, justificado e com responsável** — um comentário no ponto, um item de backlog, ou um ADR quando sobrevive à story (`QM-MT-1`). O pecado nunca é a dívida; é a dívida que ninguém consegue ver ou discutir.
+- **O legado não é condenado retroativamente.** O modelo se aplica ao código que você **escreve e altera**, não a toda linha que o antecede. Adicionar uma funcionalidade a uma área de baixa qualidade não obriga você a levar a área inteira ao padrão; obriga você a cumprir a régua no que adiciona, deixar a área não pior e — onde um inegociável já é violado ao seu redor — nomeá-lo como dívida herdada em vez de adotá-lo em silêncio. No código existente, o padrão local também vence a preferência (`QM-CN-2`): a consistência com o entorno é, ela mesma, um critério de qualidade, então "melhorar" introduzindo uma segunda forma costuma ser perda líquida.
+- **Nem toda exceção custa o mesmo.** Critérios calibrados se curvam facilmente ao contexto. Inegociáveis só se curvam como exceções explícitas e com responsável — e os critérios de **segurança** (`QM-SR-*`) carregam a régua mais alta de todas, porque a assimetria deles faz com que uma única lacuna silenciosa possa ser fatal, por melhor que todo o resto seja. Uma exceção deliberada de segurança é uma decisão de modelo de ameaças com o responsável no circuito, não uma linha rotineira de dívida.
 
-The maturity this encodes is the one the source material closes on: knowing the rules is not the skill; knowing when each one stops applying, and saying so out loud, is.
+A maturidade que isto codifica é aquela com que o material de origem se encerra: conhecer as regras não é a habilidade; saber quando cada uma deixa de se aplicar, e dizê-lo em voz alta, é.
 
-## What this model is not
+## O que este modelo não é
 
-- **Not a substitute for judgment.** The non-negotiables are a floor, not a definition of good.
-- **Not an enforcement gate.** It defines the bar; `code-review` decides, later, whether a given PR clears it and what to recommend.
-- **Not the coding standards.** This skill owns *principles and non-negotiables*; `prime-core/coding-standards` owns the *concrete project conventions* — which naming, which layering, which idioms. When a criterion needs a concrete convention to be checkable, it points at `coding-standards`; it does not invent one.
-- **Not the home of architectural decisions.** Decisions that outlive a story live in ADRs, owned by `prime-core/its-contract`'s decision boundary. The documentation dimension references ADRs; it does not redefine them.
+- **Não é um substituto do julgamento.** Os inegociáveis são um piso, não uma definição de bom.
+- **Não é um gate de enforcement.** Define a régua; o `code-review` decide, depois, se um dado PR a supera e o que recomendar.
+- **Não são os padrões de código.** Esta skill é dona de *princípios e inegociáveis*; o `prime-core/coding-standards` é dono das *convenções concretas do projeto* — qual nomenclatura, qual divisão em camadas, quais idiomas. Quando um critério precisa de uma convenção concreta para ser verificável, ele aponta para o `coding-standards`; não inventa uma.
+- **Não é o lar de decisões arquiteturais.** Decisões que sobrevivem a uma story vivem em ADRs, de propriedade da fronteira de decisão do `prime-core/its-contract`. A dimensão de documentação referencia ADRs; não os redefine.
 
-## Versioning
+## Versionamento
 
-"Versioned criteria, not preferences of the moment" is what lets a departure or an improvement note cite a stable, dated thing instead of an opinion.
+"Critérios versionados, não preferências do momento" é o que permite que um desvio ou uma nota de melhoria cite algo estável e datado em vez de uma opinião.
 
-- The catalog carries a **version** (e.g., `v1.0`).
-- Criterion **IDs are stable and never renumbered**, like use case numbers and ADRs. A retired criterion leaves its ID retired, not reused.
-- Changes go through the governance PR **reviewed by the quality model's owner**. That PR is the record of the evolution, in version control — the model keeps no parallel history, to avoid two histories drifting.
+- O catálogo carrega uma **versão** (p. ex., `v1.0`).
+- Os **IDs dos critérios são estáveis e nunca renumerados**, como números de casos de uso e ADRs. Um critério aposentado deixa seu ID aposentado, não reutilizado.
+- As mudanças passam pelo PR de governança **revisado pelo dono do modelo de qualidade**. Esse PR é o registro da evolução, no controle de versão — o modelo não mantém histórico paralelo, para evitar dois históricos se descolando.
 
-## Project overrides
+## Overrides do projeto
 
-`docs/prime-config.md` may **raise** the bar — add project-specific non-negotiables, or tighten a calibrated threshold — and may **record a standing posture** toward legacy or debt for the project (e.g., "module X is legacy under strangler-fig migration; match its local patterns, do not extend them"). It may **not silently waive** a core non-negotiable: relaxing one is a deliberate, owned decision (an ADR), not a quiet config edit. This mirrors the prime-config precedence rule — config overrides declared defaults, never core rules.
+O `docs/prime-config.md` pode **elevar** a régua — adicionar inegociáveis específicos do projeto ou endurecer um limiar calibrado — e pode **registrar uma postura permanente** diante de legado ou dívida para o projeto (p. ex., "o módulo X é legado sob migração strangler-fig; siga seus padrões locais, não os estenda"). Não pode **dispensar em silêncio** um inegociável do core: relaxar um é uma decisão deliberada e com responsável (um ADR), não uma edição silenciosa de configuração. Isso espelha a regra de precedência do prime-config — a configuração sobrescreve padrões declarados, nunca regras do core.
 
-## Consumption rules
+## Regras de consumo
 
-**Building new code** — the model is the base. Meet the non-negotiable floor; calibrate the rest to the code's context. Where the plan or the project takes a departure, make it a named, owned exception, never a silent one.
+**Construindo código novo** — o modelo é a base. Cumpra o piso inegociável; calibre o resto ao contexto do código. Onde o plano ou o projeto adotar um desvio, torne-o uma exceção nomeada e com responsável, nunca silenciosa.
 
-**For `its-generator` (questioning the ITS it delivers)** — reference the model to interrogate the plan before handing it off: does any proposed change commit a cardinal sin silently; is the proposed level of care calibrated to the code's lifetime and importance; where a criterion is departed from for legacy or debt, is that stated as a deliberate exception (a discarded-alternative line, an out-of-scope boundary, or an ADR)? The aim is to surface improvements in the deliverable, citing criteria by ID.
+**Para o `its-generator` (questionando a ITS que entrega)** — referencie o modelo para interrogar o plano antes de passá-lo adiante: alguma mudança proposta comete um pecado capital em silêncio; o nível de cuidado proposto está calibrado à vida útil e à importância do código; onde um critério é desrespeitado por legado ou dívida, isso está declarado como uma exceção deliberada (uma linha de alternativa descartada, uma fronteira de fora de escopo ou um ADR)? O objetivo é fazer aflorar melhorias no entregável, citando critérios por ID.
 
-**For `its-implementation` (questioning the implementation it delivers)** — the same discipline on the code side: measure the implementation and its tests against the criteria, meet the floor in new and changed code, and where inherited legacy violates a non-negotiable, name it rather than adopt it silently. Ambiguity about which bar applies is a question to return to the architect, not an assumption.
+**Para o `its-implementation` (questionando a implementação que entrega)** — a mesma disciplina do lado do código: meça a implementação e seus testes contra os critérios, cumpra o piso em código novo e alterado e, onde o legado herdado viola um inegociável, nomeie-o em vez de adotá-lo em silêncio. Ambiguidade sobre qual régua se aplica é uma pergunta a devolver ao arquiteto, não uma suposição.
 
-**For `code-review`** — the reviewer turns these criteria into precise findings and an approve/reject recommendation for the PR, judging each against the change's context and its named exceptions. That enforcement role is owned there; this skill only supplies the versioned definition it cites.
+**Para o `code-review`** — o revisor transforma esses critérios em achados precisos e numa recomendação de aprovar/reprovar o PR, julgando cada um contra o contexto da mudança e suas exceções nomeadas. Esse papel de enforcement pertence a ele; esta skill apenas fornece a definição versionada que ele cita.

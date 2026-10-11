@@ -1,12 +1,12 @@
-# Use Case Template
+# Template de Caso de Uso
 
-This is the canonical template — the single copy, owned by prime-core. If the project's `prime-config.md` declares a custom template path or additional mandatory sections, the project configuration takes precedence.
+Este é o template canônico — a cópia única, de propriedade do prime-core. Se o `prime-config.md` do projeto declarar um caminho de template customizado ou seções obrigatórias adicionais, a configuração do projeto tem precedência.
 
-**Language.** The artifact block below is the document the writer produces, and it is written in the document language of this format: `pt-BR`. The guidance around it is skill-facing and stays in English. Section titles are part of the artifact and are therefore translated; the **stable tokens** this format declares — identifiers (`UC-NNN`, `RN-N`, `CA-N`, `S-NNN`), status values (`Draft`, `Reviewed`), the uncertainty markers (`[INFERRED]`, `[CONFIRM: ...]`), file naming patterns and paths — are never translated, in any language.
+**Idioma.** O bloco do artefato abaixo é o documento que quem escreve produz, e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção fazem parte do artefato e por isso são traduzidos; os **tokens estáveis** que este formato declara — identificadores (`UC-NNN`, `RN-N`, `CA-N`, `S-NNN`), valores de status (`Draft`, `Reviewed`), os marcadores de incerteza (`[INFERRED]`, `[CONFIRM: ...]`), padrões de nomenclatura de arquivo e caminhos — nunca são traduzidos, em nenhum idioma.
 
-## File naming convention
+## Convenção de nomenclatura de arquivo
 
-`docs/use-cases/UC-NNN-titulo-curto.md` (e.g., `UC-042-exportar-relatorio-pdf.md`). `NNN` is a zero-padded sequential number, stable for the life of the document. Never renumber existing use cases. The slug follows the document language; the `UC-NNN` prefix does not.
+`docs/use-cases/UC-NNN-titulo-curto.md` (p. ex., `UC-042-exportar-relatorio-pdf.md`). `NNN` é um número sequencial com zeros à esquerda, estável durante toda a vida do documento. Nunca renumere casos de uso existentes. O slug segue o idioma do documento; o prefixo `UC-NNN` não.
 
 ## Document structure
 
@@ -102,32 +102,32 @@ flowchart LR
 [Mantenha apenas as 5 entradas mais recentes. O histórico completo vive no controle de versão.]
 ````
 
-## Status lifecycle
+## Ciclo de vida do status
 
-- **Draft** — work in progress, or containing unresolved uncertainty markers. Not source of truth.
-- **Reviewed** — validated by a human; all uncertainty markers resolved. Source of truth for system behavior; valid input for the ITS Generator.
+- **Draft** — em elaboração, ou contendo marcadores de incerteza não resolvidos. Não é fonte de verdade.
+- **Reviewed** — validado por um humano; todos os marcadores de incerteza resolvidos. Fonte de verdade do comportamento do sistema; entrada válida para o ITS Generator.
 
-Promotion from Draft to Reviewed is always a human act — no skill promotes status on its own. The status values are stable tokens: they are written `Draft` and `Reviewed` whatever the document language.
+A promoção de Draft para Reviewed é sempre um ato humano — nenhuma skill promove o status por conta própria. Os valores de status são tokens estáveis: escrevem-se `Draft` e `Reviewed` seja qual for o idioma do documento.
 
-## Quality rules
+## Regras de qualidade
 
-Enforce all of these before considering a document done:
+Aplique todas estas antes de considerar um documento pronto:
 
-1. Intent level, not interface level. No UI widget names in scenarios or extensions.
-2. Every extension has a defined outcome: it either returns to a numbered step or ends the use case (in success or failure). No dangling extensions.
-3. Every acceptance criterion is verifiable. No "o sistema deve ser rápido" without a metric.
-4. The `Cenário principal de sucesso` and every extension have a corresponding acceptance criterion.
-5. Every business rule (RN-N) referenced in a scenario or extension exists in the `Regras de negócio` section, and vice versa.
-6. `Garantias mínimas` state what holds even on failure.
-7. The UML diagram covers this use case and its direct relations only, and is consistent with the `Atores` field and the `Extensões`.
-8. `Histórico de revisões` entries always carry the originating story ID and reference the affected step, extension, and section identifiers — the ITS Generator depends on this to locate the delta. Diagram-only updates are never delta items.
-9. The document is written end to end in the format's document language, with no stable token translated (`RN-N` never becomes `BR-N`, `Draft` never becomes `Rascunho`).
+1. Nível de intenção, não de interface. Sem nomes de widgets de UI em cenários ou extensões.
+2. Toda extensão tem um desfecho definido: ou retorna a um passo numerado ou encerra o caso de uso (em sucesso ou em falha). Sem extensões soltas.
+3. Todo critério de aceite é verificável. Nada de "o sistema deve ser rápido" sem uma métrica.
+4. O `Cenário principal de sucesso` e toda extensão têm um critério de aceite correspondente.
+5. Toda regra de negócio (RN-N) referenciada em um cenário ou extensão existe na seção `Regras de negócio`, e vice-versa.
+6. As `Garantias mínimas` declaram o que se mantém mesmo em caso de falha.
+7. O diagrama UML cobre apenas este caso de uso e suas relações diretas, e é consistente com o campo `Atores` e com as `Extensões`.
+8. As entradas do `Histórico de revisões` sempre carregam o ID da story de origem e referenciam os identificadores de passo, extensão e seção afetados — o ITS Generator depende disso para localizar o delta. Atualizações apenas de diagrama nunca são itens de delta.
+9. O documento é escrito de ponta a ponta no idioma de documento do formato, sem nenhum token estável traduzido (`RN-N` nunca vira `BR-N`, `Draft` nunca vira `Rascunho`).
 
-## Uncertainty markers (used by Use Case Extractor)
+## Marcadores de incerteza (usados pelo Use Case Extractor)
 
-When a document is reverse-engineered from code, mark unverified content. The markers themselves are stable tokens and stay in English; their content follows the document language:
+Quando um documento é obtido por engenharia reversa a partir do código, marque o conteúdo não verificado. Os marcadores em si são tokens estáveis e permanecem em inglês; o conteúdo deles segue o idioma do documento:
 
-- `[INFERRED]` — behavior deduced from code structure but not confirmed by tests or stakeholders.
-- `[CONFIRM: pergunta]` — an open question a human must answer (e.g., `[CONFIRM: o limite de 10 itens é regra de negócio ou restrição técnica?]`).
+- `[INFERRED]` — comportamento deduzido da estrutura do código, mas não confirmado por testes ou por envolvidos.
+- `[CONFIRM: pergunta]` — uma pergunta em aberto que um humano precisa responder (p. ex., `[CONFIRM: o limite de 10 itens é regra de negócio ou restrição técnica?]`).
 
-A document containing uncertainty markers has Status `Draft` and must not be treated as source of truth until a human resolves the markers and promotes it to `Reviewed`.
+Um documento que contém marcadores de incerteza tem Status `Draft` e não deve ser tratado como fonte de verdade até que um humano resolva os marcadores e o promova a `Reviewed`.

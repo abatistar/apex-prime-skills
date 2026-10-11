@@ -1,95 +1,95 @@
-# Review Checklist
+# Checklist de Revisão
 
-Operational pass owned by `prime-architect/code-review`. The SKILL.md defines the standard, the severities, the verdicts, and the boundaries — this file is the sequence and the report shape.
+Passada operacional de propriedade do `prime-architect/code-review`. O SKILL.md define o padrão, as severidades, os vereditos e as fronteiras — este arquivo é a sequência e a forma do relatório.
 
-**This checklist holds no criteria.** Every item points at the ID where the answer lives (`QM-XX-N` in `prime-core/quality-model`, `CS-XX-N` in `prime-core/coding-standards`, the ITS section, or `UC-NNN/CA-N`). An item you cannot resolve to an ID is not a finding — it is a preference, or a gap to report.
+**Este checklist não guarda critérios.** Todo item aponta para o ID onde a resposta vive (`QM-XX-N` no `prime-core/quality-model`, `CS-XX-N` no `prime-core/coding-standards`, a seção da ITS ou `UC-NNN/CA-N`). Um item que você não consegue resolver em um ID não é um achado — é uma preferência, ou uma lacuna a reportar.
 
 ---
 
-## 0. Preconditions — do not start without these
+## 0. Pré-condições — não comece sem elas
 
-- [ ] The **ITS for the story** is located and read, together with every ADR it references.
-- [ ] The **use cases** it names are read: the delta for this story and the acceptance criteria the delta touches.
-- [ ] `docs/prime-config.md` is loaded (pipeline and required checks, verification commands, area register, slot overrides).
-- [ ] The **required checks are green**, per Step 0. No pipeline declared → the config's verification commands ran in their place. Red because of a flaky test → the review starts and that is a `Blocking:` finding on its own (`QM-TS-1`).
-- [ ] The diff is reviewable in one sitting. If not: ask for a split, or declare the plan units you will review and in which order.
+- [ ] A **ITS da story** está localizada e lida, junto com todo ADR que ela referencia.
+- [ ] Os **casos de uso** que ela nomeia estão lidos: o delta desta story e os critérios de aceite que o delta toca.
+- [ ] `docs/prime-config.md` está carregado (pipeline e verificações obrigatórias, comandos de verificação, registro de áreas, overrides de slots).
+- [ ] As **verificações obrigatórias estão verdes**, conforme o Passo 0. Nenhum pipeline declarado → os comandos de verificação da configuração rodaram em seu lugar. Vermelho por causa de um teste instável → a revisão começa e isso é um achado `Blocking:` por si só (`QM-TS-1`).
+- [ ] O diff é revisável de uma só sentada. Se não for: peça uma divisão, ou declare as unidades do plano que você revisará e em que ordem.
 
-*No ITS → report and stop, unless the change is declared out-of-process; then state that scope conformance was not checkable.*
+*Sem ITS → reporte e pare, a menos que a mudança seja declarada fora do processo; então declare que a conformidade de escopo não pôde ser verificada.*
 
-## 1. First pass — does the change make sense as a whole?
+## 1. Primeira passada — a mudança faz sentido como um todo?
 
-- [ ] Can I state what this change should do before reading the diff?
-- [ ] Does the direction taken match the plan, or did the author solve a different problem?
-- [ ] Which files should have been touched — read off the plan's units — and which behavior must keep working (the regression points and the unit that claimed each)?
+- [ ] Consigo dizer o que esta mudança deveria fazer antes de ler o diff?
+- [ ] A direção tomada corresponde ao plano, ou o autor resolveu um problema diferente?
+- [ ] Quais arquivos deveriam ter sido tocados — lidos das unidades do plano — e qual comportamento precisa continuar funcionando (os pontos de regressão e a unidade que reivindicou cada um)?
 
-*Wrong direction → stop here and say so. Do not annotate code that should not exist.*
+*Direção errada → pare aqui e diga isso. Não anote código que não deveria existir.*
 
-## 2. Scope conformance (diff ⇄ plan, both directions)
+## 2. Conformidade de escopo (diff ⇄ plano, nas duas direções)
 
-- [ ] **Plan → diff**: every unit of the plan is present, or its absence is justified; every test a unit owes exists.
-- [ ] **Diff → plan**: every changed file traces to a unit or a stated technical consequence. Unrequested improvements count as scope creep (`QM-CN-1`).
-- [ ] **Boundaries**: nothing in "Out of scope — do not touch" was touched.
-- [ ] **ADRs**: no contradiction with an Accepted ADR; no architectural decision landed without one.
-- [ ] **Divergence**: departures from the plan were returned as questions and the ITS revised — not applied silently.
+- [ ] **Plano → diff**: toda unidade do plano está presente, ou sua ausência está justificada; todo teste que uma unidade deve existe.
+- [ ] **Diff → plano**: todo arquivo alterado remonta a uma unidade ou a uma consequência técnica declarada. Melhorias não solicitadas contam como escopo excedido (`QM-CN-1`).
+- [ ] **Fronteiras**: nada em "Fora de escopo — não alterar" foi tocado.
+- [ ] **ADRs**: nenhuma contradição com um ADR Accepted; nenhuma decisão arquitetural chegou sem um.
+- [ ] **Divergência**: afastamentos do plano foram devolvidos como perguntas e a ITS revisada — não aplicados em silêncio.
 
-## 3. Lenses, in order (design first)
+## 3. Lentes, em ordem (design primeiro)
 
-- [ ] **Design** — boundaries, coupling, does it fit the system? `QM-CC-1..5`, `CS-AR-1..5`.
-- [ ] **Functionality** — behavior against `UC-NNN/CA-N`; concurrency, edge cases, failure paths (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`).
-- [ ] **Complexity** — readable quickly (`QM-RC-2/3/4`); speculative generality is complexity (`QM-MT-4`).
-- [ ] **Tests** — obligation `CS-TS-1`; scope from each plan unit's declared tests; behavior not implementation `QM-TS-2`; trustworthy `QM-TS-1`, `CS-TS-4`. Regression points covered.
-- [ ] **Naming** — `QM-RC-1`, `CS-NM-2`: no name concealing I/O, mutation, or an event.
-- [ ] **Comments** — `QM-RC-5`, `QM-DO-2`: *why*, not *what*.
-- [ ] **Style and consistency** — conventional slots judged against the area's registered state (`current` / `legacy-maintained` / `strangler`). In legacy-maintained, a conventional finding is valid only if a **third** pattern was introduced.
-- [ ] **Security** — `QM-SR-*` and `CS-SC-*` on every new boundary: input validated, secrets absent, authorization at the right layer, nothing sensitive in logs (`CS-OB-3`).
-- [ ] **Documentation** — `QM-DO-1`: no co-located document left lying by the change. Delivered behavior diverging from the use case routes to the use case skills, never patched here.
-- [ ] **Every line** a human will maintain was actually read.
-- [ ] **One thing done well** is identified and named.
+- [ ] **Design** — fronteiras, acoplamento, encaixa no sistema? `QM-CC-1..5`, `CS-AR-1..5`.
+- [ ] **Funcionalidade** — comportamento contra `UC-NNN/CA-N`; concorrência, casos de borda, caminhos de falha (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`).
+- [ ] **Complexidade** — legível rapidamente (`QM-RC-2/3/4`); generalidade especulativa é complexidade (`QM-MT-4`).
+- [ ] **Testes** — obrigação `CS-TS-1`; escopo a partir dos testes declarados em cada unidade do plano; comportamento, não implementação `QM-TS-2`; confiáveis `QM-TS-1`, `CS-TS-4`. Pontos de regressão cobertos.
+- [ ] **Nomenclatura** — `QM-RC-1`, `CS-NM-2`: nenhum nome ocultando I/O, mutação ou um evento.
+- [ ] **Comentários** — `QM-RC-5`, `QM-DO-2`: *porquê*, não *quê*.
+- [ ] **Estilo e consistência** — slots convencionais julgados contra o estado registrado da área (`current` / `legacy-maintained` / `strangler`). Em legacy-maintained, um achado convencional só é válido se um **terceiro** padrão foi introduzido.
+- [ ] **Segurança** — `QM-SR-*` e `CS-SC-*` em toda nova fronteira: entrada validada, segredos ausentes, autorização na camada certa, nada sensível em logs (`CS-OB-3`).
+- [ ] **Documentação** — `QM-DO-1`: nenhum documento co-localizado deixado mentindo pela mudança. Comportamento entregue divergindo do caso de uso roteia para as skills de caso de uso, nunca remendado aqui.
+- [ ] **Cada linha** que um humano vai manter foi realmente lida.
+- [ ] **Uma coisa bem feita** foi identificada e nomeada.
 
-## 4. Classification
+## 4. Classificação
 
-For each finding: **where · what · why (ID) · what is expected**.
+Para cada achado: **onde · o quê · por quê (ID) · o que se espera**.
 
-| Severity | Use for | Blocks merge |
+| Severidade | Usar para | Bloqueia o merge |
 |---|---|---|
-| `Blocking:` | INVARIANT slot violated; `[NON-NEGOTIABLE]` violated **silently**; missing obligatory test; unagreed scope creep or crossed boundary; conflict with an Accepted ADR; decision without an ADR; document left lying | yes |
-| `Consider:` | `[CALIBRATED]` criteria and CONVENTIONAL slots with a real argument; the author may decline with a reason | no |
-| `Nit:` | trivial, author's option. Mechanizable → not a nit: record a toolchain gap | no |
-| `FYI:` | context, teaching, praise — no obligation | no |
+| `Blocking:` | slot INVARIANT violado; `[NON-NEGOTIABLE]` violado **em silêncio**; teste obrigatório ausente; escopo excedido sem acordo ou fronteira cruzada; conflito com um ADR Accepted; decisão sem ADR; documento deixado mentindo | sim |
+| `Consider:` | critérios `[CALIBRATED]` e slots CONVENTIONAL com um argumento real; o autor pode declinar com uma razão | não |
+| `Nit:` | trivial, opção do autor. Mecanizável → não é um nit: registre uma lacuna de toolchain | não |
+| `FYI:` | contexto, ensino, elogio — sem obrigação | não |
 
-- [ ] Every finding cites an ID.
-- [ ] Named, owned, justified departures were classified as recorded exceptions, not as blockers (`QM-MT-1`).
-- [ ] Repeated small findings in one area were aggregated into the design finding that causes them.
+- [ ] Todo achado cita um ID.
+- [ ] Afastamentos nomeados, com responsável e justificados foram classificados como exceções registradas, não como blockers (`QM-MT-1`).
+- [ ] Achados pequenos repetidos numa área foram agregados no achado de design que os causa.
 
-## 5. Verdict — exactly one
+## 5. Veredito — exatamente um
 
-- [ ] **Approve** — no blocking finding.
-- [ ] **Approve with comments** — nothing blocking; Considers left to the author, no second round required.
-- [ ] **Request changes** — at least one `Blocking:`, listed separately from everything else.
-- [ ] **Return to the architect** — the plan is wrong, incomplete, or overtaken; or a decision needs an ADR. Routes back to its-generator or the use case skills.
+- [ ] **Approve** — nenhum achado bloqueante.
+- [ ] **Approve with comments** — nada bloqueante; Considers deixados ao autor, nenhuma segunda rodada exigida.
+- [ ] **Request changes** — pelo menos um `Blocking:`, listado separadamente de todo o resto.
+- [ ] **Return to the architect** — o plano está errado, incompleto ou ultrapassado; ou uma decisão precisa de um ADR. Roteia de volta ao its-generator ou às skills de caso de uso.
 
-*Never approve a change you did not understand.*
+*Nunca aprove uma mudança que você não entendeu.*
 
-## 6. Follow-ups to register before closing
+## 6. Follow-ups a registrar antes de encerrar
 
-- [ ] ADR to propose (its-generator, architect approves).
-- [ ] ITS or use case to revise, with the section named.
-- [ ] Unfilled slot to report (`coding-standards`, Unfilled slots) — never improvised.
-- [ ] Toolchain gap (a check a human made that a tool should own — `QM-CN-3`).
-- [ ] Deliberate debt to register, with an owner (`QM-MT-1`).
+- [ ] ADR a propor (its-generator, o arquiteto aprova).
+- [ ] ITS ou caso de uso a revisar, com a seção nomeada.
+- [ ] Slot não preenchido a reportar (`coding-standards`, Slots não preenchidos) — nunca improvisado.
+- [ ] Lacuna de toolchain (uma verificação que um humano fez e que uma ferramenta deveria possuir — `QM-CN-3`).
+- [ ] Dívida deliberada a registrar, com um responsável (`QM-MT-1`).
 
-## 7. Boundary check before delivering
+## 7. Verificação de fronteira antes de entregar
 
-- [ ] No application code written: the deliverables are findings and, where the plan itself was wrong, a revised ITS.
-- [ ] No criterion restated in a comment. Every finding points at an ID owned elsewhere.
-- [ ] No use case status promoted, no documentation rewritten, no configuration file edited as a side effect.
-- [ ] Nothing re-litigated that the toolchain already owns (`QM-CN-3`); its absence recorded as a gap instead.
+- [ ] Nenhum código de aplicação escrito: os entregáveis são achados e, onde o próprio plano estava errado, uma ITS revisada.
+- [ ] Nenhum critério repetido num comentário. Todo achado aponta para um ID de propriedade de outro lugar.
+- [ ] Nenhum status de caso de uso promovido, nenhuma documentação reescrita, nenhum arquivo de configuração editado como efeito colateral.
+- [ ] Nada rediscutido que a toolchain já possui (`QM-CN-3`); sua ausência registrada como lacuna.
 
 ---
 
 ## Template do relatório
 
-**Language.** The block below is the artifact the reviewer files, and it is written in the document language the core templates use: `pt-BR`. The checklist above is skill-facing and stays in English. Section titles are translated; the stable tokens — the four verdicts, the four severities, `QM-XX-N`, `CS-XX-N`, `UC-NNN`, `ADR-NNN`, `ITS-<story-id>`, file paths and identifiers — are never translated.
+**Idioma.** O bloco abaixo é o artefato que o revisor arquiva, e é escrito no idioma de documento que os templates do core usam: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis — os quatro vereditos, as quatro severidades, `QM-XX-N`, `CS-XX-N`, `UC-NNN`, `ADR-NNN`, `ITS-<story-id>`, caminhos de arquivo e identificadores — nunca são traduzidos.
 
 ````markdown
 # Revisão — [PR / branch] · ITS-<story-id>

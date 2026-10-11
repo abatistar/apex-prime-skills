@@ -1,68 +1,68 @@
-# Impact map — operational pass
+# Mapa de impacto — passada operacional
 
-## Configuration
+## Configuração
 
-- [ ] `docs/prime-config.md` read per the **prime-core/prime-config** contract.
-- [ ] Structure map, area register, document locations (UC, ADR), and verification commands loaded.
-- [ ] Unfilled slot or unregistered area recorded as a gap (`coding-standards`, Unfilled slots) — never improvised.
+- [ ] `docs/prime-config.md` lido conforme o contrato **prime-core/prime-config**.
+- [ ] Mapa de estrutura, registro de áreas, localizações de documentos (UC, ADR) e comandos de verificação carregados.
+- [ ] Slot sem valor ou área não registrada registrados como lacuna (`coding-standards`, Slots não preenchidos) — nunca improvisados.
 
-## The change, as behavior
+## A mudança, como comportamento
 
-*Standalone runs only. Commissioned by `feasibility-analysis`, the restatement and its boundary arrive already made and this whole block is skipped, **Insufficient input** included.*
+*Apenas em execuções avulsas. Quando comissionado pela `feasibility-analysis`, a reformulação e sua fronteira chegam já feitas e todo este bloco é pulado, **Insufficient input** incluído.*
 
-- [ ] Restated as an observable behavior delta, not as a solution.
-- [ ] Boundary stated: what is explicitly **not** changing.
-- [ ] If the restatement required inventing intent → **Insufficient input**, with the specific questions. Stop here.
-- [ ] Solution named in the input while other behavior deltas exist → noted in one line, not evaluated.
+- [ ] Reformulada como um delta de comportamento observável, não como uma solução.
+- [ ] Fronteira declarada: o que explicitamente **não** está mudando.
+- [ ] Se a reformulação exigiu inventar intenção → **Insufficient input**, com as perguntas específicas. Pare aqui.
+- [ ] Solução nomeada na entrada enquanto existem outros deltas de comportamento → anotado em uma linha, não avaliado.
 
-## Entry points
+## Pontos de entrada
 
-- [ ] Every trigger located and anchored: endpoint, job, event handler, CLI, UI action, migration.
-- [ ] Entry points the search could not reach (dynamic dispatch, reflection, config-driven wiring, framework convention) recorded as a gap with its resolution.
+- [ ] Todo gatilho localizado e ancorado: endpoint, job, handler de evento, CLI, ação de UI, migração.
+- [ ] Pontos de entrada que a busca não conseguiu alcançar (dispatch dinâmico, reflexão, ligação orientada por configuração, convenção de framework) registrados como lacuna com sua resolução.
 
-## Reach, in three degrees
+## Alcance, em três graus
 
-- [ ] **Direct** — must change for the behavior to change. Smallest honest set.
-- [ ] **Coupled** — callers, subscribers, reports, fixtures, tests, flags, readers of the same persisted state.
-- [ ] **Contract surface** — API shapes, DB schema, event payloads, exported files, shared signatures. Known consumers named, not entered.
-- [ ] Every entry carries location, degree, and one line of *why it is in the map*.
+- [ ] **Direto** — precisa mudar para que o comportamento mude. O menor conjunto honesto.
+- [ ] **Acoplado** — chamadores, assinantes, relatórios, fixtures, testes, flags, leitores do mesmo estado persistido.
+- [ ] **Superfície de contrato** — formatos de API, esquema de banco, payloads de eventos, arquivos exportados, assinaturas compartilhadas. Consumidores conhecidos nomeados, não adentrados.
+- [ ] Toda entrada carrega localização, grau e uma linha de *por que está no mapa*.
 
-## Area register overlay
+## Sobreposição do registro de áreas
 
-- [ ] Each touched area carries its registered state: `current` / `legacy-maintained` / `strangler`.
-- [ ] State taken from the configuration — never inferred from directory name or file age.
-- [ ] State recorded, **not** priced.
+- [ ] Cada área tocada carrega seu estado registrado: `current` / `legacy-maintained` / `strangler`.
+- [ ] Estado tirado da configuração — nunca inferido do nome do diretório ou da idade do arquivo.
+- [ ] Estado registrado, **não** precificado.
 
-## Documented layer overlay
+## Sobreposição da camada documentada
 
-- [ ] Use case coverage listed (`UC-NNN`, `CA-N` where specific).
-- [ ] Touched behavior with no use case → documentation gap, area named, `use-case-extractor` noted as the route.
-- [ ] Code × use case divergence recorded as a finding and routed to the use case skills (`QM-DO-1`). No use case patched here.
-- [ ] Accepted ADRs bearing on the touched areas listed; apparent contradiction stated and cited, **not resolved**.
+- [ ] Cobertura por casos de uso listada (`UC-NNN`, `CA-N` quando específica).
+- [ ] Comportamento tocado sem caso de uso → lacuna de documentação, área nomeada, `use-case-extractor` anotado como a rota.
+- [ ] Divergência código × caso de uso registrada como achado e roteada às skills de caso de uso (`QM-DO-1`). Nenhum caso de uso remendado aqui.
+- [ ] ADRs Accepted que incidem sobre as áreas tocadas listados; contradição aparente declarada e citada, **não resolvida**.
 
-## Provenance
+## Proveniência
 
-- [ ] Every line is exactly one of: **anchored** (`path/File.ext:line` or `UC-NNN/CA-N`, read), **`[INFERRED]`** with the reasoning on the line, **`[UNVERIFIED]`** (asserted, not checked), or **gap** with what would resolve it.
-- [ ] No unmarked inference anywhere in the report.
-- [ ] This vocabulary is defined by this skill and reused unchanged by its consumers.
+- [ ] Toda linha é exatamente uma entre: **ancorada** (`caminho/Arquivo.ext:linha` ou `UC-NNN/CA-N`, lida), **`[INFERRED]`** com o raciocínio na linha, **`[UNVERIFIED]`** (afirmada, não conferida) ou **lacuna** com o que a resolveria.
+- [ ] Nenhuma inferência sem marca em qualquer ponto do relatório.
+- [ ] Este vocabulário é definido por esta skill e reutilizado sem alteração por seus consumidores.
 
-## The edge
+## A borda
 
-- [ ] Stopped at the contract surface; consumers named, not traced into.
-- [ ] Stopped where there is no behavioral dependence.
-- [ ] What was deliberately not traced is written down, with what would justify tracing it.
+- [ ] Parou na superfície de contrato; consumidores nomeados, não rastreados por dentro.
+- [ ] Parou onde não há dependência comportamental.
+- [ ] O que deliberadamente não foi rastreado está escrito, com o que justificaria rastrear.
 
-## Boundary check before delivering
+## Verificação de fronteira antes de entregar
 
-- [ ] No verdict, no recommendation, no estimate anywhere in the report.
-- [ ] No application code written or proposed.
-- [ ] No use case, ITS, ADR, or configuration file modified.
+- [ ] Nenhum veredito, nenhuma recomendação, nenhuma estimativa em qualquer ponto do relatório.
+- [ ] Nenhum código de aplicação escrito ou proposto.
+- [ ] Nenhum caso de uso, ITS, ADR ou arquivo de configuração modificado.
 
 ---
 
 ## Template do relatório
 
-**Language.** The block below is the artifact the architect files, and it is written in the document language the core templates use: `pt-BR`. The checklist above is skill-facing and stays in English. Section titles are translated; the stable tokens — `IM-<demand-id>-N`, the provenance markers (`[INFERRED]`, `[UNVERIFIED]`), the area states (`current`, `legacy-maintained`, `strangler`), `UC-NNN`, `CA-N`, `ADR-NNN`, `QM-XX-N`, file paths and identifiers — are never translated.
+**Idioma.** O bloco abaixo é o artefato que o arquiteto arquiva, e é escrito no idioma de documento que os templates do core usam: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis — `IM-<demand-id>-N`, os marcadores de proveniência (`[INFERRED]`, `[UNVERIFIED]`), os estados de área (`current`, `legacy-maintained`, `strangler`), `UC-NNN`, `CA-N`, `ADR-NNN`, `QM-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
 
 ````markdown
 # Mapa de impacto — IM-<id-da-demanda>-N

@@ -1,142 +1,142 @@
 ---
 name: its-generator
-description: Generate an ITS (Instrucao de Trabalho de Software) - the implementation plan mapping a user story and its use case documents to concrete code changes, written against the prime-core/its-contract. Architect-layer skill. Use whenever the architect asks for an implementation plan, impact analysis, "what needs to change in the code", "generate the ITS for story S-NNN", or provides a story plus use case documents. Also use to revise an ITS that the implementation or the code review sent back. Requires the use case repository as input. Do NOT use for writing or updating use case documents (use-case-creator, use-case-extractor), for reviewing an implementation (code-review), for mapping what a change reaches without planning it (impact-mapping), or for judging whether a demand can be absorbed at all (feasibility-analysis).
+description: Gera uma ITS (Instrução de Trabalho de Software) - o plano de implementação que mapeia uma user story e seus documentos de caso de uso para mudanças concretas de código, escrito contra o prime-core/its-contract. Skill da camada do arquiteto. Use sempre que o arquiteto pedir um plano de implementação, uma análise de impacto, "o que precisa mudar no código", "gere a ITS da story S-NNN", ou fornecer uma story mais documentos de caso de uso. Use também para revisar uma ITS que a implementação ou o code review devolveu. Exige o repositório de casos de uso como entrada. NÃO use para escrever ou atualizar documentos de caso de uso (use-case-creator, use-case-extractor), para revisar uma implementação (code-review), para mapear o que uma mudança alcança sem planejá-la (impact-mapping) nem para julgar se uma demanda pode ser absorvida (feasibility-analysis).
 ---
 
 # ITS Generator (prime-architect)
 
-Generate one ITS per story: the work instruction the Developer will implement from. The ITS format is NOT defined here — it is owned by **prime-core/its-contract** (read its SKILL.md and `templates/its-template.md` before writing). This skill defines the *process* of producing an ITS that honors that contract.
+Gera uma ITS por story: a instrução de trabalho a partir da qual o Desenvolvedor implementará. O formato da ITS NÃO é definido aqui — é de propriedade do **prime-core/its-contract** (leia seu SKILL.md e o `templates/its-template.md` antes de escrever). Esta skill define o *processo* de produzir uma ITS que honre esse contrato.
 
-Core discipline: **read before proposing**. Never plan changes to code you have not inspected. And process **exactly one delta**: the one belonging to the story at hand.
+Disciplina central: **leia antes de propor**. Nunca planeje mudanças em código que você não inspecionou. E processe **exatamente um delta**: o que pertence à story em questão.
 
-## Step 0 — Load project configuration and core contracts
+## Passo 0 — Carregar a configuração do projeto e os contratos do core
 
-Read `docs/prime-config.md` per **prime-core/prime-config** — location, fallback, precedence, divergence handling, and the bootstrap procedure when the file is missing all live in that contract; never re-derive them here. From the config this skill uses: the stack and versions (respect them — do not propose Java 17 features in a Java 11 project), the folder structure as the map for code inspection, the *Conventions and constraints* section in full — the area register, the slot overrides, the declared migrations, the quality model posture, and the project rules — the document locations (including the ADR repository), and the verification commands.
+Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localização, alternativa, precedência, tratamento de divergências e o procedimento de bootstrap quando o arquivo está ausente vivem todos nesse contrato; nunca os rederive aqui. Da configuração esta skill usa: a stack e as versões (respeite-as — não proponha recursos do Java 17 num projeto Java 11), a estrutura de pastas como mapa para a inspeção de código, a seção *Convenções e restrições* por inteiro — o registro de áreas, os overrides de slots, as migrações declaradas, a postura do modelo de qualidade e as regras do projeto —, as localizações dos documentos (incluindo o repositório de ADRs) e os comandos de verificação.
 
-Then load the core contracts this skill writes against: **prime-core/its-contract** (output format and the ITS-vs-ADR decision boundary), **prime-core/use-case** (input format), **prime-core/coding-standards** with `references/convention-slots.md` and the defaults file for the project's stack (the concrete conventions the plan conforms to), and **prime-core/quality-model** with `references/quality-criteria.md` — consumed not as a rulebook to satisfy mechanically, but as the *definition* the plan is interrogated against before delivery (Step 4.6), honoring its calibration and its named-exception discipline. It does not, by itself, approve or reject the plan.
+Em seguida carregue os contratos do core contra os quais esta skill escreve: o **prime-core/its-contract** (formato de saída e a fronteira de decisão ITS-vs-ADR), o **prime-core/use-case** (formato de entrada), o **prime-core/coding-standards** com `references/convention-slots.md` e o arquivo de padrões da stack do projeto (as convenções concretas a que o plano se conforma) e o **prime-core/quality-model** com `references/quality-criteria.md` — consumido não como um livro de regras a satisfazer mecanicamente, mas como a *definição* contra a qual o plano é interrogado antes da entrega (Passo 4.6), honrando sua calibração e sua disciplina de exceção nomeada. Ele não aprova nem reprova o plano por si só.
 
-A slot the plan depends on with no value — neither a stack default nor a config override — is a **reportable gap** per prime-core/coding-standards, never a value this skill improvises. Report it and offer to fill it; do not plan a change that rests on it.
+Um slot de que o plano depende e que não tem valor — nem padrão da stack nem override da configuração — é uma **lacuna reportável** conforme o prime-core/coding-standards, nunca um valor que esta skill improvisa. Reporte-a e ofereça preenchê-la; não planeje uma mudança que se apoie nela.
 
-## Step 1 — Gather inputs and validate
+## Passo 1 — Reunir as entradas e validar
 
-Required inputs: the story (ID + description) and the use case documents it created or revised. If the architect did not list the affected use cases, find them by searching Revision History entries for the story ID in the use case repository.
+Entradas obrigatórias: a story (ID + descrição) e os documentos de caso de uso que ela criou ou revisou. Se o arquiteto não listou os casos de uso afetados, encontre-os procurando no repositório de casos de uso as entradas do Histórico de revisões com o ID da story.
 
-Validate each document against the prime-core/use-case format. Two conditions stop the run, and both are reported rather than worked around — a plan built on unvalidated behavior is worse than no plan.
+Valide cada documento contra o formato do prime-core/use-case. Duas condições interrompem a execução, e ambas são reportadas em vez de contornadas — um plano construído sobre comportamento não validado é pior que nenhum plano.
 
-- **Status is not `Reviewed`.** Per prime-core/use-case, only a Reviewed document is source of truth and only a Reviewed document feeds this skill. This holds whatever is holding the document in `Draft` — an unresolved `[CONFIRM: ...]` marker in an unrelated section leaves the whole document outside source of truth, because the status is a property of the document and not of the story's slice of it. Name the markers and route the document back to the architect through use-case-creator; promotion is a human act and no skill performs it.
-- **A mandatory section is missing.** Report the gap against the format and stop.
+- **O status não é `Reviewed`.** Conforme o prime-core/use-case, somente um documento Reviewed é fonte de verdade e somente um documento Reviewed alimenta esta skill. Isso vale seja o que for que mantém o documento em `Draft` — um marcador `[CONFIRM: ...]` não resolvido em uma seção sem relação deixa o documento inteiro fora da fonte de verdade, porque o status é uma propriedade do documento e não da fatia dele que cabe à story. Nomeie os marcadores e devolva o documento ao arquiteto via use-case-creator; a promoção é um ato humano e nenhuma skill a realiza.
+- **Falta uma seção obrigatória.** Reporte a lacuna contra o formato e pare.
 
-If the story modifies behavior whose use case does not exist at all, recommend running use-case-extractor on that area first.
+Se a story modifica comportamento cujo caso de uso não existe de forma alguma, recomende executar o use-case-extractor naquela área primeiro.
 
-Also scan the ADR repository for Accepted ADRs touching the affected area — they constrain the plan the same way the config's conventions do. A delta that cannot be satisfied without contradicting one is a decision, not a planning detail: it routes to Step 4.5 and is never absorbed into the plan.
+Examine também o repositório de ADRs em busca de ADRs Accepted que toquem a área afetada — eles restringem o plano do mesmo modo que as convenções da configuração. Um delta que não pode ser satisfeito sem contradizer um deles é uma decisão, não um detalhe de planejamento: roteia-se para o Passo 4.5 e nunca é absorvido no plano.
 
-## Step 2 — Locate the delta and classify the scenario
+## Passo 2 — Localizar o delta e classificar o cenário
 
-For each affected use case, find the Revision History entry matching the current story ID.
+Para cada caso de uso afetado, encontre a entrada do Histórico de revisões que corresponde ao ID da story atual.
 
-- Entry says the document was **created** by this story → **creation scenario** for this use case.
-- Entry lists added/changed/removed items → **change scenario**; that entry is the delta.
-- **No entry carries the story ID** → the document was not updated for this story. Do not infer the delta from the story text: report it and route the document to use-case-creator before planning. The one exception is an entry the template's five-entry cap pushed out of the retained history — recover it from version control, where the full history lives, and proceed; when it cannot be recovered, report and stop.
+- A entrada diz que o documento foi **criado** por esta story → **cenário de criação** para este caso de uso.
+- A entrada lista itens adicionados/alterados/removidos → **cenário de alteração**; essa entrada é o delta.
+- **Nenhuma entrada carrega o ID da story** → o documento não foi atualizado para esta story. Não infira o delta a partir do texto da story: reporte e roteie o documento ao use-case-creator antes de planejar. A única exceção é uma entrada que o limite de cinco entradas do template empurrou para fora do histórico retido — recupere-a do controle de versão, onde vive o histórico completo, e prossiga; quando não for possível recuperá-la, reporte e pare.
 
-**Older revision entries are read-only.** They describe behavior already implemented — they are state, not pending work. Never treat them as something to implement. Their only legitimate use is in Step 4's hot-area check.
+**As entradas de revisão mais antigas são somente leitura.** Descrevem comportamento já implementado — são estado, não trabalho pendente. Nunca as trate como algo a implementar. Seu único uso legítimo é a verificação de área quente do Passo 4.
 
-Number the delta items as you locate them (`D1`, `D2`, ...), qualified by use case when more than one is affected (`UC-042/D1`). In the change scenario the revision entry already lists them. In the creation scenario the whole document is the delta: unfold it into items along the axis the plan will satisfy — each main-flow step, each extension, and each business rule or acceptance criterion that does not fall out of one of those — so every unit still names what it satisfies. The numbering is what makes the single-axis plan verifiable: the plan's units cite these identifiers and the traceability check is two lists of them.
+Numere os itens de delta conforme os localiza (`D1`, `D2`, ...), qualificados pelo caso de uso quando mais de um é afetado (`UC-042/D1`). No cenário de alteração, a entrada de revisão já os lista. No cenário de criação, o documento inteiro é o delta: desdobre-o em itens ao longo do eixo que o plano vai satisfazer — cada passo do fluxo principal, cada extensão e cada regra de negócio ou critério de aceite que não decorra de um desses — para que toda unidade ainda nomeie o que satisfaz. A numeração é o que torna verificável o plano de eixo único: as unidades do plano citam esses identificadores e a verificação de rastreabilidade são duas listas deles.
 
-## Step 3 — Inspect the codebase (per use case)
+## Passo 3 — Inspecionar a base de código (por caso de uso)
 
-**The inspection always happens here.** An `impact-mapping` map is not an input to this step, even when one exists for the demand this story came from. A map is scoped to a demand under refinement and an ITS to exactly one story; refinement can run for months between the two, and by the time the plan exists, verifying the map costs what deriving the reach fresh would. `impact-mapping` states the same boundary from its own side. The architect may of course have read the map; what does not happen is a plan inheriting reach it never verified.
+**A inspeção sempre acontece aqui.** Um mapa do `impact-mapping` não é uma entrada deste passo, mesmo quando existe um para a demanda de que esta story veio. Um mapa tem escopo de uma demanda em refinamento e uma ITS de exatamente uma story; o refinamento pode durar meses entre os dois, e, quando o plano existe, verificar o mapa custa o mesmo que derivar o alcance do zero. O `impact-mapping` declara a mesma fronteira do seu lado. O arquiteto pode, claro, ter lido o mapa; o que não acontece é um plano herdar um alcance que nunca verificou.
 
-**Creation scenario** — broad, directed exploration:
-- Locate entry points, layers, and models related to the actor/action, guided by the config's structure map.
-- Find similar existing features to reuse patterns (error handling, validation style, test layout).
-- Map every main-flow step and every exception flow to a component, classifying each as: exists as-is / modify / create.
-- Every component classified **modify** already serves behavior this story does not change. It enters Step 4's risk sweep, and the unit that modifies it owes the non-regression test for that behavior, named in the unit like any other test. Numbered regression points (`RG-N`) belong to the change scenario: here the coverage is owed by the unit, not tracked as a delta-side identifier.
+**Cenário de criação** — exploração ampla e dirigida:
+- Localize pontos de entrada, camadas e modelos relacionados ao ator/ação, guiado pelo mapa de estrutura da configuração.
+- Encontre funcionalidades existentes semelhantes para reaproveitar padrões (tratamento de erros, estilo de validação, organização de testes).
+- Mapeie cada passo do fluxo principal e cada fluxo de exceção para um componente, classificando cada um como: existe como está / modificar / criar.
+- Todo componente classificado como **modificar** já atende a comportamento que esta story não muda. Ele entra na varredura de risco do Passo 4, e a unidade que o modifica deve o teste de não regressão desse comportamento, nomeado na unidade como qualquer outro teste. Os pontos de regressão numerados (`RG-N`) pertencem ao cenário de alteração: aqui a cobertura é devida pela unidade, não rastreada como um identificador do lado do delta.
 
-**Change scenario** — narrow, delta-driven analysis:
-1. Use the document (its current body describes the consolidated behavior) to locate the components implementing this use case today.
-2. Map **only the delta items**: for each added/changed/removed item, identify the corresponding code and what must change.
-3. **Regression analysis** — exclusive to this scenario: identify behavior that did *not* change but shares code with what will change. The full document body (not the delta) tells you everything that must keep working. Number these points (`RG-1`, `RG-2`) — each will be claimed by the plan unit that touches the shared code, and the claim is checked in Step 6.
+**Cenário de alteração** — análise estreita, guiada pelo delta:
+1. Use o documento (seu corpo atual descreve o comportamento consolidado) para localizar os componentes que implementam este caso de uso hoje.
+2. Mapeie **apenas os itens de delta**: para cada item adicionado/alterado/removido, identifique o código correspondente e o que precisa mudar.
+3. **Análise de regressão** — exclusiva deste cenário: identifique o comportamento que *não* mudou mas compartilha código com o que vai mudar. O corpo completo do documento (não o delta) diz tudo o que precisa continuar funcionando. Numere esses pontos (`RG-1`, `RG-2`) — cada um será reivindicado pela unidade do plano que toca o código compartilhado, e a reivindicação é verificada no Passo 6.
 
-Throughout the inspection, note every point where more than one viable implementation path exists. These notes feed Step 5 (discarded-alternative lines) and Step 4.5 (ADR candidates).
+Durante toda a inspeção, anote cada ponto em que existe mais de um caminho de implementação viável. Essas notas alimentam o Passo 5 (linhas de alternativa descartada) e o Passo 4.5 (candidatos a ADR).
 
-## Step 4 — Repository-wide risk check and the out-of-scope boundary
+## Passo 4 — Verificação de risco em todo o repositório e a fronteira de fora de escopo
 
-For every component slated for modification, check whether it also serves other documented use cases (search the repository). This single sweep yields two different outputs, and merging them is the error to avoid.
+Para cada componente previsto para modificação, verifique se ele também atende a outros casos de uso documentados (busque no repositório). Essa única varredura rende duas saídas diferentes, e fundi-las é o erro a evitar.
 
-**Risk areas.** The use cases that share the component and stay in the plan's path. List them; they raise the test attention the affected units owe. Optionally, if a delta touches a step that also appears in the last 1–2 revision entries of the same document, flag it as a **hot area** (frequently changed → deserves extra test attention). This is a targeted lookup, not a re-reading of history.
+**Áreas de risco.** Os casos de uso que compartilham o componente e permanecem no caminho do plano. Liste-os; eles elevam a atenção de teste que as unidades afetadas devem. Opcionalmente, se um delta toca um passo que também aparece nas últimas 1–2 entradas de revisão do mesmo documento, sinalize-o como **área quente** (mudado com frequência → merece atenção extra de teste). É uma consulta direcionada, não uma releitura do histórico.
 
-**Out-of-scope boundaries.** The contract requires the implementation plan to name what must not be touched, and this is where those borders are derived. Three sources, each entry naming *why it is a border*:
+**Fronteiras de fora de escopo.** O contrato exige que o plano de implementação nomeie o que não deve ser tocado, e é aqui que essas bordas são derivadas. Três fontes, cada entrada nomeando *por que é uma borda*:
 
-- **Shared but untouched.** Code the inspection reached, serving another use case, that the delta does not require changing — the most likely place for an unrequested improvement to land. Distinct from a regression point: `RG-N` is code the plan **does** touch and that must keep working; a boundary is code the plan **must not** touch at all.
-- **Contract surfaces this story does not change.** API shapes, schema, event payloads reached by the inspection whose consumers the story has no mandate to migrate. Naming them is what keeps a convenient signature change from arriving unannounced.
-- **Legacy deliberately left alone.** Inherited code in a `legacy-maintained` or `strangler` area the plan runs alongside without correcting — the vehicle Step 4.6 routes such departures into.
+- **Compartilhado mas intocado.** Código que a inspeção alcançou, que atende a outro caso de uso e que o delta não exige alterar — o lugar mais provável onde uma melhoria não solicitada vai cair. Distinto de um ponto de regressão: `RG-N` é código que o plano **toca** e que precisa continuar funcionando; uma fronteira é código que o plano **não deve** tocar de forma alguma.
+- **Superfícies de contrato que esta story não muda.** Formatos de API, esquema, payloads de eventos alcançados pela inspeção cujos consumidores a story não tem mandato para migrar. Nomeá-los é o que evita que uma mudança de assinatura conveniente chegue sem aviso.
+- **Legado deliberadamente deixado em paz.** Código herdado numa área `legacy-maintained` ou `strangler` com que o plano convive sem corrigir — o veículo para o qual o Passo 4.6 roteia tais desvios.
 
-An empty boundary list is legitimate and is written as such ("nenhuma identificada"), never omitted: a story genuinely confined to code nobody else uses has no borders to name. What is not legitimate is a border with no reason — the implementer must be able to tell a boundary from an oversight, and the reviewer checks the section item by item.
+Uma lista de fronteiras vazia é legítima e é escrita como tal ("nenhuma identificada"), nunca omitida: uma story genuinamente confinada a código que ninguém mais usa não tem bordas a nomear. O que não é legítimo é uma borda sem razão — o implementador precisa conseguir distinguir uma fronteira de um esquecimento, e o revisor confere a seção item a item.
 
-## Step 4.5 — Detect and propose ADRs
+## Passo 4.5 — Detectar e propor ADRs
 
-Review the decision points noted in Step 3 against the contract's decision boundary: does any choice constrain future implementations, affect more than one use case or module, or need a rationale readable outside this ITS? If yes:
+Revise os pontos de decisão anotados no Passo 3 contra a fronteira de decisão do contrato: alguma escolha restringe implementações futuras, afeta mais de um caso de uso ou módulo, ou precisa de uma justificativa legível fora desta ITS? Se sim:
 
-1. Draft the ADR per the contract's `templates/adr-template.md`, status `Proposed`, in the configured ADR location. The alternatives considered are the point of the record, not padding.
-2. **Present it to the architect for approval before delivering the ITS.** The architect decides; you propose. An ITS is not delivered while an ADR it references is still Proposed. If rejected as "story-scoped", the decision falls back to a discarded-alternative line in the ITS.
-3. Reference the approved ADR's ID in the ITS metadata, and at every plan unit the decision constrains, state the constraint it imposes there — per the contract's reference rule. The implementer must not need to open the ADR to know what to do; they read it to know why, and because Accepted ADRs are binding context.
+1. Redija o ADR conforme o `templates/adr-template.md` do contrato, status `Proposed`, na localização de ADRs configurada. As alternativas consideradas são o ponto do registro, não enchimento.
+2. **Apresente-o ao arquiteto para aprovação antes de entregar a ITS.** O arquiteto decide; você propõe. Uma ITS não é entregue enquanto um ADR que ela referencia ainda estiver Proposed. Se rejeitado como "escopo de story", a decisão recai numa linha de alternativa descartada na ITS.
+3. Referencie o ID do ADR aprovado nos metadados da ITS e, em cada unidade do plano que a decisão restringe, declare ali a restrição que ela impõe — conforme a regra de referência do contrato. O implementador não deve precisar abrir o ADR para saber o que fazer; ele o lê para saber por quê, e porque ADRs Accepted são contexto vinculante.
 
-**A delta that contradicts an Accepted ADR routes through this step, always.** Never plan around the contradiction silently, and never let the config's conventions settle it — prime-core/prime-config's precedence rule is that a conflict with an Accepted ADR is reported, not resolved. Two outcomes are legitimate: the plan fits under the ADR, and the constraint is stated at the units it binds; or the story genuinely supersedes the decision, and the superseding record is drafted and routed exactly like any other candidate. The superseded ADR takes `Superseded by ADR-NNN` only once the architect approves the replacement.
+**Um delta que contradiz um ADR Accepted passa por este passo, sempre.** Nunca planeje contornando a contradição em silêncio, e nunca deixe as convenções da configuração resolvê-la — a regra de precedência do prime-core/prime-config é que um conflito com um ADR Accepted é reportado, não resolvido. Dois desfechos são legítimos: o plano cabe sob o ADR e a restrição é declarada nas unidades que ela vincula; ou a story genuinamente substitui a decisão, e o registro substituto é redigido e roteado exatamente como qualquer outro candidato. O ADR substituído assume `Superseded by ADR-NNN` somente quando o arquiteto aprova o substituto.
 
-Do not over-produce: most stories yield zero ADRs. An ADR exists because a real cross-story decision was made, not because the section wants filling.
+Não produza em excesso: a maioria das stories rende zero ADRs. Um ADR existe porque uma decisão real entre stories foi tomada, não porque a seção quer ser preenchida.
 
-## Step 4.6 — Interrogate the plan against the quality model and the conventions
+## Passo 4.6 — Interrogar o plano contra o modelo de qualidade e as convenções
 
-Before writing, run the intended plan past **prime-core/quality-model**, consuming it as a definition to question the deliverable against — not as a gate (approval is the reviewer's job, later). Cite criteria by ID. Three questions, from the model's its-generator consumption rule:
+Antes de escrever, passe o plano pretendido pelo **prime-core/quality-model**, consumindo-o como uma definição contra a qual questionar o entregável — não como um gate (aprovar é trabalho do revisor, depois). Cite critérios por ID. Três perguntas, da regra de consumo do its-generator no modelo:
 
-- Does any proposed change commit a cardinal sin (a `[NON-NEGOTIABLE]`) **silently**? A non-negotiable may be departed from, but only as a named, owned exception — never by omission.
-- Is the proposed level of care **calibrated** to the code's expected lifetime and importance (QM-MT-4)? Flag both under- and over-engineering — excess is as harmful as deficiency.
-- Where the plan departs from a criterion for legacy or deliberate debt, is that departure recorded in one of the ITS's own vehicles?
+- Alguma mudança proposta comete um pecado capital (um `[NON-NEGOTIABLE]`) **em silêncio**? Um inegociável pode ser desrespeitado, mas somente como uma exceção nomeada e com responsável — nunca por omissão.
+- O nível de cuidado proposto está **calibrado** à vida útil esperada e à importância do código (QM-MT-4)? Sinalize tanto o sub quanto o over-engineering — o excesso é tão danoso quanto a deficiência.
+- Onde o plano se afasta de um critério por legado ou dívida deliberada, esse afastamento está registrado em um dos veículos da própria ITS?
 
-The model defers to **prime-core/coding-standards** wherever a criterion needs a concrete convention to be checkable, so the same pass asks two more questions there, citing slots by ID (`CS-XX-N`):
+O modelo remete ao **prime-core/coding-standards** sempre que um critério precisa de uma convenção concreta para ser verificável, então a mesma passada faz mais duas perguntas ali, citando slots por ID (`CS-XX-N`):
 
-- Does any planned change violate an **INVARIANT** slot? Those apply to every line written or changed regardless of what surrounds it, and a silent violation is the same defect as a silent non-negotiable — the reviewer blocks on both.
-- For each area the plan touches, does the plan follow the **conventional** value that area's registered state calls for — the current standard in a `current` area, the local pattern in `legacy-maintained` and `strangler`, the new value inside a declared migration's scope? A `strangler` area takes no new behavior: new capability planned there belongs in the replacement module the register names.
+- Alguma mudança planejada viola um slot **INVARIANT**? Eles valem para toda linha escrita ou alterada, independentemente do que a cerca, e uma violação silenciosa é o mesmo defeito que um inegociável silencioso — o revisor bloqueia em ambos.
+- Para cada área que o plano toca, o plano segue o valor **convencional** que o estado registrado da área pede — o padrão atual numa área `current`, o padrão local em `legacy-maintained` e `strangler`, o novo valor dentro do escopo de uma migração declarada? Uma área `strangler` não recebe comportamento novo: capacidade nova planejada ali pertence ao módulo substituto que o registro nomeia.
 
-Record each named departure where it belongs, never as loose prose:
-- a **discarded-alternative line** in the Traceability check, when it is a choice between viable paths that dies with the story;
-- an **out-of-scope / do-not-touch boundary**, when it is inherited legacy you deliberately leave untouched;
-- an **ADR**, when the departure outlives the story — route it back through Step 4.5 for the architect's approval.
+Registre cada afastamento nomeado onde ele pertence, nunca como prosa solta:
+- uma **linha de alternativa descartada** na Verificação de rastreabilidade, quando é uma escolha entre caminhos viáveis que morre com a story;
+- uma **fronteira de fora de escopo / não alterar**, quando é legado herdado que você deliberadamente deixa intocado;
+- um **ADR**, quando o afastamento sobrevive à story — roteie-o de volta pelo Passo 4.5 para a aprovação do arquiteto.
 
-This step surfaces improvements; it never blocks delivery on its own. A *silent* non-negotiable violation or a *silent* INVARIANT slot violation, however, is a defect — name it or fix it before writing.
+Este passo faz aflorar melhorias; nunca bloqueia a entrega por si só. Uma violação *silenciosa* de inegociável ou de slot INVARIANT, porém, é um defeito — nomeie-a ou corrija-a antes de escrever.
 
-## Step 5 — Write the ITS per the contract
+## Passo 5 — Escrever a ITS conforme o contrato
 
-Write the document exactly per **prime-core/its-contract**: file naming, mandatory sections, level of detail, the "instructs, does not implement" rule, and the discarded-alternative rule all come from there. Write the plan in execution order and let it carry the single mapping — the behavior section states the delta and the regression points and stops there. Sequencing is now a writing act, not a separate list: the order you choose is the order the implementer works in and the order the reviewer walks the diff in. Two of the contract's writing rules are where a delivered ITS most often fails its reader, and both are worth re-reading before the first line: *references resolve in content, not only in address*, and *the author's voice*. What this skill adds to the second is only its scope here — the notes taken across Steps 3 through 4.6 are working material, and none of them belongs in the document.
+Escreva o documento exatamente conforme o **prime-core/its-contract**: nomenclatura de arquivo, seções obrigatórias, nível de detalhe, a regra "instrui, não implementa" e a regra da alternativa descartada vêm todas de lá. Escreva o plano em ordem de execução e deixe-o carregar o mapeamento único — a seção de comportamento declara o delta e os pontos de regressão e para aí. Sequenciar agora é um ato de escrita, não uma lista separada: a ordem que você escolhe é a ordem em que o implementador trabalha e a ordem em que o revisor percorre o diff. Duas das regras de escrita do contrato são onde uma ITS entregue mais falha com seu leitor, e ambas valem uma releitura antes da primeira linha: *referências se resolvem em conteúdo, não só em endereço*, e *a voz do autor*. O que esta skill acrescenta à segunda é apenas o seu alcance aqui — as notas tomadas ao longo dos Passos 3 a 4.6 são material de trabalho, e nenhuma delas pertence ao documento.
 
-The **Reference glossary** is written from the documents already open: the use cases loaded in Step 1, the business rules and acceptance criteria the plan cites, the ADRs approved in Step 4.5, and the criteria and slots Step 4.6 left recorded as named departures. Fill each entry as you write the instruction that cites it, while the source is still in front of you — that is what keeps the section a snapshot taken at delivery instead of a reconstruction from memory, and it is why it costs nothing to produce. It resolves *what each identifier is* and stops there: metadata only, and for an ADR the gloss stops at the Decision.
+O **Glossário de referência** é escrito a partir dos documentos já abertos: os casos de uso carregados no Passo 1, as regras de negócio e os critérios de aceite que o plano cita, os ADRs aprovados no Passo 4.5 e os critérios e slots que o Passo 4.6 deixou registrados como afastamentos nomeados. Preencha cada entrada à medida que escreve a instrução que a cita, enquanto a fonte ainda está à sua frente — é isso que mantém a seção um snapshot tirado na entrega em vez de uma reconstrução de memória, e é por isso que ela não custa nada para produzir. Ela resolve *o que cada identificador é* e para aí: apenas metadados, e, para um ADR, a glosa para na Decisão.
 
-## Step 6 — Verify traceability before delivering
+## Passo 6 — Verificar a rastreabilidade antes de entregar
 
-Run the contract's checks and record them in the ITS's Metadata section:
-- Delta → plan: every delta item (`UC-NNN/D1`) names the unit that satisfies it, or an explicit "already covered" justification.
-- Plan → delta: every unit names its delta items or a stated technical consequence.
-- Regression → plan: every `RG-N` is claimed by exactly one unit, with the non-regression test named there.
-- Discarded alternative: every point where Step 3 found more than one viable path is closed — a discarded-alternative line carrying the deciding reason, or a referenced ADR. A unit that faced no real choice states nothing; what this check catches is a real choice left unrecorded.
-- Boundary check: no architectural decision (per the contract's criteria) embedded in the document body — each one lives in a referenced ADR, and no referenced ADR is still Proposed.
-- Out-of-scope check: every entry in "Out of scope — do not touch" states why it is a border (shared but untouched · contract surface not migrated · legacy left alone), and no entry duplicates a regression point — `RG-N` is touched code that must keep working, a boundary is code that must not be touched.
-- Quality check: every departure from a prime-core/quality-model criterion or a prime-core/coding-standards slot surfaced in Step 4.6 is recorded as a named exception (discarded-alternative line, out-of-scope boundary, or referenced ADR). No silent non-negotiable violation and no silent INVARIANT slot violation remains.
-- Glossary check: every identifier the document cites resolves in the Reference glossary, and no entry carries the source's content where its metadata belongs.
+Execute as verificações do contrato e registre-as na seção de Metadados da ITS:
+- Delta → plano: todo item de delta (`UC-NNN/D1`) nomeia a unidade que o satisfaz, ou uma justificativa explícita de "já coberto".
+- Plano → delta: toda unidade nomeia seus itens de delta ou uma consequência técnica declarada.
+- Regressão → plano: todo `RG-N` é reivindicado por exatamente uma unidade, com o teste de não regressão nomeado ali.
+- Alternativa descartada: todo ponto em que o Passo 3 encontrou mais de um caminho viável está fechado — uma linha de alternativa descartada carregando a razão decisiva, ou um ADR referenciado. Uma unidade que não enfrentou escolha real não declara nada; o que esta verificação pega é uma escolha real deixada sem registro.
+- Verificação de fronteira: nenhuma decisão arquitetural (conforme os critérios do contrato) embutida no corpo do documento — cada uma vive em um ADR referenciado, e nenhum ADR referenciado ainda está Proposed.
+- Verificação de fora de escopo: toda entrada em "Fora de escopo — não alterar" declara por que é uma borda (compartilhado mas intocado · superfície de contrato não migrada · legado deixado em paz), e nenhuma entrada duplica um ponto de regressão — `RG-N` é código tocado que precisa continuar funcionando, uma fronteira é código que não deve ser tocado.
+- Verificação de qualidade: todo afastamento de um critério do prime-core/quality-model ou de um slot do prime-core/coding-standards trazido pelo Passo 4.6 está registrado como uma exceção nomeada (linha de alternativa descartada, fronteira de fora de escopo ou ADR referenciado). Nenhuma violação silenciosa de inegociável e nenhuma violação silenciosa de slot INVARIANT permanece.
+- Verificação do glossário: todo identificador que o documento cita se resolve no Glossário de referência, e nenhuma entrada carrega o conteúdo da fonte onde caberiam metadados.
 
-Then run the contract's four pre-delivery tests over the finished document — implementer, cold reader, paste, author. If any check or any test fails, fix the plan — do not deliver an ITS with unexplained scope or buried decisions.
+Em seguida execute os quatro testes pré-entrega do contrato sobre o documento pronto — implementador, leitor frio, colagem, autor. Se qualquer verificação ou qualquer teste falhar, conserte o plano — não entregue uma ITS com escopo sem explicação ou decisões enterradas.
 
-## Revising a delivered ITS
+## Revisando uma ITS entregue
 
-An ITS comes back when the plan did not survive contact with the code: the implementer returned a question the document cannot answer, or the code review's fourth verdict returned the story to the architect. The revision is this same process over a narrower input, under three constraints.
+Uma ITS volta quando o plano não sobreviveu ao contato com o código: o implementador devolveu uma pergunta que o documento não consegue responder, ou o quarto veredito do code review devolveu a story ao arquiteto. A revisão é este mesmo processo sobre uma entrada mais estreita, sob três restrições.
 
-- **Re-enter at the step the problem lives in.** A wrong or missing delta means the use case changed first — route to use-case-creator, then resume from Step 1. A delta mapped to the wrong code re-runs Steps 3 and 4. A decision the plan took without recording it re-runs Step 4.5.
-- **Unit numbering is stable.** The implementer has already worked in it and the reviewer walks the diff in it. New work arrives as new units at the end; never renumber a unit someone has implemented. Where a unit no longer applies, its delta items return to the traceability check claimed by the unit that replaces them, under the "already covered" justification the contract allows.
-- **Re-run Step 6 in full.** A revised ITS passes the same checks as a new one. A delta item silently orphaned by the revision is the failure this run exists to prevent.
+- **Reentre no passo em que o problema vive.** Um delta errado ou ausente significa que o caso de uso mudou primeiro — roteie ao use-case-creator e depois retome a partir do Passo 1. Um delta mapeado para o código errado reexecuta os Passos 3 e 4. Uma decisão que o plano tomou sem registrar reexecuta o Passo 4.5.
+- **A numeração das unidades é estável.** O implementador já trabalhou nela e o revisor percorre o diff nela. Trabalho novo chega como novas unidades ao final; nunca renumere uma unidade que alguém implementou. Onde uma unidade já não se aplica, seus itens de delta voltam à verificação de rastreabilidade reivindicados pela unidade que a substitui, sob a justificativa de "já coberto" que o contrato permite.
+- **Reexecute o Passo 6 por inteiro.** Uma ITS revisada passa pelas mesmas verificações que uma nova. Um item de delta silenciosamente órfão pela revisão é a falha que esta execução existe para prevenir.
 
-One ITS per story still holds: the revision replaces the document in place. The contract defines no revision history inside the ITS — version control is that record, and no section is invented to hold it.
+Uma ITS por story continua valendo: a revisão substitui o documento no lugar. O contrato não define histórico de revisão dentro da ITS — o controle de versão é esse registro, e nenhuma seção é inventada para guardá-lo.
 
-## Output
+## Saída
 
-One ITS document (named per the contract) in the configured location, plus zero or more ADRs approved by the architect, traceable end-to-end: story → use case deltas → decisions (ADRs) → code changes → tests. A candidate decision the architect rejected as story-scoped leaves no ADR: it lives as a discarded-alternative line in the traceability check.
+Um documento de ITS (nomeado conforme o contrato) na localização configurada, mais zero ou mais ADRs aprovados pelo arquiteto, rastreável de ponta a ponta: story → deltas dos casos de uso → decisões (ADRs) → mudanças de código → testes. Uma decisão candidata que o arquiteto rejeitou como escopo de story não deixa ADR: vive como uma linha de alternativa descartada na verificação de rastreabilidade.
 
-The operational pass lives in `checklists/its-checklist.md`. The document's own template does not: it is owned by `prime-core/its-contract` and read from there.
+A passada operacional vive em `checklists/its-checklist.md`. O template do próprio documento não: ele é de propriedade do `prime-core/its-contract` e é lido de lá.

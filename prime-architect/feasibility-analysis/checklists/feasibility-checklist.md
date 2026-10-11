@@ -1,107 +1,107 @@
-# Feasibility analysis — operational pass
+# Análise de viabilidade — passada operacional
 
-## 0. Inputs loaded
+## 0. Entradas carregadas
 
-- [ ] `docs/prime-config.md` read per `prime-core/prime-config`: stack and versions, structure map, **area register**, slot overrides, document locations, verification commands.
+- [ ] `docs/prime-config.md` lido conforme o `prime-core/prime-config`: stack e versões, mapa de estrutura, **registro de áreas**, overrides de slots, localizações de documentos, comandos de verificação.
 - [ ] `prime-core/quality-model` + `references/quality-criteria.md`.
-- [ ] `prime-core/coding-standards` + `references/convention-slots.md` and the stack defaults.
-- [ ] Accepted ADRs scanned.
+- [ ] `prime-core/coding-standards` + `references/convention-slots.md` e os padrões da stack.
+- [ ] ADRs Accepted examinados.
 
-## 1. The demand, restated
+## 1. A demanda, reformulada
 
-- [ ] One or two sentences naming the **observable outcome** claimed.
-- [ ] Confirmed with the architect.
-- [ ] What the demand explicitly does **not** claim is written down.
-- [ ] If no observable outcome could be stated → returned at this step, nothing further judged.
+- [ ] Uma ou duas frases nomeando o **resultado observável** afirmado.
+- [ ] Confirmada com o arquiteto.
+- [ ] O que a demanda explicitamente **não** afirma está escrito.
+- [ ] Se nenhum resultado observável pôde ser declarado → devolvida neste passo, nada mais julgado.
 
-## 2. The map
+## 2. O mapa
 
-- [ ] `impact-mapping` run on the restated demand.
-- [ ] A map brought in already stopped at **Insufficient input** → this run stops and returns its questions. No verdict is issued — *Undecidable* is a ruling, and nothing was ruled on. On the path where this skill commissions the map, that stop happens at §1 instead, before the map is run.
-- [ ] Map cited by **ID and date**. A map without a date is not a citable reference.
-- [ ] Three degrees read: direct, coupled, contract surface.
-- [ ] Area states read from the map's register overlay.
-- [ ] Documented layer read: coverage, divergences, ADR incidence.
-- [ ] **Stated edge** read — where the map stopped, and whether the verdict turns on anything beyond it.
-- [ ] Undocumented affected area → `Condition:` with owner and route to `use-case-extractor`. Exception: the undocumented area is where a `Blocker:` would rest → Undecidable, exception stated and justified. Green-field touching nothing existing → noted, no baseline required.
-- [ ] Code × use case divergence → recorded; neither side is a safe baseline. May carry the run to *Undecidable*.
+- [ ] `impact-mapping` executado sobre a demanda reformulada.
+- [ ] Mapa trazido já parado em **Insufficient input** → esta execução para e devolve suas perguntas. Nenhum veredito é emitido — *Undecidable* é um julgamento, e nada foi julgado. No caminho em que esta skill comissiona o mapa, essa parada acontece no §1, antes de o mapa ser executado.
+- [ ] Mapa citado por **ID e data**. Um mapa sem data não é uma referência citável.
+- [ ] Três graus lidos: direto, acoplado, superfície de contrato.
+- [ ] Estados de área lidos da sobreposição do registro do mapa.
+- [ ] Camada documentada lida: cobertura, divergências, incidência de ADR.
+- [ ] **Borda declarada** lida — onde o mapa parou, e se o veredito depende de algo além dela.
+- [ ] Área afetada não documentada → `Condition:` com responsável e rota para o `use-case-extractor`. Exceção: a área não documentada é onde um `Blocker:` se apoiaria → Undecidable, exceção declarada e justificada. Green-field sem tocar nada existente → anotado, sem baseline exigido.
+- [ ] Divergência código × caso de uso → registrada; nenhum dos lados é um baseline seguro. Pode levar a execução a *Undecidable*.
 
-## 3. Lenses, in order
+## 3. Lentes, em ordem
 
-- [ ] **Constraint** — stack/version ceiling, platform, missing data, external dependency, license, regulation. The only source of true impossibility.
-- [ ] **Structural fit** — `CS-AR-1..5`, `QM-CC-1..5`, ADR incidence from the map. Contradicting an ADR is an **ADR question**, not a blocker: `Condition:` naming the ADR, owner architect, route to the ADR lifecycle. No ADR drafted here.
-- [ ] **Contract surface** — can every known consumer be migrated? Is the consumer set enumerable at all?
-- [ ] **Verification** — verification commands, observability present, test obligation (`CS-TS-1`).
-- [ ] **Erosion risk** — does the cheapest path create a second way of doing something (`QM-CN-1`)?
-- [ ] **Concurrency and scale** — only if the outcome implies them (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`).
-- [ ] **Security surface** — every new boundary (`QM-SR-*`, `CS-SC-*`).
-- [ ] No re-walking of code the map already walked.
+- [ ] **Restrição** — teto de stack/versão, plataforma, dados ausentes, dependência externa, licença, regulação. A única fonte de impossibilidade verdadeira.
+- [ ] **Encaixe estrutural** — `CS-AR-1..5`, `QM-CC-1..5`, incidência de ADR do mapa. Contradizer um ADR é uma **questão de ADR**, não um blocker: `Condition:` nomeando o ADR, responsável o arquiteto, rota para o ciclo de vida do ADR. Nenhum ADR redigido aqui.
+- [ ] **Superfície de contrato** — todo consumidor conhecido pode ser migrado? O conjunto de consumidores é enumerável?
+- [ ] **Verificação** — comandos de verificação, observabilidade presente, obrigação de teste (`CS-TS-1`).
+- [ ] **Risco de erosão** — o caminho mais barato cria uma segunda forma de fazer algo (`QM-CN-1`)?
+- [ ] **Concorrência e escala** — apenas se o resultado as implica (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`).
+- [ ] **Superfície de segurança** — toda nova fronteira (`QM-SR-*`, `CS-SC-*`).
+- [ ] Nenhum reandar de código que o mapa já andou.
 
-## 4. Evidence
+## 4. Evidência
 
-- [ ] Every finding carries its anchor from the map: **anchored**, `[INFERRED]`, or `[UNVERIFIED]`.
-- [ ] Vocabulary reused from `impact-mapping`, not redefined here.
-- [ ] No `Blocker:` resting on `[INFERRED]` or `[UNVERIFIED]` evidence.
+- [ ] Todo achado carrega sua âncora do mapa: **ancorada**, `[INFERRED]` ou `[UNVERIFIED]`.
+- [ ] Vocabulário reutilizado do `impact-mapping`, não redefinido aqui.
+- [ ] Nenhum `Blocker:` apoiado em evidência `[INFERRED]` ou `[UNVERIFIED]`.
 
-## 5. Classification
+## 5. Classificação
 
-| Severity | Use for | Contributes to |
+| Severidade | Usar para | Contribui para |
 |---|---|---|
-| `Blocker:` | hard constraint; invariant contradicted with no path around it. Anchored evidence required | Not viable as specified |
-| `Condition:` | feasible once something is true first. **Owner + route mandatory** | Viable with conditions |
-| `Cost driver:` | changes the size, not the answer: area state, breadth of the coupled set, contract surfaces crossed, missing observability, debt created | none |
-| `FYI:` | context for the demander | none |
+| `Blocker:` | restrição rígida; invariante contradito sem caminho para contornar. Exige evidência ancorada | Not viable as specified |
+| `Condition:` | viável uma vez que algo seja verdade antes. **Responsável + rota obrigatórios** | Viable with conditions |
+| `Cost driver:` | muda o tamanho, não a resposta: estado da área, amplitude do conjunto acoplado, superfícies de contrato cruzadas, observabilidade ausente, dívida criada | nenhum |
+| `FYI:` | contexto para quem demanda | nenhum |
 
-*This table classifies findings; it does not decide the verdict. Verdict resolution is §6 —
-the evidence base can override rules 3 and 4 regardless of what was classified here.*
+*Esta tabela classifica achados; não decide o veredito. A resolução do veredito é o §6 —
+a base de evidência pode sobrepor as regras 3 e 4, independentemente do que foi classificado aqui.*
 
-- [ ] Every finding cites an ID or an evidence anchor.
-- [ ] Every `Condition:` has an owner and a route (a condition without a route is a blocker in disguise).
-- [ ] Findings caused by one structural fact aggregated into that fact.
-- [ ] No effort estimate in hours, points, or sprints anywhere in the report.
+- [ ] Todo achado cita um ID ou uma âncora de evidência.
+- [ ] Toda `Condition:` tem responsável e rota (uma condição sem rota é um blocker disfarçado).
+- [ ] Achados causados por um único fato estrutural agregados nesse fato.
+- [ ] Nenhuma estimativa de esforço em horas, pontos ou sprints em qualquer parte do relatório.
 
-## 6. Verdict — exactly one
+## 6. Veredito — exatamente um
 
-Resolve in order, first match wins:
+Resolva em ordem, vale a primeira que casar:
 
-- [ ] **1. Anchored `Blocker:` present** → *Not viable as specified*. Blockers listed separately
-      **and** what would have to change in the demand. Evidence gaps elsewhere registered as
-      follow-ups, never used to soften the ruling.
-- [ ] **2. No anchored blocker + evidence base insufficient** → *Undecidable with current evidence*.
-      Insufficient means exactly one of: edge short of what the verdict turns on · open divergence,
-      no safe baseline · undocumented area carrying the demand's hardest constraint · untested
-      dependency the outcome rests on. Names the single run that would decide it. A blocker resting
-      on `[INFERRED]` or `[UNVERIFIED]` evidence lands here, not in rule 1.
-- [ ] **3. At least one `Condition:`** → *Viable with conditions*, each condition owned and routed.
-- [ ] **4. None of the above** → *Viable*.
+- [ ] **1. `Blocker:` ancorado presente** → *Not viable as specified*. Blockers listados separadamente
+      **e** o que teria de mudar na demanda. Lacunas de evidência em outros pontos registradas como
+      follow-ups, nunca usadas para suavizar o julgamento.
+- [ ] **2. Nenhum blocker ancorado + base de evidência insuficiente** → *Undecidable with current evidence*.
+      Insuficiente significa exatamente uma entre: borda aquém do que o veredito exige · divergência aberta,
+      sem baseline seguro · área não documentada carregando a restrição mais dura da demanda · dependência
+      não testada em que o resultado se apoia. Nomeia a única execução que decidiria. Um blocker apoiado
+      em evidência `[INFERRED]` ou `[UNVERIFIED]` cai aqui, não na regra 1.
+- [ ] **3. Pelo menos uma `Condition:`** → *Viable with conditions*, cada condição com responsável e rota.
+- [ ] **4. Nenhuma das anteriores** → *Viable*.
 
-- [ ] `Cost driver:` and `FYI:` did not move the verdict.
+- [ ] `Cost driver:` e `FYI:` não moveram o veredito.
 
-*Never deliver a verdict on a demand you did not understand.*
-*Viable authorizes refinement, never skipping the specification pipeline.*
+*Nunca entregue um veredito sobre uma demanda que você não entendeu.*
+*Viable autoriza o refinamento, nunca pular o pipeline de especificação.*
 
-## 7. Follow-ups to register before closing
+## 7. Follow-ups a registrar antes de encerrar
 
-- [ ] Extractor run required for a baseline.
-- [ ] Divergence routed to the use case skills (`QM-DO-1`) — never patched here.
-- [ ] ADR decision to raise (`Condition:`, owner architect). The ADR is drafted through the its-contract flow, by the architect at this stage or by the its-generator once a plan commits to it, never in this report.
-- [ ] Unfilled slot to report (`coding-standards`) — never improvised.
-- [ ] Config gap: a project fact the analysis needed and the config does not carry.
-- [ ] Debt the viable path would create, with a prospective owner (`QM-MT-1`).
+- [ ] Execução do extractor necessária para um baseline.
+- [ ] Divergência roteada às skills de caso de uso (`QM-DO-1`) — nunca remendada aqui.
+- [ ] Decisão de ADR a levantar (`Condition:`, responsável o arquiteto). O ADR é redigido pelo fluxo do its-contract, pelo arquiteto nesta etapa ou pelo its-generator quando um plano se comprometer com ele, nunca neste relatório.
+- [ ] Slot não preenchido a reportar (`coding-standards`) — nunca improvisado.
+- [ ] Lacuna de configuração: um fato do projeto de que a análise precisou e que a configuração não carrega.
+- [ ] Dívida que o caminho viável criaria, com um responsável prospectivo (`QM-MT-1`).
 
-## 8. Boundary check before delivering
+## 8. Verificação de fronteira antes de entregar
 
-- [ ] No application code written or proposed.
-- [ ] No solution designed: a viable path may be named inside the verdict's reasoning, never specified.
-- [ ] No ruling on whether the demand is worth doing — value is the demander's call.
-- [ ] No effort anywhere: not in hours, points, or sprints, and not as a range dressed up as a cost driver.
-- [ ] No use case, ITS, ADR, or configuration file modified.
+- [ ] Nenhum código de aplicação escrito ou proposto.
+- [ ] Nenhuma solução projetada: um caminho viável pode ser nomeado dentro do raciocínio do veredito, nunca especificado.
+- [ ] Nenhum julgamento sobre se a demanda vale a pena — valor é decisão de quem demanda.
+- [ ] Nenhum esforço em lugar algum: nem em horas, pontos ou sprints, nem como uma faixa disfarçada de direcionador de custo.
+- [ ] Nenhum caso de uso, ITS, ADR ou arquivo de configuração modificado.
 
 ---
 
 ## Template do relatório
 
-**Language.** The block below is the artifact the architect files, and it is written in the document language the core templates use: `pt-BR`. The checklist above is skill-facing and stays in English. Section titles are translated; the stable tokens — `FA-<demand-id>-N`, `IM-<demand-id>-N`, the four verdicts, the four severities, the provenance markers (`[INFERRED]`, `[UNVERIFIED]`), `UC-NNN`, `ADR-NNN`, `QM-XX-N`, `CS-XX-N`, file paths and identifiers — are never translated.
+**Idioma.** O bloco abaixo é o artefato que o arquiteto arquiva, e é escrito no idioma de documento que os templates do core usam: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis — `FA-<demand-id>-N`, `IM-<demand-id>-N`, os quatro vereditos, as quatro severidades, os marcadores de proveniência (`[INFERRED]`, `[UNVERIFIED]`), `UC-NNN`, `ADR-NNN`, `QM-XX-N`, `CS-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
 
 ````markdown
 # Viabilidade — FA-<id-da-demanda>-N

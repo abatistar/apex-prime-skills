@@ -1,104 +1,104 @@
-# Team Defaults — Java
+# Padrões do Time — Java
 
-Default slot values for the team's Java stack, owned by `prime-core/coding-standards`. Applied when `docs/prime-config.md` states nothing for the slot; any value the project declares wins. Slot definitions and application classes live in `convention-slots.md` — this file only supplies answers.
+Valores padrão de slots para a stack Java do time, de propriedade do `prime-core/coding-standards`. Aplicados quando o `docs/prime-config.md` nada declara para o slot; qualquer valor que o projeto declare vence. As definições dos slots e as classes de aplicação vivem em `convention-slots.md` — este arquivo apenas fornece respostas.
 
-A **(Spring)** mark scopes to the mechanism it follows, never to the entry that carries it. `@RestControllerAdvice`, `@Transactional`, `@PreAuthorize`, `spring.jpa.open-in-view` and the like are how a Spring Boot project meets the slot; a project on another framework substitutes an equivalent mechanism and keeps everything else the entry says — the layer the decision belongs to, the prohibitions, and the non-Spring alternatives named alongside. No marked entry loses its substance under that substitution, so none of them sends a project to declare the slot from scratch in its config. A Spring type named *without* the mark is illustration rather than a dependency: the rule around it holds as written. Baseline: Java 17.
-
----
-
-## AR — Architecture and dependencies
-
-- **CS-AR-1** — `api → service → domain`, `persistence → domain`. The domain depends on nothing. The API layer never reaches a repository directly; the persistence layer never calls a service. Enforced by an ArchUnit test that fails the build, not by review.
-- **CS-AR-2** — Business decisions live in `domain`. A controller maps and delegates; a repository queries. A conditional expressing a business rule in either is a defect.
-- **CS-AR-3** — JPA entities never leave the persistence and service layers: never a `@RequestBody`, never a `@ResponseBody`, never a field of a DTO. No `jakarta.persistence` or `org.springframework` import inside `domain`.
-- **CS-AR-4** — Group by feature, then by layer inside the feature (`billing/api`, `billing/domain`). Technical-layer-first packaging is the legacy shape and is not extended.
-- **CS-AR-5** — Default is a direct call through a published interface. Domain events for effects that must not block the originating transaction; messaging for cross-service work. Anything else is justified in the ITS.
-
-## NM — Naming and structure
-
-- **CS-NM-1** — `*Controller` (HTTP boundary), `*Service` (application orchestration), `*Repository` (persistence), `*Client` (external call), `*Mapper`, `*Config`, `*Properties`, `*Test`, `*IT`. No `*Manager`, `*Helper`, `*Util` in new code — each is a name for "I did not decide what this is".
-- **CS-NM-2** — `getX()` and `isX()` are pure and cheap: no I/O, no mutation, no event. Anything that reaches storage or a network is `load*`, `fetch*`, or `find*`; anything that mutates is a verb naming the effect (`confirmOrder`, not `processOrder`). Absence is `Optional`, never `null`; a collection is empty, never `null`.
-- **CS-NM-3** — One public type per file, named for the file. A type used by exactly one feature lives in that feature's package, not in a shared one.
-
-## ER — Errors
-
-- **CS-ER-1** — Expected domain situations are typed subclasses of `BusinessException` (unchecked). Violated invariants use `IllegalStateException` / `IllegalArgumentException` and are never caught for control flow. No checked exceptions in new code.
-- **CS-ER-2** — Every `BusinessException` subclass carries a stable error code. A new category is a new subclass plus a code, never a string message parsed by the caller.
-- **CS-ER-3** — Translation happens once, at the API boundary, in a `@RestControllerAdvice` **(Spring)**. Service and domain layers propagate. No `try/catch` whose only act is logging and rethrowing.
-- **CS-ER-4** — Outward: RFC 7807 `ProblemDetail` with the error code and a safe message — no stack trace, no internal identifier, no SQL. Inward: full exception with cause, logged once at the boundary that translates it.
-- **CS-ER-5** — Always `throw new SomethingException(message, cause)`. Never `new RuntimeException(e.getMessage())`, which discards the chain that `QM-EO-3` exists to protect.
-- **CS-ER-6** — Forbidden: empty `catch`; `catch (Exception e)` outside the boundary advice; `catch` that returns `null` or a default in place of signalling; ignored `Future`/`CompletableFuture` results.
-
-## OB — Observability
-
-- **CS-OB-1** — SLF4J only, JSON-structured output, parameterized messages (`log.info("order confirmed {}", id)`) — never string concatenation. `ERROR` = needs a human tonight; `WARN` = degraded but handled; `INFO` = a business event happened; `DEBUG` = diagnosis, off in production.
-- **CS-OB-2** — `traceId` and `spanId` in the MDC on every request and consumed message, propagated to outbound calls. Micrometer Tracing **(Spring)**.
-- **CS-OB-3** — Never logged: passwords, tokens, API keys, authorization headers, full card numbers, CPF/CNPJ, addresses, complete request or response bodies of endpoints carrying any of the above. An entity or DTO holding a sensitive field never reaches a log through its `toString()` — the field is masked at the type.
-- **CS-OB-4** — Every outbound integration is timed and counted. Every business event that a stakeholder would ask about gets one `INFO` line with the identifiers needed to correlate it.
-
-## DA — Data and transactions
-
-- **CS-DA-1** — `@Transactional` sits on the application service method and nowhere else **(Spring)**: never on a controller, never on a repository, never on a private method or a self-invoked one (the proxy will not apply it — a silent failure this rule exists to prevent). No external call inside a transaction.
-- **CS-DA-2** — Every consumer of a message or webhook is idempotent, keyed on a business or delivery identifier. Retries are bounded, with backoff, and only for transient failures.
-- **CS-DA-3** — Flyway, `V<n>__snake_case_description.sql`. Deploys overlap versions, so schema changes are backward compatible for one release: add before use, stop using before drop.
-- **CS-DA-4** — A migration that ran in any environment is never edited. Correction is a new migration.
-- **CS-DA-5** — All associations `LAZY`. Open Session In View disabled (`spring.jpa.open-in-view=false`) **(Spring)** — it hides N+1 behind lazy loading in the view layer. A query needing an association declares it with a join fetch or an `@EntityGraph`.
-
-## CT — External contracts
-
-- **CS-CT-1** — URI versioning (`/api/v1/...`). Additive changes only within a version: new optional fields yes, removed or renamed fields and narrowed types no. A breaking change is a new version with an announced sunset for the old one.
-- **CS-CT-2** — Page-based pagination with `page`/`size`, `size` capped server-side. Sorting via `sort=field,direction`. Collections always return an envelope with the page metadata, never a bare array.
-- **CS-CT-3** — Request and response DTOs are `record` types in the API layer, with Bean Validation annotations. Mapping is explicit and tested; no entity is ever serialized.
-- **CS-CT-4** — `Instant` in UTC for instants, `LocalDate` for dates without time, ISO-8601 on the wire. `BigDecimal` for money, with the scale declared — never `double` or `float`. `UUID` for external identifiers; database sequence identifiers are never exposed.
-
-## TS — Tests
-
-- **CS-TS-1** — Never merged untested: a new or changed endpoint or consumer (integration test), a new or changed business rule (unit test on the domain), a fixed bug (a test that fails before the fix). Everything else is judgment.
-- **CS-TS-2** — `*Test` for unit tests (no Spring context), `*IT` for integration tests (Testcontainers, real database). Method names state scenario and expectation: `should_rejectOrder_when_creditLimitExceeded`. JUnit 5 + AssertJ.
-- **CS-TS-3** — Mock only boundaries the team does not control: external HTTP, message brokers, clocks. The database is real via Testcontainers — an in-memory substitute tests a dialect nobody runs. Never mock the type under test or its value objects.
-- **CS-TS-4** — No `Thread.sleep` for synchronization; use Awaitility. No dependence on execution order, no state shared between tests, no reliance on `LocalDateTime.now()` — time is injected through a `Clock`.
-
-## SC — Security
-
-- **CS-SC-1** — Authorization is enforced at the application service, method-level (`@PreAuthorize` or an explicit check) **(Spring)**. A check performed only in the controller is insufficient; a check performed only in the client is not a check.
-- **CS-SC-2** — Bean Validation on every boundary DTO, allowlist semantics. Queries are parameterized — never string concatenation into JPQL, native SQL, or Criteria. External input never reaches a file path, a command, or a deserializer without neutralization.
-- **CS-SC-3** — No credential in `application.yml`, in a properties file, or in version control. Injected as environment variables or resolved from the project's vault, and rotatable without a rebuild.
-- **CS-SC-4** — Passwords via Spring Security's `BCryptPasswordEncoder` or Argon2 **(Spring)**; JJWT or the platform library for tokens. No hand-rolled algorithm, no `MessageDigest` used as a password hash, no `Random` where `SecureRandom` is required.
-- **CS-SC-5** — OWASP ASVS Level 2 as the reference control set; the project raises it in its config when the threat model warrants.
-
-## DP — Third-party dependencies
-
-- **CS-DP-1** — A new dependency states: the problem it solves, why the platform or an existing dependency does not, its release activity, and its licence. Approved by the architect.
-- **CS-DP-2** — One library per concern: `java.time` for time, Jackson for JSON, SLF4J for logging, the platform HTTP client, Testcontainers for integration infrastructure. Joda-Time, Gson, `java.util.Date`, and Apache Commons date handling are not introduced.
-- **CS-DP-3** — No release ships with an open high or critical advisory. Renovate keeps versions moving; the scan runs in the pipeline. An exception is time-boxed and owned, never a suppression comment nobody revisits.
-
-## PR — Canonical solutions and prohibitions
-
-- **CS-PR-1** — Register grows per project in `docs/prime-config.md`. Team-wide entries: outbound HTTP goes through a typed client with timeout, retry, and circuit breaker configured — never a bare `RestTemplate`/`WebClient` call at a call site; scheduled work is idempotent and guarded against concurrent instances; partial failure across an aggregate uses an outbox rather than a distributed transaction.
-- **CS-PR-2** — Prohibited, each with its reason:
-  - **Field injection** (`@Autowired` on a field) — hides dependencies and makes the type untestable without a container. Constructor injection only.
-  - **`catch (Exception e)`** outside the boundary advice — catches what it did not anticipate and turns a bug into silence.
-  - **Static mutable state** — the invisible coupling `QM-CC-1` names as the worst kind.
-  - **Lombok `@Data` on entities** — generates `equals`/`hashCode` over mutable and lazily-loaded fields, producing collection corruption that surfaces far from its cause.
-  - **Entity as `@RequestBody`** — makes the persistence model the public contract and opens mass assignment.
-  - **Business logic in a database trigger or stored procedure** — invisible to the code, untestable in the suite, unversioned with the change.
-- **CS-PR-3** — No pattern is mandated by name. `CS-PR-1` states the problem and the sanctioned solution; the structure follows from it.
+Uma marca **(Spring)** delimita o mecanismo que ela acompanha, nunca a entrada que a carrega. `@RestControllerAdvice`, `@Transactional`, `@PreAuthorize`, `spring.jpa.open-in-view` e afins são como um projeto Spring Boot atende ao slot; um projeto em outro framework substitui por um mecanismo equivalente e mantém tudo o mais que a entrada diz — a camada a que a decisão pertence, as proibições e as alternativas não Spring nomeadas ao lado. Nenhuma entrada marcada perde sua substância sob essa substituição, de modo que nenhuma delas manda um projeto declarar o slot do zero na sua configuração. Um tipo Spring citado *sem* a marca é ilustração, não uma dependência: a regra ao redor dele vale como escrita. Baseline: Java 17.
 
 ---
 
-## Automation map
+## AR — Arquitetura e dependências
 
-Slots that a tool checks are not review material — a human re-litigating them is waste (`QM-CN-3`). What follows is a starting toolchain; a project missing an entry is what is worth raising.
+- **CS-AR-1** — `api → service → domain`, `persistence → domain`. O domínio não depende de nada. A camada de API nunca alcança um repositório diretamente; a camada de persistência nunca chama um serviço. Imposto por um teste ArchUnit que quebra o build, não pela revisão.
+- **CS-AR-2** — As decisões de negócio vivem em `domain`. Um controller mapeia e delega; um repositório consulta. Uma condicional que expressa uma regra de negócio em qualquer um dos dois é um defeito.
+- **CS-AR-3** — Entidades JPA nunca saem das camadas de persistência e de serviço: nunca um `@RequestBody`, nunca um `@ResponseBody`, nunca um campo de DTO. Nenhum import de `jakarta.persistence` ou `org.springframework` dentro de `domain`.
+- **CS-AR-4** — Agrupe por feature, depois por camada dentro da feature (`billing/api`, `billing/domain`). O empacotamento com camada técnica primeiro é a forma legada e não é estendido.
+- **CS-AR-5** — O padrão é chamada direta por uma interface publicada. Eventos de domínio para efeitos que não devem bloquear a transação de origem; mensageria para trabalho entre serviços. Qualquer outra coisa é justificada na ITS.
 
-| Slots | Tool |
+## NM — Nomenclatura e estrutura
+
+- **CS-NM-1** — `*Controller` (fronteira HTTP), `*Service` (orquestração de aplicação), `*Repository` (persistência), `*Client` (chamada externa), `*Mapper`, `*Config`, `*Properties`, `*Test`, `*IT`. Nenhum `*Manager`, `*Helper`, `*Util` em código novo — cada um é um nome para "eu não decidi o que isto é".
+- **CS-NM-2** — `getX()` e `isX()` são puros e baratos: sem I/O, sem mutação, sem evento. Tudo o que alcança armazenamento ou rede é `load*`, `fetch*` ou `find*`; tudo o que muta é um verbo que nomeia o efeito (`confirmOrder`, não `processOrder`). Ausência é `Optional`, nunca `null`; uma coleção é vazia, nunca `null`.
+- **CS-NM-3** — Um tipo público por arquivo, com o nome do arquivo. Um tipo usado por exatamente uma feature vive no pacote dessa feature, não em um compartilhado.
+
+## ER — Erros
+
+- **CS-ER-1** — Situações de domínio esperadas são subclasses tipadas de `BusinessException` (não verificada). Invariantes violados usam `IllegalStateException` / `IllegalArgumentException` e nunca são capturados como fluxo de controle. Sem exceções verificadas em código novo.
+- **CS-ER-2** — Toda subclasse de `BusinessException` carrega um código de erro estável. Uma nova categoria é uma nova subclasse mais um código, nunca uma mensagem em string interpretada pelo chamador.
+- **CS-ER-3** — A tradução acontece uma vez, na fronteira da API, em um `@RestControllerAdvice` **(Spring)**. As camadas de serviço e de domínio propagam. Nenhum `try/catch` cujo único ato seja registrar em log e relançar.
+- **CS-ER-4** — Para fora: `ProblemDetail` da RFC 7807 com o código de erro e uma mensagem segura — sem stack trace, sem identificador interno, sem SQL. Para dentro: a exceção completa com a causa, registrada uma vez na fronteira que a traduz.
+- **CS-ER-5** — Sempre `throw new SomethingException(message, cause)`. Nunca `new RuntimeException(e.getMessage())`, que descarta a cadeia que o `QM-EO-3` existe para proteger.
+- **CS-ER-6** — Proibido: `catch` vazio; `catch (Exception e)` fora do advice de fronteira; `catch` que retorna `null` ou um valor padrão no lugar de sinalizar; resultados de `Future`/`CompletableFuture` ignorados.
+
+## OB — Observabilidade
+
+- **CS-OB-1** — Somente SLF4J, saída estruturada em JSON, mensagens parametrizadas (`log.info("order confirmed {}", id)`) — nunca concatenação de strings. `ERROR` = precisa de um humano esta noite; `WARN` = degradado mas tratado; `INFO` = aconteceu um evento de negócio; `DEBUG` = diagnóstico, desligado em produção.
+- **CS-OB-2** — `traceId` e `spanId` no MDC em toda requisição e mensagem consumida, propagados para as chamadas de saída. Micrometer Tracing **(Spring)**.
+- **CS-OB-3** — Nunca registrado em log: senhas, tokens, chaves de API, headers de autorização, números completos de cartão, CPF/CNPJ, endereços, corpos completos de requisição ou resposta de endpoints que carreguem qualquer um dos itens anteriores. Uma entidade ou DTO que guarda um campo sensível nunca chega a um log pelo seu `toString()` — o campo é mascarado no tipo.
+- **CS-OB-4** — Toda integração de saída é cronometrada e contada. Todo evento de negócio sobre o qual um envolvido perguntaria recebe uma linha `INFO` com os identificadores necessários para correlacioná-lo.
+
+## DA — Dados e transações
+
+- **CS-DA-1** — `@Transactional` fica no método do serviço de aplicação e em nenhum outro lugar **(Spring)**: nunca em um controller, nunca em um repositório, nunca em um método privado ou autoinvocado (o proxy não o aplicará — uma falha silenciosa que esta regra existe para prevenir). Nenhuma chamada externa dentro de uma transação.
+- **CS-DA-2** — Todo consumidor de uma mensagem ou webhook é idempotente, com chave em um identificador de negócio ou de entrega. Os retries são limitados, com backoff, e somente para falhas transitórias.
+- **CS-DA-3** — Flyway, `V<n>__descricao_em_snake_case.sql`. Os deploys sobrepõem versões, então as mudanças de esquema são retrocompatíveis por um release: adicione antes de usar, pare de usar antes de remover.
+- **CS-DA-4** — Uma migração que rodou em qualquer ambiente nunca é editada. A correção é uma nova migração.
+- **CS-DA-5** — Todas as associações `LAZY`. Open Session In View desabilitado (`spring.jpa.open-in-view=false`) **(Spring)** — ele esconde o N+1 atrás do carregamento lazy na camada de view. Uma query que precisa de uma associação a declara com um join fetch ou um `@EntityGraph`.
+
+## CT — Contratos externos
+
+- **CS-CT-1** — Versionamento na URI (`/api/v1/...`). Apenas mudanças aditivas dentro de uma versão: novos campos opcionais sim; campos removidos ou renomeados e tipos estreitados não. Uma quebra de contrato é uma nova versão com um sunset anunciado para a antiga.
+- **CS-CT-2** — Paginação por página com `page`/`size`, com `size` limitado no servidor. Ordenação via `sort=campo,direcao`. Coleções sempre retornam um envelope com os metadados da página, nunca um array puro.
+- **CS-CT-3** — DTOs de requisição e resposta são tipos `record` na camada de API, com anotações do Bean Validation. O mapeamento é explícito e testado; nenhuma entidade é jamais serializada.
+- **CS-CT-4** — `Instant` em UTC para instantes, `LocalDate` para datas sem hora, ISO-8601 no fio. `BigDecimal` para dinheiro, com a escala declarada — nunca `double` ou `float`. `UUID` para identificadores externos; identificadores de sequência do banco nunca são expostos.
+
+## TS — Testes
+
+- **CS-TS-1** — Nunca entra em merge sem teste: um endpoint ou consumidor novo ou alterado (teste de integração), uma regra de negócio nova ou alterada (teste unitário no domínio), um bug corrigido (um teste que falha antes da correção). Todo o resto é julgamento.
+- **CS-TS-2** — `*Test` para testes unitários (sem contexto Spring), `*IT` para testes de integração (Testcontainers, banco real). Os nomes dos métodos declaram cenário e expectativa: `should_rejectOrder_when_creditLimitExceeded`. JUnit 5 + AssertJ.
+- **CS-TS-3** — Faça mock apenas das fronteiras que o time não controla: HTTP externo, brokers de mensagens, relógios. O banco de dados é real via Testcontainers — um substituto em memória testa um dialeto que ninguém roda. Nunca faça mock do tipo sob teste nem de seus value objects.
+- **CS-TS-4** — Sem `Thread.sleep` para sincronização; use Awaitility. Sem dependência da ordem de execução, sem estado compartilhado entre testes, sem depender de `LocalDateTime.now()` — o tempo é injetado por um `Clock`.
+
+## SC — Segurança
+
+- **CS-SC-1** — A autorização é imposta no serviço de aplicação, em nível de método (`@PreAuthorize` ou uma verificação explícita) **(Spring)**. Uma verificação feita apenas no controller é insuficiente; uma verificação feita apenas no cliente não é uma verificação.
+- **CS-SC-2** — Bean Validation em todo DTO de fronteira, com semântica de allowlist. As queries são parametrizadas — nunca concatenação de strings em JPQL, SQL nativo ou Criteria. A entrada externa nunca chega a um caminho de arquivo, a um comando ou a um desserializador sem neutralização.
+- **CS-SC-3** — Nenhuma credencial em `application.yml`, em arquivo de propriedades ou no controle de versão. Injetadas como variáveis de ambiente ou resolvidas a partir do cofre do projeto, e rotacionáveis sem rebuild.
+- **CS-SC-4** — Senhas via `BCryptPasswordEncoder` do Spring Security ou Argon2 **(Spring)**; JJWT ou a biblioteca da plataforma para tokens. Nenhum algoritmo artesanal, nenhum `MessageDigest` usado como hash de senha, nenhum `Random` onde `SecureRandom` é exigido.
+- **CS-SC-5** — OWASP ASVS Nível 2 como conjunto de controles de referência; o projeto o eleva em sua configuração quando o modelo de ameaças justificar.
+
+## DP — Dependências de terceiros
+
+- **CS-DP-1** — Uma nova dependência declara: o problema que resolve, por que a plataforma ou uma dependência existente não o resolve, sua atividade de releases e sua licença. Aprovada pelo arquiteto.
+- **CS-DP-2** — Uma biblioteca por preocupação: `java.time` para tempo, Jackson para JSON, SLF4J para logging, o cliente HTTP da plataforma, Testcontainers para infraestrutura de integração. Joda-Time, Gson, `java.util.Date` e o tratamento de datas do Apache Commons não são introduzidos.
+- **CS-DP-3** — Nenhum release sai com um advisory alto ou crítico aberto. O Renovate mantém as versões andando; a varredura roda no pipeline. Uma exceção tem prazo e responsável, nunca um comentário de supressão que ninguém revisita.
+
+## PR — Soluções canônicas e proibições
+
+- **CS-PR-1** — O registro cresce por projeto no `docs/prime-config.md`. Entradas válidas para o time todo: HTTP de saída passa por um cliente tipado com timeout, retry e circuit breaker configurados — nunca uma chamada `RestTemplate`/`WebClient` solta no ponto de chamada; trabalho agendado é idempotente e protegido contra instâncias concorrentes; falha parcial em um agregado usa um outbox em vez de transação distribuída.
+- **CS-PR-2** — Proibidos, cada um com sua razão:
+  - **Injeção por campo** (`@Autowired` em um campo) — esconde dependências e torna o tipo intestável sem um container. Somente injeção por construtor.
+  - **`catch (Exception e)`** fora do advice de fronteira — captura o que não antecipou e transforma um bug em silêncio.
+  - **Estado mutável estático** — o acoplamento invisível que o `QM-CC-1` nomeia como o pior tipo.
+  - **Lombok `@Data` em entidades** — gera `equals`/`hashCode` sobre campos mutáveis e carregados de forma lazy, produzindo corrupção de coleções que aflora longe da causa.
+  - **Entidade como `@RequestBody`** — faz do modelo de persistência o contrato público e abre mass assignment.
+  - **Lógica de negócio em trigger de banco ou stored procedure** — invisível para o código, intestável na suíte, sem versionamento junto com a mudança.
+- **CS-PR-3** — Nenhum padrão é exigido pelo nome. O `CS-PR-1` declara o problema e a solução sancionada; a estrutura decorre disso.
+
+---
+
+## Mapa de automação
+
+Slots que uma ferramenta verifica não são material de revisão — um humano rediscutindo-os é desperdício (`QM-CN-3`). O que segue é uma toolchain inicial; um projeto que não tem uma entrada é o que vale levantar.
+
+| Slots | Ferramenta |
 |---|---|
-| CS-AR-1, CS-AR-2, CS-AR-3 | ArchUnit test in the build |
-| CS-NM-1, CS-NM-2 (partial) | Checkstyle / custom Semgrep rules |
+| CS-AR-1, CS-AR-2, CS-AR-3 | Teste ArchUnit no build |
+| CS-NM-1, CS-NM-2 (parcial) | Checkstyle / regras customizadas de Semgrep |
 | CS-ER-5, CS-ER-6, CS-PR-2 | Error Prone, SpotBugs, Semgrep |
-| CS-DA-1, CS-DA-5 | Semgrep rules; `open-in-view` asserted in a config test |
-| CS-SC-2 | Semgrep, SpotBugs (find-sec-bugs), SAST in the pipeline |
-| CS-SC-3 | gitleaks in pre-commit and in CI |
-| CS-DP-2, CS-DP-3 | Maven Enforcer (banned dependencies), Renovate, dependency scanning |
-| CS-TS-4 | Flaky detection in CI; PIT for suite quality |
+| CS-DA-1, CS-DA-5 | Regras de Semgrep; `open-in-view` verificado em um teste de configuração |
+| CS-SC-2 | Semgrep, SpotBugs (find-sec-bugs), SAST no pipeline |
+| CS-SC-3 | gitleaks no pre-commit e no CI |
+| CS-DP-2, CS-DP-3 | Maven Enforcer (dependências banidas), Renovate, varredura de dependências |
+| CS-TS-4 | Detecção de testes instáveis no CI; PIT para a qualidade da suíte |
 
-Semgrep is worth singling out: several slots in this file that read as prose rules ("never call a repository from a controller", "never concatenate into JPQL") are expressible as custom rules, which moves them out of review and into the build.
+O Semgrep merece destaque: vários slots deste arquivo que parecem regras em prosa ("nunca chame um repositório a partir de um controller", "nunca concatene em JPQL") são expressáveis como regras customizadas, o que os tira da revisão e os coloca no build.

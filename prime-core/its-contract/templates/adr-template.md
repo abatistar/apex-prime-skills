@@ -1,28 +1,28 @@
-# ADR Template
+# Template de ADR
 
-Canonical template owned by prime-core/its-contract. The its-generator drafts against it when a plan must commit to the decision, and the architect drafts against it directly when no plan exists yet; the architect approves either way, and code-review blocks on a decision that landed in code without a record. See the its-contract SKILL.md for the decision boundary that says when a decision is owed an ADR at all, and for the glossary rule that governs how an ITS cites one.
+Template canônico de propriedade do prime-core/its-contract. O its-generator redige contra ele quando um plano precisa se comprometer com a decisão, e o arquiteto redige contra ele diretamente quando ainda não existe plano; o arquiteto aprova em ambos os casos, e o code-review bloqueia uma decisão que chegou ao código sem registro. Veja o SKILL.md do its-contract para a fronteira de decisão, que diz quando uma decisão deve um ADR, e para a regra do glossário, que governa como uma ITS cita um.
 
-**Language.** The block below is the artifact and is written in the document language of this format: `pt-BR`; the guidance around it is skill-facing and stays in English. Section titles are translated; the stable tokens cited here — `ADR-NNN`, the status values (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), `UC-NNN`, `ITS-<story-id>`, `QM-XX-N`, `CS-XX-N`, file paths and identifiers — are never translated.
+**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — `ADR-NNN`, os valores de status (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), `UC-NNN`, `ITS-<story-id>`, `QM-XX-N`, `CS-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
 
-## File naming convention
+## Convenção de nomenclatura de arquivo
 
-`docs/adr/ADR-NNN-titulo-curto.md`, or as overridden by `docs/prime-config.md` › Document repository. `NNN` is sequential across the repository and is never renumbered; a retired decision keeps its number and takes the `Superseded by ADR-NNN` status. The slug follows the document language; the `ADR-NNN` prefix does not.
+`docs/adr/ADR-NNN-titulo-curto.md`, ou conforme sobrescrito pelo `docs/prime-config.md` › Repositório de documentos. `NNN` é sequencial em todo o repositório e nunca é renumerado; uma decisão aposentada mantém seu número e assume o status `Superseded by ADR-NNN`. O slug segue o idioma do documento; o prefixo `ADR-NNN` não.
 
-## Status lifecycle
+## Ciclo de vida do status
 
-- **Proposed** — drafted, not yet approved. An ITS is never delivered while an ADR it references is still `Proposed`.
-- **Accepted** — approved by the architect. Binding context for every implementer and every later plan. The config does not override it; a conflict between the two is reported, not resolved silently.
-- **Superseded by ADR-NNN** — replaced. The record stays in place with its rationale intact, pointing at its replacement. The status changes only when the architect approves the replacement.
+- **Proposed** — redigido, ainda não aprovado. Uma ITS nunca é entregue enquanto um ADR que ela referencia ainda estiver `Proposed`.
+- **Accepted** — aprovado pelo arquiteto. Contexto vinculante para todo implementador e todo plano posterior. A configuração não o sobrescreve; um conflito entre os dois é reportado, não resolvido em silêncio.
+- **Superseded by ADR-NNN** — substituído. O registro permanece no lugar com a justificativa intacta, apontando para seu substituto. O status só muda quando o arquiteto aprova o substituto.
 
-Only the architect moves an ADR between statuses, whoever wrote the record. Drafting is a separate act; **Who files it** below says who performs it.
+Só o arquiteto move um ADR entre status, quem quer que tenha escrito o registro. Redigir é um ato separado; **Quem arquiva** abaixo diz quem o executa.
 
-## Scope rules
+## Regras de escopo
 
-- **Who files it.** A decision a plan must commit to is drafted by the its-generator and approved by the architect. A decision taken where no plan exists yet, at refinement or in architectural counsel, is drafted by the architect directly and needs no story. The `Origem` field names where the decision came from, and with it which of the two paths filed the record. No other skill drafts one.
-- One decision per record. A document carrying two decisions cannot be superseded by half.
-- **Consequences are not a disclaimer.** State what the decision costs as well as what it buys, including what it forecloses. A record that lists only benefits is advocacy, not a decision record.
-- **The rationale lives here and only here.** An ITS citing this record carries one line of the operational constraint the decision imposes on its plan, never the context or the alternatives. That single ownership is why a reader who needs the why comes to this document.
-- Alternatives considered are the point of the record, not padding. A decision with no viable alternative was not a decision, and probably did not need an ADR.
+- **Quem arquiva.** Uma decisão com a qual um plano precisa se comprometer é redigida pelo its-generator e aprovada pelo arquiteto. Uma decisão tomada onde ainda não existe plano, no refinamento ou em aconselhamento arquitetural, é redigida diretamente pelo arquiteto e não precisa de story. O campo `Origem` nomeia de onde veio a decisão e, com isso, qual dos dois caminhos arquivou o registro. Nenhuma outra skill redige um.
+- Uma decisão por registro. Um documento com duas decisões não pode ser substituído pela metade.
+- **Consequências não são um aviso legal.** Declare o que a decisão custa, além do que ela compra, incluindo o que ela impede. Um registro que lista apenas benefícios é advocacia, não um registro de decisão.
+- **A justificativa vive aqui e só aqui.** Uma ITS que cita este registro carrega uma linha da restrição operacional que a decisão impõe ao seu plano, nunca o contexto nem as alternativas. Essa propriedade única é o motivo pelo qual quem precisa do porquê vem a este documento.
+- As alternativas consideradas são o ponto do registro, não enchimento. Uma decisão sem alternativa viável não foi uma decisão, e provavelmente não precisava de um ADR.
 
 ````markdown
 # ADR-NNN — [Título da decisão, em substantivo: "Estratégia de idempotência para consumidores"]

@@ -1,99 +1,99 @@
-# Convention Slots — v1.0
+# Slots de Convenção — v1.0
 
-Canonical slot catalog owned by `prime-core/coding-standards`. The SKILL.md defines the application classes, the legacy register, the migration discipline, and the consumption rules — this file is the slots.
+Catálogo canônico de slots de propriedade do `prime-core/coding-standards`. O SKILL.md define as classes de aplicação, o registro de legado, a disciplina de migração e as regras de consumo — este arquivo são os slots.
 
-**A slot is a question, not an answer.** Each entry states the decision a project must have taken, its application class, and the quality criterion it makes checkable. Values live in `references/defaults-<stack>.md` (team default) and in `docs/prime-config.md` (project override, which wins).
+**Um slot é uma pergunta, não uma resposta.** Cada entrada declara a decisão que um projeto precisa ter tomado, sua classe de aplicação e o critério de qualidade que ela torna verificável. Os valores vivem em `references/defaults-<stack>.md` (padrão do time) e no `docs/prime-config.md` (override do projeto, que vence).
 
-**Classes.** **[INVARIANT]** applies to every line written or changed regardless of surroundings. **[CONVENTIONAL]** defers to the local pattern in registered legacy areas.
+**Classes.** **[INVARIANT]** vale para toda linha escrita ou alterada, independentemente do entorno. **[CONVENTIONAL]** remete ao padrão local em áreas legadas registradas.
 
-**Unfilled is a gap, not a choice.** A slot with no value is reported, never improvised.
+**Não preenchido é uma lacuna, não uma escolha.** Um slot sem valor é reportado, nunca improvisado.
 
-Cite slots by ID. IDs are stable and never renumbered.
-
----
-
-## The invariant floor at a glance
-
-The slots that hold regardless of what surrounds the change. Everything else in the catalog defers to the area's registered state.
-
-`CS-AR-1` layer direction · `CS-AR-2` where business rules live · `CS-AR-3` boundary types · `CS-NM-2` honest names · `CS-ER-4` two audiences · `CS-ER-5` cause chain · `CS-ER-6` no silent swallow · `CS-OB-3` logging denylist · `CS-DA-4` applied migrations immutable · `CS-CT-1` no silent breaking change · `CS-TS-1` what obliges a test · `CS-TS-4` deterministic tests · `CS-SC-1` authorization placement · `CS-SC-2` boundary validation · `CS-SC-3` secrets · `CS-SC-4` cryptography · `CS-DP-2` one library per concern · `CS-DP-3` vulnerable dependencies · `CS-PR-2` prohibited patterns
+Cite os slots por ID. Os IDs são estáveis e nunca renumerados.
 
 ---
 
-## AR — Architecture and dependencies
+## O piso invariante num relance
 
-*The slots with the longest half-life and the highest automation yield. Decide these first.*
+Os slots que valem independentemente do que cerca a mudança. Todo o resto do catálogo remete ao estado registrado da área.
 
-- **CS-AR-1 [INVARIANT]** — **Permitted dependency direction.** Which layer or module may depend on which, and which direction is forbidden. Stated as a rule a tool can check, not as a diagram. Serves `QM-CC-3`.
-- **CS-AR-2 [INVARIANT]** — **Where business rules may live.** The layer that owns decisions, and the layers that must contain none. The most common erosion is the rule that migrates into the controller or the query.
-- **CS-AR-3 [INVARIANT]** — **Types that never cross a boundary.** Persistence types exposed by the API, framework annotations inside the domain, transport types reaching the core. Name the forbidden crossings explicitly.
-- **CS-AR-4 [CONVENTIONAL]** — **Module grouping.** By feature/domain or by technical layer, and at which depth. Serves `QM-CC-2`.
-- **CS-AR-5 [CONVENTIONAL]** — **Cross-module communication style.** Direct call, published interface, domain event, message. Which is the default and what justifies the others.
+`CS-AR-1` direção das camadas · `CS-AR-2` onde vivem as regras de negócio · `CS-AR-3` tipos de fronteira · `CS-NM-2` nomes honestos · `CS-ER-4` duas audiências · `CS-ER-5` cadeia de causas · `CS-ER-6` sem engolir em silêncio · `CS-OB-3` denylist de logs · `CS-DA-4` migrações aplicadas são imutáveis · `CS-CT-1` sem quebra silenciosa de contrato · `CS-TS-1` o que obriga um teste · `CS-TS-4` testes determinísticos · `CS-SC-1` onde fica a autorização · `CS-SC-2` validação na fronteira · `CS-SC-3` segredos · `CS-SC-4` criptografia · `CS-DP-2` uma biblioteca por preocupação · `CS-DP-3` dependências vulneráveis · `CS-PR-2` padrões proibidos
 
-## NM — Naming and structure
+---
 
-- **CS-NM-1 [CONVENTIONAL]** — **Semantic suffixes.** Which suffixes exist and what each one promises about the type's responsibility. A suffix that means nothing is worse than none.
-- **CS-NM-2 [INVARIANT]** — **Names that carry side effects.** Which prefixes assert purity and which announce I/O, mutation, or event emission. This is `QM-RC-1` made checkable: a name asserting one thing while doing another is a defect, not a style preference.
-- **CS-NM-3 [CONVENTIONAL]** — **Where a concept lives.** The rule connecting a name to a location, so a reader finds a type without searching.
+## AR — Arquitetura e dependências
 
-## ER — Errors
+*Os slots de maior meia-vida e maior rendimento de automação. Decida-os primeiro.*
 
-- **CS-ER-1 [CONVENTIONAL]** — **Expected error vs. bug: representation.** How a domain situation is signalled versus a violated invariant. Serves `QM-EO-5`.
-- **CS-ER-2 [CONVENTIONAL]** — **Error taxonomy.** The base hierarchy or result type, and how a new error category is added.
-- **CS-ER-3 [CONVENTIONAL]** — **Where errors are caught and translated.** The layer holding enough context to decide (`QM-EO-6`), and the layers that must only propagate.
-- **CS-ER-4 [INVARIANT]** — **Two audiences.** What the caller receives versus what the operator receives. Concretizes `QM-EO-2`: generic and safe outward, full detail inward.
-- **CS-ER-5 [INVARIANT]** — **Cause preservation.** Propagation carries the original cause and stack. Concretizes `QM-EO-3`.
-- **CS-ER-6 [INVARIANT]** — **No silent swallow.** The concrete shapes forbidden in this stack — empty catch, ignored return, null in place of a failure signal. Concretizes `QM-EO-1`.
+- **CS-AR-1 [INVARIANT]** — **Direção permitida das dependências.** Qual camada ou módulo pode depender de qual, e qual direção é proibida. Declarada como uma regra que uma ferramenta consegue verificar, não como um diagrama. Serve ao `QM-CC-3`.
+- **CS-AR-2 [INVARIANT]** — **Onde as regras de negócio podem viver.** A camada que é dona das decisões e as camadas que não devem conter nenhuma. A erosão mais comum é a regra que migra para o controller ou para a query.
+- **CS-AR-3 [INVARIANT]** — **Tipos que nunca cruzam uma fronteira.** Tipos de persistência expostos pela API, anotações de framework dentro do domínio, tipos de transporte chegando ao core. Nomeie explicitamente os cruzamentos proibidos.
+- **CS-AR-4 [CONVENTIONAL]** — **Agrupamento de módulos.** Por feature/domínio ou por camada técnica, e em qual profundidade. Serve ao `QM-CC-2`.
+- **CS-AR-5 [CONVENTIONAL]** — **Estilo de comunicação entre módulos.** Chamada direta, interface publicada, evento de domínio, mensagem. Qual é o padrão e o que justifica os demais.
 
-## OB — Observability
+## NM — Nomenclatura e estrutura
 
-- **CS-OB-1 [CONVENTIONAL]** — **Log format and level semantics.** What each level actually means here, and the structured shape that makes lines searchable. Serves `QM-EO-8`.
-- **CS-OB-2 [CONVENTIONAL]** — **Correlation propagation.** How a request identifier is created, carried across calls, and reaches every line.
-- **CS-OB-3 [INVARIANT]** — **The logging denylist.** The closed list of what is never written to a log or an error message: credentials, tokens, personal data, payloads containing them. The highest-return single line in this catalog.
-- **CS-OB-4 [CONVENTIONAL]** — **What must be instrumented.** The paths that carry metrics and traces by default, so instrumentation is systematic rather than remembered. Serves `QM-EO-7`.
+- **CS-NM-1 [CONVENTIONAL]** — **Sufixos semânticos.** Quais sufixos existem e o que cada um promete sobre a responsabilidade do tipo. Um sufixo que não significa nada é pior que nenhum.
+- **CS-NM-2 [INVARIANT]** — **Nomes que carregam efeitos colaterais.** Quais prefixos afirmam pureza e quais anunciam I/O, mutação ou emissão de evento. É o `QM-RC-1` tornado verificável: um nome que afirma uma coisa enquanto faz outra é um defeito, não uma preferência de estilo.
+- **CS-NM-3 [CONVENTIONAL]** — **Onde um conceito vive.** A regra que liga um nome a um local, para que o leitor encontre um tipo sem precisar procurar.
 
-## DA — Data and transactions
+## ER — Erros
 
-- **CS-DA-1 [CONVENTIONAL]** — **Transactional boundary.** Where a transaction opens and closes, and which layers must never open one.
-- **CS-DA-2 [CONVENTIONAL]** — **Idempotency and retry.** Which operations must be safe to repeat and how repetition is detected. Serves `QM-SR-7`.
-- **CS-DA-3 [CONVENTIONAL]** — **Migration convention.** Naming, ordering, and the compatibility rule for deploys that overlap versions.
-- **CS-DA-4 [INVARIANT]** — **Applied migrations are immutable.** A migration that ran anywhere is never edited; correction is a new migration.
-- **CS-DA-5 [CONVENTIONAL]** — **Loading discipline.** The default fetching strategy and how a query declares what it needs, so N+1 is prevented by convention rather than found in production.
+- **CS-ER-1 [CONVENTIONAL]** — **Erro esperado vs. bug: representação.** Como uma situação de domínio é sinalizada versus um invariante violado. Serve ao `QM-EO-5`.
+- **CS-ER-2 [CONVENTIONAL]** — **Taxonomia de erros.** A hierarquia base ou o tipo de resultado, e como uma nova categoria de erro é adicionada.
+- **CS-ER-3 [CONVENTIONAL]** — **Onde os erros são capturados e traduzidos.** A camada com contexto suficiente para decidir (`QM-EO-6`) e as camadas que devem apenas propagar.
+- **CS-ER-4 [INVARIANT]** — **Duas audiências.** O que o chamador recebe versus o que o operador recebe. Concretiza o `QM-EO-2`: genérico e seguro para fora, detalhe completo para dentro.
+- **CS-ER-5 [INVARIANT]** — **Preservação da causa.** A propagação carrega a causa original e o stack. Concretiza o `QM-EO-3`.
+- **CS-ER-6 [INVARIANT]** — **Sem engolir em silêncio.** As formas concretas proibidas nesta stack — catch vazio, retorno ignorado, null no lugar de um sinal de falha. Concretiza o `QM-EO-1`.
 
-## CT — External contracts
+## OB — Observabilidade
 
-- **CS-CT-1 [INVARIANT]** — **No silent breaking change.** What counts as breaking for a published contract, and the versioning route a breaking change must take.
-- **CS-CT-2 [CONVENTIONAL]** — **Collection shape.** Pagination, filtering, sorting, and the envelope — decided once, identical everywhere.
-- **CS-CT-3 [CONVENTIONAL]** — **Serialization boundary.** The types that carry the contract, distinct from the domain model, and where translation happens.
-- **CS-CT-4 [CONVENTIONAL]** — **Canonical representations.** Time, money, quantity, and identifiers. Each has exactly one representation across the system.
+- **CS-OB-1 [CONVENTIONAL]** — **Formato de log e semântica dos níveis.** O que cada nível realmente significa aqui, e a forma estruturada que torna as linhas pesquisáveis. Serve ao `QM-EO-8`.
+- **CS-OB-2 [CONVENTIONAL]** — **Propagação de correlação.** Como um identificador de requisição é criado, carregado entre chamadas e chega a cada linha.
+- **CS-OB-3 [INVARIANT]** — **A denylist de logs.** A lista fechada do que nunca é escrito em um log ou mensagem de erro: credenciais, tokens, dados pessoais, payloads que os contenham. A linha isolada de maior retorno neste catálogo.
+- **CS-OB-4 [CONVENTIONAL]** — **O que precisa ser instrumentado.** Os caminhos que carregam métricas e traces por padrão, para que a instrumentação seja sistemática em vez de lembrada. Serve ao `QM-EO-7`.
 
-## TS — Tests
+## DA — Dados e transações
 
-- **CS-TS-1 [INVARIANT]** — **What obliges a test.** The change categories that never merge untested. Everything else is judgment; this is not.
-- **CS-TS-2 [CONVENTIONAL]** — **Layout and naming.** Where tests live, how the kinds are distinguished, and the naming that states scenario and expectation. Serves `QM-TS-5`.
-- **CS-TS-3 [CONVENTIONAL]** — **What is mocked.** The boundaries replaced by doubles and the code exercised for real. Serves `QM-TS-3`.
-- **CS-TS-4 [INVARIANT]** — **Determinism.** The concrete prohibitions that keep the suite trustworthy: no sleeping on timing, no order dependence, no state shared between tests. Serves `QM-TS-1` and `QM-TS-6` — a suite that is occasionally red teaches the team to ignore red.
+- **CS-DA-1 [CONVENTIONAL]** — **Fronteira transacional.** Onde uma transação abre e fecha, e quais camadas nunca devem abrir uma.
+- **CS-DA-2 [CONVENTIONAL]** — **Idempotência e retry.** Quais operações precisam ser seguras para repetir e como a repetição é detectada. Serve ao `QM-SR-7`.
+- **CS-DA-3 [CONVENTIONAL]** — **Convenção de migrações.** Nomenclatura, ordenação e a regra de compatibilidade para deploys que sobrepõem versões.
+- **CS-DA-4 [INVARIANT]** — **Migrações aplicadas são imutáveis.** Uma migração que rodou em qualquer lugar nunca é editada; a correção é uma nova migração.
+- **CS-DA-5 [CONVENTIONAL]** — **Disciplina de carregamento.** A estratégia padrão de busca e como uma query declara o que precisa, de modo que o N+1 seja prevenido por convenção em vez de descoberto em produção.
 
-## SC — Security
+## CT — Contratos externos
 
-*Concrete placement only. The principles are `QM-SR-*`; the exhaustive control list belongs to an external standard the project targets (`CS-SC-5`), never to a rewritten copy here.*
+- **CS-CT-1 [INVARIANT]** — **Sem quebra silenciosa de contrato.** O que conta como quebra para um contrato publicado, e a rota de versionamento que uma quebra precisa seguir.
+- **CS-CT-2 [CONVENTIONAL]** — **Forma das coleções.** Paginação, filtragem, ordenação e o envelope — decididos uma vez, idênticos em todo lugar.
+- **CS-CT-3 [CONVENTIONAL]** — **Fronteira de serialização.** Os tipos que carregam o contrato, distintos do modelo de domínio, e onde a tradução acontece.
+- **CS-CT-4 [CONVENTIONAL]** — **Representações canônicas.** Tempo, dinheiro, quantidade e identificadores. Cada um tem exatamente uma representação em todo o sistema.
 
-- **CS-SC-1 [INVARIANT]** — **Where authorization is enforced.** The single layer that decides, and the explicit statement that no client-side check counts.
-- **CS-SC-2 [INVARIANT]** — **Boundary validation.** Where external input is validated and neutralized, and the data/code separations that are never optional. Concretizes `QM-SR-1`.
-- **CS-SC-3 [INVARIANT]** — **Secrets.** Where credentials live, how they reach the process, and the rotation expectation. Concretizes `QM-SR-2`.
-- **CS-SC-4 [INVARIANT]** — **Cryptography and credential storage.** The sanctioned libraries and algorithms. Concretizes `QM-SR-3`.
-- **CS-SC-5 [CONVENTIONAL]** — **External standard and level.** The security standard the project targets and at which level, referenced rather than transcribed.
+## TS — Testes
 
-## DP — Third-party dependencies
+- **CS-TS-1 [INVARIANT]** — **O que obriga um teste.** As categorias de mudança que nunca entram em merge sem teste. Todo o resto é julgamento; isto não é.
+- **CS-TS-2 [CONVENTIONAL]** — **Organização e nomenclatura.** Onde os testes vivem, como os tipos são distinguidos e a nomenclatura que declara cenário e expectativa. Serve ao `QM-TS-5`.
+- **CS-TS-3 [CONVENTIONAL]** — **O que é mockado.** As fronteiras substituídas por dublês e o código exercitado de verdade. Serve ao `QM-TS-3`.
+- **CS-TS-4 [INVARIANT]** — **Determinismo.** As proibições concretas que mantêm a suíte confiável: sem dormir esperando timing, sem dependência de ordem, sem estado compartilhado entre testes. Serve ao `QM-TS-1` e ao `QM-TS-6` — uma suíte ocasionalmente vermelha ensina o time a ignorar o vermelho.
 
-- **CS-DP-1 [CONVENTIONAL]** — **Admission criteria.** What a new dependency must satisfy — maintenance, licence, footprint — and who approves it.
-- **CS-DP-2 [INVARIANT]** — **One library per concern.** A concern already served by a sanctioned library does not acquire a second one. This is `QM-CN-1` at the dependency level, and it is how a codebase ends up with three date libraries.
-- **CS-DP-3 [INVARIANT]** — **Known-vulnerable dependencies.** The policy for shipping with an open advisory, and who owns the exception. Concretizes `QM-SR-4`.
+## SC — Segurança
 
-## PR — Canonical solutions and prohibitions
+*Apenas posicionamento concreto. Os princípios são os `QM-SR-*`; a lista exaustiva de controles pertence a um padrão externo que o projeto adota (`CS-SC-5`), nunca a uma cópia reescrita aqui.*
 
-*The only form of "design pattern" this catalog holds. Prescribing named patterns produces ceremony; cataloguing the agreed solution to a recurring problem produces consistency.*
+- **CS-SC-1 [INVARIANT]** — **Onde a autorização é imposta.** A camada única que decide, e a declaração explícita de que nenhuma verificação no cliente conta.
+- **CS-SC-2 [INVARIANT]** — **Validação na fronteira.** Onde a entrada externa é validada e neutralizada, e as separações dado/código que nunca são opcionais. Concretiza o `QM-SR-1`.
+- **CS-SC-3 [INVARIANT]** — **Segredos.** Onde as credenciais vivem, como chegam ao processo e a expectativa de rotação. Concretiza o `QM-SR-2`.
+- **CS-SC-4 [INVARIANT]** — **Criptografia e armazenamento de credenciais.** As bibliotecas e algoritmos sancionados. Concretiza o `QM-SR-3`.
+- **CS-SC-5 [CONVENTIONAL]** — **Padrão externo e nível.** O padrão de segurança que o projeto adota e em qual nível, referenciado em vez de transcrito.
 
-- **CS-PR-1 [CONVENTIONAL]** — **Canonical solution register.** For each recurring problem in *this* system, the agreed solution and where an example lives. Calling an external service, publishing an event, scheduling work, handling partial failure. Grows by observation, not by anticipation.
-- **CS-PR-2 [INVARIANT]** — **Prohibited patterns.** A short list, each with the concrete failure that earned it a place. A prohibition without a reason is folklore and will be violated the moment its author leaves.
-- **CS-PR-3 [CONVENTIONAL]** — **No pattern prescribed by name.** Standards state the problem and the sanctioned solution; they never mandate a named pattern as such. Speculative structure is its own debt (`QM-MT-4`).
+## DP — Dependências de terceiros
+
+- **CS-DP-1 [CONVENTIONAL]** — **Critérios de admissão.** O que uma nova dependência precisa satisfazer — manutenção, licença, pegada — e quem a aprova.
+- **CS-DP-2 [INVARIANT]** — **Uma biblioteca por preocupação.** Uma preocupação já atendida por uma biblioteca sancionada não adquire uma segunda. É o `QM-CN-1` no nível das dependências, e é assim que uma base de código acaba com três bibliotecas de data.
+- **CS-DP-3 [INVARIANT]** — **Dependências com vulnerabilidades conhecidas.** A política para entregar com um advisory aberto, e quem é dono da exceção. Concretiza o `QM-SR-4`.
+
+## PR — Soluções canônicas e proibições
+
+*A única forma de "padrão de projeto" que este catálogo guarda. Prescrever padrões nomeados produz cerimônia; catalogar a solução acordada para um problema recorrente produz consistência.*
+
+- **CS-PR-1 [CONVENTIONAL]** — **Registro de soluções canônicas.** Para cada problema recorrente *neste* sistema, a solução acordada e onde vive um exemplo. Chamar um serviço externo, publicar um evento, agendar trabalho, tratar falha parcial. Cresce por observação, não por antecipação.
+- **CS-PR-2 [INVARIANT]** — **Padrões proibidos.** Uma lista curta, cada item com a falha concreta que lhe valeu um lugar. Uma proibição sem razão é folclore e será violada no momento em que seu autor sair.
+- **CS-PR-3 [CONVENTIONAL]** — **Nenhum padrão prescrito pelo nome.** Os padrões declaram o problema e a solução sancionada; nunca exigem um padrão nomeado como tal. Estrutura especulativa é dívida por si só (`QM-MT-4`).

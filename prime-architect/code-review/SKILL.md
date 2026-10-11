@@ -1,141 +1,141 @@
 ---
 name: code-review
-description: Review an implementation against its ITS and the prime-core standards, producing classified findings and one explicit verdict. Architect-layer skill - it owns the enforcement role that prime-core/quality-model and prime-core/coding-standards deliberately leave open. Use whenever the architect brings a pull request, a diff, a branch, or an implementation back from the Developer - "review the PR for S-131", "check this implementation against the ITS", "is this ready to merge", "the dev finished the story". Do NOT use for writing or revising an ITS (its-generator), for writing or updating use cases (use-case-creator, use-case-extractor), or for implementing or fixing code (dev layer - the reviewer never writes application code).
+description: Revisa uma implementação contra a sua ITS e os padrões do prime-core, produzindo achados classificados e um veredito explícito. Skill da camada do arquiteto - é dona do papel de enforcement que o prime-core/quality-model e o prime-core/coding-standards deliberadamente deixam em aberto. Use sempre que o arquiteto trouxer um pull request, um diff, um branch ou uma implementação de volta do Desenvolvedor - "revise o PR da S-131", "confira esta implementação contra a ITS", "isto está pronto para merge", "o dev terminou a story". NÃO use para escrever ou revisar uma ITS (its-generator), para escrever ou atualizar casos de uso (use-case-creator, use-case-extractor) nem para implementar ou corrigir código (camada do dev - o revisor nunca escreve código de aplicação).
 ---
 
 # Code Review (prime-architect)
 
-`prime-core/quality-model` answers *what good is*. `prime-core/coding-standards` answers *what good looks like here*. This skill answers the third question, the only one that gates a merge: **did this change clear the bar, given its context?** Turning versioned definitions into precise findings and one recommendation is this skill's exclusive job — both core skills state that they do not do it.
+O `prime-core/quality-model` responde *o que é bom*. O `prime-core/coding-standards` responde *como o bom se parece aqui*. Esta skill responde à terceira pergunta, a única que governa um merge: **esta mudança superou a régua, dado o seu contexto?** Transformar definições versionadas em achados precisos e uma recomendação é o trabalho exclusivo desta skill — as duas skills do core declaram que não o fazem.
 
-The discipline below follows Google's engineering practices for code review — the standard of review, the order of the lenses, comment severity, and the economics of speed and size — restated in this repository's vocabulary and bound to its versioned criteria, so that a finding always cites a stable ID instead of a mood.
+A disciplina abaixo segue as práticas de engenharia do Google para code review — o padrão de revisão, a ordem das lentes, a severidade dos comentários e a economia de velocidade e tamanho —, reescritas no vocabulário deste repositório e atadas aos seus critérios versionados, de modo que um achado sempre cite um ID estável em vez de um humor.
 
-Two inputs define the bar, always both: the **ITS** (what was agreed for this story) and the **core standards** (what holds for all code). A change that implements the ITS perfectly while silently committing a cardinal sin does not pass. A change with impeccable code that quietly extends the ITS's scope does not pass either.
+Duas entradas definem a régua, sempre as duas: a **ITS** (o que foi acordado para esta story) e os **padrões do core** (o que vale para todo código). Uma mudança que implementa a ITS à perfeição enquanto comete em silêncio um pecado capital não passa. Uma mudança com código impecável que estende discretamente o escopo da ITS também não passa.
 
-## The standard of review
+## O padrão de revisão
 
-Approve when the change **does what the ITS agreed and leaves the system's code health better than it found it** — not when it is perfect. Perfection is not the bar and must never become one: "something could always be better" is how a gate degenerates into an obstacle. The question is comparative and contextual — after this merge, is the codebase safer, more predictable, and cheaper to change than before?
+Aprove quando a mudança **faz o que a ITS acordou e deixa a saúde do código do sistema melhor do que encontrou** — não quando é perfeita. Perfeição não é a régua e nunca pode virar uma: "sempre dá para melhorar" é como um gate degenera em obstáculo. A pergunta é comparativa e contextual — depois deste merge, a base de código está mais segura, mais previsível e mais barata de mudar do que antes?
 
-Four principles settle every disagreement:
+Quatro princípios resolvem toda discordância:
 
-1. **Technical facts beat preference.** A finding cites a criterion (`QM-XX-N`), a slot (`CS-XX-N`), an ITS section, an acceptance criterion (`UC-NNN/CA-N`), or a measurement. A finding that cites nothing is a preference, and preferences never block a merge.
-2. **On conventions, the standard is the authority** — for the reviewer exactly as for the author. Where `coding-standards` and `docs/prime-config.md` state a value, that value settles the matter. Where a slot has no value, the gap is *reported* (coding-standards, Unfilled slots), never filled with reviewer taste.
-3. **Design is never a matter of style.** Boundaries, coupling, and structure are technical questions with arguments, judged against `QM-CC-*` and `CS-AR-*` — never with "I would have done it differently".
-4. **Teaching is free; blocking is not.** Anything that improves the author without being required to merge is said as such and marked optional. A review that teaches nothing is half a review.
+1. **Fatos técnicos vencem preferência.** Um achado cita um critério (`QM-XX-N`), um slot (`CS-XX-N`), uma seção da ITS, um critério de aceite (`UC-NNN/CA-N`) ou uma medição. Um achado que não cita nada é uma preferência, e preferências nunca bloqueiam um merge.
+2. **Em convenções, o padrão é a autoridade** — para o revisor exatamente como para o autor. Onde o `coding-standards` e o `docs/prime-config.md` declaram um valor, esse valor encerra o assunto. Onde um slot não tem valor, a lacuna é *reportada* (coding-standards, Slots não preenchidos), nunca preenchida com o gosto do revisor.
+3. **Design nunca é questão de estilo.** Fronteiras, acoplamento e estrutura são questões técnicas com argumentos, julgadas contra `QM-CC-*` e `CS-AR-*` — nunca com "eu teria feito diferente".
+4. **Ensinar é de graça; bloquear não é.** Tudo o que melhora o autor sem ser exigido para o merge é dito como tal e marcado como opcional. Uma revisão que não ensina nada é meia revisão.
 
-## Boundaries — what this skill does not do
+## Fronteiras — o que esta skill não faz
 
-- **It never writes application code.** The architect's deliverables are findings and, where the plan itself was wrong, a revised ITS. Jarvis's role boundary holds inside the review.
-- **It never restates a criterion.** Every finding points at an ID owned elsewhere. A rule that exists only in a review comment is a rule the next author cannot read.
-- **It does not redo the pipeline's job.** The checks the config declares as required are a precondition of the human review, not its subject. Attention spent re-litigating what a formatter, linter, or scanner decides is waste (`QM-CN-3`); the *absence* of that automation from the toolchain is the finding worth raising.
-- **It does not promote use case status, rewrite documentation, or edit the config as a side effect.** Those routes belong to the use case skills, to the human, and to prime-config respectively.
+- **Nunca escreve código de aplicação.** Os entregáveis do arquiteto são achados e, onde o próprio plano estava errado, uma ITS revisada. A fronteira de papel do Jarvis vale dentro da revisão.
+- **Nunca repete um critério.** Todo achado aponta para um ID de propriedade de outro lugar. Uma regra que existe apenas num comentário de revisão é uma regra que o próximo autor não consegue ler.
+- **Não refaz o trabalho do pipeline.** As verificações que a configuração declara como obrigatórias são pré-condição da revisão humana, não seu objeto. A atenção gasta rediscutindo o que um formatador, linter ou scanner decide é desperdício (`QM-CN-3`); a *ausência* dessa automação na toolchain é o achado que vale levantar.
+- **Não promove status de caso de uso, não reescreve documentação nem edita a configuração como efeito colateral.** Essas rotas pertencem às skills de caso de uso, ao humano e ao prime-config, respectivamente.
 
-## Step 0 — Load configuration, contracts, and the agreed plan
+## Passo 0 — Carregar a configuração, os contratos e o plano acordado
 
-Read `docs/prime-config.md` per **prime-core/prime-config** — location, fallback, precedence, divergence, and bootstrap all live in that contract; never re-derive them here. From the config this skill uses: the **pipeline and its required checks** where the project declares one, the **verification commands**, the **area register and slot overrides** (Conventions and constraints), the document locations, and the stack versions the plan assumed.
+Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localização, alternativa, precedência, divergência e bootstrap vivem todos nesse contrato; nunca os rederive aqui. Da configuração esta skill usa: o **pipeline e suas verificações obrigatórias** onde o projeto declara um, os **comandos de verificação**, o **registro de áreas e os overrides de slots** (Convenções e restrições), as localizações de documentos e as versões da stack que o plano assumiu.
 
-**The automated checks run before the review, not during it.** A red pipeline is the author's round, not the reviewer's: the human review starts once the config's required checks are green. Pipeline is an optional config section, and a project without one substitutes the config's **verification commands** — run them, or have the author report their result, before starting. The single exception to waiting is red caused by a flaky test: that does not go back for another round, it is a `Blocking:` finding in its own right (`QM-TS-1`), because a suite that is occasionally red is what trains a team to ignore red.
+**As verificações automatizadas rodam antes da revisão, não durante ela.** Um pipeline vermelho é a rodada do autor, não a do revisor: a revisão humana começa quando as verificações obrigatórias da configuração estão verdes. Pipeline é uma seção opcional da configuração, e um projeto sem um substitui pelos **comandos de verificação** da configuração — execute-os, ou peça ao autor que reporte o resultado, antes de começar. A única exceção à espera é o vermelho causado por um teste instável: ele não volta para outra rodada, é um achado `Blocking:` por si só (`QM-TS-1`), porque uma suíte ocasionalmente vermelha é o que treina um time a ignorar o vermelho.
 
-Then load, in this order:
+Em seguida carregue, nesta ordem:
 
-1. **The ITS for the story** and every ADR it references — per **prime-core/its-contract**. Read the Metadata section first: it carries the traceability check the its-generator already ran (plan ⇄ delta), which is the baseline your own check (diff ⇄ plan) builds on.
-2. **The use cases it names**, per **prime-core/use-case**: the delta for this story and the acceptance criteria the delta touches.
-3. **prime-core/quality-model** with `references/quality-criteria.md`, and **prime-core/coding-standards** with `references/convention-slots.md` plus the defaults file for the project's stack.
+1. **A ITS da story** e todo ADR que ela referencia — conforme o **prime-core/its-contract**. Leia primeiro a seção de Metadados: ela carrega a verificação de rastreabilidade que o its-generator já executou (plano ⇄ delta), que é a base sobre a qual a sua própria verificação (diff ⇄ plano) se constrói.
+2. **Os casos de uso que ela nomeia**, conforme o **prime-core/use-case**: o delta desta story e os critérios de aceite que o delta toca.
+3. **prime-core/quality-model** com `references/quality-criteria.md`, e **prime-core/coding-standards** com `references/convention-slots.md` mais o arquivo de padrões da stack do projeto.
 
-**No ITS, no baseline.** Report it and stop: a review without the agreed scope degrades into taste within three comments. The single exception is a change declared out-of-process (a hotfix): state explicitly that scope conformance was not checkable and review against the core standards only.
+**Sem ITS, sem baseline.** Reporte e pare: uma revisão sem o escopo acordado degenera em gosto em três comentários. A única exceção é uma mudança declarada fora do processo (um hotfix): declare explicitamente que a conformidade de escopo não pôde ser verificada e revise apenas contra os padrões do core.
 
-## Step 1 — Understand the change before reading it
+## Passo 1 — Entender a mudança antes de lê-la
 
-Broad view first. Read the ITS's executive summary, the per-use-case syntheses, and the implementation plan; then the pull request's own description. You must be able to state, before the first line of diff, what the change should do, which files it should touch, and which behavior must keep working (the ITS's regression points).
+Visão ampla primeiro. Leia o sumário executivo da ITS, as sínteses por caso de uso e o plano de implementação; depois a própria descrição do pull request. Você precisa conseguir dizer, antes da primeira linha do diff, o que a mudança deveria fazer, quais arquivos deveria tocar e qual comportamento precisa continuar funcionando (os pontos de regressão da ITS).
 
-Then walk the diff **unit by unit, in the plan's order**, not in the file tree's alphabetical order. The plan already sequenced dependencies, and each unit declares the files it should have touched — the answer to "which files should this change contain" is the walk itself, not a separate list.
+Depois percorra o diff **unidade por unidade, na ordem do plano**, não na ordem alfabética da árvore de arquivos. O plano já sequenciou as dependências, e cada unidade declara os arquivos que deveria ter tocado — a resposta para "quais arquivos esta mudança deveria conter" é o próprio percurso, não uma lista separada.
 
-If the change does not make sense as a whole — wrong direction, misread ITS, plan overtaken by the code — **stop and say so immediately**. Forty comments on code that should not exist waste both sides.
+Se a mudança não faz sentido como um todo — direção errada, ITS mal lida, plano ultrapassado pelo código — **pare e diga isso imediatamente**. Quarenta comentários sobre código que não deveria existir desperdiçam o tempo dos dois lados.
 
-If the diff is too large to hold in your head, that is itself the first finding: ask for it to be split, or — when the story genuinely is that large — review it in the plan's units (per use case, per implementation step) and say in which order you are proceeding.
+Se o diff é grande demais para caber na cabeça, esse é o primeiro achado: peça que seja dividido ou — quando a story realmente é tão grande — revise-o nas unidades do plano (por caso de uso, por passo de implementação) e diga em que ordem está procedendo.
 
-## Step 2 — Scope conformance: the ITS's traceability check, run backwards
+## Passo 2 — Conformidade de escopo: a verificação de rastreabilidade da ITS, executada de trás para frente
 
-The its-generator proved plan ⇄ delta before delivery. You now prove **diff ⇄ plan**, in both directions:
+O its-generator provou plano ⇄ delta antes da entrega. Agora você prova **diff ⇄ plano**, nas duas direções:
 
-- **Plan → diff.** Every unit of the plan is present in the diff, or its absence is justified. Every test a unit owes exists — the acceptance criteria its delta items touch (`CS-TS-1`) and the non-regression coverage for the regression point it claimed.
-- **Diff → plan.** Every changed file traces to a unit or to a stated technical consequence. Anything else is scope creep — **including improvements**: an unrequested refactor is out of scope even when the code gets better, and it is erosion (`QM-CN-1`) when it introduces a second way of doing something.
-- **Boundaries.** Nothing in the ITS's "Out of scope — do not touch" list was touched. That section exists precisely to make "all of it and nothing beyond it" checkable.
-- **Decisions.** Nothing contradicts an Accepted ADR. No architectural decision landed in the code without an ADR recording it (its-contract, decision boundary). If the implementation had to make such a decision, the outcome is an ADR to propose — not a finding filed against the author.
-- **Divergence.** Where the implementation departed from the plan, was the departure returned as a question and the ITS revised? A **silent** departure is a finding. A departure that is *right* because the plan did not survive contact with the code is not the author's defect — it is the ITS's, and it routes to the fourth verdict.
+- **Plano → diff.** Toda unidade do plano está presente no diff, ou sua ausência está justificada. Todo teste que uma unidade deve existe — os critérios de aceite que seus itens de delta tocam (`CS-TS-1`) e a cobertura de não regressão do ponto de regressão que ela reivindicou.
+- **Diff → plano.** Todo arquivo alterado remonta a uma unidade ou a uma consequência técnica declarada. Qualquer outra coisa é escopo excedido — **inclusive melhorias**: um refactor não solicitado está fora de escopo mesmo quando o código melhora, e é erosão (`QM-CN-1`) quando introduz uma segunda forma de fazer algo.
+- **Fronteiras.** Nada da lista "Fora de escopo — não alterar" da ITS foi tocado. Essa seção existe justamente para tornar verificável o "tudo e nada além".
+- **Decisões.** Nada contradiz um ADR Accepted. Nenhuma decisão arquitetural chegou ao código sem um ADR que a registre (its-contract, fronteira de decisão). Se a implementação precisou tomar essa decisão, o resultado é um ADR a propor — não um achado registrado contra o autor.
+- **Divergência.** Onde a implementação se afastou do plano, o afastamento foi devolvido como pergunta e a ITS revisada? Um afastamento **silencioso** é um achado. Um afastamento que está *certo* porque o plano não sobreviveu ao contato com o código não é defeito do autor — é da ITS, e roteia para o quarto veredito.
 
-## Step 3 — The lenses, in decreasing order of cost
+## Passo 3 — As lentes, em ordem decrescente de custo
 
-Design first, always: a naming comment on code that must be restructured is wasted twice. Each lens below is a pointer to where the criterion lives — never a redefinition.
+Design primeiro, sempre: um comentário de nomenclatura sobre código que precisa ser reestruturado é desperdício duas vezes. Cada lente abaixo é um ponteiro para onde o critério vive — nunca uma redefinição.
 
-- **Design** — do the pieces belong where they are, and does the change fit the system rather than fight it? `QM-CC-1..5`, `CS-AR-1..5`. The most expensive thing to fix after merge, and the reason it is read first.
-- **Functionality** — does it do what the delta says, for the user and not only for the author? Concurrency, edge cases, failure paths (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`). Judge against the use case's `CA-N`, not against your own reading of the code.
-- **Complexity** — can the next reader understand this quickly (`QM-RC-2`, `QM-RC-3`, `QM-RC-4`)? Speculative generality counts as complexity (`QM-MT-4`): structure built for a requirement nobody asked for is a finding, not foresight.
-- **Tests** — `CS-TS-1` decides what obliges a test; the ITS decides which ones this story owes unit by unit, each plan unit declaring the tests its delta items require plus the non-regression coverage for the regression point it claimed; `QM-TS-2` decides whether they are worth having (behavior, not implementation); `QM-TS-1` and `CS-TS-4` decide whether they can be trusted. Tests arrive with the change, never "in a follow-up PR".
-- **Naming** — `QM-RC-1` / `CS-NM-2`: a name that conceals I/O, mutation, or an emitted event is a defect, not a preference.
-- **Comments** — `QM-RC-5`, `QM-DO-2`: they explain *why*. If you had to ask what a block does, the code failed to explain itself — the fix belongs in the code or in a comment, not in the author's reply to you.
-- **Style and consistency** — conventional slots, judged **against the area's registered state**: in a `legacy-maintained` area, a conventional finding is valid only if the change introduced a *third* pattern, neither local nor current. What a tool could decide is not review material.
-- **Security** — every boundary the change opens or touches, against `QM-SR-*` and `CS-SC-*`: input validated and neutralized at the boundary, authorization enforced at the layer that owns it, no credential in source, nothing on the denylist reaching a log (`CS-OB-3`). This dimension carries the highest exception bar in the model, so a gap here is never a calibrated item to weigh against delivery.
-- **Documentation** — `QM-DO-1`: a behavior change that leaves a co-located document lying is a defect. If the delivered behavior differs from the use case, the repository stopped being the source of truth: route it to the use case skills; never patch a use case from inside a review.
+- **Design** — as peças pertencem aonde estão, e a mudança se encaixa no sistema em vez de brigar com ele? `QM-CC-1..5`, `CS-AR-1..5`. A coisa mais cara de consertar depois do merge, e a razão de ser lida primeiro.
+- **Funcionalidade** — faz o que o delta diz, para o usuário e não apenas para o autor? Concorrência, casos de borda, caminhos de falha (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`). Julgue contra o `CA-N` do caso de uso, não contra a sua própria leitura do código.
+- **Complexidade** — o próximo leitor consegue entender isto rapidamente (`QM-RC-2`, `QM-RC-3`, `QM-RC-4`)? Generalidade especulativa conta como complexidade (`QM-MT-4`): estrutura construída para um requisito que ninguém pediu é um achado, não previsão.
+- **Testes** — o `CS-TS-1` decide o que obriga um teste; a ITS decide quais esta story deve, unidade por unidade, cada unidade do plano declarando os testes que seus itens de delta exigem mais a cobertura de não regressão do ponto de regressão que reivindicou; o `QM-TS-2` decide se vale a pena tê-los (comportamento, não implementação); o `QM-TS-1` e o `CS-TS-4` decidem se podem ser confiáveis. Os testes chegam com a mudança, nunca "num PR de follow-up".
+- **Nomenclatura** — `QM-RC-1` / `CS-NM-2`: um nome que oculta I/O, mutação ou um evento emitido é um defeito, não uma preferência.
+- **Comentários** — `QM-RC-5`, `QM-DO-2`: explicam o *porquê*. Se você precisou perguntar o que um bloco faz, o código falhou em se explicar — o conserto pertence ao código ou a um comentário, não à resposta do autor para você.
+- **Estilo e consistência** — slots convencionais, julgados **contra o estado registrado da área**: numa área `legacy-maintained`, um achado convencional só é válido se a mudança introduziu um *terceiro* padrão, nem local nem atual. O que uma ferramenta poderia decidir não é material de revisão.
+- **Segurança** — toda fronteira que a mudança abre ou toca, contra `QM-SR-*` e `CS-SC-*`: entrada validada e neutralizada na fronteira, autorização imposta na camada que a possui, nenhuma credencial no código-fonte, nada da denylist chegando a um log (`CS-OB-3`). Esta dimensão carrega a régua de exceção mais alta do modelo, então uma lacuna aqui nunca é um item calibrado a pesar contra a entrega.
+- **Documentação** — `QM-DO-1`: uma mudança de comportamento que deixa um documento co-localizado mentindo é um defeito. Se o comportamento entregue difere do caso de uso, o repositório deixou de ser a fonte de verdade: roteie para as skills de caso de uso; nunca remende um caso de uso de dentro de uma revisão.
 
-Read every line a human is expected to maintain. The author may be the Friday agent rather than a person: the standard is identical, and so is the reading — what changes is only the channel (findings return as a new implementation round) and the audience (the report is still written to be read by the human who owns the pull request).
+Leia cada linha que um humano deverá manter. O autor pode ser o agente Friday em vez de uma pessoa: o padrão é idêntico, e a leitura também — muda apenas o canal (os achados voltam como uma nova rodada de implementação) e a audiência (o relatório continua sendo escrito para ser lido pelo humano dono do pull request).
 
-**Say what was good.** Google prescribes it and the reason is not courtesy: a review that names only defects teaches nothing about what to repeat.
+**Diga o que foi bom.** O Google prescreve isso e o motivo não é cortesia: uma revisão que nomeia apenas defeitos não ensina nada sobre o que repetir.
 
-## Step 4 — Classify every finding
+## Passo 4 — Classificar cada achado
 
-A finding states **where** (file:line, or the ITS/use case section), **what** is wrong, **why** — citing an ID — and **what is expected**. It is an instruction, not an implementation: prefer naming the problem and leaving the solution to the author; give an explicit direction when the standard fixes one (an INVARIANT slot) or when the author asked for it.
+Um achado declara **onde** (arquivo:linha, ou a seção da ITS/caso de uso), **o que** está errado, **por quê** — citando um ID — e **o que se espera**. É uma instrução, não uma implementação: prefira nomear o problema e deixar a solução ao autor; dê uma direção explícita quando o padrão fixa uma (um slot INVARIANT) ou quando o autor a pediu.
 
-Four severities. A criterion's *tier* describes its nature; the severity here is its *consequence for this change* — and making that translation is exactly what the quality model leaves to the reviewer.
+Quatro severidades. O *nível* de um critério descreve sua natureza; a severidade aqui é sua *consequência para esta mudança* — e fazer essa tradução é exatamente o que o modelo de qualidade deixa ao revisor.
 
-- **`Blocking:`** — the merge does not happen. Default for: an INVARIANT slot violated in what was written or changed; a `[NON-NEGOTIABLE]` criterion violated **silently**; an obligatory test missing (`CS-TS-1`); unagreed scope creep or a crossed out-of-scope boundary; a contradiction with an Accepted ADR; an architectural decision with no ADR; a co-located document left lying.
-- **`Consider:`** — a calibrated judgment (`[CALIBRATED]`, CONVENTIONAL slots) with a real argument. The author may decline with a reason; declining is a legitimate answer. Does not block.
-- **`Nit:`** — trivial, the author's option, never a hidden requirement. If a nit is mechanizable, it is not a nit — it is a toolchain gap, recorded as a follow-up instead of as a comment on the diff.
-- **`FYI:`** — context, teaching, or praise. Carries no obligation whatsoever.
+- **`Blocking:`** — o merge não acontece. Padrão para: um slot INVARIANT violado no que foi escrito ou alterado; um critério `[NON-NEGOTIABLE]` violado **em silêncio**; um teste obrigatório ausente (`CS-TS-1`); escopo excedido sem acordo ou uma fronteira de fora de escopo cruzada; uma contradição com um ADR Accepted; uma decisão arquitetural sem ADR; um documento co-localizado deixado mentindo.
+- **`Consider:`** — um julgamento calibrado (`[CALIBRATED]`, slots CONVENTIONAL) com um argumento real. O autor pode declinar com uma razão; declinar é uma resposta legítima. Não bloqueia.
+- **`Nit:`** — trivial, opção do autor, nunca uma exigência escondida. Se um nit é mecanizável, não é um nit — é uma lacuna de toolchain, registrada como follow-up em vez de comentário no diff.
+- **`FYI:`** — contexto, ensino ou elogio. Não carrega obrigação alguma.
 
-**The exception rule.** A non-negotiable departed from **deliberately** — named, justified, and owned (a comment at the site, a backlog item, or an ADR, per `QM-MT-1`) — is not blocking; it is an exception on the record. What blocks is the *silent* departure. This single distinction is what keeps the review from becoming a purity contest, and it is the same rule the quality model applies to legacy and deliberate debt.
+**A regra da exceção.** Um inegociável desrespeitado **deliberadamente** — nomeado, justificado e com responsável (um comentário no ponto, um item de backlog ou um ADR, conforme o `QM-MT-1`) — não é bloqueante; é uma exceção registrada. O que bloqueia é o desvio *silencioso*. Essa distinção única é o que impede a revisão de virar um concurso de pureza, e é a mesma regra que o modelo de qualidade aplica ao legado e à dívida deliberada.
 
-**Aggregation.** Many small findings in one area are usually one design finding. State the cause once, at the level where it can actually be fixed.
+**Agregação.** Muitos achados pequenos numa área costumam ser um único achado de design. Declare a causa uma vez, no nível em que ela pode realmente ser consertada.
 
-## Step 5 — The verdict
+## Passo 5 — O veredito
 
-Exactly one, stated explicitly, with its reason:
+Exatamente um, declarado explicitamente, com sua razão:
 
-- **Approve** — no blocking finding. Nits and Considers are the author's call; do not hold a merge for them.
-- **Approve with comments** — nothing blocking, but Considers you expect handled; you trust the author to close them without another round. Use this liberally: an extra round costs the flow more than the residual risk.
-- **Request changes** — at least one `Blocking:`. List the blocking items numbered and separated from everything else, so the author knows precisely what gates the merge.
-- **Return to the architect** — the review found that the *plan* is wrong, incomplete, or overtaken by the code, or that a decision needs an ADR. This is not a finding against the author: it leaves the review and re-enters at its-generator (revise the ITS) or the use case skills (the use case no longer describes the system). State what must change, in which document, before the implementation can be judged at all.
+- **Approve** — nenhum achado bloqueante. Nits e Considers ficam a critério do autor; não segure um merge por eles.
+- **Approve with comments** — nada bloqueante, mas Considers que você espera ver tratados; você confia que o autor os fechará sem outra rodada. Use-o à vontade: uma rodada extra custa mais ao fluxo do que o risco residual.
+- **Request changes** — pelo menos um `Blocking:`. Liste os itens bloqueantes numerados e separados de todo o resto, para que o autor saiba exatamente o que governa o merge.
+- **Return to the architect** — a revisão descobriu que o *plano* está errado, incompleto ou ultrapassado pelo código, ou que uma decisão precisa de um ADR. Não é um achado contra o autor: sai da revisão e reentra no its-generator (revisar a ITS) ou nas skills de caso de uso (o caso de uso já não descreve o sistema). Declare o que precisa mudar, em qual documento, antes que a implementação possa sequer ser julgada.
 
-Never approve a change you did not understand. "It probably works" is not a verdict.
+Nunca aprove uma mudança que você não entendeu. "Provavelmente funciona" não é um veredito.
 
-## Writing the comments
+## Escrevendo os comentários
 
-- Comment on the code, never on the person: "this method carries two responsibilities", not "you mixed two responsibilities".
-- Explain the *why* and cite the ID, so the author learns the criterion rather than only the correction.
-- Ask when you might be wrong. You are often the one missing context, and "why this way?" costs one line and prevents a wrong finding.
-- One instruction per comment. A paragraph containing three requests gets one of them fixed.
+- Comente sobre o código, nunca sobre a pessoa: "este método carrega duas responsabilidades", não "você misturou duas responsabilidades".
+- Explique o *porquê* e cite o ID, para que o autor aprenda o critério e não apenas a correção.
+- Pergunte quando puder estar errado. Muitas vezes é você quem não tem contexto, e "por que assim?" custa uma linha e evita um achado errado.
+- Uma instrução por comentário. Um parágrafo com três pedidos tem um deles atendido.
 
 ## Pushback
 
-Disagreement is resolved by the standard — not by seniority, volume, or fatigue.
+A discordância é resolvida pelo padrão — não por senioridade, volume ou cansaço.
 
-- If the author's argument is technically better, take it. If it reveals that the *standard* is wrong, that is a governance PR against `prime-core`, not a local exception granted in a comment thread.
-- **"I'll fix it in a follow-up"** is acceptable only as deliberate debt: named, owned, with a backlog item (`QM-MT-1`). An unnamed promise is precisely the invisible departure the model forbids.
-- **"It's urgent"** changes the calibration (`QM-MT-4`), never the invariant floor. Urgency can justify deferring a Consider; it does not justify a silent security gap — `QM-SR-*` carries the highest exception bar in the model.
-- If disagreement persists, escalate to the quality model's owner with both positions and the IDs at stake. Never let a review stall in silence, and never cave to repetition.
+- Se o argumento do autor é tecnicamente melhor, aceite-o. Se revela que o *padrão* está errado, isso é um PR de governança contra o `prime-core`, não uma exceção local concedida numa thread de comentários.
+- **"Eu corrijo num follow-up"** é aceitável apenas como dívida deliberada: nomeada, com responsável, com um item de backlog (`QM-MT-1`). Uma promessa sem nome é precisamente o desvio invisível que o modelo proíbe.
+- **"É urgente"** muda a calibração (`QM-MT-4`), nunca o piso invariante. A urgência pode justificar adiar um Consider; não justifica uma lacuna de segurança silenciosa — o `QM-SR-*` carrega a régua de exceção mais alta do modelo.
+- Se a discordância persiste, escale ao dono do modelo de qualidade com as duas posições e os IDs em jogo. Nunca deixe uma revisão estagnar em silêncio, e nunca ceda à repetição.
 
-## Speed and size
+## Velocidade e tamanho
 
-Review latency is a process cost, paid by everyone. Start as soon as the required checks are green; one business day is the ceiling. A change waiting for review is inventory, and the author's context evaporates while it waits.
+A latência de revisão é um custo de processo, pago por todos. Comece assim que as verificações obrigatórias estiverem verdes; um dia útil é o teto. Uma mudança esperando revisão é estoque, e o contexto do autor evapora enquanto ela espera.
 
-Speed is not haste. It comes from reviewing in the plan's order, from stopping early when the direction is wrong, from not re-litigating what the toolchain owns, and from approving with comments instead of demanding another round for calibrated items.
+Velocidade não é pressa. Vem de revisar na ordem do plano, de parar cedo quando a direção está errada, de não rediscutir o que a toolchain possui e de aprovar com comentários em vez de exigir outra rodada para itens calibrados.
 
-## Output
+## Saída
 
-A review report — filed where the pull request lives — containing:
+Um relatório de revisão — arquivado onde o pull request vive — contendo:
 
-1. The **verdict** and its one-line reason.
-2. **Findings**, numbered, each with severity, location, cited ID, and expectation.
-3. **Follow-ups**: proposed ADR, ITS or use case to revise, unfilled slot to report, toolchain gap, named debt to register.
-4. **What the change did well.**
+1. O **veredito** e sua razão de uma linha.
+2. **Achados**, numerados, cada um com severidade, local, ID citado e expectativa.
+3. **Follow-ups**: ADR proposto, ITS ou caso de uso a revisar, slot não preenchido a reportar, lacuna de toolchain, dívida nomeada a registrar.
+4. **O que a mudança fez bem.**
 
-The operational pass and the report template live in `checklists/review-checklist.md`. Findings that change agreed scope also update the ITS — the repository remains the source of truth for what was agreed.
+A passada operacional e o template do relatório vivem em `checklists/review-checklist.md`. Achados que mudam o escopo acordado também atualizam a ITS — o repositório continua sendo a fonte de verdade do que foi acordado.
