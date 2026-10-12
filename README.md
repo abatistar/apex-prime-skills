@@ -59,20 +59,24 @@ apex-prime-skills/
 │   │   ├── SKILL.md                        # contrato do docs/prime-config.md: seções, pontos de override, precedência, bootstrap
 │   │   └── references/
 │   │       └── prime-config-template.md    # o template canônico de configuração do projeto
-│   ├── use-case/
-│   │   ├── SKILL.md                        # o formato de caso de uso: regras de qualidade, regras de delta, marcadores de incerteza
-│   │   └── references/
-│   │       └── use-case-template.md
 │   └── its-contract/
 │       ├── SKILL.md                        # o formato da ITS, o nível de detalhe e a fronteira com os ADRs
 │       └── templates/
 │           ├── its-template.md             # a ITS canônica que o arquiteto escreve e o dev consome
 │           └── adr-template.md             # os registros de decisão que uma ITS referencia
 ├── prime-architect/                        # camada do Arquiteto de Soluções ("Jarvis Skills")
+│   ├── use-case/
+│   │   ├── SKILL.md                        # o formato de caso de uso: regras de qualidade, regras de delta, marcadores de incerteza
+│   │   └── references/
+│   │       └── use-case-template.md
 │   ├── use-case-creator/
-│   │   └── SKILL.md                        # como criar e atualizar casos de uso
+│   │   ├── SKILL.md                        # como criar e atualizar casos de uso
+│   │   └── checklists/
+│   │       └── creation-checklist.md
 │   ├── use-case-extractor/
-│   │   └── SKILL.md                        # engenharia reversa para criar casos de uso
+│   │   ├── SKILL.md                        # engenharia reversa para criar casos de uso
+│   │   └── checklists/
+│   │       └── extraction-checklist.md
 │   ├── impact-mapping/
 │   │   ├── SKILL.md                        # o que uma mudança alcança: evidência ancorada, nunca um veredito
 │   │   └── checklists/
@@ -200,8 +204,8 @@ Duas capacidades do arquiteto ficam fora dessa linha e são invocadas, nunca obr
 
 | Camada | Status |
 |---|---|
-| `prime-core` | Escrita — quality-model (catálogo de critérios v1.0), coding-standards (catálogo de slots v1.0), prime-config, use-case, its-contract |
-| `prime-architect` | Escrita — use-case-creator, use-case-extractor, impact-mapping, feasibility-analysis, its-generator, code-review |
+| `prime-core` | Escrita — quality-model (catálogo de critérios v1.0), coding-standards (catálogo de slots v1.0), prime-config, its-contract |
+| `prime-architect` | Escrita — use-case (formato), use-case-creator, use-case-extractor, impact-mapping, feasibility-analysis, its-generator, code-review |
 | `prime-dev` | **Stubs.** As três skills e os adapters da Friday são placeholders para que a estrutura de camadas e as referências cruzadas continuem válidas |
 
 O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → revisão); a Friday depende da camada de dev.
@@ -220,7 +224,7 @@ O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → re
 |---|---|---|
 | `QM-XX-N` | Critério de qualidade | `prime-core/quality-model` |
 | `CS-XX-N` | Slot de convenção | `prime-core/coding-standards` |
-| `UC-NNN` · `UC-NNN/CA-N` | Caso de uso · um de seus critérios de aceite | `prime-core/use-case` |
+| `UC-NNN` · `UC-NNN/CA-N` | Caso de uso · um de seus critérios de aceite | `prime-architect/use-case` |
 | `ITS-<story-id>` | Instrução de trabalho de uma story | `prime-core/its-contract` |
 | ADR | Decisão que sobrevive à story | `prime-core/its-contract` |
 
@@ -237,14 +241,14 @@ Todo achado, toda exceção e todo elo de rastreabilidade cita um desses. Uma af
 ## Governança
 
 - Mudanças no `prime-core` afetam todos os agentes e passam por um PR revisado pelo dono do modelo de qualidade.
-- As camadas de papel (`prime-architect`, `prime-dev`) evoluem com mais liberdade, desde que respeitem a fundação.
+- As camadas de papel (`prime-architect`, `prime-dev`) evoluem com mais liberdade, desde que respeitem a fundação. A exceção é o formato de caso de uso (`prime-architect/use-case`): embora viva na camada do arquiteto, é um contrato — duas skills escrevem contra ele e duas validam contra ele, e uma mudança nas suas regras muda a escrita e a leitura ao mesmo tempo. Por isso passa pela mesma revisão do `prime-core`.
 - IDs de critérios e de slots são estáveis e nunca renumerados; um ID aposentado permanece aposentado.
 - Os catálogos carregam a própria linha de versão — `quality-criteria.md` e `convention-slots.md`, ambos v1.0. Suba a versão ali quando o padrão mudar.
 - **O histórico do padrão é o controle de versão.** O PR de governança é o registro de cada evolução; o repositório deliberadamente não mantém um changelog paralelo, para que dois históricos não se descolem.
 
 ## Como contribuir
 
-- Abra um PR contra a `main`. Qualquer coisa que toque o `prime-core` precisa da revisão do dono do modelo de qualidade.
+- Abra um PR contra a `main`. Qualquer coisa que toque o `prime-core` ou o `prime-architect/use-case` precisa da revisão do dono do modelo de qualidade.
 - Mantenha o texto normativo na skill que é dona dele e referencie a partir de todo o resto.
 - **Os dois adapters do Jarvis são cópias literais deliberadas** — alterar um é alterar os dois, no mesmo commit. O [`adapters/README.md`](adapters/README.md) explica o porquê e traz o comando de diff que verifica isso.
 - Ao adicionar, mover ou remover um arquivo, atualize a seção [Estrutura do repositório](#estrutura-do-repositório) no mesmo commit.

@@ -1,13 +1,13 @@
 ---
 name: prime-config
-description: O contrato canônico do docs/prime-config.md - o arquivo de configuração do projeto que toda skill do Apex Prime lê como primeiro passo. É dono da estrutura do arquivo, das seções obrigatórias e opcionais, da lista fechada de pontos de override que os contratos do core declaram, das regras de precedência e divergência e do procedimento de bootstrap quando o arquivo não existe. Consulte sempre que for ler, validar, fazer o bootstrap ou atualizar o prime-config.md de um projeto, e sempre que o Passo 0 de uma skill encontrar o arquivo ausente ou contradizendo o código. Nunca duplique suas regras em outro lugar - referencie-o.
+description: O contrato canônico do docs/prime-config.md - o arquivo de configuração do projeto que toda skill do Apex Prime lê como primeiro passo. É dono da estrutura do arquivo, das seções obrigatórias e opcionais, da lista fechada de pontos de override que os contratos declaram, das regras de precedência e divergência e do procedimento de bootstrap quando o arquivo não existe. Consulte sempre que for ler, validar, fazer o bootstrap ou atualizar o prime-config.md de um projeto, e sempre que o Passo 0 de uma skill encontrar o arquivo ausente ou contradizendo o código. Nunca duplique suas regras em outro lugar - referencie-o.
 ---
 
 # Contrato do Prime Config (prime-core)
 
 O `docs/prime-config.md` é o ponto de entrada de toda execução do Apex Prime: todas as skills, em todas as camadas, o leem como primeiro passo. Esta skill é dona do seu contrato — estrutura, pontos de override, precedência, tratamento de divergências e bootstrap. Como todo consumidor lê contra o mesmo contrato, uma mudança aqui atualiza todos de uma vez; nenhuma skill redefine o que a configuração significa.
 
-A configuração responde a uma pergunta: **o que é verdade sobre este projeto que as skills não devem adivinhar?** Stack e versões, estrutura de pastas, convenções, localização dos documentos, comandos de verificação, pipeline. Todo o resto pertence aos contratos do core (formatos, qualidade) ou às skills de papel (processo).
+A configuração responde a uma pergunta: **o que é verdade sobre este projeto que as skills não devem adivinhar?** Stack e versões, estrutura de pastas, convenções, localização dos documentos, comandos de verificação, pipeline. Todo o resto pertence aos contratos (formatos, qualidade) ou às skills de papel (processo).
 
 ## Localização do arquivo e template
 
@@ -27,7 +27,7 @@ A configuração responde a uma pergunta: **o que é verdade sobre este projeto 
   - **Migrações declaradas** — cada migração em andamento com seu novo valor de slot, responsável, escopo e condição de conclusão.
   - **Postura do modelo de qualidade** — inegociáveis específicos do projeto, limiares calibrados endurecidos e a postura permanente diante de legado e dívida, conforme o prime-core/quality-model.
   - **Regras do projeto** — o que restringe todo plano e toda revisão e não se mapeia em nenhum slot: áreas proibidas, exigências de aprovação, restrições operacionais e de compliance, política de feature flags. Uma pergunta que o catálogo de slots já faz é respondida em Overrides de slots, nunca aqui também; duas cópias de uma decisão é justamente o que o catálogo existe para prevenir.
-- **Repositório de documentos** — localização e nomenclatura de casos de uso, ITS e ADRs, mais os dois overrides de caso de uso que vivem aqui como campos, e não como uma seção própria: o caminho de um template customizado e as seções obrigatórias extras. Existem padrões nos contratos do core, mas a configuração os declara explicitamente para que os overrides tenham um único endereço.
+- **Repositório de documentos** — localização e nomenclatura de casos de uso, ITS e ADRs, mais os dois overrides de caso de uso que vivem aqui como campos, e não como uma seção própria: o caminho de um template customizado e as seções obrigatórias extras. Existem padrões nos contratos donos — o `prime-architect/use-case` e o `prime-core/its-contract` —, mas a configuração os declara explicitamente para que os overrides tenham um único endereço.
 - **Comandos de verificação** — como compilar e testar. Lidos por toda skill que planeja, julga ou verifica: o its-generator fecha o plano da ITS com eles, o impact-mapping e a feasibility-analysis os leem como evidência de cobertura, o pr-preparation os executa antes do PR, e o code-review os executa como pré-condição de uma revisão em projetos que não declaram pipeline.
 
 **Opcionais:**
@@ -41,13 +41,15 @@ Uma subseção vazia é escrita com um "nenhuma declarada ainda" (ou "nenhuma �
 
 ## Pontos de override (a lista fechada)
 
-Um contrato do core declara um ponto de override quando nomeia um padrão que o projeto pode substituir. A configuração pode sobrescrever **apenas** o que aparece abaixo; qualquer outra coisa no core é regra, não padrão.
+Um contrato declara um ponto de override quando nomeia um padrão que o projeto pode substituir. A configuração pode sobrescrever **apenas** o que aparece abaixo; qualquer outra coisa nos contratos é regra, não padrão.
+
+Os contratos donos vivem no `prime-core`, com uma exceção: o formato de caso de uso vive no `prime-architect/use-case`, porque todas as skills que o escrevem e o leem são do arquiteto. Seus pontos de override ficam nesta mesma lista fechada, para que a configuração continue tendo um único endereço.
 
 | Ponto de override | Contrato dono | Onde vive na configuração |
 |---|---|---|
-| Caminho do template de caso de uso | prime-core/use-case | Repositório de documentos |
-| Seções obrigatórias extras de caso de uso | prime-core/use-case | Repositório de documentos |
-| Localização e nomenclatura de documentos e ADRs | prime-core/use-case, prime-core/its-contract | Repositório de documentos |
+| Caminho do template de caso de uso | prime-architect/use-case | Repositório de documentos |
+| Seções obrigatórias extras de caso de uso | prime-architect/use-case | Repositório de documentos |
+| Localização e nomenclatura de documentos e ADRs | prime-architect/use-case, prime-core/its-contract | Repositório de documentos |
 | Valores de slots de convenção (`CS-XX-N`) | prime-core/coding-standards | Convenções e restrições › Overrides de slots |
 | Classificação de área (`current` / `legacy-maintained` / `strangler`) | prime-core/coding-standards | Convenções e restrições › Registro de áreas |
 | Migrações declaradas | prime-core/coding-standards | Convenções e restrições › Migrações declaradas |
@@ -55,15 +57,15 @@ Um contrato do core declara um ponto de override quando nomeia um padrão que o 
 | Postura permanente diante de legado e dívida deliberada | prime-core/quality-model | Convenções e restrições › Postura do modelo de qualidade |
 | Formato do identificador de story | este contrato | Identificadores de story |
 
-Um contrato do core que queira um novo ponto de override adiciona uma linha aqui no mesmo PR que o declara. Dois contratos descrevendo o mesmo override em dois lugares é o descolamento que esta skill existe para prevenir.
+Um contrato que queira um novo ponto de override adiciona uma linha aqui no mesmo PR que o declara. Dois contratos descrevendo o mesmo override em dois lugares é o descolamento que esta skill existe para prevenir.
 
 **Somente o template de caso de uso é sobrescrevível, e isso é uma decisão, não uma omissão.** Um caso de uso descreve o comportamento de um projeto, e a forma que o descreve bem pode legitimamente variar. A ITS e o ADR são artefatos de passagem de bastão e de auditoria, lidos por um implementador, um revisor e por pessoas de fora do projeto e do repositório — sua estrutura é fixada pelo prime-core justamente para que um leitor que chega frio encontre sempre o mesmo documento. Um projeto que precise de um diferente está pedindo uma mudança no contrato, pelo PR de governança, não uma entrada de configuração.
 
 ## Regras de precedência
 
 1. **Explícito vence detectado.** O que a configuração declara vence qualquer coisa que a skill infira de arquivos de build ou árvores de diretórios.
-2. **A configuração sobrescreve os padrões do core apenas nos pontos de override declarados** (a tabela acima). Nesses pontos, o valor da configuração vence de forma absoluta — um override de slot vence o padrão da stack, o estado registrado de uma área vence o padrão atual para slots convencionais.
-3. **A configuração nunca sobrescreve uma regra do core.** Não pode dispensar a rastreabilidade, o ciclo de vida de status, os gates de qualidade nem um critério `[NON-NEGOTIABLE]`. A configuração pode **elevar** a régua; relaxar um inegociável é uma decisão deliberada, com responsável, registrada em um ADR, nunca uma edição de configuração.
+2. **A configuração sobrescreve os padrões dos contratos apenas nos pontos de override declarados** (a tabela acima). Nesses pontos, o valor da configuração vence de forma absoluta — um override de slot vence o padrão da stack, o estado registrado de uma área vence o padrão atual para slots convencionais.
+3. **A configuração nunca sobrescreve uma regra de um contrato.** Não pode dispensar a rastreabilidade, o ciclo de vida de status do caso de uso, os gates de qualidade nem um critério `[NON-NEGOTIABLE]`. A configuração pode **elevar** a régua; relaxar um inegociável é uma decisão deliberada, com responsável, registrada em um ADR, nunca uma edição de configuração.
 4. **A configuração não sobrescreve um ADR Accepted.** Um conflito entre eles é reportado, não resolvido em silêncio.
 
 ## Divergências e lacunas (regras para todo consumidor)
@@ -84,7 +86,7 @@ Execute quando a configuração estiver ausente, ou restrito a seções específ
 4. **Perguntar o que o código não conta.** Regras do projeto, áreas proibidas, política de feature flags, postura do modelo de qualidade, formato do ID de story, estágios do pipeline são conhecimento humano. Elicite-os; nunca invente. Se o usuário não tem nada a declarar, escreva a subseção com um "nenhuma declarada ainda" explícito em vez de omiti-la.
 5. **Propor localizações de documentos.** Use como padrão as convenções do core (`docs/use-cases/`, `docs/its/`, `docs/adr/`). Ofereça criar os diretórios se ausentes.
 6. **Entregar como rascunho para revisão.** O usuário valida antes de o arquivo ser commitado. Uma configuração que ninguém revisou é detecção, não configuração — e explícito-vence-detectado só significa algo se um humano o tornou explícito.
-7. Marque tudo o que foi deduzido mas não confirmado com `[CONFIRM: ...]` (mesma disciplina de marcadores do prime-core/use-case). Uma configuração com marcadores não resolvidos é utilizável, mas todo consumidor precisa expor o marcador relevante quando uma tarefa depender dele.
+7. Marque tudo o que foi deduzido mas não confirmado com `[CONFIRM: ...]` (mesma disciplina de marcadores do prime-architect/use-case). Uma configuração com marcadores não resolvidos é utilizável, mas todo consumidor precisa expor o marcador relevante quando uma tarefa depender dele.
 
 ## Regra de consumo (para o Passo 0 de toda skill)
 

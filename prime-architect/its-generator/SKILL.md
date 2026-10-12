@@ -9,11 +9,11 @@ Gera uma ITS por story: a instrução de trabalho a partir da qual o Desenvolved
 
 Disciplina central: **leia antes de propor**. Nunca planeje mudanças em código que você não inspecionou. E processe **exatamente um delta**: o que pertence à story em questão.
 
-## Passo 0 — Carregar a configuração do projeto e os contratos do core
+## Passo 0 — Carregar a configuração do projeto e os contratos
 
 Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localização, alternativa, precedência, tratamento de divergências e o procedimento de bootstrap quando o arquivo está ausente vivem todos nesse contrato; nunca os rederive aqui. Da configuração esta skill usa: a stack e as versões (respeite-as — não proponha recursos do Java 17 num projeto Java 11), a estrutura de pastas como mapa para a inspeção de código, a seção *Convenções e restrições* por inteiro — o registro de áreas, os overrides de slots, as migrações declaradas, a postura do modelo de qualidade e as regras do projeto —, as localizações dos documentos (incluindo o repositório de ADRs) e os comandos de verificação.
 
-Em seguida carregue os contratos do core contra os quais esta skill escreve: o **prime-core/its-contract** (formato de saída e a fronteira de decisão ITS-vs-ADR), o **prime-core/use-case** (formato de entrada), o **prime-core/coding-standards** com `references/convention-slots.md` e o arquivo de padrões da stack do projeto (as convenções concretas a que o plano se conforma) e o **prime-core/quality-model** com `references/quality-criteria.md` — consumido não como um livro de regras a satisfazer mecanicamente, mas como a *definição* contra a qual o plano é interrogado antes da entrega (Passo 4.6), honrando sua calibração e sua disciplina de exceção nomeada. Ele não aprova nem reprova o plano por si só.
+Em seguida carregue os contratos contra os quais esta skill escreve: o **prime-core/its-contract** (formato de saída e a fronteira de decisão ITS-vs-ADR), o **prime-architect/use-case** (formato de entrada), o **prime-core/coding-standards** com `references/convention-slots.md` e o arquivo de padrões da stack do projeto (as convenções concretas a que o plano se conforma) e o **prime-core/quality-model** com `references/quality-criteria.md` — consumido não como um livro de regras a satisfazer mecanicamente, mas como a *definição* contra a qual o plano é interrogado antes da entrega (Passo 4.6), honrando sua calibração e sua disciplina de exceção nomeada. Ele não aprova nem reprova o plano por si só.
 
 Um slot de que o plano depende e que não tem valor — nem padrão da stack nem override da configuração — é uma **lacuna reportável** conforme o prime-core/coding-standards, nunca um valor que esta skill improvisa. Reporte-a e ofereça preenchê-la; não planeje uma mudança que se apoie nela.
 
@@ -21,9 +21,9 @@ Um slot de que o plano depende e que não tem valor — nem padrão da stack nem
 
 Entradas obrigatórias: a story (ID + descrição) e os documentos de caso de uso que ela criou ou revisou. Se o arquiteto não listou os casos de uso afetados, encontre-os procurando no repositório de casos de uso as entradas do Histórico de revisões com o ID da story.
 
-Valide cada documento contra o formato do prime-core/use-case. Duas condições interrompem a execução, e ambas são reportadas em vez de contornadas — um plano construído sobre comportamento não validado é pior que nenhum plano.
+Valide cada documento contra o formato do prime-architect/use-case. Duas condições interrompem a execução, e ambas são reportadas em vez de contornadas — um plano construído sobre comportamento não validado é pior que nenhum plano.
 
-- **O status não é `Reviewed`.** Conforme o prime-core/use-case, somente um documento Reviewed é fonte de verdade e somente um documento Reviewed alimenta esta skill. Isso vale seja o que for que mantém o documento em `Draft` — um marcador `[CONFIRM: ...]` não resolvido em uma seção sem relação deixa o documento inteiro fora da fonte de verdade, porque o status é uma propriedade do documento e não da fatia dele que cabe à story. Nomeie os marcadores e devolva o documento ao arquiteto via use-case-creator; a promoção é um ato humano e nenhuma skill a realiza.
+- **O status não é `Reviewed`.** Conforme o prime-architect/use-case, somente um documento Reviewed é fonte de verdade e somente um documento Reviewed alimenta esta skill. Isso vale seja o que for que mantém o documento em `Draft` — um marcador `[CONFIRM: ...]` não resolvido em uma seção sem relação deixa o documento inteiro fora da fonte de verdade, porque o status é uma propriedade do documento e não da fatia dele que cabe à story. Nomeie o que o mantém em `Draft` e devolva conforme a causa: marcadores pendentes vão ao use-case-creator (modo validação); um delta ainda não validado vai ao arquiteto, para validar e promover. A promoção é um ato humano e nenhuma skill a realiza.
 - **Falta uma seção obrigatória.** Reporte a lacuna contra o formato e pare.
 
 Se a story modifica comportamento cujo caso de uso não existe de forma alguma, recomende executar o use-case-extractor naquela área primeiro.
@@ -34,11 +34,12 @@ Examine também o repositório de ADRs em busca de ADRs Accepted que toquem a á
 
 Para cada caso de uso afetado, encontre a entrada do Histórico de revisões que corresponde ao ID da story atual.
 
-- A entrada diz que o documento foi **criado** por esta story → **cenário de criação** para este caso de uso.
+- A entrada é de **criação** (Resumo `Criação`) → **cenário de criação** para este caso de uso.
 - A entrada lista itens adicionados/alterados/removidos → **cenário de alteração**; essa entrada é o delta.
+- A entrada é de **conformidade** → **cenário de alteração** em que o corpo do documento não mudou: os identificadores que ela cita são o delta, e o comportamento que eles descrevem é o alvo que o código passa a cumprir.
 - **Nenhuma entrada carrega o ID da story** → o documento não foi atualizado para esta story. Não infira o delta a partir do texto da story: reporte e roteie o documento ao use-case-creator antes de planejar. A única exceção é uma entrada que o limite de cinco entradas do template empurrou para fora do histórico retido — recupere-a do controle de versão, onde vive o histórico completo, e prossiga; quando não for possível recuperá-la, reporte e pare.
 
-**As entradas de revisão mais antigas são somente leitura.** Descrevem comportamento já implementado — são estado, não trabalho pendente. Nunca as trate como algo a implementar. Seu único uso legítimo é a verificação de área quente do Passo 4.
+**As entradas de revisão mais antigas são somente leitura.** Descrevem comportamento já implementado — são estado, não trabalho pendente. Nunca as trate como algo a implementar. Seu único uso legítimo é a verificação de área quente do Passo 4. O mesmo vale, seja qual for sua posição, para as entradas sem ID de story (mapeamento inicial, reconciliação com o código): descrevem o que o código já faz.
 
 Numere os itens de delta conforme os localiza (`D1`, `D2`, ...), qualificados pelo caso de uso quando mais de um é afetado (`UC-042/D1`). No cenário de alteração, a entrada de revisão já os lista. No cenário de criação, o documento inteiro é o delta: desdobre-o em itens ao longo do eixo que o plano vai satisfazer — cada passo do fluxo principal, cada extensão e cada regra de negócio ou critério de aceite que não decorra de um desses — para que toda unidade ainda nomeie o que satisfaz. A numeração é o que torna verificável o plano de eixo único: as unidades do plano citam esses identificadores e a verificação de rastreabilidade são duas listas deles.
 

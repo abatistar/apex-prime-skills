@@ -6,14 +6,14 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 
 - [ ] `docs/prime-config.md` lido conforme o contrato **prime-core/prime-config**.
 - [ ] Da configuração: stack e versões, mapa de estrutura, *Convenções e restrições* por inteiro (registro de áreas, overrides de slots, migrações declaradas, postura do modelo de qualidade, regras do projeto), localizações de documentos e ADRs, comandos de verificação.
-- [ ] Contratos do core carregados: `its-contract` (+ template), `use-case`, `coding-standards` (+ `references/convention-slots.md` e os padrões da stack), `quality-model` (+ `references/quality-criteria.md`).
+- [ ] Contratos carregados: `its-contract` (+ template), `use-case` (formato, no `prime-architect`), `coding-standards` (+ `references/convention-slots.md` e os padrões da stack), `quality-model` (+ `references/quality-criteria.md`).
 - [ ] Slot de que o plano depende e sem valor → reportado como lacuna (`coding-standards`, Slots não preenchidos). Nunca improvisado.
 - [ ] Divergência entre configuração e código → reportada, não resolvida em silêncio.
 
 ## Entradas
 
 - [ ] Story identificada; casos de uso afetados listados, ou encontrados buscando o ID da story no Histórico de revisões.
-- [ ] Todo documento afetado tem Status `Reviewed`. Qualquer outro → reportar e parar; rotear ao use-case-creator. A promoção é um ato humano.
+- [ ] Todo documento afetado tem Status `Reviewed`. Qualquer outro → reportar e parar; marcadores pendentes → use-case-creator (modo validação); delta ainda não validado → arquiteto, para validar e promover. A promoção é um ato humano.
 - [ ] Todo documento afetado passa pelo formato `use-case`: nenhuma seção obrigatória ausente.
 - [ ] Comportamento sem nenhum caso de uso → `use-case-extractor` recomendado para aquela área primeiro.
 - [ ] ADRs Accepted que tocam a área afetada listados. Um delta que não pode ser satisfeito sem contradizer um deles → roteado ao passo de ADR, nunca absorvido no plano.
@@ -21,9 +21,9 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 ## Delta e cenário
 
 - [ ] Por caso de uso, a entrada do Histórico de revisões para **esta** story localizada.
-- [ ] Cenário classificado: criação | alteração.
+- [ ] Cenário classificado: criação | alteração. Uma entrada de conformidade é alteração com o corpo inalterado: os identificadores que ela cita são o delta.
 - [ ] Nenhuma entrada para o ID da story → reportado e roteado ao use-case-creator; a única exceção é uma entrada que o limite de cinco entradas empurrou para fora, recuperada do controle de versão.
-- [ ] Entradas de revisão mais antigas tratadas como estado somente leitura — nunca como trabalho pendente.
+- [ ] Entradas de revisão mais antigas tratadas como estado somente leitura — nunca como trabalho pendente. Idem para entradas sem ID de story (mapeamento inicial, reconciliação com o código), seja qual for sua posição.
 - [ ] Itens de delta numerados (`D1`, `D2`, ...), qualificados por caso de uso quando mais de um é afetado.
 - [ ] Cenário de criação: o documento inteiro desdobrado em itens numerados ao longo do eixo que o plano satisfaz.
 

@@ -1,6 +1,6 @@
 ---
 name: use-case-extractor
-description: Faz engenharia reversa de documentos de caso de uso a partir de uma base de código existente, escrevendo contra o formato do prime-core/use-case. Skill da camada do arquiteto. Use sempre que o usuário quiser documentar comportamento já implementado mas sem documentação padronizada de caso de uso - mapeando um módulo, uma jornada de usuário, um conjunto de endpoints ou um único fluxo. Use também quando o its-generator reportar a ausência de um caso de uso para uma story de mudança, ou quando o usuário disser algo como "documente como X funciona hoje", "mapeie os casos de uso do módulo Y". NÃO use para escrever casos de uso de comportamento novo/planejado (use-case-creator) nem para gerar uma ITS (its-generator).
+description: Faz engenharia reversa de documentos de caso de uso a partir de uma base de código existente, escrevendo contra o formato do prime-architect/use-case. Use sempre que o usuário quiser documentar comportamento já implementado mas sem documentação padronizada de caso de uso - mapeando um módulo, uma jornada de usuário, um conjunto de endpoints ou um único fluxo. Use também quando o its-generator reportar a ausência de um caso de uso para uma story de mudança, ou quando o usuário disser algo como "documente como X funciona hoje", "mapeie os casos de uso do módulo Y". NÃO use para escrever casos de uso de comportamento novo/planejado (use-case-creator) nem para gerar uma ITS (its-generator).
 ---
 
 # Use Case Extractor (prime-architect)
@@ -9,19 +9,19 @@ Produz documentos de caso de uso que descrevem o comportamento **já implementad
 
 Mentalidade central: o código diz o que o sistema *faz*, não o que ele *deveria fazer*. A intenção pode ter se perdido, e bugs podem ter sido consagrados como comportamento. Seu trabalho é documentar com fidelidade e confessar explicitamente cada dúvida, para que um humano valide antes de o documento virar fonte de verdade.
 
-O formato do documento NÃO é definido aqui — é de propriedade do **prime-core/use-case** (template em `references/use-case-template.md` dentro dessa skill), incluindo os marcadores de incerteza dos quais esta skill depende. Leia-o integralmente antes de escrever.
+O formato do documento NÃO é definido aqui — é de propriedade do **prime-architect/use-case** (template em `references/use-case-template.md` dentro dessa skill), incluindo os marcadores de incerteza dos quais esta skill depende. Leia-o integralmente antes de escrever.
 
-## Passo 0 — Carregar a configuração do projeto e o formato do core
+## Passo 0 — Carregar a configuração do projeto e o formato de caso de uso
 
-Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localização, alternativa, precedência (explícito vence detectado), tratamento de divergências (configuração contradizendo o código) e o procedimento de bootstrap quando o arquivo está ausente vivem todos nesse contrato; nunca os rederive aqui. Da configuração esta skill usa: a stack, a estrutura de pastas como mapa para o inventário de pontos de entrada, as convenções e as localizações do repositório de documentos. Em seguida carregue o formato do prime-core/use-case; se a configuração declarar um template customizado, ele tem precedência.
+Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localização, alternativa, precedência (explícito vence detectado), tratamento de divergências (configuração contradizendo o código) e o procedimento de bootstrap quando o arquivo está ausente vivem todos nesse contrato; nunca os rederive aqui. Da configuração esta skill usa: a stack, a estrutura de pastas como mapa para o inventário de pontos de entrada, a localização e a nomenclatura do repositório de casos de uso e os overrides de caso de uso (caminho de um template customizado e seções obrigatórias extras). Em seguida carregue o formato do prime-architect/use-case; um template customizado declarado na configuração tem precedência, e as seções obrigatórias extras entram em todo documento que esta skill escreve.
 
 ## Passo 1 — Delimitar o escopo com o usuário
 
-Nunca mapeie "o sistema inteiro" em uma execução. Peça uma fatia delimitada: um módulo, uma jornada de usuário, um conjunto de endpoints. Se o usuário indicou um escopo no pedido, confirme seu entendimento das fronteiras. Cada execução deve produzir uma quantidade revisável de saída — como regra prática, não mais que 3–5 documentos de caso de uso por execução.
+Nunca mapeie "o sistema inteiro" em uma execução. Peça uma fatia delimitada: um módulo, uma jornada de usuário, um conjunto de endpoints. Se o usuário indicou um escopo no pedido, confirme seu entendimento das fronteiras. Cada execução deve produzir uma quantidade revisável de saída — como regra prática, não mais que 3–5 documentos de caso de uso por execução, caso contrário divida o trabalho em múltiplas execuções e solicite confirmação do usuário para cada fatia.
 
 ## Passo 2 — Inventariar os pontos de entrada
 
-Dentro do escopo, liste toda superfície de interação: rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos. Use a seção de estrutura da configuração para saber onde procurar. Cada ponto de entrada é um caso de uso candidato (ou um passo dentro de um). Apresente o inventário ao usuário e acorde quais candidatos viram documentos antes de escrever qualquer coisa.
+Dentro do escopo, liste toda superfície de interação: rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos. Use a seção de estrutura da configuração para saber onde procurar. Cada ponto de entrada é um caso de uso candidato (ou um passo dentro de um). Apresente o inventário ao usuário e acorde quais candidatos viram documentos antes de escrever qualquer coisa. Um candidato que já tem caso de uso no repositório fica fora: se o documento diverge do código, a rota é o use-case-creator (conformidade ou reconciliação), nunca um documento novo.
 
 ## Passo 3 — Reconstruir cada cenário a partir do código
 
@@ -40,7 +40,7 @@ Leia os testes existentes do código rastreado: testes bem escritos são critér
 
 ## Passo 4 — Marcar toda incerteza
 
-Esta é a disciplina crítica desta skill. Distinga o que você verificou do que você deduziu, usando os marcadores definidos no formato do core:
+Esta é a disciplina crítica desta skill. Distinga o que você verificou do que você deduziu, usando os marcadores definidos no formato de caso de uso:
 
 - `[INFERRED]` para comportamento deduzido da estrutura mas não confirmado por testes.
 - `[CONFIRM: pergunta]` para qualquer coisa que um humano precise decidir — números mágicos, ramificações ambíguas, comportamento suspeito que pode ser um bug (p. ex., `[CONFIRM: no timeout do pagamento o pedido fica em PENDING para sempre — é intencional?]`).
@@ -49,12 +49,14 @@ Nunca normalize em silêncio um comportamento estranho transformando-o numa regr
 
 ## Passo 5 — Escrever os documentos e passar para revisão
 
-- Use o template do core. Siga suas regras de qualidade e a convenção de nomenclatura de arquivo; escolha o próximo número de UC livre. Inclua o resumo gráfico em UML restrito ao caso de uso e suas relações diretas.
+- Use o template do formato. Siga suas regras de qualidade e a convenção de nomenclatura de arquivo; escolha o próximo número de UC livre. Inclua o resumo gráfico em UML restrito ao caso de uso e suas relações diretas.
 - Defina o Status como **Draft**.
 - Primeira entrada do Histórico de revisões: `Rev 1 | mapeamento inicial a partir do código | data | resumo do escopo`.
-- Preencha Casos de uso relacionados quando cenários dentro da execução se referenciarem.
+- Preencha Casos de uso relacionados quando os cenários se referenciarem — entre documentos desta execução ou com documentos já existentes —, nos dois lados. Acrescentar o link recíproco a um documento existente é uma atualização derivada, sem entrada no histórico e sem mudança de Status.
 
-Encerre a execução listando, por documento: os marcadores de incerteza que precisam de resolução. Declare explicitamente que os documentos só se tornam fonte de verdade (status "Reviewed") depois que um humano resolver os marcadores. Não promova o status você mesmo.
+Encerre a execução listando, por documento: os marcadores de incerteza que precisam de resolução. Declare explicitamente que os documentos só se tornam fonte de verdade (status "Reviewed") depois que um humano resolver os marcadores; a resolução passa pelo modo validação do use-case-creator, com as respostas do arquiteto. Não promova o status você mesmo. Liste também os documentos existentes que receberam apenas o link recíproco em Casos de uso relacionados.
+
+A passada operacional vive em `checklists/extraction-checklist.md`. O template do próprio documento não: ele é de propriedade do `prime-architect/use-case` e é lido de lá.
 
 ## Saída
 

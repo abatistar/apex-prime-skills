@@ -38,7 +38,7 @@ Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localiz
 Em seguida carregue, nesta ordem:
 
 1. **A ITS da story** e todo ADR que ela referencia — conforme o **prime-core/its-contract**. Leia primeiro a seção de Metadados: ela carrega a verificação de rastreabilidade que o its-generator já executou (plano ⇄ delta), que é a base sobre a qual a sua própria verificação (diff ⇄ plano) se constrói.
-2. **Os casos de uso que ela nomeia**, conforme o **prime-core/use-case**: o delta desta story e os critérios de aceite que o delta toca.
+2. **Os casos de uso que ela nomeia**, conforme o **prime-architect/use-case**: o delta desta story e os critérios de aceite que o delta toca.
 3. **prime-core/quality-model** com `references/quality-criteria.md`, e **prime-core/coding-standards** com `references/convention-slots.md` mais o arquivo de padrões da stack do projeto.
 
 **Sem ITS, sem baseline.** Reporte e pare: uma revisão sem o escopo acordado degenera em gosto em três comentários. A única exceção é uma mudança declarada fora do processo (um hotfix): declare explicitamente que a conformidade de escopo não pôde ser verificada e revise apenas contra os padrões do core.

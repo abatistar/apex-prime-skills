@@ -30,8 +30,8 @@ Nenhuma delas é um gate; todas alimentam o mesmo pipeline.
 
 O processo vive nas skills; não duplique os procedimentos delas — roteie e deixe que conduzam. Todas as especificidades do projeto vêm do `docs/prime-config.md`, lido conforme o contrato **prime-core/prime-config** (localização, pontos de override, precedência, divergência e regras de bootstrap vivem lá); toda tarefa começa por ali. Desse arquivo vêm a stack e as versões, o mapa de estrutura, o **registro de áreas** e os **overrides de slots**, as localizações dos documentos e os comandos de verificação.
 
-- **prime-core** (fundação): contrato do prime-config, formato de caso de uso, its-contract, quality-model (`QM-XX-N`), coding-standards (`CS-XX-N`).
-- **prime-architect**: impact-mapping (mapear o que uma mudança alcança — evidência, sem veredito), feasibility-analysis (julgar uma demanda contra o sistema, antes), use-case-extractor (engenharia reversa do comportamento existente), use-case-creator (criar/atualizar a partir de stories), its-generator (escrever a ITS conforme o contrato do core), code-review (validar a implementação contra a ITS + os padrões do core), troubleshooting (diagnosticar um problema já existente — causa, sem correção).
+- **prime-core** (fundação): contrato do prime-config, its-contract, quality-model (`QM-XX-N`), coding-standards (`CS-XX-N`).
+- **prime-architect**: use-case (o formato de caso de uso), impact-mapping (mapear o que uma mudança alcança — evidência, sem veredito), feasibility-analysis (julgar uma demanda contra o sistema, antes), use-case-extractor (engenharia reversa do comportamento existente), use-case-creator (criar/atualizar a partir de stories, tratar divergências com o código, resolver marcadores), its-generator (escrever a ITS conforme o contrato do core), code-review (validar a implementação contra a ITS + os padrões do core), troubleshooting (diagnosticar um problema já existente — causa, sem correção).
 
 ## Roteamento
 
@@ -41,6 +41,8 @@ O processo vive nas skills; não duplique os procedimentos delas — roteie e de
 | Uma demanda ainda não especificada, e a pergunta é se ela pode ser absorvida ("dá para fazer?", "isto deve entrar em refinamento?") | feasibility-analysis (que executa o impact-mapping primeiro) |
 | Uma área/fluxo sem documentação de caso de uso ("documente como X funciona hoje") | use-case-extractor |
 | Uma story, PRD ou descrição de mudança ("a story S-131 muda o checkout") | use-case-creator |
+| Respostas aos marcadores de um caso de uso em Draft ("resolva os CONFIRM do UC-042") | use-case-creator (modo validação) |
+| Uma divergência entre código e caso de uso ("o código não faz o que o UC-042 diz") | use-case-creator (conformidade ou reconciliação) |
 | Uma story cujos casos de uso já estão atualizados ("gere a ITS da S-131") | its-generator |
 | Um pull request / implementação de volta do Dev ("revise o PR da S-131") | code-review |
 | Uma ITS que o Dev ou a revisão devolveu ("o dev devolveu uma pergunta na ITS-131", "a revisão diz que o plano foi ultrapassado") | its-generator (caminho de revisão) |
@@ -50,7 +52,7 @@ O processo vive nas skills; não duplique os procedimentos delas — roteie e de
 
 Se a skill indicada não estiver disponível, diga isso ao arquiteto; nunca improvise o procedimento dela.
 
-Quando o pipeline reporta uma lacuna — p. ex., o its-generator encontra uma story que modifica comportamento sem caso de uso documentado, ou o impact-mapping encontra comportamento afetado que ninguém descreveu — siga a recomendação dele: execute o use-case-extractor naquela área primeiro e depois retome. Um code review que termina em *Return to the architect* roteia do mesmo modo — de volta ao its-generator quando o plano está errado ou ultrapassado, às skills de caso de uso quando o caso de uso já não descreve o sistema.
+Quando o pipeline reporta uma lacuna — p. ex., o its-generator encontra uma story que modifica comportamento sem caso de uso documentado, ou o impact-mapping encontra comportamento afetado que ninguém descreveu — siga a recomendação dele: execute o use-case-extractor naquela área primeiro, resolva os marcadores no use-case-creator (modo validação) e retome depois que o arquiteto promover o documento. Um code review que termina em *Return to the architect* roteia do mesmo modo — de volta ao its-generator quando o plano está errado ou ultrapassado, ao use-case-creator (conformidade ou reconciliação) quando o caso de uso já não descreve o sistema.
 
 ## Postura de copiloto — questione antes de confirmar
 
