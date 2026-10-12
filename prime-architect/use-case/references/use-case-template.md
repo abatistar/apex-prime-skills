@@ -19,7 +19,7 @@ Um documento descreve **um objetivo de um ator** — o que o ator quer conseguir
 
 ## Estabilidade dos identificadores internos
 
-Os identificadores de dentro do documento são citados de fora dele — pelo delta, pela ITS (`UC-042/RN-3`), pelo code review (`UC-042/CA-2`) e por outros casos de uso. Por isso:
+Os identificadores de dentro do documento são citados de fora dele — pelo delta, pelas Referências da ITS, pelo code review (`UC-042/CA-2`) e por outros casos de uso. Por isso:
 
 - **`RN-N` e `CA-N` nunca são renumerados nem reaproveitados.** Uma regra ou um critério removido permanece na seção como lápide — `**RN-4:** removida (S-NNN)` —, para que o número não volte a ser usado e citações antigas continuem resolvendo; o parêntese leva a origem da entrada que o removeu (o ID da story, ou `reconciliação com o código`). Um item que passa a outro documento numa reorganização também vira lápide, apontando o novo endereço — `**RN-4:** movida para UC-060/RN-1 (revisão editorial)`. Um item novo recebe o número seguinte ao maior já usado no documento.
 - **Passos e extensões são posicionais.** Podem ser renumerados quando a sequência muda, e o rótulo de cada extensão acompanha o passo a que se liga. Toda renumeração é declarada na entrada do Histórico de revisões, e o delta cita a numeração resultante (ex.: "Adicionado passo 4; passos 4–6 renumerados para 5–7; extensão 4a passa a 5a"). Uma renumeração leva junto os rótulos dos critérios de aceite deste documento — atualização derivada, que não é item de delta — e exige verificar as referências aos passos em outros casos de uso.

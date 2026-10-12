@@ -1,13 +1,13 @@
 ---
 name: its-generator
-description: Gera uma ITS (Instrução de Trabalho de Software) - o plano de implementação que mapeia uma user story e seus documentos de caso de uso para mudanças concretas de código, escrito contra o prime-core/its-contract. Skill da camada do arquiteto. Use sempre que o arquiteto pedir um plano de implementação, uma análise de impacto, "o que precisa mudar no código", "gere a ITS da story S-NNN", ou fornecer uma story mais documentos de caso de uso. Use também para revisar uma ITS que a implementação ou o code review devolveu. Exige o repositório de casos de uso como entrada. NÃO use para escrever ou atualizar documentos de caso de uso (use-case-creator, use-case-extractor), para revisar uma implementação (code-review), para mapear o que uma mudança alcança sem planejá-la (impact-mapping) nem para julgar se uma demanda pode ser absorvida (feasibility-analysis).
+description: Gera uma ITS (Instrução de Trabalho de Software) - o plano de implementação que mapeia uma user story e seus documentos de caso de uso para mudanças concretas de código, escrito contra o prime-core/its-contract. Use sempre que o arquiteto pedir um plano de implementação, "o que precisa mudar no código", "gere a ITS da story S-NNN", ou fornecer uma story mais documentos de caso de uso. Use também para revisar uma ITS que a implementação ou o code review devolveu. Exige o repositório de casos de uso como entrada. NÃO use para escrever ou atualizar documentos de caso de uso (use-case-creator, use-case-extractor), para revisar uma implementação (code-review), para mapear o que uma mudança alcança sem planejá-la (impact-mapping) nem para julgar se uma demanda pode ser absorvida (feasibility-analysis).
 ---
 
 # ITS Generator (prime-architect)
 
 Gera uma ITS por story: a instrução de trabalho a partir da qual o Desenvolvedor implementará. O formato da ITS NÃO é definido aqui — é de propriedade do **prime-core/its-contract** (leia seu SKILL.md e o `templates/its-template.md` antes de escrever). Esta skill define o *processo* de produzir uma ITS que honre esse contrato.
 
-Disciplina central: **leia antes de propor**. Nunca planeje mudanças em código que você não inspecionou. E processe **exatamente um delta**: o que pertence à story em questão.
+Disciplina central: **leia antes de propor**. Nunca planeje mudanças em código que você não inspecionou. E processe **exatamente o delta** que pertence à story em questão.
 
 ## Passo 0 — Carregar a configuração do projeto e os contratos
 
@@ -42,7 +42,7 @@ Para cada caso de uso afetado, encontre a entrada do Histórico de revisões que
 
 **As entradas de revisão mais antigas são somente leitura.** Descrevem comportamento já implementado — são estado, não trabalho pendente. Nunca as trate como algo a implementar. Seu único uso legítimo é a verificação de área quente do Passo 4. O mesmo vale, seja qual for sua posição, para as entradas sem ID de story (mapeamento inicial, reconciliação com o código, revisão editorial): descrevem o que o código já faz, ou só mudam onde e como isso está escrito.
 
-Numere os itens de delta conforme os localiza (`D1`, `D2`, ...), qualificados pelo caso de uso quando mais de um é afetado (`UC-042/D1`). No cenário de alteração, a entrada de revisão já os lista. No cenário de criação, o documento inteiro é o delta: desdobre-o em itens ao longo do eixo que o plano vai satisfazer — cada passo do fluxo principal, cada extensão e cada regra de negócio ou critério de aceite que não decorra de um desses (o rótulo de cada critério diz o que ele cobre) — para que toda unidade ainda nomeie o que satisfaz. Um critério `não funcional` é sempre item próprio, porque a meta não decorre do passo que ela mede; a unidade que o satisfaz nomeia como a meta é verificada (teste automatizado, teste de carga ou medição). A numeração é o que torna verificável o plano de eixo único: as unidades do plano citam esses identificadores e a verificação de rastreabilidade são duas listas deles.
+Numere os itens de delta conforme os localiza (`D1`, `D2`, ...), em sequência contínua no documento inteiro: com mais de um caso de uso afetado, a numeração segue de um para o outro e nunca reinicia. Ao numerar, anote de que elemento da fonte cada item vem (passo, extensão, `RN-N`, `CA-N`) — é essa anotação que a coluna Usada em das Referências registra, e é ela que mantém o item rastreável depois de reescrito por extenso. No cenário de alteração, a entrada de revisão já os lista. No cenário de criação, o documento inteiro é o delta: desdobre-o em itens ao longo do eixo que o plano vai satisfazer — cada passo do fluxo principal, cada extensão e cada regra de negócio ou critério de aceite que não decorra de um desses (o rótulo de cada critério diz o que ele cobre) — para que toda unidade ainda nomeie o que satisfaz. Um critério `não funcional` é sempre item próprio, porque a meta não decorre do passo que ela mede; a unidade que o satisfaz nomeia como a meta é verificada (teste automatizado, teste de carga ou medição). A numeração é o que torna verificável o plano de eixo único: as unidades do plano citam esses identificadores, e a verificação de rastreabilidade confere essas citações nas duas direções.
 
 ## Passo 3 — Inspecionar a base de código (por caso de uso)
 
@@ -57,7 +57,7 @@ Numere os itens de delta conforme os localiza (`D1`, `D2`, ...), qualificados pe
 **Cenário de alteração** — análise estreita, guiada pelo delta:
 1. Use o documento (seu corpo atual descreve o comportamento consolidado) para localizar os componentes que implementam este caso de uso hoje.
 2. Mapeie **apenas os itens de delta**: para cada item adicionado/alterado/removido, identifique o código correspondente e o que precisa mudar.
-3. **Análise de regressão** — exclusiva deste cenário: identifique o comportamento que *não* mudou mas compartilha código com o que vai mudar. O corpo completo do documento (não o delta) diz tudo o que precisa continuar funcionando. Numere esses pontos (`RG-1`, `RG-2`) — cada um será reivindicado pela unidade do plano que toca o código compartilhado, e a reivindicação é verificada no Passo 6.
+3. **Análise de regressão** — exclusiva deste cenário: identifique o comportamento que *não* mudou mas compartilha código com o que vai mudar. O corpo completo do caso de uso (não o delta) diz tudo o que precisa continuar funcionando. Numere esses pontos (`RG-1`, `RG-2`), também em sequência contínua no documento, anotando o elemento da fonte de que cada um vem — cada um será reivindicado pela unidade do plano que toca o código compartilhado, e a reivindicação é verificada no Passo 6.
 
 Durante toda a inspeção, anote cada ponto em que existe mais de um caminho de implementação viável. Essas notas alimentam o Passo 5 (linhas de alternativa descartada) e o Passo 4.5 (candidatos a ADR).
 
@@ -81,7 +81,7 @@ Revise os pontos de decisão anotados no Passo 3 contra a fronteira de decisão 
 
 1. Redija o ADR conforme o `templates/adr-template.md` do contrato, status `Proposed`, na localização de ADRs configurada. As alternativas consideradas são o ponto do registro, não enchimento.
 2. **Apresente-o ao arquiteto para aprovação antes de entregar a ITS.** O arquiteto decide; você propõe. Uma ITS não é entregue enquanto um ADR que ela referencia ainda estiver Proposed. Se rejeitado como "escopo de story", a decisão recai numa linha de alternativa descartada na ITS.
-3. Referencie o ID do ADR aprovado nos metadados da ITS e, em cada unidade do plano que a decisão restringe, declare ali a restrição que ela impõe — conforme a regra de referência do contrato. O implementador não deve precisar abrir o ADR para saber o que fazer; ele o lê para saber por quê, e porque ADRs Accepted são contexto vinculante.
+3. Liste o ADR aprovado em Referências e, em cada unidade do plano que a decisão restringe, escreva como instrução a restrição que ela impõe — conforme a regra de conteúdo do contrato. O implementador não deve precisar abrir o ADR para saber o que fazer; quem tem acesso a ele o lê para saber por quê.
 
 **Um delta que contradiz um ADR Accepted passa por este passo, sempre.** Nunca planeje contornando a contradição em silêncio, e nunca deixe as convenções da configuração resolvê-la — a regra de precedência do prime-core/prime-config é que um conflito com um ADR Accepted é reportado, não resolvido. Dois desfechos são legítimos: o plano cabe sob o ADR e a restrição é declarada nas unidades que ela vincula; ou a story genuinamente substitui a decisão, e o registro substituto é redigido e roteado exatamente como qualquer outro candidato. O ADR substituído assume `Superseded by ADR-NNN` somente quando o arquiteto aprova o substituto.
 
@@ -101,29 +101,34 @@ O modelo remete ao **prime-core/coding-standards** sempre que um critério preci
 - Para cada área que o plano toca, o plano segue o valor **convencional** que o estado registrado da área pede — o padrão atual numa área `current`, o padrão local em `legacy-maintained` e `strangler`, o novo valor dentro do escopo de uma migração declarada? Uma área `strangler` não recebe comportamento novo: capacidade nova planejada ali pertence ao módulo substituto que o registro nomeia.
 
 Registre cada afastamento nomeado onde ele pertence, nunca como prosa solta:
-- uma **linha de alternativa descartada** na Verificação de rastreabilidade, quando é uma escolha entre caminhos viáveis que morre com a story;
+- uma **linha de alternativa descartada** na unidade que o afastamento afeta, quando é uma escolha entre caminhos viáveis que morre com a story;
 - uma **fronteira de fora de escopo / não alterar**, quando é legado herdado que você deliberadamente deixa intocado;
 - um **ADR**, quando o afastamento sobrevive à story — roteie-o de volta pelo Passo 4.5 para a aprovação do arquiteto.
+
+Os IDs servem a esta interrogação e à conversa com o arquiteto; no documento, o afastamento é escrito por extenso — o que o plano deixa de fazer, onde e por quê — e o critério ou slot de que ele se afasta entra apenas em Referências.
 
 Este passo faz aflorar melhorias; nunca bloqueia a entrega por si só. Uma violação *silenciosa* de inegociável ou de slot INVARIANT, porém, é um defeito — nomeie-a ou corrija-a antes de escrever.
 
 ## Passo 5 — Escrever a ITS conforme o contrato
 
-Escreva o documento exatamente conforme o **prime-core/its-contract**: nomenclatura de arquivo, seções obrigatórias, nível de detalhe, a regra "instrui, não implementa" e a regra da alternativa descartada vêm todas de lá. Escreva o plano em ordem de execução e deixe-o carregar o mapeamento único — a seção de comportamento declara o delta e os pontos de regressão e para aí. Sequenciar agora é um ato de escrita, não uma lista separada: a ordem que você escolhe é a ordem em que o implementador trabalha e a ordem em que o revisor percorre o diff. Duas das regras de escrita do contrato são onde uma ITS entregue mais falha com seu leitor, e ambas valem uma releitura antes da primeira linha: *referências se resolvem em conteúdo, não só em endereço*, e *a voz do autor*. O que esta skill acrescenta à segunda é apenas o seu alcance aqui — as notas tomadas ao longo dos Passos 3 a 4.6 são material de trabalho, e nenhuma delas pertence ao documento.
+Escreva o documento exatamente conforme o **prime-core/its-contract**: nomenclatura de arquivo, as quatro seções obrigatórias, nível de detalhe, a regra "instrui, não implementa" e a regra da alternativa descartada vêm todas de lá. Escreva o plano em ordem de execução e deixe-o carregar o mapeamento único — O que muda declara as mudanças e o que continua valendo e para aí. Sequenciar agora é um ato de escrita, não uma lista separada: a ordem que você escolhe é a ordem em que o implementador trabalha e a ordem em que o revisor percorre o diff.
 
-O **Glossário de referência** é escrito a partir dos documentos já abertos: os casos de uso carregados no Passo 1, as regras de negócio e os critérios de aceite que o plano cita, os ADRs aprovados no Passo 4.5 e os critérios e slots que o Passo 4.6 deixou registrados como afastamentos nomeados. Preencha cada entrada à medida que escreve a instrução que a cita, enquanto a fonte ainda está à sua frente — é isso que mantém a seção um snapshot tirado na entrega em vez de uma reconstrução de memória, e é por isso que ela não custa nada para produzir. Ela resolve *o que cada identificador é* e para aí: apenas metadados, e, para um ADR, a glosa para na Decisão.
+Duas das regras de escrita do contrato são onde uma ITS entregue mais falha com seu leitor, e ambas valem uma releitura antes da primeira linha: *conteúdo, não ponteiro* e *a voz do autor*. O que esta skill acrescenta é o alcance de cada uma aqui. Toda exigência que você leu numa fonte ao longo dos Passos 1 a 4.6 — a regra de negócio, o critério de aceite, a restrição do ADR, a convenção que governa a área — chega ao documento escrita, no ponto em que é usada, e o identificador da fonte vai para Referências; o leitor da ITS não tem os documentos que você teve abertos. E as notas tomadas ao longo dos Passos 3 a 4.6 são material de trabalho: nenhuma delas pertence ao documento.
+
+A seção **Referências** é escrita a partir dos documentos já abertos: a story, os casos de uso carregados no Passo 1, os ADRs aprovados no Passo 4.5 e os critérios e slots que o Passo 4.6 deixou registrados. Preencha cada linha à medida que escreve o item ou a unidade que a usa, com a anotação de origem que o Passo 2 e o Passo 3 deixaram, enquanto a fonte ainda está à sua frente — é isso que mantém a seção um snapshot tirado na entrega em vez de uma reconstrução de memória, e é por isso que ela não custa nada para produzir. Ela registra *de onde cada item veio* e para aí: nenhuma glosa, nenhum resumo da fonte — o conteúdo já está no corpo.
 
 ## Passo 6 — Verificar a rastreabilidade antes de entregar
 
-Execute as verificações do contrato e registre-as na seção de Metadados da ITS:
-- Delta → plano: todo item de delta (`UC-NNN/D1`) nomeia a unidade que o satisfaz, ou uma justificativa explícita de "já coberto".
-- Plano → delta: toda unidade nomeia seus itens de delta ou uma consequência técnica declarada.
+Execute as verificações do contrato sobre o documento pronto. Elas não viram seção nem tabela: o documento já declara o que elas conferem — os itens de O que muda, o Atende e os Testes de cada unidade, a coluna Usada em das Referências.
+- Delta → plano: todo item `D` é atendido por pelo menos uma unidade, ou declara na própria linha que já é atendido hoje e por quê.
+- Plano → delta: toda unidade nomeia seus itens ou uma consequência técnica declarada.
 - Regressão → plano: todo `RG-N` é reivindicado por exatamente uma unidade, com o teste de não regressão nomeado ali.
-- Alternativa descartada: todo ponto em que o Passo 3 encontrou mais de um caminho viável está fechado — uma linha de alternativa descartada carregando a razão decisiva, ou um ADR referenciado. Uma unidade que não enfrentou escolha real não declara nada; o que esta verificação pega é uma escolha real deixada sem registro.
-- Verificação de fronteira: nenhuma decisão arquitetural (conforme os critérios do contrato) embutida no corpo do documento — cada uma vive em um ADR referenciado, e nenhum ADR referenciado ainda está Proposed.
+- Fonte → item: todo item e todo ponto de regressão aparece em Referências, na linha da fonte de que veio.
+- Alternativa descartada: todo ponto em que o Passo 3 encontrou mais de um caminho viável está fechado — uma linha de alternativa descartada na unidade, carregando a razão decisiva, ou um ADR listado em Referências. Uma unidade que não enfrentou escolha real não declara nada; o que esta verificação pega é uma escolha real deixada sem registro.
+- Verificação de fronteira: nenhuma decisão arquitetural (conforme os critérios do contrato) tomada no corpo do documento — cada uma vive em um ADR listado em Referências, e nenhum deles ainda está Proposed.
 - Verificação de fora de escopo: toda entrada em "Fora de escopo — não alterar" declara por que é uma borda (compartilhado mas intocado · superfície de contrato não migrada · legado deixado em paz), e nenhuma entrada duplica um ponto de regressão — `RG-N` é código tocado que precisa continuar funcionando, uma fronteira é código que não deve ser tocado.
-- Verificação de qualidade: todo afastamento de um critério do prime-core/quality-model ou de um slot do prime-core/coding-standards trazido pelo Passo 4.6 está registrado como uma exceção nomeada (linha de alternativa descartada, fronteira de fora de escopo ou ADR referenciado). Nenhuma violação silenciosa de inegociável e nenhuma violação silenciosa de slot INVARIANT permanece.
-- Verificação do glossário: todo identificador que o documento cita se resolve no Glossário de referência, e nenhuma entrada carrega o conteúdo da fonte onde caberiam metadados.
+- Verificação de qualidade: todo afastamento de um critério do prime-core/quality-model ou de um slot do prime-core/coding-standards trazido pelo Passo 4.6 está registrado como uma exceção nomeada (linha de alternativa descartada, fronteira de fora de escopo ou ADR listado em Referências), escrita por extenso. Nenhuma violação silenciosa de inegociável e nenhuma violação silenciosa de slot INVARIANT permanece.
+- Verificação de autossuficiência: nenhum identificador de outro documento aparece fora de Referências; nenhuma instrução depende de abrir a fonte para ser executada; toda linha de Referências diz onde foi usada e nenhuma carrega conteúdo que o corpo deveria carregar.
 
 Em seguida execute os quatro testes pré-entrega do contrato sobre o documento pronto — implementador, leitor frio, colagem, autor. Se qualquer verificação ou qualquer teste falhar, conserte o plano — não entregue uma ITS com escopo sem explicação ou decisões enterradas.
 
@@ -132,13 +137,13 @@ Em seguida execute os quatro testes pré-entrega do contrato sobre o documento p
 Uma ITS volta quando o plano não sobreviveu ao contato com o código: o implementador devolveu uma pergunta que o documento não consegue responder, ou o quarto veredito do code review devolveu a story ao arquiteto. A revisão é este mesmo processo sobre uma entrada mais estreita, sob três restrições.
 
 - **Reentre no passo em que o problema vive.** Um delta errado ou ausente significa que o caso de uso mudou primeiro — roteie ao use-case-creator e depois retome a partir do Passo 1. Um delta mapeado para o código errado reexecuta os Passos 3 e 4. Uma decisão que o plano tomou sem registrar reexecuta o Passo 4.5.
-- **A numeração das unidades é estável.** O implementador já trabalhou nela e o revisor percorre o diff nela. Trabalho novo chega como novas unidades ao final; nunca renumere uma unidade que alguém implementou. Onde uma unidade já não se aplica, seus itens de delta voltam à verificação de rastreabilidade reivindicados pela unidade que a substitui, sob a justificativa de "já coberto" que o contrato permite.
+- **A numeração das unidades é estável.** O implementador já trabalhou nela e o revisor percorre o diff nela. Trabalho novo chega como novas unidades ao final; nunca renumere uma unidade que alguém implementou. Onde uma unidade já não se aplica, ela mantém o número, declara-se sem efeito e aponta a unidade que a substitui; os itens que ela atendia passam ao Atende da substituta.
 - **Reexecute o Passo 6 por inteiro.** Uma ITS revisada passa pelas mesmas verificações que uma nova. Um item de delta silenciosamente órfão pela revisão é a falha que esta execução existe para prevenir.
 
 Uma ITS por story continua valendo: a revisão substitui o documento no lugar. O contrato não define histórico de revisão dentro da ITS — o controle de versão é esse registro, e nenhuma seção é inventada para guardá-lo.
 
 ## Saída
 
-Um documento de ITS (nomeado conforme o contrato) na localização configurada, mais zero ou mais ADRs aprovados pelo arquiteto, rastreável de ponta a ponta: story → deltas dos casos de uso → decisões (ADRs) → mudanças de código → testes. Uma decisão candidata que o arquiteto rejeitou como escopo de story não deixa ADR: vive como uma linha de alternativa descartada na verificação de rastreabilidade.
+Um documento de ITS (nomeado conforme o contrato) na localização configurada, mais zero ou mais ADRs aprovados pelo arquiteto, rastreável de ponta a ponta: story → deltas dos casos de uso → decisões (ADRs) → mudanças de código → testes. Uma decisão candidata que o arquiteto rejeitou como escopo de story não deixa ADR: vive como uma linha de alternativa descartada na unidade que ela afeta.
 
 A passada operacional vive em `checklists/its-checklist.md`. O template do próprio documento não: ele é de propriedade do `prime-core/its-contract` e é lido de lá.

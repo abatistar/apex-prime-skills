@@ -8,8 +8,8 @@ Passada operacional de propriedade do `prime-architect/code-review`. O SKILL.md 
 
 ## 0. Pré-condições — não comece sem elas
 
-- [ ] A **ITS da story** está localizada e lida, junto com todo ADR que ela referencia.
-- [ ] Os **casos de uso** que ela nomeia estão lidos: o delta desta story e os critérios de aceite que o delta toca.
+- [ ] A **ITS da story** está localizada e lida, junto com todo ADR listado em suas Referências.
+- [ ] Os **casos de uso** listados nas Referências da ITS estão lidos: o delta desta story e os critérios de aceite que o delta toca.
 - [ ] `docs/prime-config.md` está carregado (pipeline e verificações obrigatórias, comandos de verificação, registro de áreas, overrides de slots).
 - [ ] As **verificações obrigatórias estão verdes**, conforme o Passo 0. Nenhum pipeline declarado → os comandos de verificação da configuração rodaram em seu lugar. Vermelho por causa de um teste instável → a revisão começa e isso é um achado `Blocking:` por si só (`QM-TS-1`).
 - [ ] O diff é revisável de uma só sentada. Se não for: peça uma divisão, ou declare as unidades do plano que você revisará e em que ordem.

@@ -1,6 +1,6 @@
 # Template de ADR
 
-Template canônico de propriedade do prime-core/its-contract. O its-generator redige contra ele quando um plano precisa se comprometer com a decisão, e o arquiteto redige contra ele diretamente quando ainda não existe plano; o arquiteto aprova em ambos os casos, e o code-review bloqueia uma decisão que chegou ao código sem registro. Veja o SKILL.md do its-contract para a fronteira de decisão, que diz quando uma decisão deve um ADR, e para a regra do glossário, que governa como uma ITS cita um.
+Template canônico de propriedade do prime-core/its-contract. O its-generator redige contra ele quando um plano precisa se comprometer com a decisão, e o arquiteto redige contra ele diretamente quando ainda não existe plano; o arquiteto aprova em ambos os casos, e o code-review bloqueia uma decisão que chegou ao código sem registro. Veja o SKILL.md do its-contract para a fronteira de decisão, que diz quando uma decisão deve um ADR, e para a regra de conteúdo, que governa como uma ITS escreve o que um ADR exige do seu plano.
 
 **Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — `ADR-NNN`, os valores de status (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), `UC-NNN`, `ITS-<story-id>`, `QM-XX-N`, `CS-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
 
@@ -21,7 +21,7 @@ Só o arquiteto move um ADR entre status, quem quer que tenha escrito o registro
 - **Quem arquiva.** Uma decisão com a qual um plano precisa se comprometer é redigida pelo its-generator e aprovada pelo arquiteto. Uma decisão tomada onde ainda não existe plano, no refinamento ou em aconselhamento arquitetural, é redigida diretamente pelo arquiteto e não precisa de story. O campo `Origem` nomeia de onde veio a decisão e, com isso, qual dos dois caminhos arquivou o registro. Nenhuma outra skill redige um.
 - Uma decisão por registro. Um documento com duas decisões não pode ser substituído pela metade.
 - **Consequências não são um aviso legal.** Declare o que a decisão custa, além do que ela compra, incluindo o que ela impede. Um registro que lista apenas benefícios é advocacia, não um registro de decisão.
-- **A justificativa vive aqui e só aqui.** Uma ITS que cita este registro carrega uma linha da restrição operacional que a decisão impõe ao seu plano, nunca o contexto nem as alternativas. Essa propriedade única é o motivo pelo qual quem precisa do porquê vem a este documento.
+- **A justificativa vive aqui e só aqui.** Uma ITS derivada deste registro o lista em suas Referências e escreve, nas unidades que ele vincula, a restrição operacional que a decisão impõe ao seu plano — nunca o contexto nem as alternativas. Essa propriedade única é o motivo pelo qual quem precisa do porquê vem a este documento.
 - As alternativas consideradas são o ponto do registro, não enchimento. Uma decisão sem alternativa viável não foi uma decisão, e provavelmente não precisava de um ADR.
 
 ````markdown
@@ -38,17 +38,13 @@ Só o arquiteto move um ADR entre status, quem quer que tenha escrito o registro
 
 ## Contexto
 
-[A situação que obrigou a decidir, em linguagem de comportamento e de restrição. As forças em
-jogo: exigência do negócio, limite da stack, decisão anterior, custo operacional. O que era
-verdade quando se decidiu — este bloco não é reescrito depois, é o que data a decisão.]
+[A situação que obrigou a decidir, em linguagem de comportamento e de restrição. As forças em jogo: exigência do negócio, limite da stack, decisão anterior, custo operacional. O que era verdade quando se decidiu — este bloco não é reescrito depois, é o que data a decisão.]
 
 ## Decisão
 
-[O que ficou decidido, em uma ou duas frases, na voz de quem instrui. Sem hedge: a decisão está
-fechada quando o registro é aprovado. Esta é a única parte que a glosa de um ITS parafraseia.]
+[O que ficou decidido, em uma ou duas frases, na voz de quem instrui. Sem hedge: a decisão está fechada quando o registro é aprovado. Esta seção e o Vincula são as únicas partes que uma ITS reproduz, sempre como instrução.]
 
-**Vincula:** [a obrigação concreta que isto impõe a quem planeja e a quem implementa — a linha
-que as unidades de um ITS vão citar]
+**Vincula:** [a obrigação concreta que isto impõe a quem planeja e a quem implementa — a linha que as unidades de uma ITS vão escrever como instrução]
 
 ## Alternativas consideradas
 

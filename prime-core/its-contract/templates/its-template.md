@@ -2,115 +2,107 @@
 
 Template canônico de propriedade do prime-core/its-contract. O arquiteto o escreve; o desenvolvedor implementa a partir dele; o code review valida contra ele. Veja o SKILL.md do its-contract para as regras de nível de detalhe, escrita, rastreabilidade e fronteira entre ITS e ADR.
 
-**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `ITS-<story-id>`, `S-NNN`, `QM-XX-N`, `CS-XX-N`, os valores de status de ADR (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), os valores de status de caso de uso (`Draft`, `Reviewed`, `Retired`), caminhos de arquivo e identificadores — nunca são traduzidos. Cada token continua pertencendo ao contrato que o declara; esta nota apenas afirma que nenhum deles é traduzido.
+**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — os identificadores do próprio documento (`D1`, `RG-1`, `R1`), `ITS-<story-id>` e, somente na seção Referências, os identificadores das fontes (`S-NNN`, `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `QM-XX-N`, `CS-XX-N`), os valores de status de ADR (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), os níveis e classes do catálogo, caminhos de arquivo e identificadores de código — nunca são traduzidos. Cada token continua pertencendo ao contrato que o declara; esta nota apenas afirma que nenhum deles é traduzido.
 
-Restrições de formatação (das regras de escrita do contrato): no máximo 3 níveis de título, 2 níveis de aninhamento de lista, tabelas simples (sem células de várias linhas, sem HTML embutido), blocos de código simples e não aninhados, sem diagramas. O documento precisa sobreviver ao copiar e colar na plataforma de documentação da empresa sem alterações.
+**Marcação.** O bloco abaixo é escrito na marcação de wiki do Confluence, não em Markdown — só a ITS; casos de uso e ADRs seguem em Markdown. O que o template usa:
 
-````markdown
-# ITS-<story-id> — [Título da story]
-
-## Metadados
-- **Story:** <id — resumo em uma linha — link resolvível para o item no tracker>
-- **Casos de uso afetados:** UC-NNN (criação|alteração), ...
-- **Snapshot de configuração:** stack + versões relevantes para este plano
-- **ADRs referenciados:** ADR-NNN (status), ou "nenhum"
-  [Decisões que sobrevivem à story vivem em ADRs e são apenas referenciadas aqui — ver a fronteira de decisão no contrato. ADRs com status Accepted são vinculantes para o implementador.]
-
-### Verificação de rastreabilidade
-[Escrita por último, junto com o sumário executivo. Evidência, não prosa: duas listas de identificadores e as linhas de alternativa descartada. Dirigida ao revisor e à auditoria — quem implementa não depende dela para trabalhar, e por isso ela não fica no corpo do documento. O exemplo abaixo é de uma story que afeta um único caso de uso; com mais de um, qualifique todo identificador aqui também: UC-NNN/D1, UC-NNN/RG-1.]
-
-| Item de delta | Atendido por |
+| Elemento | Marcação |
 |---|---|
-| D1 | unidade 3 |
-| D2 | já coberto — [justificativa em uma linha] |
+| Título de seção | `h1.` a `h3.` no início da linha |
+| Negrito | `*texto*` |
+| Código em linha | `{{texto}}` |
+| Lista numerada · subitem | `#` · `#*` |
+| Lista com marcadores | `*` (asterisco e espaço) |
+| Tabela | cabeçalho `\|\|A\|\|B\|\|`, linha `\|a\|b\|` |
+| Bloco de código | `{code:language=java}` … `{code}`, cada um na própria linha |
+| Link | `[url]` ou `[texto\|url]` |
+| Escape de caractere especial | `\` antes dele: `\[`, `\{` |
 
-| Unidade | Justificativa |
-|---|---|
-| 1 | D1 |
-| 4 | consequência técnica — [uma linha] |
+Armadilhas que o documento precisa evitar:
+- `#` no início da linha é lista numerada, nunca título.
+- `[` abre um link e `{` abre uma macro: escape quando forem literais (`\[NON-NEGOTIABLE\]`).
+- `-texto-` vira tachado e `_texto_` vira itálico quando delimitados por espaço; identificadores com sublinhado ficam dentro de `{{ }}`.
+- Uma quebra de linha simples já é quebra no documento: cada parágrafo e cada item ocupa uma linha só.
+- Uma linha em branco ou um bloco de código no meio de uma lista encerra a lista, e a seguinte recomeça do 1. Por isso os blocos de código ficam depois da lista, no campo Trechos fixados, e toda lista termina com uma linha em branco antes do campo seguinte.
 
-- **Pontos de regressão:** RG-1 → unidade 3; RG-2 → unidade 5.
-- **Alternativa descartada (unidade 3):** [caminho viável descartado e o motivo decisivo, em uma linha]
-- **Fronteira de decisão:** nenhuma decisão arquitetural embutida neste documento.
+Os trechos entre `<` e `>` são orientação de preenchimento e não ficam no documento entregue.
 
-## Sumário executivo
-[3–5 linhas, linguagem de negócio, sem identificadores de código. O que a story muda, em quais casos de uso, e o efeito observável para o usuário/sistema. Escreva esta seção POR ÚLTIMO, depois de fechado o plano. É a porta de entrada para lideranças técnicas e compliance — o teste do leitor frio se aplica aqui.]
+Restrições de formatação (das regras de escrita do contrato): no máximo 3 níveis de título, 2 níveis de aninhamento de lista, tabelas simples (sem células de várias linhas, sem HTML embutido), blocos de código simples, não aninhados e fora das listas, sem diagramas. O documento precisa sobreviver à inserção como marcação na plataforma de documentação da empresa sem alterações.
 
-## O que muda no comportamento
-[Uma subseção por caso de uso afetado. Só o que existe neste eixo: a síntese, o delta e o que
-precisa continuar funcionando. O mapeamento para código vive uma vez, no plano. Com mais de um
-caso de uso afetado, qualifique os identificadores: UC-NNN/D1, UC-NNN/RG-1.]
+````text
+h1. ITS-<story-id> — <Título da story>
 
-### UC-NNN — [Nome do caso de uso]
-**Síntese:** [uma frase em linguagem de comportamento — o que o sistema passa a fazer de diferente neste caso de uso. Sem identificador de código.]
+h2. Descrição
+<Sumário executivo: 3–5 linhas em linguagem de negócio, sem identificadores de código nem de outros documentos. O que a story muda, para quem e o efeito observável. Escreva esta seção POR ÚLTIMO, depois de fechado o plano. É a porta de entrada para lideranças técnicas e compliance.>
 
-**Delta** [copiado da entrada de revisão do caso de uso referente a esta story; para criação, "documento inteiro" desdobrado em itens. Numere: os identificadores são citados pelas unidades do plano e pela verificação de rastreabilidade.]
-- **D1:** [item adicionado/alterado/removido, referenciando passo, extensão ou seção]
-- **D2:** ...
+h2. O que muda
+<Uma subseção por área de comportamento afetada, nomeada pelo comportamento — nunca pelo identificador do documento de origem. Tudo por extenso: quem lê aqui não tem acesso aos casos de uso. Numeração contínua no documento inteiro: D1, D2, ... e RG-1, RG-2, ... nunca reiniciam por subseção. Nenhum mapeamento para código: o plano é dono dele.>
 
-**Pontos de regressão** [apenas em cenário de alteração — comportamento inalterado que compartilha código com as mudanças. Cada ponto é reivindicado por exatamente uma unidade do plano.]
-- **RG-1:** [comportamento que precisa continuar funcionando]
+h3. <Nome do comportamento — ex.: Confirmação de pedido>
+<Uma frase em linguagem de comportamento: o que o sistema passa a fazer de diferente aqui.>
 
-## Plano de implementação
-[A espinha do documento, em ordem de execução. Quem implementa lê daqui até o fim e não
-precisa sair do documento. Toda exigência citada é escrita na linha, com o identificador
-como procedência.]
+*Mudanças*
+* *D1:* <a exigência inteira e verificável — condição, resposta do sistema e resultado observável. Ex.: Quando o total do pedido excede o limite de crédito vigente do cliente, o sistema recusa a confirmação com a mensagem "Limite de crédito excedido" e não grava o pedido.>
+* *D2:* <...> — já atendido hoje: <por que nenhuma unidade é necessária, em uma linha. Somente quando o comportamento atual já cumpre o item.>
 
-### 1. [Título da unidade]
-**Arquivos:**
-  1 - `caminho/Arquivo.java` (modificar)
-  2 - `caminho/Novo.java` (criar)
-  3 - ...
-**O que fazer:** [instrução com a exigência em linha]
-  1 - "rejeitar quando o total exceder o limite de crédito vigente (RN-3)"
-  2 - ...
-**Atende:** D1 · [ou: "consequência técnica — <uma linha>"]
-**Testes:** [um por critério de aceite que os itens de delta desta unidade tocam, mais o teste de não regressão quando a unidade toca código compartilhado com um ponto de regressão]
-  1 - "pedido acima do limite retorna erro de negócio sem persistir (CA-2)"
-  2 - "pedido dentro do limite continua sendo confirmado (RG-1)"
+*Continua valendo* <somente quando a story altera comportamento que já existe: o que não muda mas compartilha código com as mudanças. Cada ponto é reivindicado por exatamente uma unidade do plano.>
+* *RG-1:* <comportamento que precisa continuar funcionando, por extenso. Ex.: Pedidos dentro do limite continuam sendo confirmados e gravados como hoje.>
 
-### 2. [Título da unidade]
-[...]
+h2. Plano de implementação
+<A espinha do documento, em ordem de execução. Quem implementa lê daqui até o fim sem sair do documento: toda exigência é escrita na instrução — a regra, o resultado esperado, a restrição de uma decisão registrada, a convenção do projeto como escolha concreta —, nunca apontada.>
 
-### Alterações de esquema / migrações
-[Ordem relativa às unidades acima quando importar.]
+*Premissas técnicas:* <stack e versões que o plano assume — ex.: Java 11 · Spring Boot 2.7 · PostgreSQL 13>
 
-### Fora de escopo — não alterar
-[Uma linha por área intocável: componente/caminho, a razão escrita em linha, e a cobertura de
-não regressão que a protege. Ex.: "Não modificar `PaymentService` — o fluxo de estorno depende
-do estado atual (UC-051) e não é tocado por esta story; coberto pela suíte de não regressão de
-estorno." Se nada estiver sob risco de alteração acidental, escreva "nenhuma identificada".]
+h3. 1. <Título da unidade>
+*Arquivos:*
+# {{<caminho/Arquivo.java>}} (modificar)
+# {{<caminho/Novo.java>}} (criar)
 
-### Riscos e pontos de atenção
-[Outros casos de uso servidos pelos componentes modificados; questões em aberto.]
+*O que fazer:* <uma instrução por item, nesta ordem: o alvo exato em código em linha (arquivo, Classe.metodo(Tipo), endpoint ou coluna), o verbo no imperativo, a condição em que vale e o resultado verificável, com nomes, códigos e valores concretos. Um alvo com mais de uma instrução vira item com subitens, uma instrução por subitem.>
+# {{<alvo>}} — <instrução. Ex.: {{OrderController}} — mapear {{CREDIT_LIMIT_EXCEEDED}} para HTTP 422 com {{ErrorResponse(code, message)}}.>
+# {{<alvo>}} — <o momento ou a condição comum aos subitens. Ex.: {{OrderService.confirm(Order)}} — antes de {{orderRepository.save}}:>
+#* <subinstrução. Ex.: comparar {{order.getTotal()}} com {{creditPolicy.availableLimit(customerId)}};>
+#* <subinstrução. Ex.: quando o total for maior, lançar {{BusinessException}} com o código {{CREDIT_LIMIT_EXCEEDED}} e não gravar o pedido.>
+# {{<alvo>}} — <restrição de uma decisão registrada, escrita como instrução. Ex.: {{OrderService.confirm(Order)}} — publicar {{PedidoConfirmado}} pelo outbox transacional, nunca direto no broker dentro da transação.>
+# {{<alvo>}} — <instrução que depende de um trecho exato, apontando-o. Ex.: {{CreditPolicy}} (criar) — expor {{availableLimit}} com a assinatura de Trechos fixados.>
 
-### Verificação
-[Comandos de build e teste, da configuração do projeto.]
+*Trechos fixados:* <somente quando uma assinatura, um contrato ou um esquema precisa ser fixado exatamente. Um bloco por trecho, precedido pela instrução que o exige, sempre depois da lista. Em language=, a linguagem do trecho: java, sql, json, ...>
+Instrução <N> — <o que o trecho fixa. Ex.: assinatura de {{CreditPolicy.availableLimit}}>:
+{code:language=java}
+BigDecimal availableLimit(CustomerId customerId)
+{code}
 
-## Glossário de referência
-[Para leitores sem acesso ao repositório de documentos. Apenas metadados — resolva O QUE é
-cada identificador, nunca copie O QUE o documento diz. Preencha a partir dos documentos já
-carregados durante o planejamento; snapshot no momento da entrega. Qualifique RN/CA com seu
-UC quando mais de um caso de uso for afetado. Para ADR, a glosa vai até a Decisão — o que ficou
-decidido. Contexto, Consequências e alternativas consideradas permanecem no ADR; copiá-los aqui
-é a duplicação que o princípio de dono único proíbe.]
+*Atende:* D1 <ou: consequência técnica — a justificativa em uma linha>
+*Testes:* <um por resultado observável dos itens que esta unidade atende, mais o teste de não regressão quando a unidade toca código compartilhado com um ponto de regressão>
+# <ex.: pedido acima do limite retorna erro de negócio e nada é gravado (D1)>
+# <ex.: pedido dentro do limite continua sendo confirmado (RG-1)>
 
-### Citados neste ITS
-| ID | Tipo | Nome / glosa em uma linha |
-|---|---|---|
-| UC-NNN | Caso de uso | [campo Nome do documento] |
-| RN-N | Regra de negócio | [paráfrase em uma linha da intenção da regra] |
-| CA-N | Critério de aceite | [paráfrase em uma linha do que ele verifica] |
-| ADR-NNN | Registro de decisão | [título] (Status) — decidiu-se: [paráfrase da Decisão em uma linha] |
-| QM-XX-N · CS-XX-N | Critério de qualidade · slot de convenção | [nome no catálogo] ([NON-NEGOTIABLE] · [CALIBRATED] · INVARIANT · CONVENTIONAL) |
+*Alternativa descartada:* <somente quando havia mais de um caminho viável: o caminho descartado e o motivo decisivo, em uma linha>
 
-### Termos do processo
-| Termo | Significado |
-|---|---|
-| ITS | Instrução de Trabalho de Software — este documento: o plano de implementação de uma story |
-| UC | Caso de uso — a documentação viva de um comportamento do sistema |
-| RN | Regra de negócio dentro de um caso de uso |
-| CA | Critério de aceite dentro de um caso de uso |
-| ADR | Architecture Decision Record — uma decisão que sobrevive à story |
-| Delta | O conjunto de mudanças que uma story aplica a um caso de uso |
+h3. 2. <Título da unidade>
+<...>
+
+h3. Alterações de esquema / migrações
+<Ordem relativa às unidades acima quando importar. Se nenhuma, "nenhuma".>
+
+h3. Fora de escopo — não alterar
+<Um item por área intocável: componente ou caminho, a razão e a cobertura de não regressão que a protege. Se nada estiver sob risco de alteração acidental, escreva "nenhuma identificada".>
+* <ex.: Não modificar {{PaymentService}} — o fluxo de estorno depende do estado atual e não é tocado por esta story; coberto pela suíte de não regressão de estorno.>
+
+h3. Riscos e pontos de atenção
+<Outros comportamentos servidos pelos componentes modificados, por extenso; questões em aberto.>
+
+h3. Verificação
+<Comandos de build e teste, da configuração do projeto. Ex.:>
+{code:language=bash}
+./mvnw verify
+{code}
+
+h2. Referências
+<A procedência do documento. Nada aqui é necessário para executar o plano: o conteúdo já está no corpo, e o corpo não cita esta seção. Uma linha por documento de origem, R1 sempre a story. É a única seção em que identificadores de outros documentos aparecem. Usada em liga cada fonte aos itens e unidades em que entrou, com o elemento interno da fonte entre parênteses. Nunca glose nem resuma a fonte. Snapshot no momento da entrega, preenchido a partir dos documentos já abertos durante o planejamento.>
+||Ref||Fonte||Usada em||
+|R1|Story S-NNN — <resumo em uma linha> — [<url do item no tracker>]|todo o documento|
+|R2|Caso de uso UC-NNN — <Nome> (alteração)|D1 (RN-3, CA-2) · D2 (extensão 4a) · RG-1 (passo 5)|
+|R3|ADR-NNN — <Título> (Accepted)|unidade 1|
+|R4|Critério de qualidade QM-XX-N — <nome no catálogo> (\[NON-NEGOTIABLE\])|Fora de escopo — afastamento registrado|
 ````

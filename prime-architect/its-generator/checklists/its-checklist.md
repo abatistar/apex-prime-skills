@@ -24,7 +24,7 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 - [ ] Cenário classificado: criação | alteração. Uma entrada de conformidade é alteração com o corpo inalterado: os identificadores que ela cita são o delta. Uma entrada de retirada é alteração com o documento inteiro como delta, cada item removido; a regressão vem dos outros casos de uso que compartilham o código.
 - [ ] Nenhuma entrada para o ID da story → reportado e roteado ao use-case-creator; a única exceção é uma entrada que o limite de cinco entradas empurrou para fora, recuperada do controle de versão.
 - [ ] Entradas de revisão mais antigas tratadas como estado somente leitura — nunca como trabalho pendente. Idem para entradas sem ID de story (mapeamento inicial, reconciliação com o código, revisão editorial), seja qual for sua posição.
-- [ ] Itens de delta numerados (`D1`, `D2`, ...), qualificados por caso de uso quando mais de um é afetado.
+- [ ] Itens de delta numerados (`D1`, `D2`, ...) em sequência contínua no documento inteiro, cada um anotado com o elemento da fonte de que vem (passo, extensão, `RN-N`, `CA-N`).
 - [ ] Cenário de criação: o documento inteiro desdobrado em itens numerados ao longo do eixo que o plano satisfaz.
 
 ## Inspeção
@@ -34,7 +34,7 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 - [ ] Criação: pontos de entrada, camadas e modelos localizados; funcionalidades semelhantes encontradas para reaproveitar padrões; todo passo do fluxo principal e todo fluxo de exceção mapeado para um componente classificado como existe como está / modificar / criar.
 - [ ] Criação: todo componente classificado como **modificar** carrega o teste de não regressão devido pela unidade que o toca.
 - [ ] Alteração: apenas os itens de delta mapeados para código.
-- [ ] Alteração: pontos de regressão numerados (`RG-1`, `RG-2`) a partir do corpo do documento, não do delta.
+- [ ] Alteração: pontos de regressão numerados (`RG-1`, `RG-2`) em sequência contínua, a partir do corpo do caso de uso, não do delta, cada um anotado com sua origem.
 - [ ] Todo ponto com mais de um caminho de implementação viável anotado para a linha de alternativa descartada ou para o passo de ADR.
 
 ## Risco e fronteira de fora de escopo
@@ -51,7 +51,7 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 - [ ] Candidato redigido conforme o `its-contract` (`templates/adr-template.md`), status `Proposed`, na localização configurada, com as alternativas consideradas e as consequências declarando custos além dos ganhos.
 - [ ] Apresentado ao arquiteto. Nenhuma ITS entregue enquanto um ADR que ela referencia ainda estiver Proposed.
 - [ ] Rejeitado como escopo de story → recai numa linha de alternativa descartada.
-- [ ] Aprovado → referenciado por ID nos Metadados, e sua restrição declarada em toda unidade que ele vincula.
+- [ ] Aprovado → listado em Referências, e sua restrição escrita como instrução em toda unidade que ele vincula.
 - [ ] Contradição com um ADR Accepted → ou o plano cabe sob ele, ou um registro substituto é roteado para aprovação. Nunca resolvida em silêncio.
 - [ ] Nenhum ADR produzido para preencher uma seção. A maioria das stories rende zero.
 
@@ -62,34 +62,39 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 - [ ] Slots INVARIANT: nenhuma violação planejada (`CS-XX-N` citado por ID).
 - [ ] Slots CONVENTIONAL: o valor corresponde ao estado registrado de cada área — padrão atual em `current`, padrão local em `legacy-maintained` e `strangler`, o novo valor dentro do escopo de uma migração declarada.
 - [ ] Nenhum comportamento novo planejado para uma área `strangler`.
-- [ ] Todo afastamento registrado em um dos veículos da ITS: linha de alternativa descartada · fronteira de fora de escopo · ADR referenciado.
+- [ ] Todo afastamento registrado em um dos veículos da ITS: linha de alternativa descartada na unidade · fronteira de fora de escopo · ADR listado em Referências. No documento, escrito por extenso; o `QM-XX-N` ou `CS-XX-N` só em Referências.
 
 ## Escrita
 
-- [ ] Escrita conforme o `its-contract`: nomenclatura, seções obrigatórias, nível de detalhe, "instrui, não implementa".
-- [ ] Plano escrito em ordem de execução; a seção de comportamento carrega o delta e os pontos de regressão e nada que o plano repita.
-- [ ] Toda referência citada carrega sua exigência na mesma linha.
+- [ ] Escrita conforme o `its-contract`: nomenclatura, as quatro seções (Descrição · O que muda · Plano de implementação · Referências), nível de detalhe, "instrui, não implementa".
+- [ ] O que muda organizado por área de comportamento, nomeada pelo comportamento; cada item é a exigência inteira e verificável, não um apontamento.
+- [ ] Marcação de wiki do Confluence conforme o template, nunca Markdown: títulos `hN.`, código em linha `{{ }}`, blocos `{code}` só em Trechos fixados e Verificação, nenhuma lista interrompida por linha em branco ou bloco de código, `[` e `{` literais escapados.
+- [ ] Cada item de O que fazer é uma instrução: alvo exato, verbo no imperativo, condição e resultado verificável; um alvo com várias instruções em subitens.
+- [ ] Plano escrito em ordem de execução, abrindo com as premissas técnicas; O que muda carrega as mudanças e o que continua valendo e nada que o plano repita.
+- [ ] Toda exigência escrita no ponto em que é usada: regra como condição e resposta, critério de aceite como resultado verificável, ADR como o que exige do plano, convenção como a escolha concreta. Nenhum identificador de outro documento fora de Referências.
 - [ ] Nenhuma frase narra como o plano foi produzido. Notas de trabalho ficaram fora do documento.
-- [ ] Glossário de referência preenchido a partir dos documentos já abertos, apenas metadados; a glosa do ADR para na Decisão.
-- [ ] Sumário executivo e Metadados escritos por último.
+- [ ] Referências preenchidas a partir dos documentos já abertos: uma linha por fonte, `R1` = story, Usada em com o elemento interno da fonte; nenhuma glosa nem resumo.
+- [ ] Descrição escrita por último.
 
 ## Rastreabilidade antes de entregar
 
-- [ ] **Delta → plano:** todo item de delta nomeia sua unidade, ou carrega uma justificativa explícita de "já coberto".
-- [ ] **Plano → delta:** toda unidade nomeia seus itens de delta ou uma consequência técnica declarada.
+- [ ] **Delta → plano:** todo item `D` atendido por pelo menos uma unidade, ou declarando na própria linha que já é atendido hoje e por quê.
+- [ ] **Plano → delta:** toda unidade nomeia seus itens ou uma consequência técnica declarada.
 - [ ] **Regressão → plano:** todo `RG-N` reivindicado por exatamente uma unidade, com o teste de não regressão nomeado ali.
-- [ ] **Alternativa descartada:** toda escolha real da inspeção está fechada por uma linha com sua razão decisiva, ou por um ADR referenciado.
-- [ ] **Fronteira:** nenhuma decisão arquitetural embutida no corpo; nenhum ADR referenciado ainda Proposed.
+- [ ] **Fonte → item:** todo item e todo ponto de regressão aparece em Referências, na linha da fonte de que veio.
+- [ ] **Alternativa descartada:** toda escolha real da inspeção está fechada por uma linha na unidade, com sua razão decisiva, ou por um ADR listado em Referências.
+- [ ] **Fronteira:** nenhuma decisão arquitetural tomada no corpo; nenhum ADR listado ainda Proposed.
 - [ ] **Fora de escopo:** toda entrada declara por que é uma borda; nenhuma duplica um ponto de regressão.
 - [ ] **Qualidade:** todo afastamento de um critério `QM-XX-N` ou de um slot `CS-XX-N` registrado como uma exceção nomeada. Nenhum inegociável silencioso e nenhuma violação INVARIANT silenciosa permanece.
-- [ ] **Glossário:** todo identificador citado se resolve; nenhuma entrada carrega conteúdo onde cabem metadados.
+- [ ] **Autossuficiência:** nenhum identificador de outro documento fora de Referências; nenhuma instrução depende de abrir a fonte; toda linha de Referências diz onde foi usada e nenhuma carrega conteúdo que o corpo deveria carregar.
+- [ ] Nenhuma tabela de rastreabilidade escrita no documento: a verificação roda sobre o que ele já declara.
 - [ ] Os quatro testes pré-entrega do contrato executados sobre o documento pronto: implementador · leitor frio · colagem · autor.
 
 ## Ao revisar uma ITS entregue
 
 - [ ] Reentrou no passo em que o problema vive, não no topo.
 - [ ] Numeração das unidades preservada. Trabalho novo acrescentado como novas unidades; nada já implementado renumerado.
-- [ ] Itens de delta de uma unidade descartada reivindicados de novo na verificação de rastreabilidade.
+- [ ] Unidade que deixou de se aplicar mantida com o número, declarada sem efeito e apontando a substituta; seus itens no Atende da substituta.
 - [ ] Toda esta passada de rastreabilidade reexecutada por inteiro.
 - [ ] Nenhuma seção de histórico de revisões inventada dentro da ITS — o controle de versão é esse registro.
 

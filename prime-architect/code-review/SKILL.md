@@ -37,15 +37,15 @@ Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localiz
 
 Em seguida carregue, nesta ordem:
 
-1. **A ITS da story** e todo ADR que ela referencia — conforme o **prime-core/its-contract**. Leia primeiro a seção de Metadados: ela carrega a verificação de rastreabilidade que o its-generator já executou (plano ⇄ delta), que é a base sobre a qual a sua própria verificação (diff ⇄ plano) se constrói.
-2. **Os casos de uso que ela nomeia**, conforme o **prime-architect/use-case**: o delta desta story e os critérios de aceite que o delta toca.
+1. **A ITS da story** e todo ADR listado em suas Referências — conforme o **prime-core/its-contract**. A rastreabilidade plano ⇄ delta que o its-generator já verificou está na estrutura do documento — os itens de O que muda, o Atende e os Testes de cada unidade, a coluna Usada em das Referências —, e é a base sobre a qual a sua própria verificação (diff ⇄ plano) se constrói.
+2. **Os casos de uso listados nas Referências da ITS**, conforme o **prime-architect/use-case**: o delta desta story e os critérios de aceite que o delta toca.
 3. **prime-core/quality-model** com `references/quality-criteria.md`, e **prime-core/coding-standards** com `references/convention-slots.md` mais o arquivo de padrões da stack do projeto.
 
 **Sem ITS, sem baseline.** Reporte e pare: uma revisão sem o escopo acordado degenera em gosto em três comentários. A única exceção é uma mudança declarada fora do processo (um hotfix): declare explicitamente que a conformidade de escopo não pôde ser verificada e revise apenas contra os padrões do core.
 
 ## Passo 1 — Entender a mudança antes de lê-la
 
-Visão ampla primeiro. Leia o sumário executivo da ITS, as sínteses por caso de uso e o plano de implementação; depois a própria descrição do pull request. Você precisa conseguir dizer, antes da primeira linha do diff, o que a mudança deveria fazer, quais arquivos deveria tocar e qual comportamento precisa continuar funcionando (os pontos de regressão da ITS).
+Visão ampla primeiro. Leia a Descrição da ITS, a seção O que muda e o plano de implementação; depois a própria descrição do pull request. Você precisa conseguir dizer, antes da primeira linha do diff, o que a mudança deveria fazer, quais arquivos deveria tocar e qual comportamento precisa continuar funcionando (os pontos de regressão da ITS).
 
 Depois percorra o diff **unidade por unidade, na ordem do plano**, não na ordem alfabética da árvore de arquivos. O plano já sequenciou as dependências, e cada unidade declara os arquivos que deveria ter tocado — a resposta para "quais arquivos esta mudança deveria conter" é o próprio percurso, não uma lista separada.
 
@@ -68,7 +68,7 @@ O its-generator provou plano ⇄ delta antes da entrega. Agora você prova **dif
 Design primeiro, sempre: um comentário de nomenclatura sobre código que precisa ser reestruturado é desperdício duas vezes. Cada lente abaixo é um ponteiro para onde o critério vive — nunca uma redefinição.
 
 - **Design** — as peças pertencem aonde estão, e a mudança se encaixa no sistema em vez de brigar com ele? `QM-CC-1..5`, `CS-AR-1..5`. A coisa mais cara de consertar depois do merge, e a razão de ser lida primeiro.
-- **Funcionalidade** — faz o que o delta diz, para o usuário e não apenas para o autor? Concorrência, casos de borda, caminhos de falha (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`). Julgue contra o `CA-N` do caso de uso, não contra a sua própria leitura do código.
+- **Funcionalidade** — faz o que o delta diz, para o usuário e não apenas para o autor? Concorrência, casos de borda, caminhos de falha (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`). Julgue contra o resultado que cada item de O que muda declara e o `CA-N` de onde ele veio (a coluna Usada em das Referências da ITS diz qual), não contra a sua própria leitura do código.
 - **Complexidade** — o próximo leitor consegue entender isto rapidamente (`QM-RC-2`, `QM-RC-3`, `QM-RC-4`)? Generalidade especulativa conta como complexidade (`QM-MT-4`): estrutura construída para um requisito que ninguém pediu é um achado, não previsão.
 - **Testes** — o `CS-TS-1` decide o que obriga um teste; a ITS decide quais esta story deve, unidade por unidade, cada unidade do plano declarando os testes que seus itens de delta exigem mais a cobertura de não regressão do ponto de regressão que reivindicou; o `QM-TS-2` decide se vale a pena tê-los (comportamento, não implementação); o `QM-TS-1` e o `CS-TS-4` decidem se podem ser confiáveis. Os testes chegam com a mudança, nunca "num PR de follow-up".
 - **Nomenclatura** — `QM-RC-1` / `CS-NM-2`: um nome que oculta I/O, mutação ou um evento emitido é um defeito, não uma preferência.
