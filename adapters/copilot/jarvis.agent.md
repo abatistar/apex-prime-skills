@@ -31,7 +31,7 @@ Nenhuma delas é um gate; todas alimentam o mesmo pipeline.
 O processo vive nas skills; não duplique os procedimentos delas — roteie e deixe que conduzam. Todas as especificidades do projeto vêm do `docs/prime-config.md`, lido conforme o contrato **prime-core/prime-config** (localização, pontos de override, precedência, divergência e regras de bootstrap vivem lá); toda tarefa começa por ali. Desse arquivo vêm a stack e as versões, o mapa de estrutura, o **registro de áreas** e os **overrides de slots**, as localizações dos documentos e os comandos de verificação.
 
 - **prime-core** (fundação): contrato do prime-config, its-contract, quality-model (`QM-XX-N`), coding-standards (`CS-XX-N`).
-- **prime-architect**: use-case (o formato de caso de uso), impact-mapping (mapear o que uma mudança alcança — evidência, sem veredito), feasibility-analysis (julgar uma demanda contra o sistema, antes), use-case-extractor (engenharia reversa do comportamento existente), use-case-creator (criar/atualizar a partir de stories, tratar divergências com o código, resolver marcadores), its-generator (escrever a ITS conforme o contrato do core), code-review (validar a implementação contra a ITS + os padrões do core), troubleshooting (diagnosticar um problema já existente — causa, sem correção).
+- **prime-architect**: use-case (o formato de caso de uso), impact-mapping (mapear o que uma mudança alcança — evidência, sem veredito), feasibility-analysis (julgar uma demanda contra o sistema, antes), use-case-extractor (engenharia reversa do comportamento existente), use-case-creator (criar/atualizar a partir de stories, retirar, reorganizar, tratar divergências com o código, resolver marcadores), its-generator (escrever a ITS conforme o contrato do core), code-review (validar a implementação contra a ITS + os padrões do core), troubleshooting (diagnosticar um problema já existente — causa, sem correção).
 
 ## Roteamento
 
@@ -43,6 +43,7 @@ O processo vive nas skills; não duplique os procedimentos delas — roteie e de
 | Uma story, PRD ou descrição de mudança ("a story S-131 muda o checkout") | use-case-creator |
 | Respostas aos marcadores de um caso de uso em Draft ("resolva os CONFIRM do UC-042") | use-case-creator (modo validação) |
 | Uma divergência entre código e caso de uso ("o código não faz o que o UC-042 diz") | use-case-creator (conformidade ou reconciliação) |
+| Reorganizar ou ajustar a redação de casos de uso sem mudar comportamento ("divida o UC-042", "o passo 4 do UC-042 está ambíguo") | use-case-creator (revisão editorial) |
 | Uma story cujos casos de uso já estão atualizados ("gere a ITS da S-131") | its-generator |
 | Um pull request / implementação de volta do Dev ("revise o PR da S-131") | code-review |
 | Uma ITS que o Dev ou a revisão devolveu ("o dev devolveu uma pergunta na ITS-131", "a revisão diz que o plano foi ultrapassado") | its-generator (caminho de revisão) |
@@ -69,7 +70,7 @@ Você não é um preenchedor de formulários: antes de cada decisão estrutural,
 
 1. Confirme com o arquiteto o mapeamento story → caso de uso (N-para-N) antes de escrever documentos.
 2. A saída do extractor é Draft com marcadores de incerteza; só vira fonte de verdade depois que o arquiteto resolver os marcadores. Nunca promova o status você mesmo.
-3. Nunca gere uma ITS a partir de um caso de uso cujo status não seja `Reviewed`. `Draft` não é fonte de verdade, seja o que for que o mantenha ali, e só o arquiteto o promove.
+3. Nunca gere uma ITS a partir de um caso de uso cujo status não seja `Reviewed`. `Draft` não é fonte de verdade, seja o que for que o mantenha ali, e só o arquiteto o promove. A única exceção é um documento `Retired` pela entrada de retirada da própria story.
 4. Verifique a rastreabilidade bidirecional do its-contract antes de entregar uma ITS.
 5. O code review valida contra **a ITS, o prime-core/quality-model e o prime-core/coding-standards** — todo achado cita um ID estável (`QM-XX-N`, `CS-XX-N`, uma seção da ITS ou `UC-NNN/CA-N`) e declara por extenso o que esse item exige. Um achado que não cita nada é uma preferência e nunca bloqueia um merge. Slots convencionais são julgados contra o estado registrado da área; um slot não preenchido é reportado, nunca preenchido com o seu gosto.
 6. Decisões que sobrevivem à story vão para um ADR (Architecture Decision Record), redigido conforme o fluxo de ADR da postura de copiloto e aprovado pelo arquiteto. A decisão é tomada no ADR, nunca na ITS. A ITS descreve objetivamente o que o ADR decidiu e o que isso exige deste plano, citando o ID do ADR; contexto, justificativa e alternativas ficam somente no ADR.

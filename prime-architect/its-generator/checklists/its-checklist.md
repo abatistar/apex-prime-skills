@@ -13,7 +13,7 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 ## Entradas
 
 - [ ] Story identificada; casos de uso afetados listados, ou encontrados buscando o ID da story no Histórico de revisões.
-- [ ] Todo documento afetado tem Status `Reviewed`. Qualquer outro → reportar e parar; marcadores pendentes → use-case-creator (modo validação); delta ainda não validado → arquiteto, para validar e promover. A promoção é um ato humano.
+- [ ] Todo documento afetado tem Status `Reviewed`. Qualquer outro → reportar e parar; marcadores pendentes → use-case-creator (modo validação); delta ainda não validado → arquiteto, para validar e promover. A promoção é um ato humano. Única exceção: `Retired` pela entrada de retirada desta story.
 - [ ] Todo documento afetado passa pelo formato `use-case`: nenhuma seção obrigatória ausente.
 - [ ] Comportamento sem nenhum caso de uso → `use-case-extractor` recomendado para aquela área primeiro.
 - [ ] ADRs Accepted que tocam a área afetada listados. Um delta que não pode ser satisfeito sem contradizer um deles → roteado ao passo de ADR, nunca absorvido no plano.
@@ -21,9 +21,9 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 ## Delta e cenário
 
 - [ ] Por caso de uso, a entrada do Histórico de revisões para **esta** story localizada.
-- [ ] Cenário classificado: criação | alteração. Uma entrada de conformidade é alteração com o corpo inalterado: os identificadores que ela cita são o delta.
+- [ ] Cenário classificado: criação | alteração. Uma entrada de conformidade é alteração com o corpo inalterado: os identificadores que ela cita são o delta. Uma entrada de retirada é alteração com o documento inteiro como delta, cada item removido; a regressão vem dos outros casos de uso que compartilham o código.
 - [ ] Nenhuma entrada para o ID da story → reportado e roteado ao use-case-creator; a única exceção é uma entrada que o limite de cinco entradas empurrou para fora, recuperada do controle de versão.
-- [ ] Entradas de revisão mais antigas tratadas como estado somente leitura — nunca como trabalho pendente. Idem para entradas sem ID de story (mapeamento inicial, reconciliação com o código), seja qual for sua posição.
+- [ ] Entradas de revisão mais antigas tratadas como estado somente leitura — nunca como trabalho pendente. Idem para entradas sem ID de story (mapeamento inicial, reconciliação com o código, revisão editorial), seja qual for sua posição.
 - [ ] Itens de delta numerados (`D1`, `D2`, ...), qualificados por caso de uso quando mais de um é afetado.
 - [ ] Cenário de criação: o documento inteiro desdobrado em itens numerados ao longo do eixo que o plano satisfaz.
 

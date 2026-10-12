@@ -17,34 +17,37 @@ A passada operacional do `prime-architect/use-case-extractor`. **Nenhum template
 ## Inventário
 
 - [ ] Toda superfície de interação do escopo listada — rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos —, procurada pelo mapa de estrutura da configuração.
-- [ ] Nenhum candidato que já tenha caso de uso no repositório. Documento existente que diverge do código → `use-case-creator` (conformidade ou reconciliação), nunca um documento novo.
-- [ ] Inventário apresentado e candidatos acordados com o usuário antes de escrever qualquer documento.
+- [ ] Pontos de entrada agrupados pelo objetivo do ator (Granularidade do formato): cada objetivo é um candidato; ponto técnico sem objetivo de ator listado à parte.
+- [ ] Nenhum candidato que já tenha caso de uso no repositório. Documento existente que diverge do código → `use-case-creator` (conformidade ou reconciliação), nunca um documento novo. Candidato coberto por um documento `Retired` → reportado ao arquiteto.
+- [ ] Inventário agrupado apresentado e candidatos acordados com o usuário antes de escrever qualquer documento.
 
 ## Reconstrução
 
 - [ ] Caminho de execução de cada candidato rastreado no código, não deduzido de nomes.
-- [ ] Código traduzido para os elementos do template: validações e guardas → pré-condições e extensões; ramificações de negócio → passos, extensões e `RN-N`; efeitos persistidos, eventos e chamadas externas → Garantias de sucesso; o que se mantém na falha → Garantias mínimas; tratamento de erro → extensões com desfecho; autorização → pré-condições ou extensões.
-- [ ] Testes existentes do código rastreado lidos e usados como fonte dos critérios de aceite.
+- [ ] Código traduzido para os elementos do template: validações e guardas que o fluxo executa → extensões; ramificações de negócio → passos, extensões e `RN-N`; efeitos persistidos, eventos e chamadas externas → Garantias de sucesso; o que se mantém na falha → Garantias mínimas; tratamento de erro → extensões com desfecho; autorização do próprio fluxo → extensões; timeouts, limites de volume, janelas e expurgos → critério `não funcional` com `[CONFIRM: ...]` (requisito ou restrição técnica?).
+- [ ] Toda `RN-N` num padrão da Forma das regras de negócio, escolhido pela forma do código: cálculo ou constante → ubíquo; handler ou consumidor → `Quando`; guarda de estado → `Enquanto`; ramo de erro → `Se … então`, citada por uma extensão; flag ou configuração → `Onde`, com `[INFERRED]`. Uma resposta por regra; nenhuma regra cita passo nem extensão.
+- [ ] Pré-condição só o que o fluxo não verifica porque já chega garantido — outro caso de uso, controle transversal anterior ao ponto de entrada.
+- [ ] Testes existentes do código rastreado lidos e usados como fonte dos critérios de aceite, cada critério rotulado com o que cobre. Teste que contradiz o código ou desligado → `[CONFIRM: ...]`.
 - [ ] Envolvidos e interesses só quando o material rastreado expõe um, sempre com `[INFERRED]`; caso contrário, seção omitida.
 
 ## Incerteza
 
-- [ ] Todo comportamento deduzido mas não confirmado por testes marcado com `[INFERRED]`.
+- [ ] Todo conteúdo deduzido em vez de rastreado de ponta a ponta marcado com `[INFERRED]`. Nada rastreado marcado só por falta de teste.
 - [ ] Toda decisão humana pendente marcada com `[CONFIRM: ...]`: números mágicos, ramificações ambíguas, comportamento suspeito de bug.
 - [ ] Nenhum comportamento estranho normalizado numa regra limpa — documentado como o código o executa e sinalizado.
 
 ## Escrita
 
-- [ ] Template do formato, convenção de nomenclatura e próximo número de UC livre.
+- [ ] Template do formato e convenção de nomenclatura; numeração a partir do maior número de UC já usado + 1, documentos `Retired` inclusive.
 - [ ] Status `Draft`.
 - [ ] Primeira entrada do tipo mapeamento inicial: `mapeamento inicial a partir do código` na coluna Story, o escopo no Resumo.
-- [ ] Diagrama UML restrito ao caso de uso e às suas relações diretas.
+- [ ] Diagrama UML só quando há relações a mostrar, restrito ao caso de uso e às suas relações diretas.
 - [ ] Casos de uso relacionados preenchidos nos dois lados, inclusive com documentos já existentes. Link recíproco sem entrada no histórico e sem mudança de Status no outro documento.
 - [ ] Regras de qualidade do formato verificadas uma a uma em todo documento escrito.
 
 ## Entrega
 
-- [ ] Marcadores pendentes listados por documento.
+- [ ] Marcadores pendentes entregues como a Lista de perguntas do formato, com recomendação e evidência `arquivo:linha` em cada item.
 - [ ] Declarado que os documentos só viram fonte de verdade depois que o arquiteto resolver os marcadores (modo validação do `use-case-creator`) e os promover.
 - [ ] Documentos existentes que receberam apenas o link recíproco listados.
 
