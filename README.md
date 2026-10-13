@@ -98,15 +98,17 @@ apex-prime-skills/
     │   └── SKILL.md                        # [stub] como ler a ITS, planejar e implementar seguindo o core
     ├── testing/
     │   └── SKILL.md                        # [stub] padrão de testes exigido antes do PR
-    └── pr-preparation/
-        └── SKILL.md                        # [stub] como preparar o PR para a revisão e a pipeline do Azure
+    ├── pr-preparation/
+    │   └── SKILL.md                        # [stub] como preparar o PR para a revisão e a pipeline do Azure
+    └── troubleshooting/
+        └── SKILL.md                        # [stub] localiza a causa de um problema já existente e entrega o diagnóstico
 ```
 
 Toda skill é um diretório com um `SKILL.md` cujo frontmatter traz `name` e `description`. As skills do core mantêm seu material normativo em `references/` ou `templates/`; as skills de papel mantêm suas listas operacionais em `checklists/`.
 
 ## Instalação
 
-O [`scripts/Install-ApexPrime.ps1`](scripts/Install-ApexPrime.ps1) achata `prime-core` + `prime-architect` em um único diretório de skills, instala o adapter da plataforma e grava um manifesto com o hash de cada arquivo. O recorte é estrutural: a camada `prime-dev` e os adapters da Friday não são lidos pelo instalador.
+O [`scripts/Install-ApexPrime.ps1`](scripts/Install-ApexPrime.ps1) achata `prime-core` + `prime-architect` em um único diretório de skills, instala o adapter da plataforma e grava um manifesto com o hash de cada arquivo. O recorte é estrutural: a camada `prime-dev` e os adapters do Friday não são lidos pelo instalador.
 
 ### Onde cada plataforma descobre as skills
 
@@ -194,11 +196,11 @@ A partir daí, toque a pipeline: peça ao arquiteto para documentar como um mód
 | Agente | Camadas carregadas | Responsabilidade no fluxo |
 |---|---|---|
 | **Jarvis** (Arquiteto) | `prime-core` + `prime-architect` | Entende a demanda, documenta os casos de uso, cria a ITS, faz o code review |
-| **Friday** (Dev) | `prime-core` + `prime-dev` | Implementa a partir da ITS, testa e prepara o PR |
+| **Friday** (Dev) | `prime-core` + `prime-dev` | Implementa a partir da ITS, testa, prepara o PR e diagnostica problemas já existentes |
 
-> Regra de ouro: um agente **nunca** carrega a camada do outro papel. O Jarvis nunca carrega `prime-dev`; a Friday nunca carrega `prime-architect`.
+> Regra de ouro: um agente **nunca** carrega a camada do outro papel. O Jarvis nunca carrega `prime-dev`; o Friday nunca carrega `prime-architect`.
 
-Duas capacidades do arquiteto ficam fora dessa linha e são invocadas, nunca obrigatórias: **impact-mapping**, que produz evidência sobre o que uma mudança alcançaria, e **feasibility-analysis**, que julga uma demanda contra o sistema antes que ela entre em especificação. Nenhuma das duas é um gate; ambas alimentam a mesma pipeline.
+Duas capacidades do arquiteto ficam fora dessa linha e são invocadas, nunca obrigatórias: **impact-mapping**, que produz evidência sobre o que uma mudança alcançaria, e **feasibility-analysis**, que julga uma demanda contra o sistema antes que ela entre em especificação. Nenhuma das duas é um gate; ambas alimentam a mesma pipeline. Do lado do dev, o **troubleshooting** do Friday também é invocado fora dessa linha: localiza a causa de um problema já existente e entrega o diagnóstico, nunca a correção.
 
 ## Status de autoria
 
@@ -206,9 +208,9 @@ Duas capacidades do arquiteto ficam fora dessa linha e são invocadas, nunca obr
 |---|---|
 | `prime-core` | Escrita — quality-model (catálogo de critérios v1.0), coding-standards (catálogo de slots v1.0), prime-config, its-contract |
 | `prime-architect` | Escrita — use-case (formato), use-case-creator, use-case-extractor, impact-mapping, feasibility-analysis, its-generator, code-review |
-| `prime-dev` | **Stubs.** As três skills e os adapters da Friday são placeholders para que a estrutura de camadas e as referências cruzadas continuem válidas |
+| `prime-dev` | **Stubs.** As quatro skills e os adapters do Friday são placeholders para que a estrutura de camadas e as referências cruzadas continuem válidas |
 
-O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → revisão); a Friday depende da camada de dev.
+O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → revisão); o Friday depende da camada de dev.
 
 ## Os contratos do core
 

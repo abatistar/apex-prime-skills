@@ -23,4 +23,4 @@ diff <(grep -v '^\s*$' adapters/claude-code/jarvis.md | grep -v '^Tarefa do arqu
 
 A saída esperada é a diferença de frontmatter e nada mais.
 
-Os stubs da Friday seguem a mesma regra quando a camada do dev for escrita.
+Os stubs do Friday seguem a mesma regra quando a camada do dev for escrita.
