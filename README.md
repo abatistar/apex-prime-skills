@@ -34,9 +34,7 @@ Quando os padrões de qualidade vivem espalhados — na cabeça das pessoas, em 
 apex-prime-skills/
 ├── README.md
 ├── LICENSE                                 # AGPL-3.0
-├── install.ps1                             # bootstrap: clona a versão pedida e chama o instalador
-├── scripts/
-│   └── Install-ApexPrime.ps1               # instala e desinstala a camada Jarvis
+├── install.ps1                             # instala e desinstala os perfis Jarvis, Friday e Full
 ├── adapters/                               # prompt de entrada por plataforma
 │   ├── README.md                           # regras dos adapters (os arquivos do Jarvis são cópias deliberadas)
 │   ├── claude-code/
@@ -108,76 +106,84 @@ Toda skill é um diretório com um `SKILL.md` cujo frontmatter traz `name` e `de
 
 ## Instalação
 
-O [`scripts/Install-ApexPrime.ps1`](scripts/Install-ApexPrime.ps1) achata `prime-core` + `prime-architect` em um único diretório de skills, instala o adapter da plataforma e grava um manifesto com o hash de cada arquivo. O recorte é estrutural: a camada `prime-dev` e os adapters do Friday não são lidos pelo instalador.
-
-### Onde cada plataforma descobre as skills
-
-| Caminho | Claude Code | Copilot |
-|---|---|---|
-| `.claude/skills/<skill>/SKILL.md` | sim | sim |
-| `.github/skills/<skill>/SKILL.md` | não | sim |
-| `~/.claude/skills/<skill>/SKILL.md` | sim | sim |
-| `~/.copilot/skills/<skill>/SKILL.md` | não | sim |
-| `.claude/commands/jarvis.md` (`/jarvis`) | sim | não |
-| `.github/agents/jarvis.agent.md` | não | sim |
-
-O `.claude/skills/` é lido pelas duas plataformas — é por isso que `-Target both` instala a carga **uma única vez**, ali, e não em dois lugares: duas cópias das mesmas skills registrariam nomes duplicados no Copilot.
+O [`install.ps1`](install.ps1) achata as camadas do perfil escolhido em um único diretório de skills, instala o adapter de cada papel no formato do agente e grava um manifesto com o hash de cada arquivo. Rodando de dentro de um clone, instala o próprio clone; baixado avulso, clona a versão pedida em um diretório temporário — veja [Sem clonar o repositório](#sem-clonar-o-repositório).
 
 ### Parâmetros
 
-`-Target` escolhe o formato: `copilot` (padrão) usa `.github`/`~/.copilot`, `claude` usa `.claude`, e `both` instala as skills em `.claude` mais os dois adapters. O padrão é Copilot porque é o formato que não deixa rastro de outra ferramenta em um repositório corporativo; quem usa Claude Code precisa de `-Target both`.
+`-Perfil` escolhe o que é instalado. O recorte é estrutural: camada fora do perfil não é lida.
 
-`-Scope` escolhe o alcance: `user` (padrão) instala no perfil e não toca em repositório nenhum; `project` instala na raiz de `-Destination`, para ser commitado.
+| Perfil | Camadas | Adapters |
+|---|---|---|
+| `Full` (padrão) | `prime-core` + `prime-architect` + `prime-dev` | Jarvis e Friday |
+| `Jarvis` | `prime-core` + `prime-architect` | Jarvis |
+| `Friday` | `prime-core` + `prime-dev` | Friday |
+
+No `Full`, as skills dos dois papéis dividem um único diretório e a plataforma as expõe a qualquer agente: a [regra de ouro](#montagem-dos-agentes) passa a ser sustentada pelos adapters, que declaram a fronteira de cada papel, e não pelo recorte. Onde a fronteira precisa ser estrutural, instale `Jarvis` ou `Friday`.
+
+`-Local` escolhe o alcance: `usuario` (padrão) instala no perfil do usuário e não toca em repositório nenhum; um caminho instala na raiz daquele projeto, para ser commitado.
+
+`-Agente` escolhe o formato: `copilot` (padrão) ou `claude`. O padrão é Copilot porque é o formato que não deixa rastro de outra ferramenta em um repositório corporativo.
+
+| | `-Agente copilot` | `-Agente claude` |
+|---|---|---|
+| Skills no projeto | `.github/skills/` | `.claude/skills/` |
+| Skills no usuário | `~/.copilot/skills/` | `~/.claude/skills/` |
+| Adapters no projeto | `.github/agents/<papel>.agent.md` | `.claude/commands/<papel>.md` |
+| Adapters no usuário | `~/.copilot/agents/<papel>.agent.md` | `~/.claude/commands/<papel>.md` |
+
+O Copilot também lê `.claude/skills/` e `~/.claude/skills/`. Duas consequências: com `-Agente claude` o Copilot enxerga as skills, só não os agentes; e as duas instalações no mesmo local registram cada skill em dobro no Copilot — o instalador avisa quando encontra a outra e sugere manter uma só.
 
 ### Uso
 
 Sempre confira antes, com `-WhatIf`:
 
 ```powershell
-.\scripts\Install-ApexPrime.ps1 -WhatIf
+.\install.ps1 -WhatIf
 ```
 
-Instalar no perfil, formato Copilot:
+Instalar no perfil do usuário — perfil `Full`, formato Copilot:
 
 ```powershell
-.\scripts\Install-ApexPrime.ps1
+.\install.ps1
 ```
 
-Instalar no perfil servindo as duas plataformas:
+Instalar no perfil do usuário para o Claude Code (`/jarvis`, `/friday`):
 
 ```powershell
-.\scripts\Install-ApexPrime.ps1 -Target both
+.\install.ps1 -Agente claude
 ```
 
-Vendorizar em um projeto, para commitar:
+Vendorizar só a camada do arquiteto em um projeto, para commitar:
 
 ```powershell
-.\scripts\Install-ApexPrime.ps1 -Scope project -Destination C:\repos\meu-projeto
+.\install.ps1 -Perfil Jarvis -Local C:\repos\meu-projeto
 ```
 
-Desinstalar:
+Desinstalar — remove o que estiver instalado naquele local e agente, qualquer que seja o perfil:
 
 ```powershell
-.\scripts\Install-ApexPrime.ps1 -Uninstall -Target both
+.\install.ps1 -Desinstalar -Agente claude
 ```
 
 ### Sem clonar o repositório
 
-O [`install.ps1`](install.ps1) baixa a versão pedida em um diretório temporário, chama o instalador e limpa o temporário. São dois passos, deliberadamente — não há one-liner com `iex`:
+Baixado avulso, o `install.ps1` clona a versão pedida em um diretório temporário, instala a partir dele e remove o temporário ao final, mesmo em erro. São dois passos, deliberadamente — não há one-liner com `iex`:
 
 ```powershell
 irm https://raw.githubusercontent.com/abatistar/apex-prime-skills/main/install.ps1 -OutFile install.ps1
 ```
 
 ```powershell
-.\install.ps1 -Ref v1.0.0 -Target both
+.\install.ps1 -Ref v1.0.0 -Agente claude
 ```
 
-O `-Ref` aceita tag ou branch, e a tag é o que se deve usar: `main` instala o topo do branch, que é justamente o que o versionamento existe para evitar.
+O `-Ref` aceita tag ou branch, e a tag é o que se deve usar: sem ele a cópia avulsa instala `main`, o topo do branch — justamente o que o versionamento existe para evitar. Dentro de um clone, um `-Ref` explícito também clona, em vez de instalar o próprio clone. O manifesto grava a versão instalada: a tag, ou o branch acompanhado do commit.
 
 ### Reinstalação e edições locais
 
-O manifesto (`apex-prime.json`) é o que torna a reinstalação segura. Arquivo cujo hash divergiu do gravado foi editado no destino e é **preservado**, com aviso, a menos que `-Force`. Skill removida em uma versão nova é podada. O `-Uninstall` remove exatamente o que o manifesto registra e nada além — arquivos que não vieram do Apex Prime ficam intactos.
+O manifesto (`apex-prime.json`, na raiz do formato — `.github/`, `.claude/`, `~/.copilot/` ou `~/.claude/`) é o que torna a reinstalação segura. Arquivo cujo hash divergiu do gravado foi editado no destino e é **preservado**, com aviso; arquivo que já existia e não veio do Apex Prime também. `-Force` sobrescreve os dois. O que a instalação anterior trouxe e esta não traz — skill removida em uma versão nova, camada que saiu do perfil — é podado: trocar `Full` por `Jarvis` remove a camada `prime-dev` e o adapter do Friday. O `-Desinstalar` remove exatamente o que o manifesto registra e nada além.
+
+Instalações feitas pela v1.0.0 são reconhecidas. A de `-Target both` gravava o manifesto em `.claude/` e o adapter do Copilot em `.github/agents/` (ou `~/.copilot/agents/`): reinstalar com `-Agente claude` a assume e remove esse adapter do Copilot. Para passar dela ao Copilot, rode antes `.\install.ps1 -Desinstalar -Agente claude`.
 
 > O instalador roda sob ConstrainedLanguage mode, o modo imposto por WDAC/AppLocker em Windows corporativo. Uma consequência: `-WhatIf` funciona, `-Confirm` não.
 
@@ -185,7 +191,7 @@ O manifesto (`apex-prime.json`) é o que torna a reinstalação segura. Arquivo 
 
 Este repositório guarda as skills, não os projetos em que elas se aplicam. Configurá-lo significa tornar as camadas certas visíveis para um agente e, depois, dar ao projeto-alvo um arquivo de configuração.
 
-**1. Instale a camada do seu papel.** Veja [Instalação](#instalação). O instalador cobre o arquiteto: expõe `prime-core` + `prime-architect` e instala o adapter da plataforma — no Claude Code o `jarvis.md`, cuja linha final `$ARGUMENTS` recebe a tarefa; no Copilot o `jarvis.agent.md`, como agente customizado. Os adapters roteiam para as skills; nunca repetem os procedimentos delas. Nunca exponha as duas camadas de papel ao mesmo agente; veja [Montagem dos agentes](#montagem-dos-agentes).
+**1. Instale o perfil do seu papel.** Veja [Instalação](#instalação). O instalador expõe as camadas do perfil e instala o adapter de cada papel no formato do agente — no Claude Code o `jarvis.md` e o `friday.md`, cuja linha final `$ARGUMENTS` recebe a tarefa; no Copilot o `jarvis.agent.md` e o `friday.agent.md`, como agentes customizados. Os adapters roteiam para as skills; nunca repetem os procedimentos delas. O perfil padrão, `Full`, traz os dois papéis; quem atua em um só instala `Jarvis` ou `Friday` e mantém a fronteira estrutural — veja [Montagem dos agentes](#montagem-dos-agentes).
 
 **2. Faça o bootstrap da configuração do projeto.** Toda execução, em qualquer camada, começa lendo o `docs/prime-config.md` do *projeto-alvo* — stack, estrutura, convenções, registro de áreas, overrides de slots, localização dos documentos, comandos de verificação. O template canônico é o [`prime-core/prime-config/references/prime-config-template.md`](prime-core/prime-config/references/prime-config-template.md), e o procedimento que o preenche — detectar a stack, percorrer o catálogo de slots, classificar as áreas, elicitar o que o código não conta — pertence ao [`prime-core/prime-config`](prime-core/prime-config/SKILL.md). Peça ao agente arquiteto que o execute; o resultado é um rascunho que um humano valida antes do commit.
 

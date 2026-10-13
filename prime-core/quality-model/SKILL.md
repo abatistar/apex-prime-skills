@@ -1,6 +1,6 @@
 ---
 name: quality-model
-description: O modelo de qualidade canônico de propriedade do prime-core - a definição versionada do que "alta qualidade" significa para este time, mais seus inegociáveis e sua disciplina de exceção. É uma definição e uma referência compartilhadas, não um gate de enforcement: o código novo é construído contra ele, e o its-generator e o its-implementation o referenciam para questionar os artefatos que entregam e apontar melhorias. O enforcement (achados precisos, aprovar/reprovar um PR) pertence ao code-review. Declara a fronteira com o coding-standards (as convenções concretas vivem lá) e com o its-contract (os ADRs vivem lá). Nunca duplique seus critérios em outro lugar - referencie-os por ID.
+description: O modelo de qualidade canônico de propriedade do prime-core - a definição versionada do que "alta qualidade" significa para este time, mais seus inegociáveis e sua disciplina de exceção. É uma definição e uma referência compartilhadas, não um gate de enforcement - o código novo é construído contra ele, e o its-generator e o its-implementation o referenciam para questionar os artefatos que entregam e apontar melhorias. O enforcement (achados precisos, aprovar/reprovar um PR) pertence ao code-review. Declara a fronteira com o coding-standards (as convenções concretas vivem lá) e com o its-contract (os ADRs vivem lá). Nunca duplique seus critérios em outro lugar - referencie-os por ID.
 ---
 
 # Modelo de Qualidade (prime-core)
