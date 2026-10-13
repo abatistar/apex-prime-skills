@@ -45,8 +45,9 @@ h3. <Nome do comportamento — ex.: Confirmação de pedido>
 * *D1:* <a exigência inteira e verificável — condição, resposta do sistema e resultado observável. Ex.: Quando o total do pedido excede o limite de crédito vigente do cliente, o sistema recusa a confirmação com a mensagem "Limite de crédito excedido" e não grava o pedido.>
 * *D2:* <...> — já atendido hoje: <por que nenhuma unidade é necessária, em uma linha. Somente quando o comportamento atual já cumpre o item.>
 
-*Continua valendo* <somente quando a story altera comportamento que já existe: o que não muda mas compartilha código com as mudanças. Cada ponto é reivindicado por exatamente uma unidade do plano.>
+*Continua valendo* <somente quando o plano modifica código que já serve outro comportamento, em qualquer cenário: o que não muda mas compartilha código com as mudanças, venha do mesmo caso de uso ou de outro. Um ponto de outro caso de uso entra na subseção da mudança que toca o código compartilhado. Cada ponto é reivindicado por exatamente uma unidade do plano.>
 * *RG-1:* <comportamento que precisa continuar funcionando, por extenso. Ex.: Pedidos dentro do limite continuam sendo confirmados e gravados como hoje.>
+* *RG-2:* <ex., vindo de outro caso de uso: A consulta de pedidos em aberto continua listando os pedidos pendentes de aprovação como hoje.>
 
 h2. Plano de implementação
 <A espinha do documento, em ordem de execução. Quem implementa lê daqui até o fim sem sair do documento: toda exigência é escrita na instrução — a regra, o resultado esperado, a restrição de uma decisão registrada, a convenção do projeto como escolha concreta —, nunca apontada.>
@@ -54,6 +55,7 @@ h2. Plano de implementação
 *Premissas técnicas:* <stack e versões que o plano assume — ex.: Java 11 · Spring Boot 2.7 · PostgreSQL 13>
 
 h3. 1. <Título da unidade>
+*Executar antes de:* <somente numa ITS revisada, quando esta unidade foi acrescentada ao fim do plano mas precisa rodar antes de uma unidade existente: unidade N>
 *Arquivos:*
 # {{<caminho/Arquivo.java>}} (modificar)
 # {{<caminho/Novo.java>}} (criar)
@@ -82,15 +84,19 @@ BigDecimal availableLimit(CustomerId customerId)
 h3. 2. <Título da unidade>
 <...>
 
+h3. <N>. <Título da unidade> — sem efeito
+<Somente numa ITS revisada, para uma unidade que deixou de se aplicar: ela mantém o número e o título, e o corpo vira a linha abaixo. Se ela já foi implementada, a unidade substituta diz o que fazer com o código que ela produziu.>
+*Sem efeito:* substituída pela unidade <M>, que passa a atender <os itens que esta atendia — ex.: D2, D3>.
+
 h3. Alterações de esquema / migrações
-<Ordem relativa às unidades acima quando importar. Se nenhuma, "nenhuma".>
+<A migração em si é uma unidade do plano: o arquivo em Arquivos e o esquema em Trechos fixados. Aqui ficam só a ordem em relação às outras unidades e ao deploy, a compatibilidade com a versão em produção e a carga ou correção de dados. Se nenhuma, "nenhuma".>
 
 h3. Fora de escopo — não alterar
 <Um item por área intocável: componente ou caminho, a razão e a cobertura de não regressão que a protege. Se nada estiver sob risco de alteração acidental, escreva "nenhuma identificada".>
 * <ex.: Não modificar {{PaymentService}} — o fluxo de estorno depende do estado atual e não é tocado por esta story; coberto pela suíte de não regressão de estorno.>
 
 h3. Riscos e pontos de atenção
-<Outros comportamentos servidos pelos componentes modificados, por extenso; questões em aberto.>
+<O que merece atenção sem um teste concreto a exigir, por extenso: partes alteradas com frequência, dependências de ambiente ou de dados, questões em aberto. Comportamento que divide código com a mudança não entra aqui: é ponto de regressão, em Continua valendo.>
 
 h3. Verificação
 <Comandos de build e teste, da configuração do projeto. Ex.:>
@@ -103,6 +109,7 @@ h2. Referências
 ||Ref||Fonte||Usada em||
 |R1|Story S-NNN — <resumo em uma linha> — [<url do item no tracker>]|todo o documento|
 |R2|Caso de uso UC-NNN — <Nome> (alteração)|D1 (RN-3, CA-2) · D2 (extensão 4a) · RG-1 (passo 5)|
-|R3|ADR-NNN — <Título> (Accepted)|unidade 1|
-|R4|Critério de qualidade QM-XX-N — <nome no catálogo> (\[NON-NEGOTIABLE\])|Fora de escopo — afastamento registrado|
+|R3|Caso de uso UC-NNN — <Nome> (regressão)|RG-2 (passo 2)|
+|R4|ADR-NNN — <Título> (Accepted)|unidade 1|
+|R5|Critério de qualidade QM-XX-N — <nome no catálogo> (\[NON-NEGOTIABLE\])|Fora de escopo — afastamento registrado|
 ````

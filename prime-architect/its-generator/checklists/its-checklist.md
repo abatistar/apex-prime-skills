@@ -32,7 +32,7 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 - [ ] A inspeção realizada aqui por inteiro. Nenhum mapa do `impact-mapping` usado como entrada, por mais recente que seja.
 - [ ] Nada planejado contra código que não foi aberto.
 - [ ] Criação: pontos de entrada, camadas e modelos localizados; funcionalidades semelhantes encontradas para reaproveitar padrões; todo passo do fluxo principal e todo fluxo de exceção mapeado para um componente classificado como existe como está / modificar / criar.
-- [ ] Criação: todo componente classificado como **modificar** carrega o teste de não regressão devido pela unidade que o toca.
+- [ ] Criação: todo componente classificado como **modificar** levado à varredura do Passo 4, que transforma o comportamento que ele já atende em pontos de regressão.
 - [ ] Alteração: apenas os itens de delta mapeados para código.
 - [ ] Alteração: pontos de regressão numerados (`RG-1`, `RG-2`) em sequência contínua, a partir do corpo do caso de uso, não do delta, cada um anotado com sua origem.
 - [ ] Todo ponto com mais de um caminho de implementação viável anotado para a linha de alternativa descartada ou para o passo de ADR.
@@ -40,8 +40,9 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 ## Risco e fronteira de fora de escopo
 
 - [ ] Todo componente previsto para modificação verificado contra o resto do repositório.
-- [ ] **Áreas de risco** listadas: outros casos de uso documentados que compartilham o componente, elevando a atenção de teste que suas unidades devem.
-- [ ] **Fronteiras** derivadas e separadas das áreas de risco, cada uma nomeando por que é uma borda: compartilhado mas intocado · superfície de contrato não migrada · legado deixado em paz.
+- [ ] **Pontos de regressão de outros casos de uso**, em qualquer cenário: o comportamento que passa pelo código modificado numerado na mesma sequência `RG-N`, anotado com o caso de uso e o elemento de origem, e o caso de uso listado em Referências.
+- [ ] **Riscos** só com o que não tem teste concreto a exigir (área quente, dependências de ambiente ou de dados, questões em aberto). Nenhum comportamento compartilhado deixado ali em vez de virar ponto de regressão.
+- [ ] **Fronteiras** derivadas e separadas dos pontos de regressão, cada uma nomeando por que é uma borda: compartilhado mas intocado · superfície de contrato não migrada · legado deixado em paz.
 - [ ] Nenhuma fronteira duplica um ponto de regressão. `RG-N` é código tocado que precisa continuar funcionando; uma fronteira é código que não deve ser tocado.
 - [ ] Nada sob risco de alteração acidental → a seção diz isso explicitamente ("nenhuma identificada"), nunca omitida.
 
@@ -68,8 +69,9 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 
 - [ ] Escrita conforme o `its-contract`: nomenclatura, as quatro seções (Descrição · O que muda · Plano de implementação · Referências), nível de detalhe, "instrui, não implementa".
 - [ ] O que muda organizado por área de comportamento, nomeada pelo comportamento; cada item é a exigência inteira e verificável, não um apontamento.
-- [ ] Marcação de wiki do Confluence conforme o template, nunca Markdown: títulos `hN.`, código em linha `{{ }}`, blocos `{code}` só em Trechos fixados e Verificação, nenhuma lista interrompida por linha em branco ou bloco de código, `[` e `{` literais escapados.
+- [ ] Marcação de wiki do Confluence conforme o template, nunca Markdown: títulos `hN.`, código em linha `{{ }}`, blocos `{code}` só em Trechos fixados e Verificação (conforme o contrato), nenhuma lista interrompida por linha em branco ou bloco de código, `[` e `{` literais escapados.
 - [ ] Cada item de O que fazer é uma instrução: alvo exato, verbo no imperativo, condição e resultado verificável; um alvo com várias instruções em subitens.
+- [ ] Migração de esquema planejada como unidade (arquivo em Arquivos, esquema em Trechos fixados); a seção de migrações só com ordem, compatibilidade e carga de dados.
 - [ ] Plano escrito em ordem de execução, abrindo com as premissas técnicas; O que muda carrega as mudanças e o que continua valendo e nada que o plano repita.
 - [ ] Toda exigência escrita no ponto em que é usada: regra como condição e resposta, critério de aceite como resultado verificável, ADR como o que exige do plano, convenção como a escolha concreta. Nenhum identificador de outro documento fora de Referências.
 - [ ] Nenhuma frase narra como o plano foi produzido. Notas de trabalho ficaram fora do documento.
@@ -93,8 +95,9 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 ## Ao revisar uma ITS entregue
 
 - [ ] Reentrou no passo em que o problema vive, não no topo.
-- [ ] Numeração das unidades preservada. Trabalho novo acrescentado como novas unidades; nada já implementado renumerado.
-- [ ] Unidade que deixou de se aplicar mantida com o número, declarada sem efeito e apontando a substituta; seus itens no Atende da substituta.
+- [ ] Numeração das unidades preservada. Trabalho novo acrescentado como novas unidades; nada já implementado renumerado. Unidade nova que precisa rodar antes de uma existente declara Executar antes de.
+- [ ] Unidade que deixou de se aplicar mantida com o número, declarada sem efeito na forma do template e apontando a substituta; seus itens no Atende da substituta; se já implementada, a substituta diz o que fazer com o código dela.
+- [ ] Delta, regressão ou fontes mudaram → `D`, `RG` e `R` renumerados no documento inteiro, Atende/Testes/Usada em atualizados em todas as unidades, e a correspondência antiga → nova entregue ao implementador.
 - [ ] Toda esta passada de rastreabilidade reexecutada por inteiro.
 - [ ] Nenhuma seção de histórico de revisões inventada dentro da ITS — o controle de versão é esse registro.
 

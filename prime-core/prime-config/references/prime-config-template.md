@@ -88,7 +88,7 @@ automaticamente; se este arquivo divergir dos arquivos de build, as skills vão 
 
 ## Repositório de documentos
 - Casos de uso: `docs/use-cases/UC-NNN-titulo-curto.md`
-- ITS: `docs/its/ITS-<story-id>-titulo-curto.md`
+- ITS: `docs/its/ITS-<story-id>-titulo-curto.wiki`
 - ADRs (registros de decisão de arquitetura): `docs/adr/ADR-NNN-titulo-curto.md`
   <!-- Sequenciais, nunca renumerados. Estrutura, ciclo de vida e quem redige são definidos pelo
        prime-core/its-contract (fronteira de decisão) e seu templates/adr-template.md -->

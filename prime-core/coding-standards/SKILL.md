@@ -72,7 +72,7 @@ A mesma disciplina do modelo de qualidade, pelo mesmo motivo — um desvio ou um
 
 ## Regras de consumo
 
-**Para o `its-generator`** — carregue o catálogo de slots e os valores efetivos do projeto antes de planejar. O plano se conforma aos slots que governam as áreas tocadas: uma mudança que cai numa área `legacy-maintained` planeja contra o padrão local, e dizê-lo pertence à ITS (uma fronteira de fora de escopo ou uma linha de alternativa descartada), não à cabeça do implementador. Um slot de que o plano precisa e que não consegue resolver é uma lacuna a reportar, não a inventar.
+**Para o `its-generator`** — carregue o catálogo de slots e os valores efetivos do projeto antes de planejar. O plano se conforma aos slots que governam as áreas tocadas: uma mudança que cai numa área `legacy-maintained` planeja contra o padrão local, e a ITS o escreve como escolha concreta na instrução, não o deixa à cabeça do implementador. O legado com que o plano convive sem corrigir vira uma fronteira de fora de escopo; o slot só aparece nas Referências da ITS quando o plano se afasta dele por exceção registrada. Um slot de que o plano precisa e que não consegue resolver é uma lacuna a reportar, não a inventar.
 
 **Para o `its-implementation`** — o valor efetivo para a área que você está tocando é o valor que você segue, e o registro de áreas diz qual. Cumpra todo slot invariante em código novo e alterado. Onde um invariante já é violado ao seu redor, nomeie-o como dívida herdada em vez de adotá-lo. Ambiguidade sobre qual valor se aplica é uma pergunta devolvida ao arquiteto, nunca uma suposição.
 

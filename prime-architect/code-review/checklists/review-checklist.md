@@ -35,7 +35,7 @@ Passada operacional de propriedade do `prime-architect/code-review`. O SKILL.md 
 ## 3. Lentes, em ordem (design primeiro)
 
 - [ ] **Design** — fronteiras, acoplamento, encaixa no sistema? `QM-CC-1..5`, `CS-AR-1..5`.
-- [ ] **Funcionalidade** — comportamento contra `UC-NNN/CA-N`; concorrência, casos de borda, caminhos de falha (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`).
+- [ ] **Funcionalidade** — comportamento contra o resultado de cada item de O que muda da ITS e o `UC-NNN/CA-N` de onde ele veio (coluna Usada em das Referências); concorrência, casos de borda, caminhos de falha (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`).
 - [ ] **Complexidade** — legível rapidamente (`QM-RC-2/3/4`); generalidade especulativa é complexidade (`QM-MT-4`).
 - [ ] **Testes** — obrigação `CS-TS-1`; escopo a partir dos testes declarados em cada unidade do plano; comportamento, não implementação `QM-TS-2`; confiáveis `QM-TS-1`, `CS-TS-4`. Pontos de regressão cobertos.
 - [ ] **Nomenclatura** — `QM-RC-1`, `CS-NM-2`: nenhum nome ocultando I/O, mutação ou um evento.

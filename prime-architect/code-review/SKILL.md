@@ -51,7 +51,7 @@ Depois percorra o diff **unidade por unidade, na ordem do plano**, não na ordem
 
 Se a mudança não faz sentido como um todo — direção errada, ITS mal lida, plano ultrapassado pelo código — **pare e diga isso imediatamente**. Quarenta comentários sobre código que não deveria existir desperdiçam o tempo dos dois lados.
 
-Se o diff é grande demais para caber na cabeça, esse é o primeiro achado: peça que seja dividido ou — quando a story realmente é tão grande — revise-o nas unidades do plano (por caso de uso, por passo de implementação) e diga em que ordem está procedendo.
+Se o diff é grande demais para caber na cabeça, esse é o primeiro achado: peça que seja dividido ou — quando a story realmente é tão grande — revise-o em blocos de unidades do plano, na ordem de execução, e diga quais blocos cada rodada cobre.
 
 ## Passo 2 — Conformidade de escopo: a verificação de rastreabilidade da ITS, executada de trás para frente
 
