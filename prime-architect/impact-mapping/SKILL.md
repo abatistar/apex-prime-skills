@@ -24,7 +24,7 @@ Este vocabulário é definido aqui e **reutilizado, não redefinido**, por toda 
 
 ## Passo 0 — Ler a configuração
 
-Leia o `docs/prime-config.md` conforme o contrato **prime-core/prime-config** (as regras de localização, precedência, divergência e bootstrap vivem lá; não as repita). Dele esta skill consome: o **mapa de estrutura** (onde as coisas vivem), o **registro de áreas** (o estado de cada área — `current`, `legacy-maintained`, `strangler`), as localizações do **repositório de documentos** para casos de uso e ADRs e os **comandos de verificação** (quais testes cobrem qual superfície).
+Leia o `docs/prime-config.md` conforme o contrato **prime-core/prime-config** (as regras de localização, precedência, divergência e bootstrap vivem lá; não as repita). Dele esta skill consome: o **mapa de estrutura** (onde as coisas vivem), o **registro de áreas** (o estado de cada área — `current`, `legacy-maintained`, `strangler` —, o seu nível de criticidade — `efêmera`, `padrão`, `crítica` — e as exclusões), as localizações do **repositório de documentos** para casos de uso e ADRs e os **comandos de verificação** (quais testes cobrem qual superfície).
 
 Um slot sem valor ou uma área sem estado registrado é uma **lacuna reportada conforme o `coding-standards`**, nunca improvisada. Nesta skill a consequência é direta: uma área não registrada não pode ser sobreposta no Passo 4, e o mapa diz isso em vez de adivinhar pelo nome do diretório.
 
@@ -59,9 +59,9 @@ Para cada item: localização, grau e uma linha sobre *por que está no mapa*. U
 
 ## Passo 4 — Sobrepor o registro de áreas
 
-Toda área tocada carrega seu **estado registrado** da configuração. O estado é elicitado, nunca inferido do nome de um diretório ou da idade de um arquivo — o bootstrap do `prime-config` deixa isso explícito, e esta skill não tem licença para suavizá-lo.
+Toda área tocada carrega seu **estado** e seu **nível de criticidade** registrados na configuração. Os dois são elicitados, nunca inferidos do nome de um diretório ou da idade de um arquivo — o bootstrap do `prime-config` deixa isso explícito, e esta skill não tem licença para suavizá-lo. Código declarado como exclusão (gerado ou de terceiros) entra no mapa como tal: a mudança nele vai para a origem — o gerador ou o fornecedor.
 
-A sobreposição importa porque o mesmo alcance custa de forma diferente conforme o estado: os mesmos três arquivos numa área `current` e numa `legacy-maintained` não são a mesma mudança. Registre o estado; não o precifique. Precificar é da `feasibility-analysis`.
+A sobreposição importa porque o mesmo alcance custa de forma diferente conforme o estado e o nível: os mesmos três arquivos numa área `current` e numa `legacy-maintained`, ou numa área `padrão` e numa `crítica`, não são a mesma mudança. Registre os dois; não os precifique. Precificar é da `feasibility-analysis`.
 
 ## Passo 5 — Sobrepor a camada documentada
 

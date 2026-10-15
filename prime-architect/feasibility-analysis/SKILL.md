@@ -42,7 +42,7 @@ Registre explicitamente o que a demanda **não** afirma. Uma fronteira declarada
 Execute o `impact-mapping` sobre a demanda **como reformulada no Passo 1** — essa reformulação é a linha de assunto do mapa, e o Passo 1 do próprio mapa não é reexecutado. O que esta skill consome dele:
 
 - os **três graus** de alcance — direto, acoplado, superfície de contrato;
-- a sobreposição de **estados de área** (`current`, `legacy-maintained`, `strangler`);
+- a sobreposição de **estados de área** (`current`, `legacy-maintained`, `strangler`) e de **níveis de criticidade** (`efêmera`, `padrão`, `crítica`);
 - a **camada documentada** — cobertura por casos de uso, divergências encontradas, incidência de ADR;
 - a **marcação de proveniência** em cada linha (ancorada, `[INFERRED]`, `[UNVERIFIED]`, lacuna), cujo vocabulário é definido por aquela skill e reutilizado aqui sem alteração;
 - e, decisivamente, a **borda declarada** — onde o mapa deliberadamente parou.
@@ -66,8 +66,8 @@ Cada lente aponta para onde seu critério vive — nunca o redefine. Rode-as sob
 - **Superfície de contrato** — de tudo que o mapa colocou fora desta base de código (formatos de API, esquema de banco, payloads de eventos, arquivos exportados, assinaturas compartilhadas), todo consumidor conhecido pode ser migrado, e o conjunto de consumidores pode ser enumerado? Um conjunto de consumidores não enumerável é um achado por si só.
 - **Verificação** — o resultado afirmado pode ser provado como entregue? Os comandos de verificação da configuração, a observabilidade que as áreas afetadas realmente têm e a obrigação de teste que a mudança carregaria (`CS-TS-1`). Uma demanda que ninguém consegue verificar como entregue é viável apenas sob a condição de que se construa uma forma de verificá-la.
 - **Risco de erosão** — o caminho viável mais barato introduz uma *segunda* forma de fazer algo que o projeto já faz de uma só (`QM-CN-1`)? Responder sim não bloqueia; nomeia a dívida que a demanda criaria, para que possa ser assumida deliberadamente (`QM-MT-1`) em vez de descoberta depois na revisão.
-- **Concorrência e escala** — apenas onde o resultado da demanda as implica (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`). Não fabrique esta lente para mudanças que não a carregam.
-- **Superfície de segurança** — toda nova fronteira que a demanda abriria: `QM-SR-*`, `CS-SC-*`. Uma demanda que abre uma não é bloqueada por isso, mas a fronteira é uma condição com responsável.
+- **Concorrência e escala** — apenas onde o resultado da demanda as implica: estado disputado e falha parcial (`QM-RB-4`, `QM-RB-5`), dependências externas (`QM-RB-1`, `QM-RB-6`), volume que cresce e metas de desempenho (`QM-EF-1`, `QM-EF-2`). Não fabrique esta lente para mudanças que não a carregam.
+- **Superfície de segurança** — toda nova fronteira que a demanda abriria: `QM-SR-*`, `CS-SC-*`, em especial o controle de acesso (`QM-SR-8`) e o dado protegido (`QM-SR-10`, `CS-SC-6`). Uma demanda que abre uma não é bloqueada por isso, mas a fronteira é uma condição com responsável.
 
 ## Passo 4 — Disciplina de evidência
 

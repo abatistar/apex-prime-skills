@@ -45,14 +45,15 @@ apex-prime-skills/
 │       └── friday.agent.md                 # [stub]
 ├── prime-core/                             # fundação — consumida por TODOS os agentes
 │   ├── quality-model/
-│   │   ├── SKILL.md                        # o que é "bom": as oito lentes, os níveis, a disciplina de exceção
+│   │   ├── SKILL.md                        # o que é "bom": as dez lentes, os níveis, a calibração por criticidade, a disciplina de exceção
 │   │   └── references/
-│   │       └── quality-criteria.md         # o catálogo versionado de critérios (QM-XX-N)
+│   │       ├── quality-criteria.md         # o catálogo versionado de critérios (QM-XX-N) e os perfis de criticidade
+│   │       └── quality-triggers.md         # os gatilhos que tornam critérios em decisões que a ITS precisa tomar
 │   ├── coding-standards/
-│   │   ├── SKILL.md                        # como o bom se parece aqui: classes de aplicação, registro de legado, migrações
+│   │   ├── SKILL.md                        # como o bom se parece aqui: classes de aplicação, registro de legado, padrões versionados, migrações
 │   │   └── references/
 │   │       ├── convention-slots.md         # o catálogo fechado de slots (CS-XX-N)
-│   │       └── defaults-java.md            # valores padrão do time para a stack Java
+│   │       └── defaults-java.md            # valores padrão do time para a stack Java, versionados
 │   ├── prime-config/
 │   │   ├── SKILL.md                        # contrato do docs/prime-config.md: seções, pontos de override, precedência, bootstrap
 │   │   └── references/
@@ -212,7 +213,7 @@ Duas capacidades do arquiteto ficam fora dessa linha e são invocadas, nunca obr
 
 | Camada | Status |
 |---|---|
-| `prime-core` | Escrita — quality-model (catálogo de critérios v1.0), coding-standards (catálogo de slots v1.0), prime-config, its-contract |
+| `prime-core` | Escrita — quality-model (catálogo de critérios e gatilhos), coding-standards (catálogo de slots e padrões Java), prime-config, its-contract |
 | `prime-architect` | Escrita — use-case (formato), use-case-creator, use-case-extractor, impact-mapping, feasibility-analysis, its-generator, code-review |
 | `prime-dev` | **Stubs.** As quatro skills e os adapters do Friday são placeholders para que a estrutura de camadas e as referências cruzadas continuem válidas |
 
@@ -222,7 +223,7 @@ O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → re
 
 **A ITS.** A peça central da plataforma. O formato da ITS (Instrução de Trabalho de Software) vive em `prime-core/its-contract` e é consumido pelos dois lados: o arquiteto escreve contra ele, o dev lê a partir dele. Uma mudança no contrato atualiza a escrita e a leitura ao mesmo tempo, eliminando o descolamento entre especificação e implementação. O mesmo contrato é dono da fronteira com os ADRs — uma decisão que sobrevive à story é referenciada por uma ITS, nunca embutida nela.
 
-**O padrão: dois contratos, um único ponto de enforcement.** O `prime-core/quality-model` responde *o que é qualidade* — oito lentes, um piso inegociável com IDs estáveis (`QM-XX-N`) e uma disciplina de exceção que distingue dívida deliberada de atalho silencioso. O `prime-core/coding-standards` responde *como a qualidade se parece aqui* — o catálogo fechado de slots de convenção (`CS-XX-N`) que todo projeto precisa ter decidido, os padrões do time por stack e o registro de áreas legadas. Nenhum dos dois aprova ou reprova nada: o enforcement pertence ao `prime-architect/code-review`, que transforma ambos em achados classificados e um veredito, sempre citando um ID em vez de uma preferência.
+**O padrão: dois contratos, um único ponto de enforcement.** O `prime-core/quality-model` responde *o que é qualidade* — dez lentes, um piso inegociável com IDs estáveis (`QM-XX-N`), uma calibração declarada por nível de criticidade, os gatilhos que dizem que decisões de qualidade cada ITS precisa tomar e uma disciplina de exceção que distingue dívida deliberada de atalho silencioso. O `prime-core/coding-standards` responde *como a qualidade se parece aqui* — o catálogo fechado de slots de convenção (`CS-XX-N`) que todo projeto precisa ter decidido, os padrões do time por stack, versionados e fixados por projeto, e o registro de áreas legadas. Nenhum dos dois aprova ou reprova nada: o enforcement pertence ao `prime-architect/code-review`, que transforma ambos em achados classificados e um veredito, sempre citando um ID em vez de uma preferência.
 
 **A configuração do projeto.** O `docs/prime-config.md` responde o que é verdade sobre o projeto e as skills não podem adivinhar. Seu contrato — seções obrigatórias, a lista fechada de pontos de override, as regras de precedência, o tratamento de divergências e o procedimento de bootstrap — pertence ao `prime-core/prime-config`; o Passo 0 de cada skill referencia esse contrato em vez de redescrever o procedimento. A configuração pode **elevar** a régua; nunca pode revogar em silêncio um inegociável do core.
 
@@ -251,7 +252,8 @@ Todo achado, toda exceção e todo elo de rastreabilidade cita um desses. Uma af
 - Mudanças no `prime-core` afetam todos os agentes e passam por um PR revisado pelo dono do modelo de qualidade.
 - As camadas de papel (`prime-architect`, `prime-dev`) evoluem com mais liberdade, desde que respeitem a fundação. A exceção é o formato de caso de uso (`prime-architect/use-case`): embora viva na camada do arquiteto, é um contrato — duas skills escrevem contra ele e duas validam contra ele, e uma mudança nas suas regras muda a escrita e a leitura ao mesmo tempo. Por isso passa pela mesma revisão do `prime-core`.
 - IDs de critérios e de slots são estáveis e nunca renumerados; um ID aposentado permanece aposentado.
-- Os catálogos carregam a própria linha de versão — `quality-criteria.md` e `convention-slots.md`, ambos v1.0. Suba a versão ali quando o padrão mudar.
+- **A versão é a release.** Catálogos, gatilhos e padrões do time são versionados juntos pela tag do repositório — a mesma que o `-Ref` do instalador usa e que o manifesto registra —, e nenhum arquivo carrega número de versão próprio. Acrescentar um critério, um gatilho ou um slot, ou mudar um valor de padrão, sobe a versão menor; aposentar ou reclassificar sobe a maior.
+- Cada projeto fixa no `docs/prime-config.md` a release que segue. Uma release nova só alcança um projeto quando ele a adota, e a diferença dos padrões entre as duas tags é o que ele decide como migrar.
 - **O histórico do padrão é o controle de versão.** O PR de governança é o registro de cada evolução; o repositório deliberadamente não mantém um changelog paralelo, para que dois históricos não se descolem.
 
 ## Como contribuir

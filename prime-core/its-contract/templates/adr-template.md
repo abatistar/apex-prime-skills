@@ -56,6 +56,6 @@ Só o arquiteto move um ADR entre status, quem quer que tenha escrito o registro
 
 **Ganhos:** [o que a decisão compra]
 **Custos:** [o que ela cobra, incluindo o que passa a ser mais caro ou impossível]
-**Dívida aceita:** [se houver — nomeada, com responsável, per QM-MT-1. Senão, "nenhuma"]
+**Dívida aceita:** [se houver — nomeada, com responsável e condição de saída, conforme o registro de exceção do prime-core/quality-model (QM-MT-1). Senão, "nenhuma"]
 **Revisitar quando:** [a condição que tornaria esta decisão obsoleta, ou "sem gatilho previsto"]
 ````

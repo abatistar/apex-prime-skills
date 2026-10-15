@@ -10,7 +10,8 @@ Passada operacional de propriedade do `prime-architect/code-review`. O SKILL.md 
 
 - [ ] A **ITS da story** está localizada e lida, junto com todo ADR listado em suas Referências.
 - [ ] Os **casos de uso** listados nas Referências da ITS estão lidos: o delta desta story e os critérios de aceite que o delta toca.
-- [ ] `docs/prime-config.md` está carregado (pipeline e verificações obrigatórias, comandos de verificação, registro de áreas, overrides de slots).
+- [ ] `docs/prime-config.md` está carregado (pipeline e verificações obrigatórias, comandos de verificação, release fixada do Apex Prime, registro de áreas com estado, nível e exclusões, overrides de slots, exemplos canônicos, migrações declaradas).
+- [ ] O estado e o nível de criticidade de cada área tocada foram lidos nas premissas da ITS — não rejulgados.
 - [ ] As **verificações obrigatórias estão verdes**, conforme o Passo 0. Nenhum pipeline declarado → os comandos de verificação da configuração rodaram em seu lugar. Vermelho por causa de um teste instável → a revisão começa e isso é um achado `Blocking:` por si só (`QM-TS-1`).
 - [ ] O diff é revisável de uma só sentada. Se não for: peça uma divisão, ou declare as unidades do plano que você revisará e em que ordem.
 
@@ -27,21 +28,24 @@ Passada operacional de propriedade do `prime-architect/code-review`. O SKILL.md 
 ## 2. Conformidade de escopo (diff ⇄ plano, nas duas direções)
 
 - [ ] **Plano → diff**: toda unidade do plano está presente, ou sua ausência está justificada; todo teste que uma unidade deve existe.
-- [ ] **Diff → plano**: todo arquivo alterado remonta a uma unidade ou a uma consequência técnica declarada. Melhorias não solicitadas contam como escopo excedido (`QM-CN-1`).
+- [ ] **Diff → plano**: todo arquivo alterado remonta a uma unidade ou a uma consequência técnica declarada. Melhorias não solicitadas contam como escopo excedido (`QM-CN-1`); só a arrumação mecânica nas linhas que a unidade já altera, em commit separado, é aceita (`QM-MT-3`).
+- [ ] **Decisões de qualidade**: toda decisão de gatilho da ITS chegou ao código com o valor declarado e com o teste ou a medição devida. Gatilho disparado sem decisão na ITS → defeito do plano, não do autor.
+- [ ] **Migrações**: nenhuma contagem de migração em curso aumentou (`QM-CN-1`).
 - [ ] **Fronteiras**: nada em "Fora de escopo — não alterar" foi tocado.
 - [ ] **ADRs**: nenhuma contradição com um ADR Accepted; nenhuma decisão arquitetural chegou sem um.
 - [ ] **Divergência**: afastamentos do plano foram devolvidos como perguntas e a ITS revisada — não aplicados em silêncio.
 
 ## 3. Lentes, em ordem (design primeiro)
 
-- [ ] **Design** — fronteiras, acoplamento, encaixa no sistema? `QM-CC-1..5`, `CS-AR-1..5`.
-- [ ] **Funcionalidade** — comportamento contra o resultado de cada item de O que muda da ITS e o `UC-NNN/CA-N` de onde ele veio (coluna Usada em das Referências); concorrência, casos de borda, caminhos de falha (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`).
-- [ ] **Complexidade** — legível rapidamente (`QM-RC-2/3/4`); generalidade especulativa é complexidade (`QM-MT-4`).
-- [ ] **Testes** — obrigação `CS-TS-1`; escopo a partir dos testes declarados em cada unidade do plano; comportamento, não implementação `QM-TS-2`; confiáveis `QM-TS-1`, `CS-TS-4`. Pontos de regressão cobertos.
+- [ ] **Design** — fronteiras, acoplamento, encaixa no sistema? `QM-CC-1..7`, `CS-AR-1..5`; regra de negócio num lugar só (`QM-CC-6`); contrato publicado sem quebra silenciosa (`QM-CC-7`, `CS-CT-1`).
+- [ ] **Funcionalidade** — comportamento contra o resultado de cada item de O que muda da ITS e o `UC-NNN/CA-N` de onde ele veio (coluna Usada em das Referências); concorrência (`QM-RB-5`, `CS-DA-7`), falha parcial (`QM-RB-4`, `CS-DA-6`), repetição (`QM-RB-3`), dependências lentas ou fora (`QM-RB-1`, `QM-RB-6`, `CS-RS-1`, `CS-RS-2`), recursos liberados (`QM-RB-2`), casos de borda e caminhos de falha (`QM-EO-4`, `QM-EO-5`).
+- [ ] **Eficiência** — nenhum trabalho ilimitado sobre dado que cresce (`QM-EF-1`, `CS-CT-2`, `CS-DA-5`); meta não funcional medida como a ITS declarou (`QM-EF-2`).
+- [ ] **Complexidade** — legível rapidamente (`QM-RC-2/3/4`); generalidade especulativa é complexidade (`QM-MT-4`), na régua do nível declarado.
+- [ ] **Testes** — obrigação `CS-TS-1`, `QM-TS-7`; escopo a partir dos testes declarados em cada unidade do plano, inclusive caracterização; comportamento, não implementação `QM-TS-2`; confiáveis `QM-TS-1`, `CS-TS-4`, `CS-TS-5`; nenhum teste existente enfraquecido sem mudança de comportamento decidida (`QM-TS-8`). Pontos de regressão cobertos.
 - [ ] **Nomenclatura** — `QM-RC-1`, `CS-NM-2`: nenhum nome ocultando I/O, mutação ou um evento.
 - [ ] **Comentários** — `QM-RC-5`, `QM-DO-2`: *porquê*, não *quê*.
-- [ ] **Estilo e consistência** — slots convencionais julgados contra o estado registrado da área (`current` / `legacy-maintained` / `strangler`). Em legacy-maintained, um achado convencional só é válido se um **terceiro** padrão foi introduzido.
-- [ ] **Segurança** — `QM-SR-*` e `CS-SC-*` em toda nova fronteira: entrada validada, segredos ausentes, autorização na camada certa, nada sensível em logs (`CS-OB-3`).
+- [ ] **Estilo e consistência** — slots convencionais julgados contra o estado registrado da área (`current` / `legacy-maintained` / `strangler`) e contra o exemplo canônico, quando declarado. Em legacy-maintained, um achado convencional só é válido se um **terceiro** padrão foi introduzido. Slots de verificação `ferramenta` não são rediscutidos.
+- [ ] **Segurança** — `QM-SR-*` e `CS-SC-*` em toda nova fronteira: entrada validada, segredos ausentes, autorização no servidor negando por padrão e conferindo a titularidade (`QM-SR-8`, `CS-SC-1`), dependência nova admitida e conferida (`CS-DP-1`), dado protegido conforme sua classe (`CS-SC-6`), nada sensível em logs (`CS-OB-3`), eventos de segurança registrados (`CS-OB-5`).
 - [ ] **Documentação** — `QM-DO-1`: nenhum documento co-localizado deixado mentindo pela mudança. Comportamento entregue divergindo do caso de uso roteia para as skills de caso de uso, nunca remendado aqui.
 - [ ] **Cada linha** que um humano vai manter foi realmente lida.
 - [ ] **Uma coisa bem feita** foi identificada e nomeada.
@@ -52,13 +56,13 @@ Para cada achado: **onde · o quê · por quê (ID) · o que se espera**.
 
 | Severidade | Usar para | Bloqueia o merge |
 |---|---|---|
-| `Blocking:` | slot INVARIANT violado; `[NON-NEGOTIABLE]` violado **em silêncio**; teste obrigatório ausente; escopo excedido sem acordo ou fronteira cruzada; conflito com um ADR Accepted; decisão sem ADR; documento deixado mentindo | sim |
+| `Blocking:` | slot INVARIANT violado; `[NON-NEGOTIABLE]` violado **em silêncio** (inclusive teste enfraquecido e área piorada); teste obrigatório ausente; decisão de qualidade da ITS não cumprida; escopo excedido sem acordo ou fronteira cruzada; contagem de migração aumentada; conflito com um ADR Accepted; decisão sem ADR; documento deixado mentindo | sim |
 | `Consider:` | critérios `[CALIBRATED]` e slots CONVENTIONAL com um argumento real; o autor pode declinar com uma razão | não |
 | `Nit:` | trivial, opção do autor. Mecanizável → não é um nit: registre uma lacuna de toolchain | não |
 | `FYI:` | contexto, ensino, elogio — sem obrigação | não |
 
 - [ ] Todo achado cita um ID.
-- [ ] Afastamentos nomeados, com responsável e justificados foram classificados como exceções registradas, não como blockers (`QM-MT-1`).
+- [ ] Afastamentos com o registro de exceção completo (critério, onde, por quê, responsável, condição de saída) num veículo legítimo — ITS, ADR ou, para dívida herdada, descrição do PR — classificados como exceções registradas, não como blockers (`QM-MT-1`). Afastamento novo registrado só por quem implementou → divergência, não exceção.
 - [ ] Achados pequenos repetidos numa área foram agregados no achado de design que os causa.
 
 ## 5. Veredito — exatamente um
@@ -75,15 +79,15 @@ Para cada achado: **onde · o quê · por quê (ID) · o que se espera**.
 - [ ] ADR a propor (its-generator, o arquiteto aprova).
 - [ ] ITS ou caso de uso a revisar, com a seção nomeada.
 - [ ] Slot não preenchido a reportar (`coding-standards`, Slots não preenchidos) — nunca improvisado.
-- [ ] Lacuna de toolchain (uma verificação que um humano fez e que uma ferramenta deveria possuir — `QM-CN-3`).
-- [ ] Dívida deliberada a registrar, com um responsável (`QM-MT-1`).
+- [ ] Lacuna de toolchain (uma verificação que um humano fez e que uma ferramenta deveria possuir, ou um slot de verificação `ferramenta` sem regra no pipeline — `QM-MT-7`).
+- [ ] Dívida deliberada a registrar, com responsável e condição de saída (`QM-MT-1`).
 
 ## 7. Verificação de fronteira antes de entregar
 
 - [ ] Nenhum código de aplicação escrito: os entregáveis são achados e, onde o próprio plano estava errado, uma ITS revisada.
 - [ ] Nenhum critério repetido num comentário. Todo achado aponta para um ID de propriedade de outro lugar.
 - [ ] Nenhum status de caso de uso promovido, nenhuma documentação reescrita, nenhum arquivo de configuração editado como efeito colateral.
-- [ ] Nada rediscutido que a toolchain já possui (`QM-CN-3`); sua ausência registrada como lacuna.
+- [ ] Nada rediscutido que a toolchain já possui (`QM-MT-7`); sua ausência registrada como lacuna.
 
 ---
 

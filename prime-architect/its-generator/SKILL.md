@@ -11,9 +11,9 @@ Disciplina central: **leia antes de propor**. Nunca planeje mudanças em código
 
 ## Passo 0 — Carregar a configuração do projeto e os contratos
 
-Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localização, alternativa, precedência, tratamento de divergências e o procedimento de bootstrap quando o arquivo está ausente vivem todos nesse contrato; nunca os rederive aqui. Da configuração esta skill usa: a stack e as versões (respeite-as — não proponha recursos do Java 17 num projeto Java 11), a estrutura de pastas como mapa para a inspeção de código, a seção *Convenções e restrições* por inteiro — o registro de áreas, os overrides de slots, as migrações declaradas, a postura do modelo de qualidade e as regras do projeto —, as localizações dos documentos (incluindo o repositório de ADRs) e os comandos de verificação.
+Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localização, alternativa, precedência, tratamento de divergências e o procedimento de bootstrap quando o arquivo está ausente vivem todos nesse contrato; nunca os rederive aqui. Da configuração esta skill usa: a stack e as versões (respeite-as — não proponha recursos do Java 17 num projeto Java 11), a estrutura de pastas como mapa para a inspeção de código, a seção *Convenções e restrições* por inteiro — a release fixada do Apex Prime, o registro de áreas (estado e nível de criticidade de cada área, e as exclusões), os overrides de slots, as soluções e exemplos canônicos, as migrações declaradas, a postura do modelo de qualidade e as regras do projeto —, as localizações dos documentos (incluindo o repositório de ADRs) e os comandos de verificação.
 
-Em seguida carregue os contratos contra os quais esta skill escreve: o **prime-core/its-contract** (formato de saída e a fronteira de decisão ITS-vs-ADR), o **prime-architect/use-case** (formato de entrada), o **prime-core/coding-standards** com `references/convention-slots.md` e o arquivo de padrões da stack do projeto (as convenções concretas a que o plano se conforma) e o **prime-core/quality-model** com `references/quality-criteria.md` — consumido não como um livro de regras a satisfazer mecanicamente, mas como a *definição* contra a qual o plano é interrogado antes da entrega (Passo 4.6), honrando sua calibração e sua disciplina de exceção nomeada. Ele não aprova nem reprova o plano por si só.
+Em seguida carregue os contratos contra os quais esta skill escreve: o **prime-core/its-contract** (formato de saída e a fronteira de decisão ITS-vs-ADR), o **prime-architect/use-case** (formato de entrada), o **prime-core/coding-standards** com `references/convention-slots.md` e o arquivo de padrões da stack na release que o projeto fixou (as convenções concretas a que o plano se conforma e de onde vêm os valores das decisões de qualidade) e o **prime-core/quality-model** com `references/quality-criteria.md` e `references/quality-triggers.md` — a definição de qualidade em que o plano se apoia: os gatilhos dizem que decisões de qualidade a story exige do plano, e o catálogo diz o piso e a calibração (Passo 4.6). Ele não aprova nem reprova o plano por si só.
 
 Um slot de que o plano depende e que não tem valor — nem padrão da stack nem override da configuração — é uma **lacuna reportável** conforme o prime-core/coding-standards, nunca um valor que esta skill improvisa. Reporte-a e ofereça preenchê-la; não planeje uma mudança que se apoie nela.
 
@@ -59,7 +59,7 @@ Numere os itens de delta conforme os localiza (`D1`, `D2`, ...), em sequência c
 2. Mapeie **apenas os itens de delta**: para cada item adicionado/alterado/removido, identifique o código correspondente e o que precisa mudar.
 3. **Análise de regressão no próprio caso de uso:** identifique o comportamento que *não* mudou mas compartilha código com o que vai mudar. O corpo completo do caso de uso (não o delta) diz tudo o que precisa continuar funcionando. Numere esses pontos (`RG-1`, `RG-2`), também em sequência contínua no documento, anotando o elemento da fonte de que cada um vem — cada um será reivindicado pela unidade do plano que toca o código compartilhado, e a reivindicação é verificada no Passo 6. O comportamento de outros casos de uso que passa pelo mesmo código vem da varredura do Passo 4, na mesma sequência.
 
-Durante toda a inspeção, anote cada ponto em que existe mais de um caminho de implementação viável. Essas notas alimentam o Passo 5 (linhas de alternativa descartada) e o Passo 4.5 (candidatos a ADR).
+Durante toda a inspeção, anote cada ponto em que existe mais de um caminho de implementação viável. Essas notas alimentam o Passo 5 (linhas de alternativa descartada) e o Passo 4.5 (candidatos a ADR). Anote também, para o Passo 4.6, o que a story introduz que é gatilho de especificação do quality-model — uma entrada externa, uma chamada a outro sistema, uma escrita em mais de um recurso, estado disputado, um dado novo, um volume que cresce —, onde o código só comporta a mudança se for distorcido e onde o código que o plano altera não tem testes.
 
 ## Passo 4 — Verificação de risco em todo o repositório e a fronteira de fora de escopo
 
@@ -89,27 +89,34 @@ Revise os pontos de decisão anotados no Passo 3 contra a fronteira de decisão 
 
 Não produza em excesso: a maioria das stories rende zero ADRs. Um ADR existe porque uma decisão real entre stories foi tomada, não porque a seção quer ser preenchida.
 
-## Passo 4.6 — Interrogar o plano contra o modelo de qualidade e as convenções
+## Passo 4.6 — Definir a qualidade do plano
 
-Antes de escrever, passe o plano pretendido pelo **prime-core/quality-model**, consumindo-o como uma definição contra a qual questionar o entregável — não como um gate (aprovar é trabalho do revisor, depois). Cite critérios por ID. Três perguntas, da regra de consumo do its-generator no modelo:
+A ITS é onde a qualidade da story é decidida. Antes de escrever, apoie o plano no **prime-core/quality-model** e no **prime-core/coding-standards** — não como um gate (aprovar é trabalho do revisor, depois), mas como a definição do que o plano precisa decidir. Os IDs servem a este passo e à conversa com o arquiteto; nunca entram no corpo do documento.
 
-- Alguma mudança proposta comete um pecado capital (um `[NON-NEGOTIABLE]`) **em silêncio**? Um inegociável pode ser desrespeitado, mas somente como uma exceção nomeada e com responsável — nunca por omissão.
-- O nível de cuidado proposto está **calibrado** à vida útil esperada e à importância do código (QM-MT-4)? Sinalize tanto o sub quanto o over-engineering — o excesso é tão danoso quanto a deficiência.
-- Onde o plano se afasta de um critério por legado ou dívida deliberada, esse afastamento está registrado em um dos veículos da própria ITS?
+1. **Declare a calibração.** Leia no registro de áreas o estado e o nível de criticidade de cada área que o plano altera — área não registrada é `current` e `padrão` — e escreva-os nas premissas do plano, com a condição de remoção de uma área `efêmera`. O nível decide a intensidade dos critérios calibrados que os passos seguintes aplicam.
+2. **Decida os gatilhos.** Para cada gatilho de `references/quality-triggers.md` que a story dispara (as notas do Passo 3), tome a decisão que o gatilho lista e escreva-a como instrução na unidade que a implementa, com o valor concreto e o teste ou a medição que a prova. O valor vem, nesta ordem:
+   - dos slots que servem aos critérios do gatilho, no valor efetivo da área — override da área, do nível, do projeto ou o padrão do time na release fixada;
+   - de uma decisão própria desta story, quando a dependência ou o caso pede outro valor — e então a unidade diz por quê;
+   - de lugar nenhum: um slot de que a decisão precisa e que não tem valor é uma lacuna a reportar, nunca um valor a inventar.
 
-O modelo remete ao **prime-core/coding-standards** sempre que um critério precisa de uma convenção concreta para ser verificável, então a mesma passada faz mais duas perguntas ali, citando slots por ID (`CS-XX-N`):
+   Uma decisão que vale além desta story — o primeiro outbox do sistema, uma política de idempotência para todos os consumidores — volta ao Passo 4.5 como candidato a ADR.
+3. **Planeje a preparação.** Onde o Passo 3 encontrou código que só comporta a mudança se for distorcido, planeje uma unidade de refatoração preparatória, sem mudança de comportamento; onde encontrou código sem testes que o plano altera, uma unidade de testes de caracterização. As duas vêm antes das unidades de comportamento.
+4. **Confira o piso e as convenções.**
+   - Nenhuma unidade instrui algo que viole um critério `[NON-NEGOTIABLE]` ou um slot **INVARIANT**. Uma violação silenciosa de um ou de outro é o mesmo defeito, e o revisor bloqueia nos dois.
+   - Em cada área, o plano segue o valor **CONVENTIONAL** que o estado registrado pede: o padrão atual numa área `current`, o padrão local em `legacy-maintained` e `strangler`, o novo valor dentro do escopo de uma migração declarada.
+   - Uma área `strangler` não recebe comportamento novo: capacidade nova planejada ali pertence ao módulo substituto que o registro nomeia.
+5. **Calibre ao nível.** O cuidado proposto corresponde ao nível declarado: sinalize tanto o sub quanto o over-engineering — estrutura especulativa é dívida (`QM-MT-4`).
 
-- Alguma mudança planejada viola um slot **INVARIANT**? Eles valem para toda linha escrita ou alterada, independentemente do que a cerca, e uma violação silenciosa é o mesmo defeito que um inegociável silencioso — o revisor bloqueia em ambos.
-- Para cada área que o plano toca, o plano segue o valor **convencional** que o estado registrado da área pede — o padrão atual numa área `current`, o padrão local em `legacy-maintained` e `strangler`, o novo valor dentro do escopo de uma migração declarada? Uma área `strangler` não recebe comportamento novo: capacidade nova planejada ali pertence ao módulo substituto que o registro nomeia.
+**Quando um valor de convenção entra no documento.** Em dois casos, e só neles: quando uma decisão de gatilho precisa dele, ou quando a área segue um valor diferente do padrão do time — legado, migração em curso, override. Fora disso, a convenção é a base de quem implementa e não se repete. A unidade escreve o valor, nunca o slot; um exemplo canônico declarado na configuração pode ser apontado pelo caminho do arquivo.
 
-Registre cada afastamento nomeado onde ele pertence, nunca como prosa solta:
+**Registre cada afastamento onde ele pertence**, nunca como prosa solta:
 - uma **linha de alternativa descartada** na unidade que o afastamento afeta, quando é uma escolha entre caminhos viáveis que morre com a story;
 - uma **fronteira de fora de escopo / não alterar**, quando é legado herdado que você deliberadamente deixa intocado;
-- um **ADR**, quando o afastamento sobrevive à story — roteie-o de volta pelo Passo 4.5 para a aprovação do arquiteto.
+- um **ADR**, quando o afastamento sobrevive à story ou não tem condição de saída — roteie-o de volta pelo Passo 4.5 para a aprovação do arquiteto.
 
-Os IDs servem a esta interrogação e à conversa com o arquiteto; no documento, o afastamento é escrito por extenso — o que o plano deixa de fazer, onde e por quê — e o critério ou slot de que ele se afasta entra apenas em Referências.
+No documento, o afastamento é escrito por extenso com os elementos do registro de exceção do quality-model: o que o plano deixa de fazer, onde, por quê e quando isso é revisto. O responsável é quem assina a ITS; um afastamento de segurança exige também o responsável de segurança que o projeto declara. O critério ou slot de que ele se afasta entra apenas em Referências.
 
-Este passo faz aflorar melhorias; nunca bloqueia a entrega por si só. Uma violação *silenciosa* de inegociável ou de slot INVARIANT, porém, é um defeito — nomeie-a ou corrija-a antes de escrever.
+Este passo define a qualidade que o plano especifica; nunca aprova nem reprova. Duas coisas, porém, são defeitos a fechar antes de escrever: uma violação *silenciosa* de inegociável ou de slot INVARIANT, e um gatilho disparado sem decisão.
 
 ## Passo 5 — Escrever a ITS conforme o contrato
 
@@ -129,7 +136,7 @@ Execute as verificações do contrato sobre o documento pronto. Elas não viram 
 - Alternativa descartada: todo ponto em que o Passo 3 encontrou mais de um caminho viável está fechado — uma linha de alternativa descartada na unidade, carregando a razão decisiva, ou um ADR listado em Referências. Uma unidade que não enfrentou escolha real não declara nada; o que esta verificação pega é uma escolha real deixada sem registro.
 - Verificação de fronteira: nenhuma decisão arquitetural (conforme os critérios do contrato) tomada no corpo do documento — cada uma vive em um ADR listado em Referências, e nenhum deles ainda está Proposed.
 - Verificação de fora de escopo: toda entrada em "Fora de escopo — não alterar" declara por que é uma borda (compartilhado mas intocado · superfície de contrato não migrada · legado deixado em paz), e nenhuma entrada duplica um ponto de regressão — `RG-N` é código tocado que precisa continuar funcionando, uma fronteira é código que não deve ser tocado.
-- Verificação de qualidade: todo afastamento de um critério do prime-core/quality-model ou de um slot do prime-core/coding-standards trazido pelo Passo 4.6 está registrado como uma exceção nomeada (linha de alternativa descartada, fronteira de fora de escopo ou ADR listado em Referências), escrita por extenso. Nenhuma violação silenciosa de inegociável e nenhuma violação silenciosa de slot INVARIANT permanece.
+- Verificação de qualidade: as premissas declaram o estado e o nível de criticidade de toda área que o plano altera; todo gatilho disparado tem decisão concreta numa unidade, com o teste ou a medição que a prova; todo afastamento de um critério do prime-core/quality-model ou de um slot do prime-core/coding-standards trazido pelo Passo 4.6 está registrado como uma exceção nomeada (linha de alternativa descartada, fronteira de fora de escopo ou ADR listado em Referências), escrita por extenso e com a condição de saída. Nenhuma violação silenciosa de inegociável e nenhuma violação silenciosa de slot INVARIANT permanece.
 - Verificação de autossuficiência: nenhum identificador de outro documento aparece fora de Referências; nenhuma instrução depende de abrir a fonte para ser executada; toda linha de Referências diz onde foi usada e nenhuma carrega conteúdo que o corpo deveria carregar.
 
 Em seguida execute os quatro testes pré-entrega do contrato sobre o documento pronto — implementador, leitor frio, colagem, autor. Se qualquer verificação ou qualquer teste falhar, conserte o plano — não entregue uma ITS com escopo sem explicação ou decisões enterradas.

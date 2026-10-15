@@ -29,7 +29,7 @@
 
 ## Sobreposição do registro de áreas
 
-- [ ] Cada área tocada carrega seu estado registrado: `current` / `legacy-maintained` / `strangler`.
+- [ ] Cada área tocada carrega seu estado registrado (`current` / `legacy-maintained` / `strangler`) e seu nível de criticidade (`efêmera` / `padrão` / `crítica`); código de exclusão marcado como tal.
 - [ ] Estado tirado da configuração — nunca inferido do nome do diretório ou da idade do arquivo.
 - [ ] Estado registrado, **não** precificado.
 
@@ -62,7 +62,7 @@
 
 ## Template do relatório
 
-**Idioma.** O bloco abaixo é o artefato que o arquiteto arquiva, e é escrito no idioma de documento que os templates do core usam: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis — `IM-<demand-id>-N`, os marcadores de proveniência (`[INFERRED]`, `[UNVERIFIED]`), os estados de área (`current`, `legacy-maintained`, `strangler`), `UC-NNN`, `CA-N`, `ADR-NNN`, `QM-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
+**Idioma.** O bloco abaixo é o artefato que o arquiteto arquiva, e é escrito no idioma de documento que os templates do core usam: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis — `IM-<demand-id>-N`, os marcadores de proveniência (`[INFERRED]`, `[UNVERIFIED]`), os estados de área (`current`, `legacy-maintained`, `strangler`), os níveis de criticidade (`efêmera`, `padrão`, `crítica`), `UC-NNN`, `CA-N`, `ADR-NNN`, `QM-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
 
 ````markdown
 # Mapa de impacto — IM-<id-da-demanda>-N
@@ -98,9 +98,9 @@ possível determinar não entra aqui — vai para Lacunas.]
 | formato da resposta de `POST /orders` | [consumidores nomeados, não rastreados por dentro] | [uma linha] |
 
 ## Estados das áreas
-| Área | Estado registrado |
-|---|---|
-| [área] | current / legacy-maintained / strangler |
+| Área | Estado registrado | Nível de criticidade |
+|---|---|---|
+| [área] | current / legacy-maintained / strangler / exclusão | efêmera / padrão / crítica |
 
 ## Camada documentada
 - **Cobertura:** UC-NNN (CA-N, CA-N) cobre [o quê]

@@ -33,8 +33,8 @@
 - [ ] **Superfície de contrato** — todo consumidor conhecido pode ser migrado? O conjunto de consumidores é enumerável?
 - [ ] **Verificação** — comandos de verificação, observabilidade presente, obrigação de teste (`CS-TS-1`).
 - [ ] **Risco de erosão** — o caminho mais barato cria uma segunda forma de fazer algo (`QM-CN-1`)?
-- [ ] **Concorrência e escala** — apenas se o resultado as implica (`QM-EO-4`, `QM-EO-5`, `QM-SR-7`).
-- [ ] **Superfície de segurança** — toda nova fronteira (`QM-SR-*`, `CS-SC-*`).
+- [ ] **Concorrência e escala** — apenas se o resultado as implica (`QM-RB-4`, `QM-RB-5`, `QM-RB-1`, `QM-RB-6`, `QM-EF-1`, `QM-EF-2`).
+- [ ] **Superfície de segurança** — toda nova fronteira (`QM-SR-*`, `CS-SC-*`; controle de acesso `QM-SR-8`; dado protegido `QM-SR-10`, `CS-SC-6`).
 - [ ] Nenhum reandar de código que o mapa já andou.
 
 ## 4. Evidência

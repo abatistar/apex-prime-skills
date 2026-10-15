@@ -2,7 +2,7 @@
 
 Template canônico de propriedade do prime-core/its-contract. O arquiteto o escreve; o desenvolvedor implementa a partir dele; o code review valida contra ele. Veja o SKILL.md do its-contract para as regras de nível de detalhe, escrita, rastreabilidade e fronteira entre ITS e ADR.
 
-**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — os identificadores do próprio documento (`D1`, `RG-1`, `R1`), `ITS-<story-id>` e, somente na seção Referências, os identificadores das fontes (`S-NNN`, `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `QM-XX-N`, `CS-XX-N`), os valores de status de ADR (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), os níveis e classes do catálogo, caminhos de arquivo e identificadores de código — nunca são traduzidos. Cada token continua pertencendo ao contrato que o declara; esta nota apenas afirma que nenhum deles é traduzido.
+**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — os identificadores do próprio documento (`D1`, `RG-1`, `R1`), `ITS-<story-id>` e, somente na seção Referências, os identificadores das fontes (`S-NNN`, `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `QM-XX-N`, `CS-XX-N`), os valores de status de ADR (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), os níveis e classes do catálogo, os estados de área (`current`, `legacy-maintained`, `strangler`) e os níveis de criticidade (`efêmera`, `padrão`, `crítica`), caminhos de arquivo e identificadores de código — nunca são traduzidos. Cada token continua pertencendo ao contrato que o declara; esta nota apenas afirma que nenhum deles é traduzido.
 
 **Marcação.** O bloco abaixo é escrito na marcação de wiki do Confluence, não em Markdown — só a ITS; casos de uso e ADRs seguem em Markdown. O que o template usa:
 
@@ -52,7 +52,8 @@ h3. <Nome do comportamento — ex.: Confirmação de pedido>
 h2. Plano de implementação
 <A espinha do documento, em ordem de execução. Quem implementa lê daqui até o fim sem sair do documento: toda exigência é escrita na instrução — a regra, o resultado esperado, a restrição de uma decisão registrada, a convenção do projeto como escolha concreta —, nunca apontada.>
 
-*Premissas técnicas:* <stack e versões que o plano assume — ex.: Java 11 · Spring Boot 2.7 · PostgreSQL 13>
+*Premissas técnicas:* <stack e versões que o plano assume e a release do Apex Prime que a configuração fixa — ex.: Java 17 · Spring Boot 3.2 · PostgreSQL 15 · Apex Prime na release fixada pela configuração>
+*Áreas tocadas:* <cada área que o plano altera, com o estado e o nível de criticidade registrados na configuração; uma área efêmera leva a condição de remoção — ex.: {{payments}} — current, crítica · {{billing}} — legacy-maintained, padrão · {{promo/blackfriday}} — current, efêmera, remover após 2026-12-15>
 
 h3. 1. <Título da unidade>
 *Executar antes de:* <somente numa ITS revisada, quando esta unidade foi acrescentada ao fim do plano mas precisa rodar antes de uma unidade existente: unidade N>
@@ -62,10 +63,11 @@ h3. 1. <Título da unidade>
 
 *O que fazer:* <uma instrução por item, nesta ordem: o alvo exato em código em linha (arquivo, Classe.metodo(Tipo), endpoint ou coluna), o verbo no imperativo, a condição em que vale e o resultado verificável, com nomes, códigos e valores concretos. Um alvo com mais de uma instrução vira item com subitens, uma instrução por subitem.>
 # {{<alvo>}} — <instrução. Ex.: {{OrderController}} — mapear {{CREDIT_LIMIT_EXCEEDED}} para HTTP 422 com {{ErrorResponse(code, message)}}.>
-# {{<alvo>}} — <o momento ou a condição comum aos subitens. Ex.: {{OrderService.confirm(Order)}} — antes de {{orderRepository.save}}:>
+# {{<alvo>}} — <o momento ou a condição comum aos subitens. Ex.: {{ConfirmOrderService.confirm(ConfirmOrderCommand)}} — antes de {{saveOrderPort.save}}:>
 #* <subinstrução. Ex.: comparar {{order.getTotal()}} com {{creditPolicy.availableLimit(customerId)}};>
 #* <subinstrução. Ex.: quando o total for maior, lançar {{BusinessException}} com o código {{CREDIT_LIMIT_EXCEEDED}} e não gravar o pedido.>
-# {{<alvo>}} — <restrição de uma decisão registrada, escrita como instrução. Ex.: {{OrderService.confirm(Order)}} — publicar {{PedidoConfirmado}} pelo outbox transacional, nunca direto no broker dentro da transação.>
+# {{<alvo>}} — <restrição de uma decisão registrada, escrita como instrução. Ex.: {{ConfirmOrderService.confirm(ConfirmOrderCommand)}} — publicar {{PedidoConfirmado}} pela porta {{PublishOrderEventPort}}, cujo adaptador grava no outbox na mesma transação; nunca direto no broker.>
+# {{<alvo>}} — <decisão de qualidade da story, com o valor concreto. Ex.: {{CardNetworkClient.authorize(Payment)}} (criar) — usar timeout de leitura de 15 s; repetir no máximo 3 vezes, com espera de 200 ms, 400 ms e 800 ms, só em erro de conexão e HTTP 503, sempre com a mesma chave de idempotência {{payment.id}}; seguir a forma de {{src/main/java/com/acme/app/adapter/out/http/AcquirerClient.java}}.>
 # {{<alvo>}} — <instrução que depende de um trecho exato, apontando-o. Ex.: {{CreditPolicy}} (criar) — expor {{availableLimit}} com a assinatura de Trechos fixados.>
 
 *Trechos fixados:* <somente quando uma assinatura, um contrato ou um esquema precisa ser fixado exatamente. Um bloco por trecho, precedido pela instrução que o exige, sempre depois da lista. Em language=, a linguagem do trecho: java, sql, json, ...>
@@ -74,7 +76,7 @@ Instrução <N> — <o que o trecho fixa. Ex.: assinatura de {{CreditPolicy.avai
 BigDecimal availableLimit(CustomerId customerId)
 {code}
 
-*Atende:* D1 <ou: consequência técnica — a justificativa em uma linha>
+*Atende:* D1 <ou: consequência técnica — a justificativa em uma linha. Ex.: refatoração preparatória, sem mudança de comportamento; a suíte existente passa sem alteração>
 *Testes:* <um por resultado observável dos itens que esta unidade atende, mais o teste de não regressão quando a unidade toca código compartilhado com um ponto de regressão>
 # <ex.: pedido acima do limite retorna erro de negócio e nada é gravado (D1)>
 # <ex.: pedido dentro do limite continua sendo confirmado (RG-1)>
@@ -94,6 +96,7 @@ h3. Alterações de esquema / migrações
 h3. Fora de escopo — não alterar
 <Um item por área intocável: componente ou caminho, a razão e a cobertura de não regressão que a protege. Se nada estiver sob risco de alteração acidental, escreva "nenhuma identificada".>
 * <ex.: Não modificar {{PaymentService}} — o fluxo de estorno depende do estado atual e não é tocado por esta story; coberto pela suíte de não regressão de estorno.>
+* <ex., afastamento registrado: Não corrigir a captura genérica de exceção em {{LegacyInvoiceService.post}} — dívida herdada da área legada, fora do escopo desta story; revista na migração do módulo para {{billing.v2}}.>
 
 h3. Riscos e pontos de atenção
 <O que merece atenção sem um teste concreto a exigir, por extenso: partes alteradas com frequência, dependências de ambiente ou de dados, questões em aberto. Comportamento que divide código com a mudança não entra aqui: é ponto de regressão, em Continua valendo.>
