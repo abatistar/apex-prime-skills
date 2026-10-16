@@ -233,7 +233,7 @@ O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → re
 |---|---|---|
 | `QM-XX-N` | Critério de qualidade | `prime-core/quality-model` |
 | `CS-XX-N` | Slot de convenção | `prime-core/coding-standards` |
-| `UC-NNN` · `UC-NNN/CA-N` | Caso de uso · um de seus critérios de aceite | `prime-architect/use-case` |
+| `UC-NNN` · `UC-NNN/RN-N` · `UC-NNN/CA-N` | Caso de uso · uma de suas regras de negócio · um de seus critérios de aceite | `prime-architect/use-case` |
 | `ITS-<story-id>` | Instrução de trabalho de uma story | `prime-core/its-contract` |
 | ADR | Decisão que sobrevive à story | `prime-core/its-contract` |
 
@@ -242,7 +242,7 @@ Todo achado, toda exceção e todo elo de rastreabilidade cita um desses. Uma af
 ## Princípios de design das skills
 
 - **Referenciar, nunca duplicar.** As skills de papel apontam para o `prime-core` em vez de copiar seus critérios. O padrão tem um único dono e um único endereço.
-- **Evidência e julgamento permanecem separados.** Um mapa declara alcance e nunca recomenda; um veredito julga sobre um mapa e nunca o refaz.
+- **Evidência e julgamento permanecem separados.** Um mapa declara alcance, a revisão do código que leu e onde parou, e nunca recomenda; um veredito julga sobre um mapa e nunca o refaz.
 - **Ambiguidade volta, não é presumida.** Se a ITS é ambígua, o agente do dev não preenche as lacunas por conta própria — devolve perguntas ao arquiteto.
 - **Qualidade como gate, não como opinião.** O code review valida contra critérios versionados do `quality-model` e do `coding-standards`, não contra preferências do momento.
 - **Não preenchido é lacuna, não escolha livre.** Uma decisão que ninguém tomou é reportada, nunca improvisada.
