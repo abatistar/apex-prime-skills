@@ -84,7 +84,7 @@ Depois escreva a borda: o que deliberadamente não foi rastreado e o que justifi
 ## Saída
 
 Um relatório de mapa de impacto — um artefato de trabalho do arquiteto, não um documento do repositório. Ele é
-arquivado onde a demanda vive (tracker, thread de refinamento, PRD), nunca sob `docs/`: o repositório de
+arquivado onde a demanda vive (tracker, thread de refinamento, PRD), nunca na raiz de documentos: o repositório de
 casos de uso é a fonte de verdade sobre o comportamento do sistema, e nada aqui compete com ele. Não
 carrega número sequencial, não aparece em nenhuma configuração e não é mantido depois que a demanda segue adiante.
 

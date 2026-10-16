@@ -6,7 +6,7 @@ Este é o template canônico — a cópia única, de propriedade do prime-archit
 
 ## Convenção de nomenclatura de arquivo
 
-`docs/use-cases/UC-NNN-titulo-curto.md` (por exemplo, `UC-042-exportar-relatorio-pdf.md`). `NNN` é um número sequencial com zeros à esquerda, estável durante toda a vida do documento. Nunca renumere casos de uso existentes nem reaproveite um número: o próximo documento recebe o maior número já usado no repositório + 1. Por isso um documento nunca é apagado — o que deixa de descrever um comportamento vivo permanece no mesmo caminho, com Status `Retired` (veja Ciclo de vida do status). O slug segue o idioma do documento; o prefixo `UC-NNN` não.
+`use-cases/UC-NNN-titulo-curto.md` (por exemplo, `UC-042-exportar-relatorio-pdf.md`), sob a raiz de documentos que a configuração do projeto declara — `docs/` quando a documentação vive no repositório do código. `NNN` é um número sequencial com zeros à esquerda, estável durante toda a vida do documento. Nunca renumere casos de uso existentes nem reaproveite um número: o próximo documento recebe o maior número já usado no repositório + 1. Por isso um documento nunca é apagado — o que deixa de descrever um comportamento vivo permanece no mesmo caminho, com Status `Retired` (veja Ciclo de vida do status). O slug segue o idioma do documento; o prefixo `UC-NNN` não.
 
 ## Granularidade
 

@@ -8,7 +8,7 @@ Passada operacional de propriedade do `prime-architect/code-review`. O SKILL.md 
 
 ## 0. Pré-condições — não comece sem elas
 
-- [ ] A **ITS da story** está localizada e lida, junto com todo ADR listado em suas Referências.
+- [ ] A **ITS da story** está localizada e lida, junto com todo ADR listado em suas Referências. Documentação em pasta paralela → lida na revisão que o PR cita.
 - [ ] Os **casos de uso** listados nas Referências da ITS estão lidos: o delta desta story e os critérios de aceite que o delta toca.
 - [ ] `docs/prime-config.md` está carregado (pipeline e verificações obrigatórias, comandos de verificação, release fixada do Apex Prime, registro de áreas com estado, nível e exclusões, overrides de slots, exemplos canônicos, migrações declaradas).
 - [ ] O estado e o nível de criticidade de cada área tocada foram lidos nas premissas da ITS — não rejulgados.

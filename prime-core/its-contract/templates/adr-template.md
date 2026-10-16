@@ -6,7 +6,7 @@ Template canônico de propriedade do prime-core/its-contract. O its-generator re
 
 ## Convenção de nomenclatura de arquivo
 
-`docs/adr/ADR-NNN-titulo-curto.md`, ou conforme sobrescrito pelo `docs/prime-config.md` › Repositório de documentos. `NNN` é sequencial em todo o repositório e nunca é renumerado; uma decisão aposentada mantém seu número e assume o status `Superseded by ADR-NNN`. O slug segue o idioma do documento; o prefixo `ADR-NNN` não.
+`adr/ADR-NNN-titulo-curto.md` sob a raiz de documentos do projeto, ou conforme sobrescrito pela configuração do projeto › Repositório de documentos. `NNN` é sequencial em todo o repositório e nunca é renumerado; uma decisão aposentada mantém seu número e assume o status `Superseded by ADR-NNN`. O slug segue o idioma do documento; o prefixo `ADR-NNN` não.
 
 ## Ciclo de vida do status
 

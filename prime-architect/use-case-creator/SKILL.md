@@ -17,7 +17,7 @@ Da configuração esta skill usa: a localização e a nomenclatura do repositór
 
 ## Passo 1 — Rotear: o que a entrada pede de cada documento
 
-Leia a entrada (user story, trecho de PRD, descrição informal, achado de divergência ou respostas a marcadores) e examine o repositório de casos de uso (na localização declarada na configuração; `docs/use-cases/` por padrão) para classificar o que ela pede de cada documento:
+Leia a entrada (user story, trecho de PRD, descrição informal, achado de divergência ou respostas a marcadores) e examine o repositório de casos de uso (na localização declarada na configuração; `use-cases/` sob a raiz de documentos, por padrão) para classificar o que ela pede de cada documento:
 
 - **Criação** — comportamento novo, sem documento existente (Passo 2a).
 - **Atualização** — muda comportamento documentado (Passo 2b).

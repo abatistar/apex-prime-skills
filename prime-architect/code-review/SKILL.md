@@ -37,7 +37,7 @@ Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localiz
 
 Em seguida carregue, nesta ordem:
 
-1. **A ITS da story** e todo ADR listado em suas Referências — conforme o **prime-core/its-contract**. A rastreabilidade plano ⇄ delta que o its-generator já verificou está na estrutura do documento — os itens de O que muda, o Atende e os Testes de cada unidade, a coluna Usada em das Referências —, e é a base sobre a qual a sua própria verificação (diff ⇄ plano) se constrói.
+1. **A ITS da story** e todo ADR listado em suas Referências — conforme o **prime-core/its-contract**, sob a raiz de documentos que a configuração declara. Quando ela é uma pasta paralela, versionada à parte, leia a ITS na revisão que o PR cita; um PR que não cita a revisão é devolvido ao autor antes da revisão começar. A rastreabilidade plano ⇄ delta que o its-generator já verificou está na estrutura do documento — os itens de O que muda, o Atende e os Testes de cada unidade, a coluna Usada em das Referências —, e é a base sobre a qual a sua própria verificação (diff ⇄ plano) se constrói.
 2. **Os casos de uso listados nas Referências da ITS**, conforme o **prime-architect/use-case**: o delta desta story e os critérios de aceite que o delta toca.
 3. **prime-core/quality-model** com `references/quality-criteria.md` e `references/quality-triggers.md`, e **prime-core/coding-standards** com `references/convention-slots.md` mais o arquivo de padrões da stack na release que o projeto fixou.
 

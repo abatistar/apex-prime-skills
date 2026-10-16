@@ -143,8 +143,8 @@ Nunca entregue um veredito sobre uma demanda que você não entendeu. "Provavelm
 ## Saída
 
 Um relatório de viabilidade — um artefato de trabalho do arquiteto dentro do refinamento do time, não um
-documento do repositório. É arquivado onde a demanda vive (tracker, thread do PRD), nunca sob
-`docs/`, e não aparece em nenhuma configuração. Cabeçalho pela mesma regra do mapa: `FA-<demand-id>-N`,
+documento do repositório. É arquivado onde a demanda vive (tracker, thread do PRD), nunca na
+raiz de documentos, e não aparece em nenhuma configuração. Cabeçalho pela mesma regra do mapa: `FA-<demand-id>-N`,
 a data e a demanda.
 
 Contém a demanda reformulada e sua fronteira, **uma referência ao mapa de impacto — por ID e
