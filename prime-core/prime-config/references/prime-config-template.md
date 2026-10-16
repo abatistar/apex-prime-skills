@@ -117,6 +117,7 @@ Exclusões:
 
 ## Pipeline (Azure DevOps)
 <!-- Seção opcional. prime-core/prime-config › Pipeline. Omita em projetos sem pipeline. -->
+- Plataforma dos PRs: Azure DevOps (Azure Repos)
 - Validação de PR: [nome do pipeline]
 - Verificações obrigatórias antes do merge:
   - build e testes (`./mvnw clean verify`), com o teste de arquitetura (ArchUnit)
@@ -126,5 +127,6 @@ Exclusões:
   - varredura de segredos (gitleaks) e de dependências; SBOM (CycloneDX)
   - comparação do OpenAPI e testes de contrato
   - `@Disabled` sem item do tracker
+- Políticas de PR: revisor obrigatório — o arquiteto responsável; resolução de comentários — obrigatória
 - Fluxo de deploy após o merge: [estágios]
 ````

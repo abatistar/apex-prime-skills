@@ -6,3 +6,5 @@ description: STUB - Como preparar o PR para a revisão do arquiteto e para o pip
 # pr-preparation
 
 TODO: a ser escrita separadamente. Este arquivo existe para que a estrutura de camadas e as referências cruzadas sejam válidas.
+
+Já acordado: a descrição do PR segue a regra do PR de entrega do prime-core/its-contract (Regras de consumo).
