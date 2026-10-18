@@ -66,7 +66,7 @@ Um mapa avulso trazido pronto que parou em `Insufficient input` encerra esta exe
 
 Antes de qualquer lente rodar, classifique a baseline de cada área tocada — o comportamento documentado contra o qual a demanda é julgada —, porque ela muda o que um veredito pode significar:
 
-- **documentada** — coberta por casos de uso `Reviewed`, sem divergência com o código;
+- **documentada** — coberta por casos de uso `Reviewed`, sem divergência com o código. Um delta pendente que o mapa registrou não é divergência (prime-architect/use-case, Ciclo de vida do status): a demanda é julgada sobre o estado-alvo da story em curso, que entra como `Condition:` quando o resultado daqui depende da ordem de implementação — rota: a story em curso, responsável o arquiteto responsável — e como `FYI:` quando só convive com ela;
 - **parcial** — sem caso de uso, coberta só por um documento `Draft`, coberta por um `Retired` que o código ainda executa, ou com divergência código × caso de uso. Onde código e documento discordam, **nenhum dos dois é um baseline seguro**, e um veredito apoiado no errado se dissolve ao primeiro contato;
 - **green-field** — adição que não toca nenhum comportamento existente; dispensa baseline.
 
@@ -163,7 +163,7 @@ execução que o encontrou nomeada — nunca ampliando a regra localmente. É a 
   na área X, um spike com tempo limitado em Y, uma medição de Z) e o que a torna decisiva: a pergunta
   que ela responde, quem a executa e o veredito a que cada resultado leva — "p99 ≤ 300 ms → *Viable with
   conditions*; acima → *Not viable as specified*". Uma execução cujo resultado ninguém sabe ler não decide
-  nada. Feita a execução, a análise roda de novo sobre um mapa novo (`FA-<demand-id>-2`). Este veredito é
+  nada. Feita a execução, a análise roda de novo (`FA-<demand-id>-2`) sobre um mapa novo (`IM-<demand-id>-2`). Este veredito é
   um resultado, não uma falha — um veredito inventado custa mais que uma lacuna honesta.
 
 **Em todo veredito, as premissas.** Liste as linhas não ancoradas — `[INFERRED]` e `[UNVERIFIED]` — de que

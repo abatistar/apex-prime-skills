@@ -2,19 +2,20 @@
 
 Template canônico de propriedade do prime-core/its-contract. O its-generator redige contra ele quando um plano precisa se comprometer com a decisão, e o arquiteto redige contra ele diretamente quando ainda não existe plano; o arquiteto aprova em ambos os casos, e o code-review bloqueia uma decisão que chegou ao código sem registro. Veja o SKILL.md do its-contract para a fronteira de decisão, que diz quando uma decisão deve um ADR, e para a regra de conteúdo, que governa como uma ITS escreve o que um ADR exige do seu plano.
 
-**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — `ADR-NNN`, os valores de status (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), `UC-NNN`, `ITS-<story-id>`, `QM-XX-N`, `CS-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
+**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — `ADR-NNN`, os valores de status (`Proposed`, `Accepted`, `Rejected`, `Superseded by ADR-NNN`), `UC-NNN`, `ITS-<story-id>`, `QM-XX-N`, `CS-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
 
 ## Convenção de nomenclatura de arquivo
 
-`adr/ADR-NNN-titulo-curto.md` sob a raiz de documentos do projeto, ou conforme sobrescrito pela configuração do projeto › Repositório de documentos. `NNN` é sequencial em todo o repositório e nunca é renumerado; uma decisão aposentada mantém seu número e assume o status `Superseded by ADR-NNN`. O slug segue o idioma do documento; o prefixo `ADR-NNN` não.
+`adr/ADR-NNN-titulo-curto.md` sob a raiz de documentos do projeto, ou conforme sobrescrito pela configuração do projeto › Repositório de documentos. `NNN` é sequencial em todo o repositório e nunca é renumerado nem reaproveitado; uma decisão aposentada mantém seu número e assume o status `Superseded by ADR-NNN`, e uma proposta recusada mantém o seu e assume `Rejected`. O slug segue o idioma do documento; o prefixo `ADR-NNN` não.
 
 ## Ciclo de vida do status
 
 - **Proposed** — redigido, ainda não aprovado. Uma ITS nunca é entregue enquanto um ADR que ela referencia ainda estiver `Proposed`.
 - **Accepted** — aprovado pelo arquiteto. Contexto vinculante para todo implementador e todo plano posterior. A configuração não o sobrescreve; um conflito entre os dois é reportado, não resolvido em silêncio.
+- **Rejected** — o arquiteto recusou a decisão proposta. O registro permanece no lugar, com a razão da recusa em uma linha na própria célula de Status (`Rejected — escopo de story`), para que o número não volte a ser usado e a discussão não recomece do zero. Não volta a outro status: uma proposta nova é um registro novo. Não incide sobre nenhum plano.
 - **Superseded by ADR-NNN** — substituído. O registro permanece no lugar com a justificativa intacta, apontando para seu substituto. O status só muda quando o arquiteto aprova o substituto.
 
-Só o arquiteto move um ADR entre status, quem quer que tenha escrito o registro. Redigir é um ato separado; **Quem arquiva** abaixo diz quem o executa.
+Só o arquiteto move um ADR entre status, quem quer que tenha escrito o registro. Mover é a decisão, não a edição do campo: por ordem explícita do arquiteto para aquele registro ("aprove o ADR-007"), quem está na sessão aplica a edição; nunca por julgamento próprio nem por uma ordem genérica. Redigir é um ato separado; **Quem arquiva** abaixo diz quem o executa.
 
 ## Regras de escopo
 
@@ -30,9 +31,9 @@ Só o arquiteto move um ADR entre status, quem quer que tenha escrito o registro
 | Campo | Valor |
 |---|---|
 | **ID** | ADR-NNN |
-| **Status** | Proposed · Accepted · Superseded by ADR-NNN |
+| **Status** | Proposed · Accepted · Rejected — [razão em uma linha] · Superseded by ADR-NNN |
 | **Data** | AAAA-MM-DD |
-| **Origem** | ITS-<story-id> · demanda em refinamento · conselho arquitetural |
+| **Origem** | ITS-<story-id> · demanda em refinamento · aconselhamento arquitetural |
 | **Escopo** | [módulos, camadas ou casos de uso que a decisão vincula] |
 | **Substitui** | ADR-NNN, ou "nenhum" |
 

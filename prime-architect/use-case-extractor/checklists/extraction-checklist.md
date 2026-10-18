@@ -18,7 +18,7 @@ A passada operacional do `prime-architect/use-case-extractor`. **Nenhum template
 
 - [ ] Toda superfície de interação do escopo listada — rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos —, procurada pelo mapa de estrutura da configuração.
 - [ ] Pontos de entrada agrupados pelo objetivo do ator (Granularidade do formato): cada objetivo é um candidato; ponto técnico sem objetivo de ator listado à parte.
-- [ ] Nenhum candidato que já tenha caso de uso no repositório. Documento existente que diverge do código → `use-case-creator` (conformidade ou reconciliação), nunca um documento novo. Candidato coberto por um documento `Retired` → reportado ao arquiteto.
+- [ ] Nenhum candidato que já tenha caso de uso no repositório. Documento existente que diverge do código → `use-case-creator` (conformidade ou reconciliação), nunca um documento novo; delta pendente de uma story ainda não entregue não é divergência — só mencionado ao arquiteto. Candidato coberto por um documento `Retired` → reportado ao arquiteto.
 - [ ] Inventário agrupado apresentado e candidatos acordados com o usuário antes de escrever qualquer documento.
 
 ## Reconstrução

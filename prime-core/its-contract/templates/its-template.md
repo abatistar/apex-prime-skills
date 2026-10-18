@@ -2,7 +2,7 @@
 
 Template canônico de propriedade do prime-core/its-contract. O arquiteto o escreve; o desenvolvedor implementa a partir dele; o code review valida contra ele. Veja o SKILL.md do its-contract para as regras de nível de detalhe, escrita, rastreabilidade e fronteira entre ITS e ADR.
 
-**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — os identificadores do próprio documento (`D1`, `RG-1`, `R1`), `ITS-<story-id>` e, somente na seção Referências, os identificadores das fontes (`S-NNN`, `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `QM-XX-N`, `CS-XX-N`), os valores de status de ADR (`Proposed`, `Accepted`, `Superseded by ADR-NNN`), os níveis e classes do catálogo, os estados de área (`current`, `legacy-maintained`, `strangler`) e os níveis de criticidade (`efêmera`, `padrão`, `crítica`), caminhos de arquivo e identificadores de código — nunca são traduzidos. Cada token continua pertencendo ao contrato que o declara; esta nota apenas afirma que nenhum deles é traduzido.
+**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — os identificadores do próprio documento (`D1`, `RG-1`, `R1`), `ITS-<story-id>` e, somente na seção Referências, os identificadores das fontes (`S-NNN`, `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `QM-XX-N`, `CS-XX-N`), os valores de status de ADR (`Proposed`, `Accepted`, `Rejected`, `Superseded by ADR-NNN`), os níveis e classes do catálogo, os estados de área (`current`, `legacy-maintained`, `strangler`) e os níveis de criticidade (`efêmera`, `padrão`, `crítica`), caminhos de arquivo e identificadores de código — nunca são traduzidos. Cada token continua pertencendo ao contrato que o declara; esta nota apenas afirma que nenhum deles é traduzido.
 
 **Marcação.** O bloco abaixo é escrito na marcação de wiki do Confluence, não em Markdown — só a ITS; casos de uso e ADRs seguem em Markdown. O que o template usa:
 
@@ -33,10 +33,10 @@ Restrições de formatação (das regras de escrita do contrato): no máximo 3 n
 h1. ITS-<story-id> — <Título da story>
 
 h2. Descrição
-<Sumário executivo: 3–5 linhas em linguagem de negócio, sem identificadores de código nem de outros documentos. O que a story muda, para quem e o efeito observável. Escreva esta seção POR ÚLTIMO, depois de fechado o plano. É a porta de entrada para lideranças técnicas e compliance.>
+<Sumário executivo: 3–5 linhas em linguagem de negócio, sem identificadores de código nem de outros documentos. O que a story muda, para quem e o efeito observável — numa story técnica, que nada muda para quem usa o sistema e o que a mudança interna garante. Escreva esta seção POR ÚLTIMO, depois de fechado o plano. É a porta de entrada para lideranças técnicas e compliance.>
 
 h2. O que muda
-<Uma subseção por área de comportamento afetada, nomeada pelo comportamento — nunca pelo identificador do documento de origem. Tudo por extenso: quem lê aqui não tem acesso aos casos de uso. Numeração contínua no documento inteiro: D1, D2, ... e RG-1, RG-2, ... nunca reiniciam por subseção. Nenhum mapeamento para código: o plano é dono dele.>
+<Uma subseção por área de comportamento afetada, nomeada pelo comportamento — nunca pelo identificador do documento de origem. Tudo por extenso: quem lê aqui não tem acesso aos casos de uso. Numeração contínua no documento inteiro: D1, D2, ... e RG-1, RG-2, ... nunca reiniciam por subseção. Nenhum mapeamento para código: o plano é dono dele. Numa story técnica, uma subseção só, nomeada pelo resultado técnico: a frase de síntese diz que o comportamento observável não muda, e cada D é o resultado técnico com a checagem que o prova — ex.: D1: nenhuma classe sob {{service/pedido}} depende de um adaptador; o teste de arquitetura passa com a contagem da migração zerada nesse escopo.>
 
 h3. <Nome do comportamento — ex.: Confirmação de pedido>
 <Uma frase em linguagem de comportamento: o que o sistema passa a fazer de diferente aqui.>
@@ -54,6 +54,7 @@ h2. Plano de implementação
 
 *Premissas técnicas:* <stack e versões que o plano assume e a release do Apex Prime que a configuração fixa — ex.: Java 17 · Spring Boot 3.2 · PostgreSQL 15 · Apex Prime na release fixada pela configuração>
 *Áreas tocadas:* <cada área que o plano altera, com o estado e o nível de criticidade registrados na configuração; uma área efêmera leva a condição de remoção — ex.: {{payments}} — current, crítica · {{billing}} — legacy-maintained, padrão · {{promo/blackfriday}} — current, efêmera, remover após 2026-12-15>
+*Ordem de entrega:* <somente quando um caso de uso que o plano lê tem a mudança de outra story ainda não entregue: a mudança que o plano presume já no código, ou não, por extenso — ex.: o plano presume entregue a recusa de pedidos acima do limite de crédito; implementar depois dela.>
 
 h3. 1. <Título da unidade>
 *Executar antes de:* <somente numa ITS revisada, quando esta unidade foi acrescentada ao fim do plano mas precisa rodar antes de uma unidade existente: unidade N>
@@ -113,6 +114,7 @@ h2. Referências
 |R1|Story S-NNN — <resumo em uma linha> — [<url do item no tracker>]|todo o documento|
 |R2|Caso de uso UC-NNN — <Nome> (alteração)|D1 (RN-3, CA-2) · D2 (extensão 4a) · RG-1 (passo 5)|
 |R3|Caso de uso UC-NNN — <Nome> (regressão)|RG-2 (passo 2)|
-|R4|ADR-NNN — <Título> (Accepted)|unidade 1|
-|R5|Critério de qualidade QM-XX-N — <nome no catálogo> (\[NON-NEGOTIABLE\])|Fora de escopo — afastamento registrado|
+|R4|Story S-NNN — <resumo em uma linha> — [<url do item no tracker>] (dependência)|Ordem de entrega|
+|R5|ADR-NNN — <Título> (Accepted)|unidade 1|
+|R6|Critério de qualidade QM-XX-N — <nome no catálogo> (\[NON-NEGOTIABLE\])|Fora de escopo — afastamento registrado|
 ````

@@ -13,7 +13,8 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 ## Entradas
 
 - [ ] Story identificada; casos de uso afetados listados, ou encontrados buscando o ID da story no Histórico de revisões.
-- [ ] Todo documento afetado tem Status `Reviewed`. Qualquer outro → reportar e parar; marcadores pendentes → use-case-creator (modo validação); delta ainda não validado → arquiteto, para validar e promover. A promoção é um ato humano. Única exceção: `Retired` pela entrada de retirada desta story.
+- [ ] Story técnica (muda o código sem mudar comportamento observável) → confirmada com o arquiteto antes de planejar; entra só com a story, segue o cenário técnico e pula as duas verificações seguintes. Arquiteto discorda → algo observável muda → use-case-creator primeiro.
+- [ ] Todo documento afetado tem Status `Reviewed`. Qualquer outro → reportar e parar; marcadores pendentes → use-case-creator (modo validação); delta ainda não validado → arquiteto, para validar e promover. A promoção é um ato humano, e a edição do Status só acontece por ordem explícita do arquiteto. Única exceção: `Retired` pela entrada de retirada desta story.
 - [ ] Todo documento afetado passa pelo formato `use-case`: nenhuma seção obrigatória ausente.
 - [ ] Comportamento sem nenhum caso de uso → `use-case-extractor` recomendado para aquela área primeiro.
 - [ ] ADRs Accepted que tocam a área afetada listados. Um delta que não pode ser satisfeito sem contradizer um deles → roteado ao passo de ADR, nunca absorvido no plano.
@@ -21,7 +22,7 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 ## Delta e cenário
 
 - [ ] Por caso de uso, a entrada do Histórico de revisões para **esta** story localizada.
-- [ ] Cenário classificado: criação | alteração. Uma entrada de conformidade é alteração com o corpo inalterado: os identificadores que ela cita são o delta. Uma entrada de retirada é alteração com o documento inteiro como delta, cada item removido; a regressão vem dos outros casos de uso que compartilham o código.
+- [ ] Cenário classificado: criação | alteração | técnico. No técnico não há entrada: os itens `D` são o resultado técnico da story, cada um com a checagem que o prova (teste de arquitetura, contagem da migração, versão no build, ausência da flag). Uma entrada de conformidade é alteração com o corpo inalterado: os identificadores que ela cita são o delta. Uma entrada de retirada é alteração com o documento inteiro como delta, cada item removido; a regressão vem dos outros casos de uso que compartilham o código.
 - [ ] Nenhuma entrada para o ID da story → reportado e roteado ao use-case-creator; a única exceção é uma entrada que o limite de cinco entradas empurrou para fora, recuperada do controle de versão.
 - [ ] Entradas de revisão mais antigas tratadas como estado somente leitura — nunca como trabalho pendente. Idem para entradas sem ID de story (mapeamento inicial, reconciliação com o código, revisão editorial), seja qual for sua posição.
 - [ ] Itens de delta numerados (`D1`, `D2`, ...) em sequência contínua no documento inteiro, cada um anotado com o elemento da fonte de que vem (passo, extensão, `RN-N`, `CA-N`).
@@ -35,6 +36,8 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 - [ ] Criação: todo componente classificado como **modificar** levado à varredura do Passo 4, que transforma o comportamento que ele já atende em pontos de regressão.
 - [ ] Alteração: apenas os itens de delta mapeados para código.
 - [ ] Alteração: pontos de regressão numerados (`RG-1`, `RG-2`) em sequência contínua, a partir do corpo do caso de uso, não do delta, cada um anotado com sua origem.
+- [ ] Técnico: todo o código que a story altera localizado (numa migração, as ocorrências da detecção no escopo; numa atualização, os usos da API que muda), e o comportamento que ele serve levado à varredura do Passo 4. Comportamento sem caso de uso → caracterização quando sem testes, e lacuna de documentação em Riscos com o use-case-extractor como rota.
+- [ ] Delta pendente de outra story num caso de uso lido (o alterado ou um que fornece regressão) → ordem de entrega presumida: delta empilhado no mesmo caso de uso presume a outra entregue antes; caso de uso só de regressão → ordem confirmada com o arquiteto, e os pontos de regressão no estado que ela presume.
 - [ ] Todo ponto com mais de um caminho de implementação viável anotado para a linha de alternativa descartada ou para o passo de ADR.
 - [ ] Anotados para o Passo 4.6: os gatilhos de especificação que a story dispara, o código que só comporta a mudança se for distorcido e o código sem testes que o plano altera.
 
@@ -52,7 +55,7 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 - [ ] Cada ponto de decisão testado contra a fronteira de decisão do contrato: restringe implementações futuras · afeta mais de um caso de uso ou módulo · precisa de justificativa legível fora desta ITS.
 - [ ] Candidato redigido conforme o `its-contract` (`templates/adr-template.md`), status `Proposed`, na localização configurada, com as alternativas consideradas e as consequências declarando custos além dos ganhos.
 - [ ] Apresentado ao arquiteto. Nenhuma ITS entregue enquanto um ADR que ela referencia ainda estiver Proposed.
-- [ ] Rejeitado como escopo de story → recai numa linha de alternativa descartada.
+- [ ] Recusado → registro em `Rejected`, com a razão; recusado como escopo de story → a decisão recai numa linha de alternativa descartada.
 - [ ] Aprovado → listado em Referências, e sua restrição escrita como instrução em toda unidade que ele vincula.
 - [ ] Contradição com um ADR Accepted → ou o plano cabe sob ele, ou um registro substituto é roteado para aprovação. Nunca resolvida em silêncio.
 - [ ] Nenhum ADR produzido para preencher uma seção. A maioria das stories rende zero.
@@ -82,7 +85,7 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 - [ ] Plano escrito em ordem de execução, abrindo com as premissas técnicas (stack, versões, padrões do time) e as áreas tocadas (estado e nível); O que muda carrega as mudanças e o que continua valendo e nada que o plano repita.
 - [ ] Toda exigência escrita no ponto em que é usada: regra como condição e resposta, critério de aceite como resultado verificável, ADR como o que exige do plano, convenção como a escolha concreta. Nenhum identificador de outro documento fora de Referências.
 - [ ] Nenhuma frase narra como o plano foi produzido. Notas de trabalho ficaram fora do documento.
-- [ ] Referências preenchidas a partir dos documentos já abertos: uma linha por fonte, `R1` = story, Usada em com o elemento interno da fonte; nenhuma glosa nem resumo.
+- [ ] Referências preenchidas a partir dos documentos já abertos: uma linha por fonte (inclusive a story de que o plano depende), `R1` = story, Usada em com o elemento interno da fonte; nenhuma glosa nem resumo.
 - [ ] Descrição escrita por último.
 
 ## Rastreabilidade antes de entregar
@@ -95,6 +98,7 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 - [ ] **Fronteira:** nenhuma decisão arquitetural tomada no corpo; nenhum ADR listado ainda Proposed.
 - [ ] **Fora de escopo:** toda entrada declara por que é uma borda; nenhuma duplica um ponto de regressão.
 - [ ] **Qualidade:** áreas tocadas declaradas com estado e nível; todo gatilho disparado decidido numa unidade; todo afastamento de um critério `QM-XX-N` ou de um slot `CS-XX-N` registrado como uma exceção nomeada, com condição de saída. Nenhum inegociável silencioso e nenhuma violação INVARIANT silenciosa permanece.
+- [ ] **Dependência:** todo delta pendente de outra story com a ordem de entrega presumida nas premissas e a outra story em Referências como dependência.
 - [ ] **Autossuficiência:** nenhum identificador de outro documento fora de Referências; nenhuma instrução depende de abrir a fonte; toda linha de Referências diz onde foi usada e nenhuma carrega conteúdo que o corpo deveria carregar.
 - [ ] Nenhuma tabela de rastreabilidade escrita no documento: a verificação roda sobre o que ele já declara.
 - [ ] Os quatro testes pré-entrega do contrato executados sobre o documento pronto: implementador · leitor frio · colagem · autor.

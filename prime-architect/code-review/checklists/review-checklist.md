@@ -62,7 +62,7 @@ Passada operacional de propriedade do `prime-architect/code-review`. O SKILL.md 
 - [ ] **Testes** — obrigatórios presentes, por unidade, inclusive caracterização e não regressão; comportamento, não implementação; confiáveis; cada um falharia sem a mudança; nenhum teste existente enfraquecido sem mudança de comportamento decidida.
 - [ ] **Nomenclatura** — nenhum nome ocultando I/O, mutação ou um evento.
 - [ ] **Comentários** — *porquê*, não *quê*.
-- [ ] **Documentação** — nenhum documento co-localizado deixado mentindo; divergência com o caso de uso roteada às skills de caso de uso, nunca remendada aqui.
+- [ ] **Documentação** — nenhum documento co-localizado deixado mentindo. Diferença da ITS → Funcionalidade, contra o autor; ITS cumprida mas diferente do caso de uso → *Return to the architect* (ITS mal traduzida → its-generator; caso de uso desatualizado → skills de caso de uso). Delta pendente de outra story não é defeito: julgado contra a ordem de entrega das premissas da ITS. Nada remendado aqui.
 - [ ] **Estilo e consistência** — slots convencionais contra o estado registrado da área (`current` / `legacy-maintained` / `strangler`) e contra o exemplo canônico, quando declarado. Em legacy-maintained, um achado convencional só é válido se um **terceiro** padrão foi introduzido.
 - [ ] **Cada linha** que um humano vai manter foi realmente lida; o que foi só percorrido está na Cobertura.
 - [ ] **Uma coisa bem feita** foi identificada e nomeada.

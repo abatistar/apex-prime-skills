@@ -27,6 +27,7 @@ Passada operacional de propriedade do `prime-architect/feasibility-analysis`. O 
 - [ ] Perfil de evidência e "como o alcance foi buscado" lidos.
 - [ ] **Borda declarada** lida — onde o mapa parou, e se o veredito depende de algo além dela.
 - [ ] Baseline de cada área tocada classificada: documentada (`Reviewed`, sem divergência) · parcial (sem caso de uso, só `Draft`, `Retired` ainda executado, divergência) · green-field.
+- [ ] Delta pendente registrado pelo mapa → baseline documentada, julgada sobre o estado-alvo da story em curso; dependência da ordem de implementação → `Condition:` (responsável o arquiteto responsável); só convivência → `FYI:`.
 - [ ] Baseline parcial em outro ponto → `Condition:` com responsável e rota (`use-case-extractor`; `use-case-creator` em validação, conformidade ou reconciliação; o arquiteto para o `Retired`). Baseline parcial onde o veredito se apoia → Undecidable, declarado e justificado.
 
 ## 3. Lentes, em ordem

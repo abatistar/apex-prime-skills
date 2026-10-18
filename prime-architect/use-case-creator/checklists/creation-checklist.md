@@ -10,6 +10,7 @@ A passada operacional do `prime-architect/use-case-creator`. **Nenhum template d
 
 ## Roteamento
 
+- [ ] Story que não muda o comportamento observável de nenhum ator → técnica: nenhum documento escrito; roteada ao its-generator (cenário técnico).
 - [ ] Cada documento classificado: criação | atualização | conformidade ou reconciliação | validação | retirada | revisão editorial.
 - [ ] Mapeamento N-para-N (documentos existentes afetados e novos a nascer, com o modo de cada um) confirmado com o usuário antes de escrever.
 - [ ] ID da story confirmado junto com o mapeamento. Sem story → origem seguida de `[CONFIRM: story de origem]`, documento em `Draft`.
@@ -30,7 +31,7 @@ A passada operacional do `prime-architect/use-case-creator`. **Nenhum template d
 - [ ] Identificadores: nenhum `RN-N` ou `CA-N` renumerado ou reaproveitado; removidos viraram lápide; toda renumeração de passos declarada no delta.
 - [ ] Uma entrada por story por documento. Reexecução → a entrada existente reescrita, nunca uma segunda — e só enquanto ela é a mais recente do documento; com outra por cima → reportado ao arquiteto.
 - [ ] Documento `Reviewed` que recebeu alteração, reconciliação, revisão editorial ou marcador devolvido a `Draft`.
-- [ ] Conformidade ou reconciliação: o arquiteto decidiu qual lado está certo. Conformidade sem mudança no corpo nem no Status; reconciliação com a entrada `reconciliação com o código`.
+- [ ] Conformidade ou reconciliação: delta pendente descartado antes (código divergindo só nos itens do delta de uma story ainda não entregue → nada a registrar, dito ao arquiteto com o ID da story); o arquiteto decidiu qual lado está certo. Conformidade sem mudança no corpo nem no Status; reconciliação com a entrada `reconciliação com o código`.
 - [ ] Validação: marcadores listados no formato da Lista de perguntas; respostas aplicadas item a item, só as que a lista atual reproduz; só marcadores respondidos resolvidos; nenhuma entrada no histórico; nada promovido.
 - [ ] Retirada: corpo inalterado; entrada `Retirada` com o ID da story; Status `Retired`; arquivo mantido no mesmo caminho; documento retirado do campo Casos de uso relacionados dos outros; documento cujo fluxo dependia dele levado ao mapeamento.
 - [ ] Revisão editorial: só sobre documento `Reviewed`; nenhuma mudança de comportamento; itens movidos em lápide apontando o destino; mapa de identificadores no Resumo; documento absorvido em `Retired`; nunca junto com o delta de uma story.
@@ -53,7 +54,7 @@ A passada operacional do `prime-architect/use-case-creator`. **Nenhum template d
 
 ## Verificação de fronteira antes de entregar
 
-- [ ] Nenhum status promovido — a promoção é por palavra do arquiteto.
+- [ ] Nenhum status promovido sem ordem explícita do arquiteto para aquele documento, e nunca com marcador pendente.
 - [ ] Nenhum documento de caso de uso apagado — o que deixa de descrever comportamento vivo vira `Retired`.
 - [ ] Nenhum lado de uma divergência escolhido em nome do arquiteto.
 - [ ] Nenhum código de aplicação escrito; nenhuma ITS gerada.

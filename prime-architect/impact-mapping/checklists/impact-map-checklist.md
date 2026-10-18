@@ -53,6 +53,7 @@ Passada operacional de propriedade do `prime-architect/impact-mapping`. O SKILL.
 - [ ] Cobertura por casos de uso listada (`UC-NNN`, com `RN-N`, `CA-N`, passo ou extensão quando específica), **cada um com seu status**.
 - [ ] `Draft` → o que o mantém em `Draft` e a rota (`use-case-creator` modo validação, ou o arquiteto para promover). `Retired` cobrindo código que ainda executa → divergência.
 - [ ] Comportamento tocado sem caso de uso → lacuna de documentação, área nomeada, `use-case-extractor` anotado como a rota.
+- [ ] Delta pendente conferido antes de qualquer divergência: código diferente só nos itens do delta de uma story ainda não entregue, fazendo ali o que o documento descrevia antes → cobertura do estado-alvo, com o ID da story; entrega incerta → `[INFERRED]` com o raciocínio e pergunta em Lacunas.
 - [ ] Divergência código × caso de uso registrada como achado, com o elemento do caso de uso e a âncora no código, e roteada ao `use-case-creator` (`QM-DO-1`). Nenhum caso de uso remendado aqui.
 - [ ] ADRs `Accepted` que incidem sobre as áreas tocadas listados; contradição aparente declarada e citada, **não resolvida**. ADRs `Proposed` sobre as áreas listados como decisão em curso.
 
@@ -135,6 +136,7 @@ não entra aqui — vai para Lacunas.]
 
 ## Camada documentada
 - **Cobertura:** UC-NNN (`Reviewed`; RN-N, CA-N) cobre [o quê]
+- **Delta pendente:** UC-NNN (`Reviewed`) descreve o estado-alvo de S-NNN, ainda não entregue; `caminho/Arquivo.ext:80` ainda faz o anterior nos itens do delta. Não é divergência.
 - **Cobertura não validada:** UC-NNN (`Draft` — [o que o mantém em Draft]) cobre [o quê]. Rota: `use-case-creator` (modo validação) ou o arquiteto, para promover.
 - **Lacuna de documentação:** [área] — sem caso de uso para [comportamento]. Rota: `use-case-extractor`.
 - **Divergência:** UC-NNN/RN-N afirma [X]; `caminho/Arquivo.ext:120` faz [Y] (`QM-DO-1`). Rota: `use-case-creator` (conformidade ou reconciliação).
