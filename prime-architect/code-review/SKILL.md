@@ -54,7 +54,7 @@ Se esta não é a primeira rodada sobre o PR, a revisão segue também as regras
 
 ## Passo 1 — Entender a mudança antes de lê-la
 
-Visão ampla primeiro. Leia a Descrição da ITS, a seção O que muda e o plano de implementação; depois a descrição do pull request, que o **prime-core/its-contract** define para o PR de entrega — as unidades implementadas, as perguntas devolvidas e a revisão da ITS que as respondeu, a dívida herdada encontrada, os commits de arrumação, as verificações executadas. Uma descrição incompleta além da ITS citada não impede a revisão: o que faltar e fizer falta vira `Question:`. Você precisa conseguir dizer, antes da primeira linha do diff:
+Visão ampla primeiro. Leia a Descrição da ITS, a seção O que muda e o plano de implementação; depois a descrição do pull request, que o **prime-core/its-contract** define para o PR de entrega (`../its-contract/references/implementer-rules.md`) — as unidades implementadas, as perguntas devolvidas e a revisão da ITS que as respondeu, a dívida herdada encontrada, os commits de arrumação, as verificações executadas. Uma descrição incompleta além da ITS citada não impede a revisão: o que faltar e fizer falta vira `Question:`. Você precisa conseguir dizer, antes da primeira linha do diff:
 
 - o que a mudança deveria fazer e quais arquivos deveria tocar;
 - qual comportamento precisa continuar funcionando — os pontos de regressão da ITS e a unidade que reivindicou cada um;
@@ -90,9 +90,9 @@ O its-generator provou plano ⇄ delta antes da entrega. Agora você prova **dif
 
 Antes de julgar, verifique. O piso é binário, e por isso é varrido, não ponderado: percorra contra o diff, item a item,
 
-- os inegociáveis de "O piso num relance" (`references/quality-criteria.md`): o resumo de cada um decide se ele alcança o diff, e o que alcança é julgado pelo seu teste de *Violação*, no arquivo da lente;
+- os inegociáveis de "O piso num relance" (`../quality-model/references/quality-criteria.md`): o resumo de cada um decide se ele alcança o diff, e o que alcança é julgado pelo seu teste de *Violação*, no arquivo da lente;
 - os inegociáveis que o projeto acrescentou na postura do modelo de qualidade;
-- os slots de "Os invariantes num relance" (`references/convention-slots.md`): o nome de cada um decide se ele alcança o diff, e o que alcança é julgado no valor efetivo da área — o override da configuração ou o arquivo da família nos padrões da stack.
+- os slots de "Os invariantes num relance" (`../coding-standards/references/convention-slots.md`): o nome de cada um decide se ele alcança o diff, e o que alcança é julgado no valor efetivo da área — o override da configuração ou o arquivo da família nos padrões da stack.
 
 As listas pertencem aos catálogos e não se repetem aqui; a varredura percorre cada uma inteira, não uma seleção. Os slots de verificação `ferramenta` que o pipeline cobre não são reverificados — o que ele não cobre é varrido, e a ausência da regra vira follow-up de toolchain.
 

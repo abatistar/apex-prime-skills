@@ -1,6 +1,6 @@
 # DO — Documentação proporcional
 
-Lente do catálogo de critérios do `prime-core/quality-model`. Lida junto com o índice, `references/quality-criteria.md`, que guarda os níveis, o piso num relance, os perfis de criticidade e os IDs aposentados.
+Leia com o índice, `references/quality-criteria.md`.
 
 *Princípio: preservar o conhecimento que o código não consegue carregar.*
 

@@ -1,6 +1,6 @@
 # MT — Manutenibilidade e dívida técnica
 
-Lente do catálogo de critérios do `prime-core/quality-model`. Lida junto com o índice, `references/quality-criteria.md`, que guarda os níveis, o piso num relance, os perfis de criticidade e os IDs aposentados.
+Leia com o índice, `references/quality-criteria.md`.
 
 *Princípio: manter baixo o custo de mudança ao longo do tempo — o esforço por mudança não pode crescer com a idade do sistema. Esta lente é, em boa parte, o efeito das outras vistas no eixo do tempo.*
 

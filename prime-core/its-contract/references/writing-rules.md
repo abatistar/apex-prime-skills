@@ -1,6 +1,6 @@
 # Regras de escrita da ITS
 
-Parte do contrato do `prime-core/its-contract`, lida por quem escreve uma ITS — o its-generator, no passo em que escreve —, junto com o SKILL.md e o template. Quem só lê uma ITS — o revisor, quem implementa — não precisa deste arquivo: a ITS entregue já cumpre estas regras, e o SKILL.md diz como lê-la.
+Parte do contrato do `prime-core/its-contract`, lida por quem escreve uma ITS — o its-generator, no passo em que escreve —, junto com o SKILL.md e o template. Quem só lê uma ITS — o revisor, quem implementa — não precisa deste arquivo: a ITS entregue já cumpre estas regras, e o SKILL.md e o `references/implementer-rules.md` dizem como lê-la.
 
 As mesmas regras servem a todo leitor — humano ou agente. O que torna uma instrução inequívoca para um LLM é o que a torna verificável para um revisor e legível para compliance.
 

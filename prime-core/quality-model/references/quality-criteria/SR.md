@@ -1,6 +1,6 @@
 # SR — Segurança
 
-Lente do catálogo de critérios do `prime-core/quality-model`. Lida junto com o índice, `references/quality-criteria.md`, que guarda os níveis, o piso num relance, os perfis de criticidade e os IDs aposentados.
+Leia com o índice, `references/quality-criteria.md`.
 
 *Princípio: tudo que vem de fora é hostil até prova em contrário — desconfiança disciplinada da fronteira. Assimetria: o defensor precisa acertar em todo lugar; o atacante precisa de uma falha. Por isso esta lente carrega a régua de exceção mais alta do modelo.*
 

@@ -1,6 +1,6 @@
 # SC — Segurança
 
-Família do catálogo de slots do `prime-core/coding-standards`. Lida junto com o índice, `references/convention-slots.md`, que guarda o que cada slot declara, os invariantes num relance, o mapa critério → slots e os IDs reclassificados, movidos e aposentados. Os valores do time para estes slots estão no arquivo de mesmo nome dos padrões da stack (`references/defaults-<stack>/`).
+Leia com o índice, `references/convention-slots.md`; os valores estão em `references/defaults-<stack>/`, mesmo nome.
 
 *Aplica-se a: todos. Apenas posicionamento concreto: os princípios são os `QM-SR-*`, e a lista exaustiva de controles pertence ao padrão externo que o projeto adota (`CS-SC-5`), nunca a uma cópia reescrita aqui.*
 

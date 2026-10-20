@@ -7,7 +7,7 @@ description: Cria ou atualiza documentos de caso de uso a partir de stories, PRD
 
 Cria e mantém o repositório de casos de uso do projeto — a documentação viva do comportamento do sistema. Stories são unidades de mudança; casos de uso são o estado a que essas mudanças se aplicam. Toda story que altera comportamento precisa deixar o repositório atualizado, com um delta explícito registrado para que o its-generator possa planejar a implementação.
 
-O formato do documento NÃO é definido aqui — é de propriedade do **prime-architect/use-case** (template em `references/use-case-template.md` e regras de consumo em `references/consumer-rules.md`, dentro dessa skill). Leia-o integralmente, incluindo suas regras de qualidade, antes de escrever: elas fazem parte do contrato desta skill.
+O formato do documento NÃO é definido aqui — é de propriedade do **prime-architect/use-case** (template em `../use-case/references/use-case-template.md` e regras de consumo em `../use-case/references/consumer-rules.md`). Leia-o integralmente, incluindo suas regras de qualidade, antes de escrever: elas fazem parte do contrato desta skill.
 
 ## Passo 0 — Carregar a configuração do projeto e o formato de caso de uso
 

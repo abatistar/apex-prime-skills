@@ -1,6 +1,6 @@
 # TS — Testes automatizados confiáveis
 
-Lente do catálogo de critérios do `prime-core/quality-model`. Lida junto com o índice, `references/quality-criteria.md`, que guarda os níveis, o piso num relance, os perfis de criticidade e os IDs aposentados.
+Leia com o índice, `references/quality-criteria.md`.
 
 *Princípio: confiança para mudar. Um teste vale o quanto permite alterar o código sabendo que uma quebra real será detectada e que um teste verde significa comportamento preservado.*
 

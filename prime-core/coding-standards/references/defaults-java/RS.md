@@ -1,6 +1,6 @@
 # RS — Resiliência (Java)
 
-Padrões do time para a stack Java nesta família de slots, de propriedade do `prime-core/coding-standards`. Lidos junto com o índice, `references/defaults-java.md`, que guarda como ler as marcas (Spring), (Boot 4) e (Java 21+), a Plataforma e a Toolchain do time. As definições dos slots estão no arquivo de mesmo nome em `references/convention-slots/`.
+Leia com o índice, `references/defaults-java.md`; as definições estão em `references/convention-slots/`, mesmo nome.
 
 - **CS-RS-1** — Timeouts padrão, configurados em propriedades e nunca no ponto de chamada:
   - HTTP de saída: conexão 2 s, leitura 5 s — `spring.http.clients.connect-timeout` e `spring.http.clients.read-timeout` para todos os clientes, e `spring.http.serviceclient.<grupo>.*` para o grupo que precisa de outro valor **(Boot 4)**; no Boot 3, no `*Properties` de cada cliente;

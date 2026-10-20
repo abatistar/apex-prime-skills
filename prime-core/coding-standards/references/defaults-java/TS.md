@@ -1,6 +1,6 @@
 # TS — Testes (Java)
 
-Padrões do time para a stack Java nesta família de slots, de propriedade do `prime-core/coding-standards`. Lidos junto com o índice, `references/defaults-java.md`, que guarda como ler as marcas (Spring), (Boot 4) e (Java 21+), a Plataforma e a Toolchain do time. As definições dos slots estão no arquivo de mesmo nome em `references/convention-slots/`.
+Leia com o índice, `references/defaults-java.md`; as definições estão em `references/convention-slots/`, mesmo nome.
 
 - **CS-TS-1** — Nunca entra em merge sem teste:
   - regra de negócio nova ou alterada — teste unitário no domínio;

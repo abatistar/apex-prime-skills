@@ -1,6 +1,6 @@
 # RB — Robustez
 
-Lente do catálogo de critérios do `prime-core/quality-model`. Lida junto com o índice, `references/quality-criteria.md`, que guarda os níveis, o piso num relance, os perfis de criticidade e os IDs aposentados.
+Leia com o índice, `references/quality-criteria.md`.
 
 *Princípio: o ambiente falha — rede, dependências, volume, concorrência, o processo que reinicia no meio do trabalho. O sistema degrada de forma prevista em vez de travar, corromper dados ou propagar a falha.*
 

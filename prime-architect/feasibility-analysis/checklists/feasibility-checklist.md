@@ -5,7 +5,7 @@ Passada operacional de propriedade do `prime-architect/feasibility-analysis`. O 
 ## 0. Entradas carregadas
 
 - [ ] `docs/prime-config.md` lido conforme as regras de consumo do `prime-core/prime-config`, com o que o Passo 0 do SKILL.md usa dele.
-- [ ] Regras de consumo do `prime-core/quality-model` + `references/quality-triggers.md`.
+- [ ] Regras de consumo do `prime-core/quality-model` + `../quality-model/references/quality-triggers.md`.
 - [ ] Regras de consumo do `prime-core/coding-standards`.
 - [ ] Catálogos não carregados inteiros: cada ID aplicado é lido no arquivo da sua lente ou família, com o índice do catálogo (SKILL, Passo 0).
 - [ ] ADRs `Accepted` e `Proposed` examinados.

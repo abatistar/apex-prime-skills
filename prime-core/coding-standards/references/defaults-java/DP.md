@@ -1,6 +1,6 @@
 # DP — Dependências de terceiros (Java)
 
-Padrões do time para a stack Java nesta família de slots, de propriedade do `prime-core/coding-standards`. Lidos junto com o índice, `references/defaults-java.md`, que guarda como ler as marcas (Spring), (Boot 4) e (Java 21+), a Plataforma e a Toolchain do time. As definições dos slots estão no arquivo de mesmo nome em `references/convention-slots/`.
+Leia com o índice, `references/defaults-java.md`; as definições estão em `references/convention-slots/`, mesmo nome.
 
 - **CS-DP-1** — Uma nova dependência declara o problema que resolve, por que a plataforma ou uma dependência existente não o resolve, sua atividade de releases e sua licença. As coordenadas são copiadas da página oficial do projeto e conferidas no Maven Central — nunca digitadas de memória. A versão é fixa: sem faixas, sem `LATEST`/`RELEASE`, sem SNAPSHOT em artefato entregue; quando o Spring Boot gerencia a dependência, vale a versão dele. Aprovada pelo arquiteto. *Razão:* geradores de código inventam nomes de pacote plausíveis, e versão dinâmica muda o artefato sem mudar o código. *Verificação:* Maven Enforcer (`banDynamicVersions`); revisão da admissão.
 - **CS-DP-2** — Uma biblioteca por preocupação:

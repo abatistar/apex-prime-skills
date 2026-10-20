@@ -1,6 +1,6 @@
 # DA — Dados e transações (Java)
 
-Padrões do time para a stack Java nesta família de slots, de propriedade do `prime-core/coding-standards`. Lidos junto com o índice, `references/defaults-java.md`, que guarda como ler as marcas (Spring), (Boot 4) e (Java 21+), a Plataforma e a Toolchain do time. As definições dos slots estão no arquivo de mesmo nome em `references/convention-slots/`.
+Leia com o índice, `references/defaults-java.md`; as definições estão em `references/convention-slots/`, mesmo nome.
 
 - **CS-DA-1** — `@Transactional` fica no método público do serviço de aplicação que implementa a porta de entrada, e em nenhum outro lugar **(Spring)**: nunca num adaptador, nunca no domínio, nunca num método privado ou autoinvocado (o proxy não o aplicará). Nenhuma chamada externa dentro de uma transação. *Razão:* transação fora do lugar falha em silêncio; chamada externa dentro dela segura conexões e mistura dois sistemas numa promessa que só um cumpre. *Verificação:* regra Semgrep ou ArchUnit para a localização da anotação; revisão.
 - **CS-DA-2** — Todo consumidor de mensagem ou webhook é idempotente, com chave num identificador de negócio ou de entrega registrado antes do efeito. Trabalho agendado é idempotente. *Razão:* reentrega e repetição acontecem; o efeito não pode acontecer duas vezes. *Verificação:* teste de entrega dupla.

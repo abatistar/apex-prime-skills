@@ -1,6 +1,6 @@
 # CN — Consistência
 
-Lente do catálogo de critérios do `prime-core/quality-model`. Lida junto com o índice, `references/quality-criteria.md`, que guarda os níveis, o piso num relance, os perfis de criticidade e os IDs aposentados.
+Leia com o índice, `references/quality-criteria.md`.
 
 *Princípio: tornar o código previsível — aprender um padrão uma vez e confiar nele em todo lugar. Inconsistência é surpresa sistematizada.*
 

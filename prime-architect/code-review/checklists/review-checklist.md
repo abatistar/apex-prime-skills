@@ -46,9 +46,9 @@ Passada operacional de propriedade do `prime-architect/code-review`. O SKILL.md 
 
 ## 3. Varredura do piso — inteira, independentemente das pistas
 
-- [ ] Cada inegociável de "O piso num relance" (`references/quality-criteria.md`); o que alcança o diff, julgado pelo teste de *Violação* no arquivo da lente.
+- [ ] Cada inegociável de "O piso num relance" (`../quality-model/references/quality-criteria.md`); o que alcança o diff, julgado pelo teste de *Violação* no arquivo da lente.
 - [ ] Os inegociáveis acrescentados pela postura do modelo de qualidade do projeto.
-- [ ] Cada slot de "Os invariantes num relance" (`references/convention-slots.md`); o que alcança o diff, julgado no valor efetivo da área. Slots de verificação `ferramenta` cobertos pelo pipeline não são reverificados; os não cobertos são varridos e viram lacuna de toolchain.
+- [ ] Cada slot de "Os invariantes num relance" (`../coding-standards/references/convention-slots.md`); o que alcança o diff, julgado no valor efetivo da área. Slots de verificação `ferramenta` cobertos pelo pipeline não são reverificados; os não cobertos são varridos e viram lacuna de toolchain.
 - [ ] Atenção redobrada aos pontos em que o código gerado mais falha (quality-model, Código gerado).
 
 ## 4. Lentes, em ordem — o mapa de IDs é o Passo 4 do SKILL.md

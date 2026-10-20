@@ -1,6 +1,6 @@
 # PR — Soluções canônicas e proibições (Java)
 
-Padrões do time para a stack Java nesta família de slots, de propriedade do `prime-core/coding-standards`. Lidos junto com o índice, `references/defaults-java.md`, que guarda como ler as marcas (Spring), (Boot 4) e (Java 21+), a Plataforma e a Toolchain do time. As definições dos slots estão no arquivo de mesmo nome em `references/convention-slots/`.
+Leia com o índice, `references/defaults-java.md`; as definições estão em `references/convention-slots/`, mesmo nome.
 
 - **CS-PR-1** — O registro cresce por projeto no `docs/prime-config.md`, cada entrada com seu exemplo canônico. Entradas válidas para o time todo:
   - chamada a outro serviço: um adaptador de saída `*Client` que implementa a porta de saída sobre uma interface de cliente de serviço HTTP (`@HttpExchange`), registrada com `@ImportHttpServices` e configurada por grupo **(Boot 4)** — no Boot 3, sobre o `RestClient` —, com os valores de `CS-RS-1` e `CS-RS-2` e a tradução de erro de `CS-ER-3`;

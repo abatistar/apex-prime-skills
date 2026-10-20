@@ -1,6 +1,6 @@
 # ER — Erros (Java)
 
-Padrões do time para a stack Java nesta família de slots, de propriedade do `prime-core/coding-standards`. Lidos junto com o índice, `references/defaults-java.md`, que guarda como ler as marcas (Spring), (Boot 4) e (Java 21+), a Plataforma e a Toolchain do time. As definições dos slots estão no arquivo de mesmo nome em `references/convention-slots/`.
+Leia com o índice, `references/defaults-java.md`; as definições estão em `references/convention-slots/`, mesmo nome.
 
 - **CS-ER-1** — Situações de domínio esperadas são subclasses tipadas de `BusinessException` (não verificada). Invariantes violados usam `IllegalStateException` / `IllegalArgumentException` e nunca são capturados como fluxo de controle. Sem exceções verificadas em código novo. *Razão:* o tipo diz a quem lê se a falha é do negócio ou do código. *Verificação:* revisão.
 - **CS-ER-2** — Toda subclasse de `BusinessException` carrega um código de erro estável. Uma nova categoria é uma nova subclasse mais um código, nunca uma mensagem em texto interpretada pelo chamador. *Razão:* o chamador decide pelo código, que não muda quando a mensagem muda. *Verificação:* revisão.

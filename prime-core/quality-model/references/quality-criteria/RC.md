@@ -1,6 +1,6 @@
 # RC — Legibilidade e clareza
 
-Lente do catálogo de critérios do `prime-core/quality-model`. Lida junto com o índice, `references/quality-criteria.md`, que guarda os níveis, o piso num relance, os perfis de criticidade e os IDs aposentados.
+Leia com o índice, `references/quality-criteria.md`.
 
 *Princípio: minimizar a carga cognitiva — quanto um leitor precisa manter na memória de trabalho para entender um trecho isoladamente.*
 

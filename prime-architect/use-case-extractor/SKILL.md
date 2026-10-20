@@ -1,6 +1,6 @@
 ---
 name: use-case-extractor
-description: Faz engenharia reversa de documentos de caso de uso a partir de uma base de código existente, escrevendo contra o formato do prime-architect/use-case. Use sempre que o usuário quiser documentar comportamento já implementado mas sem documentação padronizada de caso de uso - mapeando um módulo, uma jornada de usuário, um conjunto de endpoints ou um único fluxo. Use também quando o its-generator reportar a ausência de um caso de uso para uma story de mudança, ou quando o usuário disser algo como "documente como X funciona hoje", "mapeie os casos de uso do módulo Y". NÃO use para escrever casos de uso de comportamento novo/planejado (use-case-creator) nem para gerar uma ITS (its-generator).
+description: Faz engenharia reversa de casos de uso a partir do código existente - documenta o comportamento já implementado de um módulo, uma jornada, um conjunto de endpoints ou um fluxo. Use para "documente como X funciona hoje", "mapeie os casos de uso do módulo Y" e quando o its-generator reportar que falta o caso de uso de uma story de mudança. NÃO use para comportamento novo ou planejado (use-case-creator) nem para gerar uma ITS (its-generator).
 ---
 
 # Use Case Extractor (prime-architect)
@@ -9,7 +9,7 @@ Produz documentos de caso de uso que descrevem o comportamento **já implementad
 
 Mentalidade central: o código diz o que o sistema *faz*, não o que ele *deveria fazer*. A intenção pode ter se perdido, e bugs podem ter sido consagrados como comportamento. Seu trabalho é documentar com fidelidade e confessar explicitamente cada dúvida, para que um humano valide antes de o documento virar fonte de verdade.
 
-O formato do documento NÃO é definido aqui — é de propriedade do **prime-architect/use-case** (template em `references/use-case-template.md` e regras de consumo em `references/consumer-rules.md`, dentro dessa skill), incluindo os marcadores de incerteza dos quais esta skill depende. Leia-o integralmente antes de escrever.
+O formato do documento NÃO é definido aqui — é de propriedade do **prime-architect/use-case** (template em `../use-case/references/use-case-template.md` e regras de consumo em `../use-case/references/consumer-rules.md`), incluindo os marcadores de incerteza dos quais esta skill depende. Leia-o integralmente antes de escrever.
 
 ## Passo 0 — Carregar a configuração do projeto e o formato de caso de uso
 

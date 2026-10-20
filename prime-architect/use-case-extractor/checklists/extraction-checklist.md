@@ -1,6 +1,6 @@
 # Extração de casos de uso — passada operacional
 
-A passada operacional do `prime-architect/use-case-extractor`. **Nenhum template de documento vive aqui:** a estrutura do caso de uso e as regras de qualidade (`references/use-case-template.md`), os tipos de entrada do Histórico de revisões e os marcadores (`references/consumer-rules.md`) são de propriedade do `prime-architect/use-case` e nunca são copiados para esta camada. Este arquivo confere o *processo*; aquele arquivo fornece a *forma*.
+A passada operacional do `prime-architect/use-case-extractor`. **Nenhum template de documento vive aqui:** a estrutura do caso de uso e as regras de qualidade (`../use-case/references/use-case-template.md`), os tipos de entrada do Histórico de revisões e os marcadores (`../use-case/references/consumer-rules.md`) são de propriedade do `prime-architect/use-case` e nunca são copiados para esta camada. Este arquivo confere o *processo*; aquele arquivo fornece a *forma*.
 
 ## Configuração e formato
 

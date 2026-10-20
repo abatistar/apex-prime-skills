@@ -1,12 +1,12 @@
 # ITS — passada operacional
 
-A passada operacional do `prime-architect/its-generator`. **Nenhum template de documento vive aqui:** a estrutura da ITS é de propriedade do `prime-core/its-contract` (`templates/its-template.md`) e nunca é copiada para esta camada. Este arquivo confere o *processo*; aquele arquivo fornece a *forma*.
+A passada operacional do `prime-architect/its-generator`. **Nenhum template de documento vive aqui:** a estrutura da ITS é de propriedade do `prime-core/its-contract` (`../its-contract/templates/its-template.md`) e nunca é copiada para esta camada. Este arquivo confere o *processo*; aquele arquivo fornece a *forma*.
 
 ## Configuração e contratos
 
 - [ ] `docs/prime-config.md` lido conforme as regras de consumo do **prime-core/prime-config**.
 - [ ] Da configuração, o que o Passo 0 do SKILL.md lista.
-- [ ] Contratos carregados: `its-contract` (o template e as Regras de escrita só no Passo 5), `use-case` (regras de consumo, no `prime-architect`), `coding-standards` (regras de consumo + os índices `references/convention-slots.md` e dos padrões da stack na release fixada), `quality-model` (regras de consumo + o índice `references/quality-criteria.md` e `references/quality-triggers.md`); arquivos de lente e de família só para os IDs citados ou aplicados.
+- [ ] Contratos carregados: `its-contract` (o template e as Regras de escrita só no Passo 5), `use-case` (regras de consumo, no `prime-architect`), `coding-standards` (regras de consumo + os índices `../coding-standards/references/convention-slots.md` e dos padrões da stack na release fixada), `quality-model` (regras de consumo + o índice `../quality-model/references/quality-criteria.md` e `../quality-model/references/quality-triggers.md`); arquivos de lente e de família só para os IDs citados ou aplicados.
 - [ ] Slot de que o plano depende e sem valor → reportado como lacuna (`coding-standards`, Slots não preenchidos). Nunca improvisado.
 - [ ] Divergência entre configuração e código → reportada, não resolvida em silêncio.
 

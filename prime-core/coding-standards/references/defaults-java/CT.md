@@ -1,6 +1,6 @@
 # CT — Contratos externos (Java)
 
-Padrões do time para a stack Java nesta família de slots, de propriedade do `prime-core/coding-standards`. Lidos junto com o índice, `references/defaults-java.md`, que guarda como ler as marcas (Spring), (Boot 4) e (Java 21+), a Plataforma e a Toolchain do time. As definições dos slots estão no arquivo de mesmo nome em `references/convention-slots/`.
+Leia com o índice, `references/defaults-java.md`; as definições estão em `references/convention-slots/`, mesmo nome.
 
 - **CS-CT-1** — Contratos publicados:
   - **API:** versão no caminho (`/api/v1/...`), declarada pelo suporte nativo de versionamento de API do Spring Framework 7 — atributo `version` nos mapeamentos e configuração em `spring.mvc.apiversion.*` **(Boot 4)**; no Boot 3, o prefixo no mapeamento. Dentro de uma versão, apenas mudanças aditivas — campo opcional novo sim; campo removido ou renomeado, tipo estreitado ou código de erro alterado, não. Uma quebra é uma nova versão; a antiga anuncia o fim com os cabeçalhos `Deprecation` e `Sunset`.
