@@ -1,0 +1,14 @@
+# RC — Legibilidade e clareza
+
+Lente do catálogo de critérios do `prime-core/quality-model`. Lida junto com o índice, `references/quality-criteria.md`, que guarda os níveis, o piso num relance, os perfis de criticidade e os IDs aposentados.
+
+*Princípio: minimizar a carga cognitiva — quanto um leitor precisa manter na memória de trabalho para entender um trecho isoladamente.*
+
+- **QM-RC-1 [NON-NEGOTIABLE] — Sem surpresa.** O código faz o que parece fazer. Um nome ou uma assinatura nunca oculta mutação de estado, I/O ou emissão de evento, e nunca descreve algo diferente do que o código faz. *Violação:* um nome que promete consulta ou cálculo (`get`, `find`, `is`, `has`, `calculate`, `to`) e escreve estado, faz I/O ou publica evento; um nome que continua descrevendo o que o código fazia antes da mudança. *Não é violação:* cache ou inicialização tardia que não altera o resultado observável.
+- **QM-RC-2 [CALIBRATED] — Funções focadas.** Curtas, fazem uma coisa, em um único nível de abstração — sem detalhe de baixo nível misturado à orquestração. *Tensão:* não é contagem de linhas; fragmentar em funções minúsculas prejudica a leitura tanto quanto o monólito.
+- **QM-RC-3 [CALIBRATED] — Fluxo raso.** Achate o aninhamento com guard clauses e retornos antecipados. A complexidade cognitiva é o sinal mensurável mais próximo da carga de quem lê. *Tensão:* é limiar, não absoluto — julgue pela carga do leitor, não pelo número.
+- **QM-RC-4 [CALIBRATED] — Localidade e abstração profunda.** Mantenha próximo o que muda junto. Abstrações devem ser profundas (interface simples escondendo complexidade real), nunca rasas (indireção que não esconde nada). Duplicação *acidental* — código parecido que muda por motivos diferentes — é mais barata que a abstração errada. *Tensão:* duplicação de *conhecimento* não é acidental; uma regra de negócio repetida é `QM-CC-6`, não este critério.
+- **QM-RC-5 [CALIBRATED] — O comentário explica o porquê.** Código autoexplicativo primeiro; comentário para o resíduo irredutível — restrição externa, armadilha evitada, escolha não óbvia. *Tensão:* um comentário que narra o que a linha seguinte faz é ruído que apodrece em mentira; um comentário que explica o que um bloco confuso faz sinaliza que o bloco deve ser reescrito.
+- **QM-RC-6 [CALIBRATED] — Para o leitor, não para o autor.** Sem esperteza que otimiza o ego de quem escreve em vez do tempo de quem lê: one-liners densos, truques da linguagem, golfe de código. *Tensão:* um idioma da linguagem que o time conhece bem não é esperteza.
+- **Nota de audiência.** A legibilidade é relativa ao time que mantém o código. O teste mais confiável não é uma métrica, e sim a revisão: cada "o que isto faz?" é um ponto em que o código falhou em se explicar.
+- **[AUTOMATE]** — Complexidade cognitiva e tamanho como sinais, nunca como veredito. A formatação pertence a CN.

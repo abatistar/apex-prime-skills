@@ -1,6 +1,6 @@
 # Template do Prime Config
 
-Template canônico de propriedade do prime-core/prime-config. O SKILL.md define quais seções são obrigatórias, as regras de precedência, o ciclo de vida, a validação e o procedimento de bootstrap — este arquivo é a estrutura. Substitua os valores de exemplo (mostrados para um microsserviço Java/Spring) pelos fatos do projeto-alvo; não apague nada obrigatório.
+Template canônico de propriedade do prime-core/prime-config. O SKILL.md define quais seções são obrigatórias, a validação e o procedimento de bootstrap, e o `references/consumer-rules.md` define a precedência, as divergências e o ciclo de vida — este arquivo é a estrutura. Substitua os valores de exemplo (mostrados para um microsserviço Java/Spring) pelos fatos do projeto-alvo; não apague nada obrigatório.
 
 O arquivo do projeto guarda fatos. Os comentários abaixo são ponteiros de uma linha para o contrato que define cada seção; não acrescente explicações a eles — toda skill lê este arquivo no primeiro passo.
 

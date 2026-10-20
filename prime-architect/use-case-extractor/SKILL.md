@@ -9,11 +9,11 @@ Produz documentos de caso de uso que descrevem o comportamento **já implementad
 
 Mentalidade central: o código diz o que o sistema *faz*, não o que ele *deveria fazer*. A intenção pode ter se perdido, e bugs podem ter sido consagrados como comportamento. Seu trabalho é documentar com fidelidade e confessar explicitamente cada dúvida, para que um humano valide antes de o documento virar fonte de verdade.
 
-O formato do documento NÃO é definido aqui — é de propriedade do **prime-architect/use-case** (template em `references/use-case-template.md` dentro dessa skill), incluindo os marcadores de incerteza dos quais esta skill depende. Leia-o integralmente antes de escrever.
+O formato do documento NÃO é definido aqui — é de propriedade do **prime-architect/use-case** (template em `references/use-case-template.md` e regras de consumo em `references/consumer-rules.md`, dentro dessa skill), incluindo os marcadores de incerteza dos quais esta skill depende. Leia-o integralmente antes de escrever.
 
 ## Passo 0 — Carregar a configuração do projeto e o formato de caso de uso
 
-Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localização, alternativa, precedência (explícito vence detectado), tratamento de divergências (configuração contradizendo o código) e o procedimento de bootstrap quando o arquivo está ausente vivem todos nesse contrato; nunca os rederive aqui. Da configuração esta skill usa: a stack, a estrutura de pastas como mapa para o inventário de pontos de entrada, a localização e a nomenclatura do repositório de casos de uso e os overrides de caso de uso (caminho de um template customizado e seções obrigatórias extras). Em seguida carregue o formato do prime-architect/use-case; um template customizado declarado na configuração tem precedência, e as seções obrigatórias extras entram em todo documento que esta skill escreve.
+Leia o `docs/prime-config.md` conforme as regras de consumo do **prime-core/prime-config** (`../prime-config/references/consumer-rules.md`). Da configuração esta skill usa: a stack, a estrutura de pastas como mapa para o inventário de pontos de entrada, a localização e a nomenclatura do repositório de casos de uso e os overrides de caso de uso (caminho de um template customizado e seções obrigatórias extras). Em seguida carregue o formato do prime-architect/use-case; um template customizado declarado na configuração tem precedência, e as seções obrigatórias extras entram em todo documento que esta skill escreve.
 
 ## Passo 1 — Delimitar o escopo com o usuário
 
@@ -58,7 +58,7 @@ Nunca normalize em silêncio um comportamento estranho transformando-o numa regr
 
 Encerre a execução com a Lista de perguntas do formato: todos os marcadores pendentes, por documento, cada um com a recomendação e a evidência `arquivo:linha`. Declare explicitamente que os documentos só se tornam fonte de verdade (status "Reviewed") depois que um humano resolver os marcadores; a resolução passa pelo modo validação do use-case-creator, com as respostas do arquiteto. Não promova o status por conta própria: a edição só acontece por ordem explícita do arquiteto para aquele documento. Liste também os documentos existentes que receberam apenas o link recíproco em Casos de uso relacionados.
 
-A passada operacional vive em `checklists/extraction-checklist.md`. O template do próprio documento não: ele é de propriedade do `prime-architect/use-case` e é lido de lá.
+A passada operacional vive em `checklists/extraction-checklist.md`. Leia-a depois de escrever, para conferir antes de entregar — não no Passo 0. O template do próprio documento não: ele é de propriedade do `prime-architect/use-case` e é lido de lá.
 
 ## Saída
 

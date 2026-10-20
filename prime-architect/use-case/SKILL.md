@@ -1,6 +1,6 @@
 ---
 name: use-case
-description: O formato canônico do documento de caso de uso, de propriedade do prime-architect - template, regras de qualidade, regras de histórico de revisões (delta) e marcadores de incerteza. Consulte sempre que for criar, atualizar, validar ou consumir um documento de caso de uso. Quem escreve (prime-architect/use-case-creator, prime-architect/use-case-extractor) escreve contra este formato; quem lê (prime-architect/its-generator, prime-architect/code-review) valida contra ele. Nunca duplique seu conteúdo em outro lugar - referencie-o.
+description: O formato canônico do documento de caso de uso - template, regras de qualidade, histórico de revisões (delta), ciclo de vida do status e marcadores de incerteza. Consulte para criar, atualizar, validar ou ler um caso de uso; quem só lê usa references/consumer-rules.md. Referencie-o, nunca o duplique.
 ---
 
 # Formato de Caso de Uso (prime-architect)
@@ -9,11 +9,13 @@ Esta skill é dona do formato do documento de caso de uso. Tem um endereço e um
 
 ## O template canônico
 
-`references/use-case-template.md` define: a nomenclatura de arquivo (`use-cases/UC-NNN-titulo-curto.md` sob a raiz de documentos do projeto), a granularidade (o que um documento descreve, o nível, extensão ou documento próprio), a forma das regras de negócio (padrões adaptados do EARS), a estrutura do documento (metadados, envolvidos e interesses — opcional, condições com pré-condições e garantias mínimas/de sucesso, cenário principal de sucesso, extensões, regras de negócio, critérios de aceite rotulados com o que cobrem — inclusive os requisitos não funcionais do fluxo —, resumo gráfico em UML — opcional quando não há relações a mostrar, histórico de revisões), o ciclo de vida de status (Draft · Reviewed · Retired), quando um documento volta a Draft e quando passa a Retired, o delta pendente (o documento validado à frente do código), a reorganização entre documentos (divisão, incorporação), os tipos de entrada do histórico de revisões, as regras de qualidade que todo documento precisa satisfazer, os marcadores de incerteza (`[INFERRED]`, `[CONFIRM: ...]`) para conteúdo não verificado e a lista de perguntas com que eles chegam ao arquiteto.
+`references/use-case-template.md` define: a nomenclatura de arquivo (`use-cases/UC-NNN-titulo-curto.md` sob a raiz de documentos do projeto), a granularidade (o que um documento descreve, o nível, extensão ou documento próprio), a reorganização entre documentos (divisão, incorporação), a forma das regras de negócio (padrões adaptados do EARS), a estrutura do documento (metadados, envolvidos e interesses — opcional, condições com pré-condições e garantias mínimas/de sucesso, cenário principal de sucesso, extensões, regras de negócio, critérios de aceite rotulados com o que cobrem — inclusive os requisitos não funcionais do fluxo —, resumo gráfico em UML — opcional quando não há relações a mostrar, histórico de revisões), as regras de qualidade que todo documento precisa satisfazer e a lista de perguntas com que os marcadores chegam ao arquiteto.
 
-Leia o template integralmente antes de escrever ou validar qualquer documento de caso de uso.
+`references/consumer-rules.md` define o que quem só lê também precisa: as seções obrigatórias e opcionais do documento, a estabilidade dos identificadores, o ciclo de vida de status (Draft · Reviewed · Retired), quando um documento volta a Draft e quando passa a Retired, o delta pendente (o documento validado à frente do código), os tipos de entrada do histórico de revisões e os marcadores de incerteza (`[INFERRED]`, `[CONFIRM: ...]`) para conteúdo não verificado.
 
-## Regras inegociáveis (resumo — o template é a autoridade)
+Quem escreve um documento de caso de uso, ou o valida contra as regras de qualidade, lê integralmente os dois arquivos. Quem só lê — o its-generator, o code-review, o impact-mapping — lê só `references/consumer-rules.md`, que basta para conferir o status e as seções obrigatórias de um documento recebido como entrada.
+
+## Regras inegociáveis (resumo — o template e as regras de consumo são a autoridade)
 
 - Casos de uso são a fonte de verdade viva do comportamento do sistema. Stories são diffs aplicados a eles.
 - Toda entrada do Histórico de revisões tem um tipo — criação, alteração, conformidade, retirada, mapeamento inicial, reconciliação ou revisão editorial. Só as quatro primeiras, identificadas pela story, são trabalho para o its-generator: o delta é a principal entrada dele. Uma entrada por story por documento, reescrita só enquanto for a mais recente; uma story por vez sobre cada documento; máximo de 5 entradas; histórico completo no controle de versão. Atualizações apenas de diagrama ou do campo Casos de uso relacionados (que é recíproco) e a resolução de marcadores nunca geram entrada; uma story técnica, que não muda o comportamento observável de nenhum ator, também não.

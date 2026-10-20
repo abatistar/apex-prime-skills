@@ -1,6 +1,6 @@
 # Template de ADR
 
-Template canônico de propriedade do prime-core/its-contract. O its-generator redige contra ele quando um plano precisa se comprometer com a decisão, e o arquiteto redige contra ele diretamente quando ainda não existe plano; o arquiteto aprova em ambos os casos, e o code-review bloqueia uma decisão que chegou ao código sem registro. Veja o SKILL.md do its-contract para a fronteira de decisão, que diz quando uma decisão deve um ADR, e para a regra de conteúdo, que governa como uma ITS escreve o que um ADR exige do seu plano.
+Template canônico de propriedade do prime-core/its-contract. O its-generator redige contra ele quando um plano precisa se comprometer com a decisão, e o arquiteto redige contra ele diretamente quando ainda não existe plano; o arquiteto aprova em ambos os casos, e o code-review bloqueia uma decisão que chegou ao código sem registro. Veja o SKILL.md do its-contract para a fronteira de decisão, que diz quando uma decisão deve um ADR, e as Regras de escrita (`references/writing-rules.md`, *Conteúdo, não ponteiro*) para como uma ITS escreve o que um ADR exige do seu plano.
 
 **Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — `ADR-NNN`, os valores de status (`Proposed`, `Accepted`, `Rejected`, `Superseded by ADR-NNN`), `UC-NNN`, `ITS-<story-id>`, `QM-XX-N`, `CS-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
 

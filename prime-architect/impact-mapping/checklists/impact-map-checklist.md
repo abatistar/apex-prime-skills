@@ -4,19 +4,19 @@ Passada operacional de propriedade do `prime-architect/impact-mapping`. O SKILL.
 
 ## Configuração e revisão
 
-- [ ] `docs/prime-config.md` lido conforme o contrato **prime-core/prime-config**.
-- [ ] Mapa de estrutura, registro de áreas, migrações declaradas, regras do projeto, localizações de documentos (UC, ADR) e comandos de verificação carregados.
+- [ ] `docs/prime-config.md` lido conforme as regras de consumo do **prime-core/prime-config**.
+- [ ] Da configuração, o que o Passo 0 do SKILL.md lista.
 - [ ] Área que o registro não lista escrita como `current` · `padrão`, marcada *não registrada* — o padrão do contrato, não uma lacuna.
 - [ ] Subseção Registro de áreas ausente ou slot sem valor de que o mapa precisa registrados como lacuna (`coding-standards`, Slots não preenchidos) — nunca improvisados.
 - [ ] Revisão registrada: o commit lido, as mudanças não commitadas declaradas e, com raiz de documentos paralela, a revisão dela. Sem controle de versão acessível, isso dito.
 
 ## A mudança, como comportamento
 
-*Definida só aqui. Quando a `feasibility-analysis` comissiona o mapa, ela já executou este bloco no seu §1, e a reformulação chega pronta.*
+*Definida em `references/reformulation.md`. Quando a `feasibility-analysis` comissiona o mapa, ela já executou este bloco no seu §1, e a reformulação chega pronta.*
 
 - [ ] Reformulada como um delta de comportamento observável, não como uma solução.
 - [ ] Fronteira declarada: o que explicitamente **não** está mudando.
-- [ ] Reformulação que escolheu entre leituras da entrada confirmada com o arquiteto.
+- [ ] Entrada com leituras concorrentes → nenhuma escolhida aqui: **Insufficient input**, com as leituras candidatas e a recomendada.
 - [ ] Se a reformulação exigiu inventar intenção → **Insufficient input**: sem mapa e sem veredito, com as perguntas específicas. Pare aqui.
 - [ ] Solução nomeada na entrada enquanto o delta admite outras → anotado em uma linha, não avaliado.
 

@@ -2,7 +2,7 @@
 
 Referência de propriedade do `prime-core/quality-model`. Um gatilho é algo que uma story introduz ou altera e que transforma critérios do catálogo (`references/quality-criteria.md`) em decisões de projeto. A qualidade do que a ITS especifica depende de essas decisões estarem tomadas, por extenso, antes de o código existir: uma decisão que a ITS não toma é tomada pelo implementador, sob pressão, ou por ninguém.
 
-Três papéis leem esta lista. O `its-generator` passa a story por ela e escreve cada decisão disparada na unidade que a implementa. O `its-implementation` a usa para reconhecer, no código que escreve, um gatilho que a ITS deixou sem decisão. O `code-review` confere contra ela: um gatilho disparado e não decidido é defeito do plano, não do autor.
+Três papéis leem esta lista. O `its-generator` passa a story por ela e escreve cada decisão disparada na unidade que a implementa. Quem implementa a usa para reconhecer, no código que escreve, um gatilho que a ITS deixou sem decisão. O `code-review` confere contra ela: um gatilho disparado e não decidido é defeito do plano, não do autor.
 
 **Como ler.** Cada gatilho traz quando dispara, os critérios que ativa, o que a especificação decide e a verificação esperada. A intensidade segue o nível de criticidade da área tocada (Perfis de criticidade, no catálogo): numa área `efêmera`, o gatilho exige o que o piso exige; numa área `crítica`, tudo o que ele lista. Os gatilhos são numerados para a conversa; o que se cita num achado ou nas Referências de uma ITS é o critério.
 

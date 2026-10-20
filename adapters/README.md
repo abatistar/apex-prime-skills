@@ -2,10 +2,10 @@
 
 Configuração dos agentes por plataforma. Cada arquivo é o prompt de entrada que uma plataforma carrega; o processo em si vive nas skills, e um adapter roteia para elas em vez de repetir os procedimentos delas.
 
-| Plataforma | Arquiteto | Desenvolvedor |
-|---|---|---|
-| Claude Code | `claude-code/jarvis.md` | `claude-code/friday.md` (stub) |
-| Copilot | `copilot/jarvis.agent.md` | `copilot/friday.agent.md` (stub) |
+| Plataforma | Jarvis (Arquiteto) |
+|---|---|
+| Claude Code | `claude-code/jarvis.md` |
+| Copilot | `copilot/jarvis.agent.md` |
 
 ## Os dois arquivos do Jarvis são cópias deliberadas
 
@@ -22,5 +22,3 @@ diff <(grep -v '^\s*$' adapters/claude-code/jarvis.md | grep -v '^Tarefa do arqu
 ```
 
 A saída esperada é a diferença de frontmatter e nada mais.
-
-Os stubs do Friday seguem a mesma regra quando a camada do dev for escrita.

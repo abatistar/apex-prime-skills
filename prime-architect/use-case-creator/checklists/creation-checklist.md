@@ -1,11 +1,11 @@
 # Caso de uso — passada operacional
 
-A passada operacional do `prime-architect/use-case-creator`. **Nenhum template de documento vive aqui:** a estrutura do caso de uso, as regras de qualidade, os tipos de entrada do Histórico de revisões, a estabilidade dos identificadores e os marcadores são de propriedade do `prime-architect/use-case` (`references/use-case-template.md`) e nunca são copiados para esta camada. Este arquivo confere o *processo*; aquele arquivo fornece a *forma*.
+A passada operacional do `prime-architect/use-case-creator`. **Nenhum template de documento vive aqui:** a estrutura do caso de uso e as regras de qualidade (`references/use-case-template.md`), os tipos de entrada do Histórico de revisões, a estabilidade dos identificadores e os marcadores (`references/consumer-rules.md`) são de propriedade do `prime-architect/use-case` e nunca são copiados para esta camada. Este arquivo confere o *processo*; aquele arquivo fornece a *forma*.
 
 ## Configuração e formato
 
-- [ ] `docs/prime-config.md` lido conforme o contrato **prime-core/prime-config**.
-- [ ] Da configuração: localização e nomenclatura do repositório de casos de uso, template customizado, seções obrigatórias extras, formato do identificador de story.
+- [ ] `docs/prime-config.md` lido conforme as regras de consumo do **prime-core/prime-config**.
+- [ ] Da configuração, o que o Passo 0 do SKILL.md lista.
 - [ ] Formato `use-case` carregado por inteiro, incluindo as regras de qualidade; template customizado, quando declarado, no lugar do padrão.
 
 ## Roteamento

@@ -1,0 +1,10 @@
+# EF — Eficiência de recursos
+
+Lente do catálogo de critérios do `prime-core/quality-model`. Lida junto com o índice, `references/quality-criteria.md`, que guarda os níveis, o piso num relance, os perfis de criticidade e os IDs aposentados.
+
+*Princípio: o sistema gasta o que o trabalho exige — tempo, memória, conexões, chamadas —, e o volume de produção não é surpresa.*
+
+- **QM-EF-1 [NON-NEGOTIABLE] — Nenhum trabalho ilimitado sobre dado que cresce.** Toda leitura, processamento ou estrutura em memória cujo volume cresce com o uso tem limite declarado: paginação, lote de tamanho máximo, streaming. *Violação:* consulta sem limite sobre dado que cresce; carregar uma coleção inteira em memória para filtrar ou contar; consulta ou chamada remota por item dentro de laço sobre coleção cujo tamanho depende dos dados (N+1); cache, fila ou buffer em memória sem limite de tamanho. *Não é violação:* coleção limitada por construção — valores fixos do domínio, configuração, um lote cujo tamanho máximo está declarado.
+- **QM-EF-2 [CALIBRATED] — Desempenho contra meta medida.** Otimize contra uma meta acordada — um critério de aceite não funcional ou um ADR — e contra medição, nunca por suposição. *Tensão:* otimização especulativa compra complexidade sem retorno; ignorar desempenho até a produção compra incidente. Onde não há meta, o piso (`QM-EF-1`) e a escolha sensata bastam; onde a área é crítica, a meta existe e é medida.
+- **QM-EF-3 [CALIBRATED] — Acesso a dados desenhado para o volume.** Consultas buscam só o que usam, contam com os índices de que precisam e trabalham em lote quando o volume pede; algoritmo e estrutura de dados são escolhidos para o volume de produção, não para o de teste. Cache só com limite e estratégia de invalidação declarados. *Tensão:* cache é a forma mais rápida de trocar um problema de desempenho por um de consistência.
+- **[AUTOMATE]** — Contagem de consultas nos testes de integração (expõe o N+1); teste de carga ou medição para as metas não funcionais; análise do plano de consulta nas migrações das áreas críticas.

@@ -2,11 +2,12 @@
 
 <#
 .SYNOPSIS
-    Instala ou remove o Apex Prime: as skills de um perfil e o adapter de cada papel.
+    Instala ou remove o Apex Prime: as skills do prime-core e do
+    prime-architect e o adapter do Jarvis.
 
 .DESCRIPTION
-    Achata as camadas do perfil em um unico diretorio de skills, instala o
-    adapter de cada papel no formato do agente e grava um manifesto
+    Achata prime-core + prime-architect em um unico diretorio de skills,
+    instala o adapter do Jarvis no formato do agente e grava um manifesto
     (apex-prime.json) com o hash de cada arquivo instalado.
 
     Origem: rodando de dentro de um clone, instala o proprio clone. Baixado
@@ -16,19 +17,14 @@
     O manifesto torna a reinstalacao segura. Arquivo cujo hash divergiu do
     gravado foi editado no destino e e' preservado; arquivo que ja existia e
     nao veio do Apex Prime tambem. -Force sobrescreve os dois. O que a
-    instalacao anterior trouxe e esta nao traz -- skill removida upstream,
-    camada que saiu do perfil -- e' podado. -Desinstalar remove exatamente o
-    que o manifesto registra, e nada alem.
+    instalacao anterior trouxe e esta nao traz -- skill ou adapter removido
+    upstream -- e' podado. -Desinstalar remove exatamente o que o manifesto
+    registra, e nada alem.
 
     Escrito para rodar sob ConstrainedLanguage mode (WDAC/AppLocker): sem
     [pscustomobject], sem New-Object, sem metodos fora dos tipos do core e
     sem $PSCmdlet.ShouldProcess(). Consequencia: -WhatIf funciona, -Confirm
     nao.
-
-.PARAMETER Perfil
-    Full (padrao) - prime-core + prime-architect + prime-dev; Jarvis e Friday
-    Jarvis        - prime-core + prime-architect; Jarvis
-    Friday        - prime-core + prime-dev; Friday
 
 .PARAMETER Local
     usuario (padrao) - perfil do usuario (~/.copilot ou ~/.claude); nenhum
@@ -36,13 +32,13 @@
     <caminho>        - raiz de um projeto (.github ou .claude), para commitar.
 
 .PARAMETER Agente
-    copilot (padrao) - skills/ + agents/<papel>.agent.md
-    claude           - skills/ + commands/<papel>.md (/jarvis, /friday)
+    copilot (padrao) - skills/ + agents/jarvis.agent.md
+    claude           - skills/ + commands/jarvis.md (/jarvis)
 
 .PARAMETER Desinstalar
-    Remove o que o manifesto de -Local/-Agente registra, qualquer que seja o
-    perfil instalado. Arquivo editado localmente e' mantido e continua no
-    manifesto, para que um -Desinstalar -Force posterior conclua.
+    Remove o que o manifesto de -Local/-Agente registra. Arquivo editado
+    localmente e' mantido e continua no manifesto, para que um -Desinstalar
+    -Force posterior conclua.
 
 .PARAMETER Force
     Sobrescreve ou remove tambem o que foi editado localmente e o que nao
@@ -63,19 +59,16 @@
     .\install.ps1 -Agente claude
 
 .EXAMPLE
-    .\install.ps1 -Perfil Jarvis -Local C:\repos\meu-projeto
+    .\install.ps1 -Local C:\repos\meu-projeto
 
 .EXAMPLE
-    .\install.ps1 -Ref v1.0.0 -Perfil Friday -Agente claude
+    .\install.ps1 -Ref v1.0.0 -Agente claude
 
 .EXAMPLE
     .\install.ps1 -Desinstalar -Agente claude
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
-    [ValidateSet('Full', 'Jarvis', 'Friday')]
-    [string] $Perfil = 'Full',
-
     [string] $Local = 'usuario',
 
     [ValidateSet('copilot', 'claude')]
@@ -93,12 +86,9 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-# --- O recorte de cada perfil. Nada fora destas listas e' lido. -------------
-$Profiles = @{
-    Full   = @{ Name = 'Full';   Layers = @('prime-core', 'prime-architect', 'prime-dev'); Roles = @('jarvis', 'friday') }
-    Jarvis = @{ Name = 'Jarvis'; Layers = @('prime-core', 'prime-architect');              Roles = @('jarvis') }
-    Friday = @{ Name = 'Friday'; Layers = @('prime-core', 'prime-dev');                    Roles = @('friday') }
-}
+# --- O recorte. Nada fora destas listas e' lido. ----------------------------
+$Layers = @('prime-core', 'prime-architect')
+$Roles  = @('jarvis')
 
 # --- Onde cada agente descobre skills e adapters. ---------------------------
 $Formats = @{
@@ -237,7 +227,6 @@ function Write-Manifest {
         [Parameter(Mandatory)][string]    $Path,
         [Parameter(Mandatory)][hashtable] $Files,
         [Parameter(Mandatory)][string]    $ManifestVersion,
-        [Parameter(Mandatory)][string]    $ManifestProfile,
         [Parameter(Mandatory)][string]    $ManifestScope
     )
     # files e' lista ordenada por path, e nao mapa: hashtable em 5.1 nao
@@ -255,7 +244,6 @@ function Write-Manifest {
     $manifest = @{
         package = 'apex-prime'
         version = $ManifestVersion
-        perfil  = $ManifestProfile
         agente  = $Agente
         local   = $ManifestScope
         skills  = $skills
@@ -381,7 +369,7 @@ if ($Desinstalar) {
         # Reescreve o manifesto so com o que sobrou, para que um -Desinstalar
         # -Force posterior saiba exatamente o que ainda falta remover.
         Write-Manifest -Path $manifestPath -Files $remaining -ManifestVersion $previous.Version `
-            -ManifestProfile 'parcial' -ManifestScope $scope
+            -ManifestScope $scope
     } elseif (Test-Apply -Action 'Remover manifesto' -Path $manifestPath) {
         Remove-Item -LiteralPath $manifestPath -Force
     }
@@ -398,7 +386,6 @@ if ($Desinstalar) {
 # ============================================================================
 #  INSTALACAO
 # ============================================================================
-$selected  = $Profiles[$Perfil]
 $workspace = ''
 
 try {
@@ -437,7 +424,7 @@ try {
     # --- Inventario ---------------------------------------------------------
     $items      = @()
     $skillNames = @()
-    foreach ($layer in $selected.Layers) {
+    foreach ($layer in $Layers) {
         $layerPath = Join-Path $source $layer
         if (-not (Test-Path -LiteralPath $layerPath -PathType Container)) {
             throw "A origem nao parece ser a arvore do Apex Prime: falta '$layer' em $source"
@@ -458,9 +445,9 @@ try {
             }
         }
     }
-    if ($skillNames.Count -eq 0) { throw "Nenhuma skill encontrada em: $($selected.Layers -join ', ')" }
+    if ($skillNames.Count -eq 0) { throw "Nenhuma skill encontrada em: $($Layers -join ', ')" }
 
-    foreach ($role in $selected.Roles) {
+    foreach ($role in $Roles) {
         $from = Join-Key -Base $source -Key ($format.Adapters + '/' + $role + $format.Suffix)
         if (-not (Test-Path -LiteralPath $from -PathType Leaf)) {
             throw "Adapter ausente na origem: $from"
@@ -470,10 +457,10 @@ try {
 
     # --- Instalacao ---------------------------------------------------------
     Write-Host ''
-    Write-Host "Apex Prime $version - perfil $($selected.Name), agente $Agente" -ForegroundColor Cyan
+    Write-Host "Apex Prime $version - agente $Agente" -ForegroundColor Cyan
     Write-Host "  local  : $scope ($script:Root)"
-    Write-Host "  camadas: $($selected.Layers -join ' + ')"
-    Write-Host "  papeis : $($selected.Roles -join ', ')"
+    Write-Host "  camadas: $($Layers -join ' + ')"
+    Write-Host "  adapter: $($Roles -join ', ')"
     Write-Host ''
 
     $next = @{}
@@ -493,12 +480,11 @@ try {
         $script:Preserved++
     }
 
-    Write-Manifest -Path $manifestPath -Files $next -ManifestVersion $version `
-        -ManifestProfile $selected.Name -ManifestScope $scope
+    Write-Manifest -Path $manifestPath -Files $next -ManifestVersion $version -ManifestScope $scope
 
     Write-Host ''
     Write-Host ("{0} skill(s), {1} adapter(s) | {2} gravado(s), {3} ja atualizado(s), {4} preservado(s), {5} removido(s)" -f `
-        $skillNames.Count, $selected.Roles.Count, $script:Written, $script:Unchanged, $script:Preserved, $script:Removed) -ForegroundColor Green
+        $skillNames.Count, $Roles.Count, $script:Written, $script:Unchanged, $script:Preserved, $script:Removed) -ForegroundColor Green
     if ($script:Preserved -gt 0) {
         Write-Host 'Rode novamente com -Force para sobrescrever os preservados.' -ForegroundColor DarkYellow
     }

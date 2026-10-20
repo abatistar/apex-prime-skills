@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Revisa uma implementação contra a sua ITS e os padrões do prime-core, produzindo achados classificados e um veredito explícito. Skill da camada do arquiteto - é dona do papel de enforcement que o prime-core/quality-model e o prime-core/coding-standards deliberadamente deixam em aberto. Use sempre que o arquiteto trouxer um pull request, um diff, um branch ou uma implementação de volta do Desenvolvedor, inclusive a rodada seguinte de um PR já revisado - "revise o PR da S-131", "confira esta implementação contra a ITS", "isto está pronto para merge", "o dev terminou a story", "o dev corrigiu os apontamentos". NÃO use para escrever ou revisar uma ITS (its-generator), para escrever ou atualizar casos de uso (use-case-creator, use-case-extractor) nem para implementar ou corrigir código (camada do dev - o revisor nunca escreve código de aplicação).
+description: Revisa uma implementação contra a sua ITS e os padrões do prime-core, com achados classificados e um veredito explícito - o enforcement do modelo de qualidade. Use quando o arquiteto trouxer um PR, diff ou branch de volta, inclusive a rodada seguinte - "revise o PR da S-131", "isto está pronto para merge", "o dev corrigiu os apontamentos". NÃO use para escrever ou revisar uma ITS (its-generator) nem para corrigir código (o revisor nunca escreve código de aplicação).
 ---
 
 # Code Review (prime-architect)
@@ -32,7 +32,7 @@ Quatro princípios resolvem toda discordância:
 
 ## Passo 0 — Carregar a configuração, os contratos e o plano acordado
 
-Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localização, alternativa, precedência, divergência e bootstrap vivem todos nesse contrato; nunca os rederive aqui. Da configuração esta skill usa:
+Leia o `docs/prime-config.md` conforme as regras de consumo do **prime-core/prime-config** (`../prime-config/references/consumer-rules.md`). Da configuração esta skill usa:
 
 - o **pipeline**, onde o projeto declara um — as verificações obrigatórias, a plataforma em que o PR vive e as políticas de PR (revisores obrigatórios, resolução de comentários) —, e os **comandos de verificação**;
 - os **Responsáveis** — o responsável de segurança entra na revisão nos casos do Passo 6;
@@ -45,8 +45,8 @@ Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localiz
 Em seguida carregue, nesta ordem:
 
 1. **A ITS da story** e todo ADR listado em suas Referências — conforme o **prime-core/its-contract**, sob a raiz de documentos que a configuração declara. Quando ela é uma pasta paralela, versionada à parte, leia a ITS na revisão que o PR cita. A rastreabilidade plano ⇄ delta que o its-generator já verificou está na estrutura do documento — os itens de O que muda, o Atende e os Testes de cada unidade, a coluna Usada em das Referências —, e é a base sobre a qual a sua própria verificação (diff ⇄ plano) se constrói.
-2. **Os casos de uso listados nas Referências da ITS**, conforme o **prime-architect/use-case**: o delta desta story e o corpo que ele altera. Eles servem à lente Documentação — conferir que o comportamento entregue não deixa o caso de uso mentindo. O julgamento funcional é contra os itens da ITS, que já carregam por extenso o que os critérios de aceite exigem. Numa ITS técnica — a story que muda o código sem mudar comportamento observável —, os casos de uso listados são só os que forneceram pontos de regressão, e qualquer mudança no comportamento que eles descrevem é escopo excedido.
-3. **prime-core/quality-model** com `references/quality-criteria.md` (inclusive "O piso num relance" e os Perfis de criticidade) e `references/quality-triggers.md`, e **prime-core/coding-standards** com `references/convention-slots.md` (inclusive "Os invariantes num relance") mais o arquivo de padrões da stack na release que o projeto fixou.
+2. **Os casos de uso listados nas Referências da ITS**, conforme as regras de consumo do **prime-architect/use-case** (`../use-case/references/consumer-rules.md`): o delta desta story e o corpo que ele altera. Eles servem à lente Documentação — conferir que o comportamento entregue não deixa o caso de uso mentindo. O julgamento funcional é contra os itens da ITS, que já carregam por extenso o que os critérios de aceite exigem. Numa ITS técnica — a story que muda o código sem mudar comportamento observável —, os casos de uso listados são só os que forneceram pontos de regressão, e qualquer mudança no comportamento que eles descrevem é escopo excedido.
+3. As regras de consumo do **prime-core/quality-model** (`../quality-model/references/consumer-rules.md`) com o índice `../quality-model/references/quality-criteria.md` (inclusive "O piso num relance" e os Perfis de criticidade) e `../quality-model/references/quality-triggers.md`, e as regras de consumo do **prime-core/coding-standards** (`../coding-standards/references/consumer-rules.md`) com o índice `../coding-standards/references/convention-slots.md` (inclusive "Os invariantes num relance") mais o índice dos padrões da stack na release que o projeto fixou (`../coding-standards/references/defaults-<stack>.md`). O arquivo de uma lente ou família entra quando um ID dela é citado ou aplicado, como cada índice diz — nunca os catálogos inteiros de antemão.
 
 **Sem pré-condição, sem revisão.** Três faltas impedem a revisão de começar, e a saída é *Not reviewable* (Passo 6), não um veredito: não existe ITS para a story; a descrição do PR não declara a ITS que implementa — nem, quando a documentação vive em pasta paralela, a revisão da documentação implementada; as verificações obrigatórias estão vermelhas por outra causa que não um teste instável. Uma revisão sem o escopo acordado degenera em gosto em três comentários. A única exceção é uma mudança declarada fora do processo (um hotfix): declare explicitamente que a conformidade de escopo não pôde ser verificada e revise apenas contra os padrões do core.
 
@@ -90,15 +90,15 @@ O its-generator provou plano ⇄ delta antes da entrega. Agora você prova **dif
 
 Antes de julgar, verifique. O piso é binário, e por isso é varrido, não ponderado: percorra contra o diff, item a item,
 
-- os inegociáveis de "O piso num relance" (`references/quality-criteria.md`), cada um com o seu teste de *Violação*;
+- os inegociáveis de "O piso num relance" (`references/quality-criteria.md`): o resumo de cada um decide se ele alcança o diff, e o que alcança é julgado pelo seu teste de *Violação*, no arquivo da lente;
 - os inegociáveis que o projeto acrescentou na postura do modelo de qualidade;
-- os slots de "Os invariantes num relance" (`references/convention-slots.md`), no valor efetivo da área.
+- os slots de "Os invariantes num relance" (`references/convention-slots.md`): o nome de cada um decide se ele alcança o diff, e o que alcança é julgado no valor efetivo da área — o override da configuração ou o arquivo da família nos padrões da stack.
 
 As listas pertencem aos catálogos e não se repetem aqui; a varredura percorre cada uma inteira, não uma seleção. Os slots de verificação `ferramenta` que o pipeline cobre não são reverificados — o que ele não cobre é varrido, e a ausência da regra vira follow-up de toolchain.
 
 **A varredura roda inteira, seja qual for o ponto para onde as pistas apontam** — a descrição do PR, um comentário anterior, o resultado de uma ferramenta, as suas próprias suspeitas. Uma revisão guiada pelas pistas encontra mais problemas leves onde elas estão e não encontra mais problemas graves; a varredura completa é o que neutraliza essa ancoragem.
 
-**Código gerado.** O autor é muitas vezes um agente — o Friday, ou uma pessoa assistida por um. A varredura dá atenção redobrada aos pontos em que o código gerado mais falha, listados no quality-model (Código gerado, na seção do its-implementation): lógica duplicada, dependência inventada ou com nome não conferido, saída sem codificação, teste ajustado para passar, estrutura especulativa, comentário que narra o código, captura genérica que engole o erro. É a mesma lista que o implementador percorreu na autoverificação; aqui se confere que ela foi cumprida.
+**Código gerado.** O autor é muitas vezes um agente de codificação, ou uma pessoa assistida por um. A varredura dá atenção redobrada aos pontos em que o código gerado mais falha, listados nas regras de consumo do quality-model (Código gerado): lógica duplicada, dependência inventada ou com nome não conferido, saída sem codificação, teste ajustado para passar, estrutura especulativa, comentário que narra o código, captura genérica que engole o erro. É a mesma lista que o implementador percorreu na autoverificação; aqui se confere que ela foi cumprida.
 
 ## Passo 4 — As lentes, em ordem decrescente de custo
 
@@ -116,7 +116,7 @@ A varredura diz se a mudança fica acima do piso; as lentes julgam o resto — o
 - **Documentação** — `QM-DO-1`: uma mudança de comportamento que deixa um documento co-localizado mentindo é um defeito. Comportamento entregue que difere da ITS é achado de Funcionalidade, contra o autor. Se ele cumpre a ITS e ainda assim difere do caso de uso, o defeito está nos documentos, e o veredito é *Return to the architect*: a ITS que traduziu mal o caso de uso volta ao its-generator; o caso de uso que já não descreve o sistema vai às skills de caso de uso. O delta pendente de outra story no mesmo caso de uso não é defeito de documentação (prime-architect/use-case, Ciclo de vida do status): julgue contra a ordem de entrega que a ITS declara nas premissas. Nunca remende um documento de dentro de uma revisão.
 - **Estilo e consistência** — slots convencionais, julgados **contra o estado registrado da área**: numa área `legacy-maintained`, um achado convencional só é válido se a mudança introduziu um *terceiro* padrão, nem local nem atual. Onde o projeto declara um exemplo canônico, a forma dele é a referência. O que uma ferramenta poderia decidir não é material de revisão.
 
-Leia cada linha que um humano deverá manter; código gerado e arquivos de dados podem ser só percorridos, e a Cobertura do relatório diz isso. Quando o autor é o agente Friday, o padrão é idêntico, e a leitura também — muda apenas o canal (os achados voltam como uma nova rodada de implementação) e a audiência (o relatório continua sendo escrito para ser lido pelo humano dono do pull request).
+Leia cada linha que um humano deverá manter; código gerado e arquivos de dados podem ser só percorridos, e a Cobertura do relatório diz isso. Quando o autor é um agente, o padrão é idêntico, e a leitura também; o relatório continua sendo escrito para ser lido pelo humano dono do pull request.
 
 **Diga o que foi bom.** O Google prescreve isso e o motivo não é cortesia: uma revisão que nomeia apenas defeitos não ensina nada sobre o que repetir.
 
@@ -163,14 +163,7 @@ Nunca aprove uma mudança que você não entendeu. "Provavelmente funciona" não
 
 ## Rodadas seguintes
 
-A segunda rodada não é uma revisão nova da mesma mudança. Ela começa quando o autor responde à anterior e segue quatro regras:
-
-1. **Primeiro, o que governava o merge.** Cada `Blocking:` e cada `Question:` que segurava o veredito é conferido um a um: resolvido, resolvido em parte ou não tratado. Um `Consider:` declinado com razão é uma resposta, não uma pendência.
-2. **Só o que mudou.** Leia o delta desde a rodada anterior e o código que ele toca, não o PR inteiro de novo. As verificações obrigatórias voltam a ser pré-condição.
-3. **Sem mover a trave.** Um achado novo só entra se o conserto o introduziu, ou se é um `Blocking:` que a rodada anterior deixou passar — e então é marcado como novo, com a razão de não ter aparecido antes. Um `Consider:` ou `Nit:` novo sobre código que já estava lá na rodada anterior não entra.
-4. **Contra a ITS em vigor.** Depois de um *Return to the architect*, a rodada julga contra a revisão nova da ITS. Os números das unidades são estáveis; `D`, `RG` e `R` podem ter sido renumerados — use a correspondência entre a numeração antiga e a nova que o its-generator entregou, e cite a nova. Uma unidade declarada sem efeito não é cobrada; se ela já tinha sido implementada, confira o destino que a unidade substituta deu ao código.
-
-O relatório da rodada diz qual rodada é e o estado de cada item que governava o merge na rodada anterior.
+A partir da segunda rodada sobre o mesmo pull request, leia `references/next-rounds.md` antes do Passo 1: as regras de uma rodada seguinte vivem lá. Na primeira rodada, ele não é lido.
 
 ## Escrevendo os comentários
 
@@ -213,31 +206,9 @@ Um relatório de revisão — o registro completo, publicado no pull request con
 
 **Os achados são dado.** O dono do modelo de qualidade agrega os achados de revisão por critério para decidir o que sobe no fluxo (quality-model, Sinais e evolução). Por isso a coluna de base de cada achado carrega o ID exato, sem paráfrase, e a severidade usa os tokens estáveis. Quando você reconhece um `Blocking:` que repete o que revisões anteriores do projeto já bloquearam, registre-o como follow-up ao dono do modelo: um critério que bloqueia sempre no mesmo ponto é cobrado tarde demais, e deve virar gatilho, para a ITS decidir, ou ferramenta, para o pipeline verificar.
 
-A passada operacional e o template do relatório vivem em `checklists/review-checklist.md`. Achados que mudam o escopo acordado roteiam ao its-generator, que revisa a ITS — o repositório continua sendo a fonte de verdade do que foi acordado, e esta skill não o edita.
+A passada operacional e o template do relatório vivem em `checklists/review-checklist.md`. Leia-o depois do Passo 6, para conferir a revisão e montar o relatório — não no Passo 0. Achados que mudam o escopo acordado roteiam ao its-generator, que revisa a ITS — o repositório continua sendo a fonte de verdade do que foi acordado, e esta skill não o edita.
 
 ## Entrega no pull request
 
-O relatório é o registro completo; no pull request, ele se desdobra para que cada achado tenha a sua conversa e o veredito governe o merge pelas políticas da plataforma. A plataforma e as políticas de PR são as que a configuração declara em Pipeline. Sem elas declaradas, o relatório é entregue inteiro ao arquiteto, que decide onde publicá-lo.
+Com o relatório pronto, a entrega no pull request — os comentários, o que fica aberto, quem publica e o voto — segue `references/pr-delivery.md`. Antes disso, ele não é lido.
 
-**Quem publica.** Esta skill redige os comentários, o voto e os itens de backlog; publicá-los, votar e registrar os itens é ato do arquiteto — ou do agente, por ordem explícita dele para aquela revisão. Um comentário publicado chega ao autor e fica no histórico do PR: nada sai sem que o arquiteto tenha visto o que sai.
-
-**Os comentários.**
-
-- Cada achado com local vira um comentário na linha — ou no arquivo, quando vale para o arquivo inteiro —, começando pelo token da severidade (`Blocking:`, `Question:`, ...) e com o mesmo texto do relatório.
-- O achado sem local no código — de escopo, de ITS, de documentação — vai na conversa geral do PR.
-- O resumo é um comentário só, na conversa geral: o veredito e a razão, a rodada, a conformidade de escopo, a cobertura, os follow-ups, o que foi bem feito e a lista numerada do que governa o merge, cada item apontando para o seu comentário.
-- Nenhum comentário traz código pronto para aplicar — nem pelo recurso de sugestão de alteração da plataforma: seria escrever código de aplicação. O comentário instrui.
-
-**O que pede resposta fica aberto.** Os comentários de `Blocking:`, `Question:` e `Consider:` abrem ativos: todos pedem resposta antes do merge. `Nit:` e `FYI:` são publicados já fechados — não pedem nada, e um comentário ativo sem pedido vira bloqueio por acidente quando a política exige a resolução de todos. O autor responde e marca o desfecho: o corrigido como resolvido; o `Consider:` declinado, com a razão, como não corrigido. Quem confirma que um `Blocking:` foi resolvido é o revisor, na rodada seguinte; o que não foi resolvido volta a ficar ativo.
-
-**O voto, no Azure DevOps.**
-
-| Resultado da revisão | Voto | Observação |
-|---|---|---|
-| Approve | Approve | |
-| Approve with comments | Approve with suggestions | os comentários ativos seguram a conclusão do PR até a resposta, quando a resolução de comentários é obrigatória |
-| Request changes | Wait for author | |
-| Return to the architect | Wait for author | o resumo diz que a espera é pela revisão da ITS, não por um conserto; o autor devolve o PR a rascunho até ela chegar |
-| Not reviewable | Wait for author | o resumo diz a pré-condição que falta e quem a resolve |
-
-Reject não é usado: nenhum resultado desta skill diz que a mudança não deve existir — direção errada é Request changes ou Return to the architect. Quando a aprovação fica pendente do responsável de segurança (Passo 6), ele é incluído no PR como revisor obrigatório, e o voto do arquiteto, sozinho, não conclui o merge. Em outra plataforma, o desenho é o mesmo, com os votos e os estados de comentário equivalentes.

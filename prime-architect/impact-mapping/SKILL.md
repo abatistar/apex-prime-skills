@@ -1,6 +1,8 @@
 ---
 name: impact-mapping
-description: Mapeia o alcance de uma mudança pretendida na base de código e na camada documentada, produzindo evidência ancorada e nunca um veredito. Skill da camada do arquiteto - responde o que uma mudança toca, o que depende dela, em quais áreas registradas ela entra, quais casos de uso a cobrem e quais ADRs incidem sobre ela. Use quando o arquiteto perguntar o que uma mudança alcança - "o que a mudança na regra de preço toca", "o que depende deste módulo", "mapeie o raio de impacto da S-131", "o que quebra se mudarmos este payload", "onde vive este comportamento" - e sempre como primeira passada da feasibility-analysis. NÃO use para decidir se a mudança deve ser feita (feasibility-analysis), para escrever ou revisar uma ITS (its-generator), para documentar casos de uso (use-case-creator, use-case-extractor), para revisar uma implementação (code-review), para escrever código de aplicação (camada do dev) nem para o impact mapping de produto (objetivo, atores, impactos, entregas).
+description: Mapeia o alcance de uma mudança pretendida no código e na camada documentada - o que ela toca, o que depende dela, as áreas registradas, os casos de uso e os ADRs que incidem -, como evidência ancorada e nunca um veredito. Use quando o arquiteto perguntar o que uma mudança alcança - "o que a mudança na regra de preço toca", "mapeie o raio de impacto da S-131", "o que quebra se mudarmos este payload" - e como primeira passada da feasibility-analysis. NÃO use para decidir se a mudança deve ser feita (feasibility-analysis) nem para o impact mapping de produto.
+context: fork
+background: false
 ---
 
 # Impact Mapping (prime-architect)
@@ -8,6 +10,8 @@ description: Mapeia o alcance de uma mudança pretendida na base de código e na
 Esta skill responde a uma pergunta e recusa a próxima: **o que esta mudança alcança?** Ela produz evidência — ancorada, delimitada e classificada por confiança — e a entrega a quem precisa decidir. Decidir é trabalho de outro: a `feasibility-analysis` transforma este mapa em um veredito, e o arquiteto pode simplesmente lê-lo.
 
 A separação é a mesma que o repositório já traça entre o `prime-core/quality-model` e o `prime-architect/code-review`: definir e julgar são atos diferentes, com modos de falha diferentes. Um mapa que recomenda deixou de ser evidência, porque o leitor não consegue mais distinguir quais linhas são observações e quais são opiniões.
+
+**Roda isolada.** Onde a plataforma permite — no Claude Code, `context: fork` —, esta skill roda num subagente: não vê a conversa de quem a invocou, só o que recebe nos argumentos — a demanda, ou a reformulação pronta e a fronteira declarada quando vem da `feasibility-analysis` —, e só o relatório volta. Por isso o relatório da Saída é a resposta final inteira, e uma pergunta ao arquiteto só sai como `Insufficient input`.
 
 ## O padrão de um mapa
 
@@ -24,7 +28,7 @@ Este vocabulário é definido aqui e **reutilizado, não redefinido**, por toda 
 
 ## Passo 0 — Ler a configuração e registrar a revisão
 
-Leia o `docs/prime-config.md` conforme o contrato **prime-core/prime-config** (as regras de localização, precedência, divergência e bootstrap vivem lá; não as repita). Dele esta skill consome:
+Leia o `docs/prime-config.md` conforme as regras de consumo do **prime-core/prime-config** (`../prime-config/references/consumer-rules.md`). Dele esta skill consome:
 
 - o **mapa de estrutura** — onde as coisas vivem;
 - o **registro de áreas** — o estado de cada área (`current`, `legacy-maintained`, `strangler`), o seu nível de criticidade (`efêmera`, `padrão`, `crítica`) e as exclusões;
@@ -39,16 +43,7 @@ Uma área que o registro não lista é `current` e `padrão` — o padrão que o
 
 ## Passo 1 — Reformular a mudança como comportamento
 
-A reformulação é definida aqui e só aqui. A `feasibility-analysis` a executa no seu próprio Passo 1, com a confirmação do arquiteto, e a entrega a este mapa já pronta — nesse caminho este passo é pulado, e a reformulação vira a linha de assunto como está.
-
-A entrada costuma chegar como uma solução: *"adicionar uma coluna"*, *"cachear a consulta de cliente"*, *"mudar o endpoint"*. Reformule-a como o delta de comportamento observável — o que um usuário, um chamador ou um sistema a jusante verá de diferente. Depois delimite: declare explicitamente o que **não** muda, nos mesmos termos. Quando a reformulação teve de escolher entre leituras da entrada, confirme-a com o arquiteto antes de mapear: mapear a leitura errada custa o mapa inteiro.
-
-Dois desfechos são legítimos aqui:
-
-- A reformulação se sustenta → ela vira a linha de assunto do mapa, e tudo o que for rastreado precisa remeter a ela.
-- A reformulação não pode ser feita sem inventar intenção → **`Insufficient input`**: pare, sem mapa e sem veredito, e devolva as perguntas específicas em vez de mapear uma mudança que ninguém definiu. É um achado, não uma falha — mapear uma mudança adivinhada custa mais que perguntar. Quando é a `feasibility-analysis` que executa este passo, o mesmo desfecho encerra a execução dela antes de qualquer mapa ser comissionado; nada foi julgado, então também não há *Undecidable*.
-
-Quando a entrada nomeia uma solução e o delta de comportamento admite outras, registre isso em uma linha. Não avalie as alternativas — isso é decisão do arquiteto, informada pelo mapa.
+Siga `references/reformulation.md`, a definição única da reformulação — também lida pela `feasibility-analysis`, que a executa no próprio Passo 1. Quando a chamada vem dela, com a reformulação pronta e a fronteira declarada nos argumentos, este passo é pulado, e a reformulação vira a linha de assunto como está. Leituras concorrentes da entrada não são escolhidas aqui: viram `Insufficient input`, com as leituras candidatas e a recomendada.
 
 ## Passo 2 — Encontrar os pontos de entrada
 
@@ -87,7 +82,7 @@ A sobreposição importa porque o mesmo alcance custa de forma diferente conform
 
 Cruze o alcance com o que o repositório afirma ser verdade.
 
-- **Cobertura por casos de uso.** Quais `UC-NNN` cobrem o comportamento tocado, citados pelo elemento quando a cobertura é específica (`RN-N`, `CA-N`, passo, extensão), **cada um com seu status** — só um documento `Reviewed` é fonte de verdade (prime-architect/use-case):
+- **Cobertura por casos de uso.** Quais `UC-NNN` cobrem o comportamento tocado, citados pelo elemento quando a cobertura é específica (`RN-N`, `CA-N`, passo, extensão), **cada um com seu status** — só um documento `Reviewed` é fonte de verdade (regras de consumo do prime-architect/use-case, `../use-case/references/consumer-rules.md`):
   - `Reviewed` — cobertura.
   - `Reviewed` com **delta pendente** — o documento descreve o estado-alvo de uma story ainda não entregue, e o código ainda faz, nos itens do delta, o que o documento descrevia antes dele (prime-architect/use-case, Ciclo de vida do status). É cobertura do estado-alvo, não divergência: registre o ID da story, porque é outra demanda em curso sobre o mesmo comportamento, e a ordem de implementação importa. Sem como saber se a story já foi entregue, a linha é `[INFERRED]`, com o raciocínio (o código faz o estado anterior; a entrega da story não foi confirmada), e a pergunta vai para Lacunas.
   - `Draft` — cobertura ainda não validada. O mapa diz o que o mantém em `Draft` (marcadores pendentes, o delta de outra story aguardando promoção) e a rota: o `use-case-creator` (modo validação), ou o arquiteto, para promover.
@@ -143,7 +138,7 @@ O corpo contém:
 
 Sem veredito, sem recomendação, sem estimativa. Se o leitor do relatório não consegue dizer se a mudança é uma boa ideia, a skill cumpriu seu papel.
 
-A passada operacional e o template do relatório vivem em `checklists/impact-map-checklist.md`.
+A passada operacional e o template do relatório vivem em `checklists/impact-map-checklist.md`. Leia-o no Passo 7, para a verificação e o relatório — não no Passo 0.
 
 ## Consumidores
 

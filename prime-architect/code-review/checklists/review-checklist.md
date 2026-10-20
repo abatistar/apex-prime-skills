@@ -10,7 +10,7 @@ Passada operacional de propriedade do `prime-architect/code-review`. O SKILL.md 
 
 - [ ] A **ITS da story** está localizada e lida, junto com todo ADR listado em suas Referências. Documentação em pasta paralela → lida na revisão que o PR cita.
 - [ ] Os **casos de uso** listados nas Referências da ITS estão lidos — para a lente Documentação; o julgamento funcional é contra os itens da ITS.
-- [ ] `docs/prime-config.md` está carregado: pipeline e verificações obrigatórias, comandos de verificação, Responsáveis, Tracker e a seção Convenções e restrições por inteiro — release fixada, registro de áreas com estado, nível e exclusões, overrides de slots, soluções e exemplos canônicos, migrações declaradas, postura do modelo de qualidade e regras do projeto.
+- [ ] `docs/prime-config.md` está carregado, com o que o Passo 0 do SKILL.md usa dele.
 - [ ] O estado e o nível de criticidade de cada área tocada foram lidos nas premissas da ITS — não rejulgados —, junto com o que o perfil de cada nível exige.
 - [ ] As **verificações obrigatórias estão verdes**, conforme o Passo 0. Nenhum pipeline declarado → os comandos de verificação da configuração rodaram em seu lugar. Vermelho por causa de um teste instável → a revisão começa e isso é um achado `Blocking:` por si só (`QM-TS-1`).
 - [ ] O diff é revisável de uma só sentada. Se não for: peça uma divisão, ou declare as unidades do plano que você revisará e em que ordem.
@@ -46,9 +46,9 @@ Passada operacional de propriedade do `prime-architect/code-review`. O SKILL.md 
 
 ## 3. Varredura do piso — inteira, independentemente das pistas
 
-- [ ] Cada inegociável de "O piso num relance" (`references/quality-criteria.md`), com o seu teste de *Violação*.
+- [ ] Cada inegociável de "O piso num relance" (`references/quality-criteria.md`); o que alcança o diff, julgado pelo teste de *Violação* no arquivo da lente.
 - [ ] Os inegociáveis acrescentados pela postura do modelo de qualidade do projeto.
-- [ ] Cada slot de "Os invariantes num relance" (`references/convention-slots.md`), no valor efetivo da área. Slots de verificação `ferramenta` cobertos pelo pipeline não são reverificados; os não cobertos são varridos e viram lacuna de toolchain.
+- [ ] Cada slot de "Os invariantes num relance" (`references/convention-slots.md`); o que alcança o diff, julgado no valor efetivo da área. Slots de verificação `ferramenta` cobertos pelo pipeline não são reverificados; os não cobertos são varridos e viram lacuna de toolchain.
 - [ ] Atenção redobrada aos pontos em que o código gerado mais falha (quality-model, Código gerado).
 
 ## 4. Lentes, em ordem — o mapa de IDs é o Passo 4 do SKILL.md
@@ -121,13 +121,13 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 - [ ] Nada rediscutido que a toolchain já possui (`QM-MT-7`); sua ausência registrada como lacuna.
 - [ ] A Cobertura diz o que não foi lido linha a linha.
 
-## 10. Entrega no pull request — conforme a seção do SKILL.md
+## 10. Entrega no pull request — conforme `references/pr-delivery.md`
 
 - [ ] Plataforma e políticas de PR lidas da seção Pipeline da configuração; sem elas, o relatório inteiro vai ao arquiteto.
 - [ ] Um comentário por achado com local, na linha ou no arquivo, começando pelo token da severidade; achados sem local e o resumo na conversa geral.
 - [ ] Nenhum comentário com código pronto para aplicar, nem como sugestão de alteração.
 - [ ] `Blocking:`, `Question:` e `Consider:` ativos; `Nit:` e `FYI:` publicados já fechados.
-- [ ] Voto conforme a tabela da seção; Reject não usado. Aprovação pendente do responsável de segurança → ele incluído como revisor obrigatório.
+- [ ] Voto conforme a tabela de `references/pr-delivery.md`; Reject não usado. Aprovação pendente do responsável de segurança → ele incluído como revisor obrigatório.
 - [ ] Nada publicado, votado nem registrado no tracker sem o arquiteto ter visto.
 
 ---

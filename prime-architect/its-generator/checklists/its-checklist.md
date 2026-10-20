@@ -4,9 +4,9 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 
 ## Configuração e contratos
 
-- [ ] `docs/prime-config.md` lido conforme o contrato **prime-core/prime-config**.
-- [ ] Da configuração: stack e versões, mapa de estrutura, *Convenções e restrições* por inteiro (release fixada do Apex Prime, registro de áreas com estado, nível de criticidade e exclusões, overrides de slots, soluções e exemplos canônicos, migrações declaradas, postura do modelo de qualidade, regras do projeto), localizações de documentos e ADRs, comandos de verificação.
-- [ ] Contratos carregados: `its-contract` (+ template), `use-case` (formato, no `prime-architect`), `coding-standards` (+ `references/convention-slots.md` e os padrões da stack na release fixada), `quality-model` (+ `references/quality-criteria.md` e `references/quality-triggers.md`).
+- [ ] `docs/prime-config.md` lido conforme as regras de consumo do **prime-core/prime-config**.
+- [ ] Da configuração, o que o Passo 0 do SKILL.md lista.
+- [ ] Contratos carregados: `its-contract` (o template e as Regras de escrita só no Passo 5), `use-case` (regras de consumo, no `prime-architect`), `coding-standards` (regras de consumo + os índices `references/convention-slots.md` e dos padrões da stack na release fixada), `quality-model` (regras de consumo + o índice `references/quality-criteria.md` e `references/quality-triggers.md`); arquivos de lente e de família só para os IDs citados ou aplicados.
 - [ ] Slot de que o plano depende e sem valor → reportado como lacuna (`coding-standards`, Slots não preenchidos). Nunca improvisado.
 - [ ] Divergência entre configuração e código → reportada, não resolvida em silêncio.
 
@@ -15,7 +15,7 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 - [ ] Story identificada; casos de uso afetados listados, ou encontrados buscando o ID da story no Histórico de revisões.
 - [ ] Story técnica (muda o código sem mudar comportamento observável) → confirmada com o arquiteto antes de planejar; entra só com a story, segue o cenário técnico e pula as duas verificações seguintes. Arquiteto discorda → algo observável muda → use-case-creator primeiro.
 - [ ] Todo documento afetado tem Status `Reviewed`. Qualquer outro → reportar e parar; marcadores pendentes → use-case-creator (modo validação); delta ainda não validado → arquiteto, para validar e promover. A promoção é um ato humano, e a edição do Status só acontece por ordem explícita do arquiteto. Única exceção: `Retired` pela entrada de retirada desta story.
-- [ ] Todo documento afetado passa pelo formato `use-case`: nenhuma seção obrigatória ausente.
+- [ ] Todo documento afetado tem as seções obrigatórias (`use-case`, Seções do documento, nas regras de consumo), inclusive as extras e as do template customizado que a configuração declara.
 - [ ] Comportamento sem nenhum caso de uso → `use-case-extractor` recomendado para aquela área primeiro.
 - [ ] ADRs Accepted que tocam a área afetada listados. Um delta que não pode ser satisfeito sem contradizer um deles → roteado ao passo de ADR, nunca absorvido no plano.
 
@@ -53,7 +53,7 @@ A passada operacional do `prime-architect/its-generator`. **Nenhum template de d
 ## Decisões (ADR)
 
 - [ ] Cada ponto de decisão testado contra a fronteira de decisão do contrato: restringe implementações futuras · afeta mais de um caso de uso ou módulo · precisa de justificativa legível fora desta ITS.
-- [ ] Candidato redigido conforme o `its-contract` (`templates/adr-template.md`), status `Proposed`, na localização configurada, com as alternativas consideradas e as consequências declarando custos além dos ganhos.
+- [ ] Candidato redigido conforme o template de ADR do `its-contract` (`../its-contract/templates/adr-template.md`), status `Proposed`, na localização configurada, com as alternativas consideradas e as consequências declarando custos além dos ganhos.
 - [ ] Apresentado ao arquiteto. Nenhuma ITS entregue enquanto um ADR que ela referencia ainda estiver Proposed.
 - [ ] Recusado → registro em `Rejected`, com a razão; recusado como escopo de story → a decisão recai numa linha de alternativa descartada.
 - [ ] Aprovado → listado em Referências, e sua restrição escrita como instrução em toda unidade que ele vincula.

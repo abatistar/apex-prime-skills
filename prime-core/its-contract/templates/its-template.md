@@ -1,6 +1,6 @@
 # Template da ITS
 
-Template canônico de propriedade do prime-core/its-contract. O arquiteto o escreve; o desenvolvedor implementa a partir dele; o code review valida contra ele. Veja o SKILL.md do its-contract para as regras de nível de detalhe, escrita, rastreabilidade e fronteira entre ITS e ADR.
+Template canônico de propriedade do prime-core/its-contract. O its-generator o lê no passo em que escreve a ITS. Quem implementa e o code review leem a ITS pronta, nunca este arquivo: o documento entregue já tem a forma daqui. Veja o SKILL.md do its-contract para as regras de nível de detalhe, rastreabilidade e fronteira entre ITS e ADR, e o `references/writing-rules.md` dele para as regras de escrita.
 
 **Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — os identificadores do próprio documento (`D1`, `RG-1`, `R1`), `ITS-<story-id>` e, somente na seção Referências, os identificadores das fontes (`S-NNN`, `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `QM-XX-N`, `CS-XX-N`), os valores de status de ADR (`Proposed`, `Accepted`, `Rejected`, `Superseded by ADR-NNN`), os níveis e classes do catálogo, os estados de área (`current`, `legacy-maintained`, `strangler`) e os níveis de criticidade (`efêmera`, `padrão`, `crítica`), caminhos de arquivo e identificadores de código — nunca são traduzidos. Cada token continua pertencendo ao contrato que o declara; esta nota apenas afirma que nenhum deles é traduzido.
 

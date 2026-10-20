@@ -1,6 +1,6 @@
 ---
 name: feasibility-analysis
-description: Julga uma demanda contra o sistema que teria de absorvê-la, antes de existir qualquer especificação - produzindo achados classificados e exatamente um veredito. Skill da camada do arquiteto, invocada, nunca um gate obrigatório. Sempre executa o impact-mapping primeiro e julga sobre esse mapa. Use quando o arquiteto trouxer uma story, PRD, épico ou proposta informal e perguntar se é possível fazer, o que quebraria ou o que está no caminho - "isso é factível", "conseguimos absorver isto", "o que bloqueia esta story", "o product owner quer X, o que quebra". NÃO use para mapear o alcance sem julgá-lo (impact-mapping), para estimar esforço ou duração (custo é evidência, não critério), para escrever casos de uso (use-case-creator, use-case-extractor), para planejar uma mudança aprovada (its-generator), para julgar uma implementação (code-review) nem para escrever código de aplicação (camada do dev).
+description: Julga se uma demanda pode ser absorvida pelo sistema, antes de qualquer especificação - executa o impact-mapping e emite achados classificados e exatamente um veredito. Use quando o arquiteto trouxer uma story, PRD, épico ou proposta e perguntar "isso é factível", "o que bloqueia esta story", "o product owner quer X, o que quebra". NÃO use para só mapear o alcance (impact-mapping), para estimar esforço nem para planejar uma mudança aprovada (its-generator).
 ---
 
 # Feasibility Analysis (prime-architect)
@@ -25,7 +25,7 @@ Na prática: **referencie o mapa, nunca o repita.** O relatório cita o mapa; n�
 
 ## Passo 0 — Carregar a configuração e os critérios
 
-Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localização, alternativa, precedência, tratamento de divergências e bootstrap vivem todos nesse contrato; nunca os rederive aqui. Da configuração esta skill usa:
+Leia o `docs/prime-config.md` conforme as regras de consumo do **prime-core/prime-config** (`../prime-config/references/consumer-rules.md`). Da configuração esta skill usa:
 
 - a **stack** e as versões — o teto sob o qual todo caminho proposto precisa caber;
 - a seção **Convenções e restrições** por inteiro: a release fixada do Apex Prime, o registro de áreas, os overrides de slots, as migrações declaradas (responsável, escopo e módulo substituto de cada uma), a postura do modelo de qualidade e as **regras do projeto** — áreas proibidas, restrições operacionais e de compliance, janelas de deploy —, que são a entrada direta da lente Restrição;
@@ -33,13 +33,15 @@ Leia o `docs/prime-config.md` conforme o **prime-core/prime-config** — localiz
 - o **Tracker** — o formato do item de backlog com que os follow-ups são redigidos;
 - as localizações de documentos, incluindo o repositório de ADRs, e os comandos de verificação.
 
-Em seguida carregue, como os critérios em que o julgamento se ancora: o **prime-core/quality-model** (`QM-XX-N`) com `references/quality-triggers.md` — os gatilhos que a lente de mesmo nome percorre —, o **prime-core/coding-standards** (`CS-XX-N`) e os **ADRs** `Accepted` e `Proposed`.
+Em seguida carregue, como os critérios em que o julgamento se ancora: as regras de consumo do **prime-core/quality-model** (`../quality-model/references/consumer-rules.md`) com `../quality-model/references/quality-triggers.md` — os gatilhos que a lente de mesmo nome percorre —, as regras de consumo do **prime-core/coding-standards** (`../coding-standards/references/consumer-rules.md`) e os **ADRs** `Accepted` e `Proposed`.
+
+Os catálogos desses contratos não são carregados inteiros. Quando uma lente aplica um ID, leia no catálogo do dono o índice e o arquivo da lente ou família do ID: `../quality-model/references/quality-criteria/XX.md` para `QM-XX-N`; `../coding-standards/references/convention-slots/XX.md` para `CS-XX-N` e, quando a lente precisa do valor do slot, o arquivo de mesmo nome nos padrões da stack na release fixada. Os slots que servem a um critério — os que um gatilho alcança — estão no mapa Critério → slots do índice `../coding-standards/references/convention-slots.md`.
 
 **Custo é evidência, nunca um critério.** O modelo de qualidade responde *o que é bom*, não *quanto isto custa*; não o estique até virar um vocabulário de custo que ele não possui. Onde a confrontação precisa de um critério que não existe — um slot de convenção sem padrão da stack nem override do projeto — **reporte a lacuna** conforme o `coding-standards` e nunca improvise o valor. Um critério de que a confrontação precisou e que o catálogo não tem vira follow-up ao dono do modelo de qualidade em toda execução que o encontrar (Passo 7): quem agrega as ocorrências e decide o PR de governança é ele, não esta skill.
 
 ## Passo 1 — Reformular a demanda como algo verificável
 
-Execute o Passo 1 do `impact-mapping` — o resultado observável que a demanda afirma, em uma ou duas frases, e a fronteira do que ela **não** afirma — e confirme a reformulação com o arquiteto. A regra vive lá e não se repete aqui; a fronteira declarada neste passo é o que impede a análise de se expandir numa revisão do sistema inteiro.
+Execute a reformulação do `impact-mapping` (`../impact-mapping/references/reformulation.md`) — o resultado observável que a demanda afirma, em uma ou duas frases, e a fronteira do que ela **não** afirma — e confirme a reformulação com o arquiteto, inclusive a escolha entre leituras concorrentes da entrada. A regra vive lá e não se repete aqui; a fronteira declarada neste passo é o que impede a análise de se expandir numa revisão do sistema inteiro.
 
 Uma demanda que não se reduz a uma mudança observável no comportamento do sistema — que nomeia uma tecnologia, uma preferência ou uma aspiração em vez de um resultado — termina em **`Insufficient input`**: pare, devolva as perguntas e não emita veredito. Não há nada a julgar, e julgá-la mesmo assim é como esta skill degeneraria em opinião.
 
@@ -47,7 +49,7 @@ Uma demanda que não se reduz a uma mudança observável no comportamento do sis
 
 ## Passo 2 — Executar o mapa
 
-Execute o `impact-mapping` sobre a demanda **como reformulada no Passo 1** — essa reformulação é a linha de assunto do mapa, e o Passo 1 do próprio mapa não é reexecutado. O que esta skill consome dele:
+Execute o `impact-mapping` sobre a demanda **como reformulada no Passo 1** — essa reformulação é a linha de assunto do mapa, e o Passo 1 do próprio mapa não é reexecutado. Passe nos argumentos da invocação a reformulação e a fronteira declarada: o mapa pode rodar isolado, sem ver esta conversa. O que esta skill consome dele:
 
 - os **três graus** de alcance — direto, acoplado, superfície de contrato — e os **dados existentes**;
 - a sobreposição de **estados de área** (`current`, `legacy-maintained`, `strangler`) e de **níveis de criticidade** (`efêmera`, `padrão`, `crítica`), com o substituto de cada área `strangler` e as regras do projeto que alcançam as áreas;
@@ -195,7 +197,7 @@ Contém a demanda reformulada e sua fronteira, **a referência ao mapa de impact
 baseline de cada área tocada, os achados, a cobertura das lentes, as premissas do veredito, o veredito com
 sua razão de uma linha e os follow-ups por destino. Uma referência a um mapa sem a sua revisão não é uma
 referência: a regra 2 do Passo 6 depende de onde aquele mapa específico parou, e só a revisão diz se a sua
-borda ainda vale. A passada operacional e o template do relatório vivem em `checklists/feasibility-checklist.md`.
+borda ainda vale. A passada operacional e o template do relatório vivem em `checklists/feasibility-checklist.md`. Leia-o depois do veredito, para conferir a análise e montar o relatório — não no Passo 0.
 
 Nem este relatório nem o mapa que ele cita são obrigatórios para que uma demanda exista ou avance. O
 time é dono da demanda; são ferramentas que o arquiteto usa dentro desse processo.

@@ -4,15 +4,16 @@ Passada operacional de propriedade do `prime-architect/feasibility-analysis`. O 
 
 ## 0. Entradas carregadas
 
-- [ ] `docs/prime-config.md` lido conforme o `prime-core/prime-config`: stack e versões, mapa de estrutura, Convenções e restrições por inteiro (release fixada, **registro de áreas**, overrides de slots, migrações declaradas, postura do modelo de qualidade, **regras do projeto**), **Responsáveis**, Tracker, localizações de documentos, comandos de verificação.
-- [ ] `prime-core/quality-model` + `references/quality-criteria.md` + `references/quality-triggers.md`.
-- [ ] `prime-core/coding-standards` + `references/convention-slots.md` e os padrões da stack.
+- [ ] `docs/prime-config.md` lido conforme as regras de consumo do `prime-core/prime-config`, com o que o Passo 0 do SKILL.md usa dele.
+- [ ] Regras de consumo do `prime-core/quality-model` + `references/quality-triggers.md`.
+- [ ] Regras de consumo do `prime-core/coding-standards`.
+- [ ] Catálogos não carregados inteiros: cada ID aplicado é lido no arquivo da sua lente ou família, com o índice do catálogo (SKILL, Passo 0).
 - [ ] ADRs `Accepted` e `Proposed` examinados.
 
 ## 1. A demanda, reformulada
 
-- [ ] Passo 1 do `impact-mapping` executado: o **resultado observável** afirmado, em uma ou duas frases, e o que a demanda explicitamente **não** afirma.
-- [ ] Confirmada com o arquiteto.
+- [ ] Reformulação do `impact-mapping` executada (`../impact-mapping/references/reformulation.md`): o **resultado observável** afirmado, em uma ou duas frases, e o que a demanda explicitamente **não** afirma.
+- [ ] Confirmada com o arquiteto, inclusive a escolha entre leituras concorrentes da entrada.
 - [ ] Nenhum resultado observável declarável → **Insufficient input**: perguntas devolvidas, nenhum veredito, nada mais julgado.
 - [ ] Resultado que exige mudança em outro projeto → só a parte deste projeto é julgada; a outra entra como superfície de contrato e, quando o resultado daqui depende dela, como `Condition:` roteada à demanda daquele projeto. Resultado quase todo fora deste projeto → devolvida para ser quebrada, sem veredito.
 
