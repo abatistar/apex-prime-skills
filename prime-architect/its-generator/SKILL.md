@@ -1,6 +1,6 @@
 ---
 name: its-generator
-description: Gera a ITS (Instrução de Trabalho de Software) de uma story - o plano de implementação que leva a story e seus casos de uso a mudanças concretas de código. Use para "gere a ITS da S-NNN" e "o que precisa mudar no código", para uma story técnica (migração, dependência, refatoração) e para revisar uma ITS devolvida pela implementação ou pelo code review. NÃO use para escrever casos de uso (use-case-creator, use-case-extractor), para revisar uma implementação (code-review) nem para julgar se uma demanda cabe no sistema (feasibility-analysis).
+description: Gera a ITS (Instruções Técnicas de Sistema) de uma story - o plano de implementação que leva a story e seus casos de uso a mudanças concretas de código. Use para "gere a ITS da S-NNN" e "o que precisa mudar no código", para uma story técnica (migração, dependência, refatoração) e para revisar uma ITS devolvida pela implementação ou pelo code review. NÃO use para escrever casos de uso (use-case-creator, use-case-extractor), para revisar uma implementação (code-review) nem para julgar se uma demanda cabe no sistema (feasibility-analysis).
 ---
 
 # ITS Generator (prime-architect)

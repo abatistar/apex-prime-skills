@@ -1,6 +1,6 @@
 ---
 name: its-contract
-description: O contrato da ITS (Instrução de Trabalho de Software), o artefato autossuficiente que o arquiteto passa a quem implementa - seções, nível de detalhe, rastreabilidade, a fronteira com os ADRs e as regras de escrita. Consulte para escrever, validar ou ler uma ITS. Referencie-o, nunca o duplique.
+description: O contrato da ITS (Instruções Técnicas de Sistema), o artefato autossuficiente que o arquiteto passa a quem implementa - seções, nível de detalhe, rastreabilidade, a fronteira com os ADRs e as regras de escrita. Consulte para escrever, validar ou ler uma ITS. Referencie-o, nunca o duplique.
 ---
 
 # Contrato da ITS (prime-core)
