@@ -220,7 +220,7 @@ O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → re
 
 ## Os contratos do core
 
-**A ITS.** A peça central da plataforma. O formato da ITS (Instruções Técnicas de Sistema) vive em `prime-core/its-contract` e é consumido pelos dois lados: o arquiteto escreve contra ele, quem implementa — pessoa ou agente — lê a partir dele. Uma mudança no contrato atualiza a escrita e a leitura ao mesmo tempo, eliminando o descolamento entre especificação e implementação. O mesmo contrato é dono da fronteira com os ADRs — uma decisão que sobrevive à story é referenciada por uma ITS, nunca embutida nela.
+**A ITS.** A peça central da plataforma. O formato da ITS (Instruções Técnicas de Sistema) vive em `prime-core/its-contract` e é consumido pelos dois lados: o arquiteto escreve contra ele, quem implementa — pessoa ou agente — lê a partir dele. Uma mudança no contrato atualiza a escrita e a leitura ao mesmo tempo, eliminando o descolamento entre especificação e implementação. O mesmo contrato é dono da fronteira com os ADRs — uma decisão estrutural que sobrevive à story é referenciada por uma ITS, nunca embutida nela.
 
 **O padrão: dois contratos, um único ponto de enforcement.** O `prime-core/quality-model` responde *o que é qualidade* — dez lentes, um piso inegociável com IDs estáveis (`QM-XX-N`), uma calibração declarada por nível de criticidade, os gatilhos que dizem que decisões de qualidade cada ITS precisa tomar e uma disciplina de exceção que distingue dívida deliberada de atalho silencioso. O `prime-core/coding-standards` responde *como a qualidade se parece aqui* — o catálogo fechado de slots de convenção (`CS-XX-N`) que todo projeto precisa ter decidido, os padrões do time por stack, versionados e fixados por projeto, e o registro de áreas legadas. Nenhum dos dois aprova ou reprova nada: o enforcement pertence ao `prime-architect/code-review`, que transforma ambos em achados classificados e um veredito, sempre citando um ID em vez de uma preferência.
 
@@ -234,7 +234,7 @@ O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → re
 | `CS-XX-N` | Slot de convenção | `prime-core/coding-standards` |
 | `UC-NNN` · `UC-NNN/RN-N` · `UC-NNN/CA-N` | Caso de uso · uma de suas regras de negócio · um de seus critérios de aceite | `prime-architect/use-case` |
 | `ITS-<story-id>` | Instrução de trabalho de uma story | `prime-core/its-contract` |
-| ADR | Decisão que sobrevive à story | `prime-core/its-contract` |
+| ADR | Decisão estrutural que sobrevive à story | `prime-core/its-contract` |
 
 Todo achado, toda exceção e todo elo de rastreabilidade cita um desses. Uma afirmação que não cita nada é uma preferência.
 

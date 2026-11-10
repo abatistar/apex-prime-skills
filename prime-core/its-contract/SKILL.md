@@ -52,7 +52,9 @@ Uma ITS que falha em qualquer um desses pontos não é entregável.
 
 A ITS registra decisões que **morrem com a story** (escolhas entre caminhos de implementação equivalentes — capturadas pela regra da alternativa descartada acima). Decisões que **sobrevivem à story** não são tomadas na ITS; vão para um Architecture Decision Record (ADR), e a ITS lista o ADR em Referências e escreve, nas unidades que ele vincula, o que ele exige deste plano.
 
-Uma decisão sobrevive à story quando pelo menos uma destas vale:
+**O assunto vem antes dos critérios.** Um ADR registra uma decisão sobre **como o sistema é construído** — estrutura, tecnologia, padrão, estratégia técnica, fronteira entre partes. O que o negócio decide nunca é um ADR, por duradouro e abrangente que seja: uma regra de negócio vive no documento de caso de uso, como `RN-N`, sob o histórico de revisão de lá, e é dali que a ITS a lê. A fronteira cai onde a decisão deixa de ser sobre o que o produto faz e passa a ser sobre a solução que o faz: *pedido acima de um limite exige aprovação* é regra de negócio; *a aprovação é modelada como máquina de estados no domínio, e não como um campo no pedido* é ADR. Os critérios abaixo só são aplicados depois que a decisão passa por essa porta — uma regra que vale para vários módulos e cuja justificativa alguém vai querer mais tarde continua sendo caso de uso, não ADR.
+
+Passada essa porta, uma decisão sobrevive à story quando pelo menos uma destas vale:
 - ela restringe escolhas futuras de implementação (padrão, biblioteca, estilo de integração, estratégia de persistência);
 - afeta mais de um caso de uso ou módulo;
 - alguém que nunca leu esta ITS precisará da justificativa mais tarde.

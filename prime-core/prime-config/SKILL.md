@@ -1,107 +1,68 @@
 ---
 name: prime-config
-description: O contrato do docs/prime-config.md, o arquivo de configuração que toda skill do Apex Prime lê primeiro - seções, pontos de override, precedência, divergências e bootstrap. Consulte para fazer o bootstrap, validar ou atualizar a configuração, ou quando o Passo 0 de uma skill não a encontrar. Só para ler a configuração, o Passo 0 usa references/consumer-rules.md, sem carregar este contrato.
+description: O contrato do docs/prime-config.md - as cinco seções (Stack, Estrutura, Repositório de documentos, Comandos de verificação, Opções), a validação e o bootstrap. Consulte para fazer o bootstrap, validar ou atualizar a configuração. Para apenas ler um fato do projeto, use references/consumer-rules.md, sem carregar este contrato.
 ---
 
 # Contrato do Prime Config (prime-core)
 
-O `prime-config.md` é o ponto de entrada de toda execução do Apex Prime: todas as skills, em todas as camadas, o leem como primeiro passo. Esta skill é dona do seu contrato — estrutura, pontos de override, precedência, divergências, ciclo de vida, validação e bootstrap. Como todo consumidor lê contra o mesmo contrato, uma mudança aqui atualiza todos de uma vez; nenhuma skill redefine o que a configuração significa.
+O `prime-config.md` guarda os fatos do projeto que as skills não devem adivinhar: stack, estrutura, onde vive a documentação, como verificar o código e as opções que o projeto liga. Esta skill é dona do contrato do arquivo — seções, validação e bootstrap.
 
-A configuração responde a uma pergunta: **o que é verdade sobre este projeto que as skills não devem adivinhar?** Stack e versões, arquitetura e estrutura, comandos de verificação, onde vive a documentação, quem responde pelo quê, convenções e restrições, tracker e pipeline. Todo o resto pertence aos contratos (formatos, qualidade) ou às skills de papel (processo).
+O arquivo guarda fatos, não instruções. O porquê de cada seção vive aqui; o arquivo do projeto carrega no máximo um ponteiro de uma linha por seção.
 
-**O que todo consumidor segue** — um arquivo por projeto, a localização, a precedência, as divergências e lacunas, o ciclo de vida e a regra de consumo — vive em `references/consumer-rules.md`, a parte deste contrato que o Passo 0 de cada skill lê sozinha, sem este arquivo. Leia-o também antes de qualquer procedimento abaixo.
+Nenhuma skill lê a configuração por rotina, e nenhuma a lê inteira. Cada uma lê a seção de que precisa, quando precisa de um fato que está nela. A regra está em `references/consumer-rules.md`, a parte deste contrato que um consumidor lê sozinha. Leia-a antes de qualquer procedimento abaixo.
 
-## Template
-
-Template canônico: `references/prime-config-template.md`. Leia-o integralmente antes de fazer o bootstrap ou validar uma configuração.
+Template canônico: `references/prime-config-template.md`. Leia-o integralmente antes de fazer o bootstrap ou de validar uma configuração.
 
 ## Seções
 
-**Obrigatórias** — uma configuração sem qualquer uma delas está incompleta (veja Divergências e lacunas, em `references/consumer-rules.md`):
+As cinco são obrigatórias. Falta uma: a configuração está incompleta (veja Divergências e lacunas, em `references/consumer-rules.md`).
 
-- **Stack** — linguagem e versão, framework, ferramenta de build, banco de dados, migrações, mensageria (quando houver). As versões têm peso: as skills planejam e revisam contra elas. Um projeto com mais de um componente declara uma Stack por componente, cada uma com seu tipo (`serviço` ou `cliente`, conforme o prime-core/coding-standards).
-- **Estrutura** — a arquitetura do projeto e o pacote que representa cada um dos seus elementos — no hexagonal, domínio, aplicação (portas de entrada, portas de saída, serviços), adaptadores de entrada e de saída e montagem. Os padrões do time definem os elementos e as regras entre eles, nunca os nomes dos pacotes: esse mapa é do projeto. Um projeto legado declara a arquitetura que tem de fato — camadas, por exemplo — e, quando ela difere da do padrão do time, sobrescreve o slot de arquitetura (`CS-AR-1`) com a sua. É o mapa que o teste de arquitetura verifica, o do its-generator para inspeção de código e o do extractor para o inventário de pontos de entrada.
-- **Comandos de verificação** — como compilar, testar e rodar as verificações que o projeto tem: a suíte inteira, um teste isolado, o teste de arquitetura e, onde houver, mutação e contrato. Lidos por toda skill que planeja, julga ou verifica — o its-generator fecha o plano da ITS com eles, o impact-mapping e a feasibility-analysis os leem como evidência de cobertura e o code-review os executa como pré-condição de uma revisão em projetos que não declaram pipeline — e por quem implementa, que os executa antes do PR.
-- **Repositório de documentos** — onde vive a documentação do Apex Prime do projeto: casos de uso, ITS e ADRs.
-  - **Raiz de documentos:** `docs`, dentro do repositório do código e versionada com ele, ou uma pasta paralela ao projeto (padrão sugerido: `../<projeto>-docs`), com versionamento próprio. A escolha é do projeto e é declarada; sem a declaração, vale `docs` dentro do repositório.
-  - A localização e a nomenclatura de casos de uso, ITS e ADRs, relativas à raiz.
-  - Os dois overrides de caso de uso, que vivem aqui como campos: o caminho de um template customizado e as seções obrigatórias extras.
+**Stack** — linguagem e versão, framework, build, banco, migrações, mensageria. As versões têm peso: as skills planejam e revisam contra elas. Mais de um componente: uma Stack por componente, cada uma com seu tipo (`serviço` ou `cliente`, conforme o prime-core/coding-standards).
 
-  Existem padrões nos contratos donos — o `prime-architect/use-case` e o `prime-core/its-contract` —, mas a configuração os declara explicitamente para que os overrides tenham um único endereço.
-- **Responsáveis** — as pessoas a quem os contratos atribuem decisões neste projeto: o arquiteto responsável (aprova ADRs e a admissão de dependências, assina as ITS) e o responsável de segurança (concede com o arquiteto as exceções de segurança do prime-core/quality-model). Um papel sem nome é escrito como "não declarado ainda"; uma tarefa que precisa dele reporta a lacuna.
-- **Convenções e restrições** — as regras do projeto que restringem todo plano e toda revisão. Esta seção é o lar de todo ponto de override que os contratos do core declaram sobre código (veja Pontos de override abaixo), e carrega sete subseções nomeadas, a última das quais guarda as regras em prosa livre que não se encaixam em nenhum slot:
-  - **Padrões do time** — a release do Apex Prime (a tag) cujos catálogos e padrões do time o projeto segue, conforme o prime-core/coding-standards. Uma release nova só alcança o projeto quando ele a fixa aqui.
-  - **Registro de áreas** — uma linha por área com duas dimensões: o estado (`current` | `legacy-maintained` | `strangler`, conforme o prime-core/coding-standards) e o nível de criticidade (`efêmera` | `padrão` | `crítica`, conforme o prime-core/quality-model; `efêmera` com a condição de remoção). Não registrada significa `current` e `padrão`; a classificação é declarada aqui, nunca inferida. A mesma subseção lista as **exclusões** — código gerado ou de terceiros, que não é área e não é editado à mão.
-  - **Overrides de slots** — os slots de convenção (`CS-XX-N`) que este projeto decide de forma diferente dos padrões do time, cada um com seu alcance (o projeto, uma área ou um nível de criticidade) e sua razão. "Não se aplica", com o motivo, é um valor válido.
-  - **Soluções e exemplos canônicos** — o registro de soluções canônicas do projeto (`CS-PR-1`) e, por slot convencional, o caminho do arquivo que mostra a forma certa.
-  - **Migrações declaradas** — cada migração em andamento com seu novo valor de slot, responsável, escopo, detecção e condição de conclusão.
-  - **Postura do modelo de qualidade** — inegociáveis específicos do projeto, critérios calibrados endurecidos e a postura permanente diante de legado e dívida, conforme o prime-core/quality-model.
-  - **Regras do projeto** — o que restringe todo plano e toda revisão e não se mapeia em nenhum slot: áreas proibidas, exigências de aprovação, restrições operacionais e de compliance. Uma pergunta que o catálogo de slots já faz é respondida em Overrides de slots, nunca aqui também; duas cópias de uma decisão é justamente o que o catálogo existe para prevenir.
+**Estrutura** — a arquitetura do projeto e o pacote que representa cada elemento dela. No hexagonal: domínio, aplicação (portas de entrada, portas de saída, serviços), adaptadores de entrada e de saída, montagem. Os padrões do time definem os elementos e as regras entre eles, nunca os nomes dos pacotes — esse mapa é do projeto. Um projeto legado (Opções › Legado) declara a arquitetura que tem de fato, camadas por exemplo. É o mapa que o teste de arquitetura verifica, o que o its-generator usa para inspecionar código e o que o extractor usa para inventariar pontos de entrada.
 
-**Opcionais:**
+**Repositório de documentos** — onde vive a documentação do Apex Prime: casos de uso, ITS e ADRs.
 
-- **Tracker** — onde vivem as stories e os itens de backlog:
-  - o formato do identificador de story (padrão quando ausente: `S-NNN`);
-  - o padrão do link da story, com `{id}` no lugar do identificador — a ITS o usa na linha da story em Referências; sem ele, a linha leva só o identificador e a lacuna é reportada;
-  - o formato do item de backlog que os padrões pedem para dívida, teste desativado e flag (por exemplo, `ITEM-123`).
-- **Pipeline** — a plataforma em que os PRs vivem, os estágios de CI/CD, a **lista das verificações obrigatórias antes do merge**, cada uma com a ferramenta que a executa, e as **políticas de PR** que a revisão precisa conhecer: os revisores obrigatórios e se a resolução de comentários é obrigatória. O code-review a lê para saber o que não precisa revisar à mão, para registrar como lacuna de toolchain o slot de verificação por ferramenta que nenhuma verificação da lista cobre e para saber como publicar a revisão; quem implementa, para saber o que precisa passar. Omita em projetos sem pipeline; onde for omitido, os Comandos de verificação ocupam seu lugar como pré-condição de uma revisão.
+- **Raiz de documentos:** `docs`, no repositório do código e versionada com ele, ou uma pasta paralela ao projeto (sugestão: `../<projeto>-docs`), com versionamento próprio. A escolha é do projeto e é declarada. Sem declaração, vale `docs`.
+- A localização e a nomenclatura de casos de uso, ITS e ADRs, relativas à raiz.
+- O caminho de um template de caso de uso customizado e as seções obrigatórias extras dele.
 
-Projetos podem adicionar seções além destas (por exemplo, requisitos de compliance). Seções desconhecidas são preservadas, nunca apagadas por nenhuma skill.
+Os contratos donos — o `prime-architect/use-case` e o `prime-core/its-contract` — têm padrões para isso, e a configuração os declara de forma explícita. O template de caso de uso é substituível; a estrutura da ITS e do ADR não. Mudá-la é mudança de contrato, pelo PR de governança, não entrada de configuração.
 
-Uma subseção vazia é escrita com um "nenhuma declarada ainda" (ou "nenhuma — valem os padrões do time") explícito, nunca omitida. Silêncio e ausência são fatos diferentes, e só um deles é uma decisão.
+**Comandos de verificação** — como compilar, testar e rodar as verificações que o projeto tem: a suíte inteira, um teste isolado, o teste de arquitetura e, onde houver, mutação e contrato. Lidos por quem planeja, julga ou verifica — o its-generator fecha o plano da ITS com eles, o code-review os executa como pré-condição de uma revisão — e por quem implementa, que os roda antes do PR.
 
-**O arquivo guarda fatos, não instruções.** O porquê de cada seção vive neste contrato e nos contratos donos; o arquivo do projeto carrega no máximo uma linha de ponteiro por seção. Toda skill o lê no primeiro passo, e cada parágrafo de explicação copiado para ele é lido em toda execução.
+**Opções** — chaves de valor fechado que decidem comportamento das skills. Cada opção é declarada com seu valor. Uma opção ausente vale o padrão.
 
-## Pontos de override (a lista fechada)
+| Opção | Valores | Padrão | O que decide |
+|---|---|---|---|
+| Legado | `true` / `false` | `false` | O projeto é um sistema legado: não nasceu sob os padrões do time. |
+| Template da ITS | `Markdown` / `Confluence` | `Markdown` | O formato de saída da ITS, conforme o prime-core/its-contract, e a extensão do arquivo declarada em Repositório de documentos (`.md` ou `.wiki`). As seções e o nível de detalhe da ITS são os mesmos nos dois formatos. |
 
-Um contrato declara um ponto de override quando nomeia um padrão que o projeto pode substituir. A configuração pode sobrescrever **apenas** o que aparece abaixo; qualquer outra coisa nos contratos é regra, não padrão.
+Projetos podem adicionar seções além destas. Seções desconhecidas são preservadas, nunca apagadas por nenhuma skill.
 
-Os contratos donos vivem no `prime-core`, com uma exceção: o formato de caso de uso vive no `prime-architect/use-case`, porque todas as skills que o escrevem e o leem são do arquiteto. Seus pontos de override ficam nesta mesma lista fechada, para que a configuração continue tendo um único endereço.
-
-| Ponto de override | Contrato dono | Onde vive na configuração |
-|---|---|---|
-| Raiz de documentos (no repositório ou em pasta paralela) | este contrato | Repositório de documentos |
-| Caminho do template de caso de uso | prime-architect/use-case | Repositório de documentos |
-| Seções obrigatórias extras de caso de uso | prime-architect/use-case | Repositório de documentos |
-| Localização e nomenclatura de documentos e ADRs | prime-architect/use-case, prime-core/its-contract | Repositório de documentos |
-| Release do Apex Prime fixada (catálogos e padrões do time) | prime-core/coding-standards | Convenções e restrições › Padrões do time |
-| Valores de slots de convenção (`CS-XX-N`), por projeto, área ou nível, inclusive "não se aplica" | prime-core/coding-standards | Convenções e restrições › Overrides de slots |
-| Estado de área (`current` / `legacy-maintained` / `strangler`) | prime-core/coding-standards | Convenções e restrições › Registro de áreas |
-| Exclusões (código gerado ou de terceiros) | prime-core/coding-standards | Convenções e restrições › Registro de áreas |
-| Soluções canônicas (`CS-PR-1`) e exemplos canônicos por slot | prime-core/coding-standards | Convenções e restrições › Soluções e exemplos canônicos |
-| Migrações declaradas | prime-core/coding-standards | Convenções e restrições › Migrações declaradas |
-| Nível de criticidade de área (`efêmera` / `padrão` / `crítica`) | prime-core/quality-model | Convenções e restrições › Registro de áreas |
-| Inegociáveis adicionados e critérios calibrados endurecidos | prime-core/quality-model | Convenções e restrições › Postura do modelo de qualidade |
-| Postura permanente diante de legado e dívida deliberada | prime-core/quality-model | Convenções e restrições › Postura do modelo de qualidade |
-| Formato do identificador de story | este contrato | Tracker |
-
-Um contrato que queira um novo ponto de override adiciona uma linha aqui no mesmo PR que o declara. Dois contratos descrevendo o mesmo override em dois lugares é o descolamento que esta skill existe para prevenir.
-
-**Somente o template de caso de uso é sobrescrevível, e isso é uma decisão, não uma omissão.** Um caso de uso descreve o comportamento de um projeto, e a forma que o descreve bem pode legitimamente variar. A ITS e o ADR são artefatos de passagem de bastão e de auditoria, lidos por um implementador, um revisor e por pessoas de fora do projeto e do repositório — sua estrutura é fixada pelo prime-core justamente para que um leitor que chega frio encontre sempre o mesmo documento. Um projeto que precise de um diferente está pedindo uma mudança no contrato, pelo PR de governança, não uma entrada de configuração.
+Um campo sem valor diz isso explicitamente ("nenhum"), nunca é omitido. Silêncio e ausência são fatos diferentes, e só um deles é uma decisão.
 
 ## Validação
 
-Execute quando o usuário pedir, depois de um bootstrap ou ao fixar uma release nova. Cada achado é reportado com a correção sugerida; a correção é uma atualização explícita, revisada pelo usuário.
+Execute quando o usuário pedir ou depois de um bootstrap. Reporte cada achado com a correção sugerida. A correção é uma atualização explícita, revisada pelo usuário.
 
-- As seções obrigatórias estão presentes, e toda subseção vazia diz isso explicitamente.
-- A Stack confere com os arquivos de build; a release fixada, com o manifesto da instalação.
-- Todo caminho declarado existe: pacotes da Estrutura, áreas, exclusões, exemplos canônicos e a raiz de documentos.
+- As cinco seções estão presentes, e todo campo sem valor diz isso.
+- A Stack confere com os arquivos de build.
+- Todo caminho declarado existe: os pacotes da Estrutura e a raiz de documentos.
 - Os pacotes da Estrutura são os que o teste de arquitetura verifica.
-- Nenhuma área `efêmera` tem a condição de remoção vencida.
-- Toda migração declarada tem contagem caindo; uma parada é cancelada ou retomada, conforme o prime-core/coding-standards.
-- Nenhum override cita um slot ou critério aposentado ou reclassificado — a verificação obrigatória depois de subir a release.
-- Nenhum marcador `[CONFIRM: ...]` ficou esquecido numa seção que as tarefas usam.
+- Todo comando declarado roda.
+- Toda opção tem um dos valores da sua lista fechada.
+- A extensão declarada para a ITS confere com o Template da ITS.
+- Nenhum marcador `[CONFIRM: ...]` ficou esquecido.
 - Nada de segredo, credencial ou dado pessoal no arquivo.
 
 ## Procedimento de bootstrap
 
-Execute quando a configuração estiver ausente, ou restrito a seções específicas quando elas estiverem ausentes.
+Execute quando a configuração estiver ausente, ou restrito às seções ausentes.
 
-1. **Detectar.** Leia arquivos de build (`pom.xml`, `build.gradle`, `package.json`, ...), árvore de diretórios, marcadores de framework, pastas de migração, definições de CI. Redija as seções Stack, Estrutura e Comandos de verificação a partir de evidência — cite a evidência (qual arquivo disse o quê) para que o usuário possa auditar a detecção. Na Estrutura, descreva a arquitetura que o código tem de fato; se ela não é a do padrão do time, proponha o override do slot de arquitetura e marque-o com `[CONFIRM: ...]`.
-2. **Comparar com os padrões do time.** Carregue o `prime-core/coding-standards` (o índice `../coding-standards/references/convention-slots.md` e todos os arquivos de família) e os padrões da stack detectada (o índice e todos os arquivos de família) — a comparação percorre o catálogo inteiro —, e fixe em Padrões do time a release instalada, lida do manifesto da instalação. Não pergunte slot a slot: compare o código com os padrões e pergunte só onde a evidência diverge do padrão do time ou onde não existe padrão para a stack. Para cada divergência confirmada, registre o override com seu alcance e sua razão; para um slot sem sentido no projeto, "não se aplica" com o motivo; para um slot sem padrão nem decisão, o slot não preenchido com `[CONFIRM: ...]`. Proponha como exemplos canônicos os arquivos que a detecção encontrou seguindo a forma certa, marcados com `[CONFIRM: ...]`. O catálogo é uma lista fechada justamente para que "ninguém nunca decidiu onde as transações começam" se torne visível em vez de virar trinta decisões inconsistentes.
-3. **Classificar as áreas.** Elicite o registro de áreas: o estado de cada caminho — `current`, `legacy-maintained` ou `strangler` (com o módulo substituto e o ID da migração) — e o nível de criticidade — `efêmera` (com a condição de remoção), `padrão` ou `crítica`. Nunca infira isso de nomes de diretórios ou da idade dos arquivos; a conformidade com a arquitetura declarada (as violações que o teste de arquitetura encontra) é evidência para propor um estado, marcado com `[CONFIRM: ...]`. Um projeto que não declara nada recebe `current` e `padrão` em tudo — escreva isso explicitamente em vez de deixar a subseção de fora. Proponha como exclusões o código gerado e o de terceiros que a detecção encontrou, marcados com `[CONFIRM: ...]`.
-4. **Perguntar o que o código não conta.** Responsáveis, regras do projeto, áreas proibidas, postura do modelo de qualidade, tracker, estágios e verificações do pipeline são conhecimento humano. Elicite-os; nunca invente. Se o usuário não tem nada a declarar, escreva a subseção com um "nenhuma declarada ainda" explícito em vez de omiti-la.
-5. **Definir o repositório de documentos.** Pergunte se a documentação fica no próprio repositório (`docs`) ou numa pasta paralela ao projeto, versionada à parte; se uma pasta `../<projeto>-docs` já existe, proponha-a com `[CONFIRM: ...]`. Dentro da raiz, use como padrão as convenções do core (`use-cases/`, `its/`, `adr/`) e ofereça criar as pastas ausentes. O versionamento de uma pasta paralela é do projeto — normalmente um repositório próprio.
-6. **Ligar os arquivos de contexto do agente.** Se o projeto tem um `AGENTS.md`, um `CLAUDE.md` ou um `.github/copilot-instructions.md`, ofereça acrescentar uma linha que aponta para a configuração como fonte dos fatos do projeto (stack, estrutura, comandos, convenções) — sem copiar nenhum deles para lá. Duas cópias dos comandos de build divergem na primeira mudança.
-7. **Entregar como rascunho para revisão.** O usuário valida antes de o arquivo ser commitado. Uma configuração que ninguém revisou é detecção, não configuração — e explícito-vence-detectado só significa algo se um humano o tornou explícito.
-8. Marque tudo o que foi deduzido mas não confirmado com `[CONFIRM: ...]` (mesma disciplina de marcadores do prime-architect/use-case).
+1. **Detectar.** Leia arquivos de build (`pom.xml`, `build.gradle`, `package.json`, ...), a árvore de diretórios, marcadores de framework, pastas de migração e definições de CI. Redija Stack, Estrutura e Comandos de verificação a partir de evidência. Cite a evidência — qual arquivo disse o quê — para que o usuário possa auditar a detecção. Na Estrutura, descreva a arquitetura que o código tem de fato.
+2. **Definir o repositório de documentos.** Pergunte se a documentação fica no próprio repositório (`docs`) ou numa pasta paralela, versionada à parte. Se uma pasta `../<projeto>-docs` já existe, proponha-a com `[CONFIRM: ...]`. Dentro da raiz, use os padrões do core (`use-cases/`, `its/`, `adr/`) e ofereça criar as pastas ausentes. O versionamento de uma pasta paralela é do projeto, normalmente um repositório próprio.
+3. **Decidir as Opções.** Elicite cada uma; nunca infira. Legado não se deduz de nome de diretório nem da idade dos arquivos — pergunte. O Template da ITS segue a ferramenta em que a equipe publica a documentação.
+4. **Ligar os arquivos de contexto do agente.** Se o projeto tem `AGENTS.md`, `CLAUDE.md` ou `.github/copilot-instructions.md`, ofereça acrescentar uma linha que aponta para a configuração como fonte dos fatos do projeto. Não copie nenhum fato para lá: duas cópias dos comandos de build divergem na primeira mudança.
+5. **Entregar como rascunho para revisão.** O usuário valida antes do commit. Uma configuração que ninguém revisou é detecção, não configuração — e explícito-vence-detectado só significa algo se um humano o tornou explícito.
+6. **Marcar o que foi deduzido** e não confirmado com `[CONFIRM: ...]`, na mesma disciplina de marcadores do prime-architect/use-case.
