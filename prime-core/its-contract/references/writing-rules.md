@@ -1,6 +1,6 @@
 # Regras de escrita da ITS
 
-Parte do contrato do `prime-core/its-contract`, lida por quem escreve uma ITS — o its-generator, no passo em que escreve —, junto com o SKILL.md e o template. Quem só lê uma ITS — o revisor, quem implementa — não precisa deste arquivo: a ITS entregue já cumpre estas regras, e o SKILL.md e o `references/implementer-rules.md` dizem como lê-la.
+Parte do contrato do `its-contract`, lida por quem escreve uma ITS — o its-generator, no passo em que escreve —, junto com o SKILL.md e o template. Quem só lê uma ITS — o revisor, quem implementa — não precisa deste arquivo: a ITS entregue já cumpre estas regras, e o SKILL.md e o `references/implementer-rules.md` dizem como lê-la.
 
 As mesmas regras servem a todo leitor — humano ou agente. O que torna uma instrução inequívoca para um LLM é o que a torna verificável para um revisor e legível para compliance.
 
@@ -59,7 +59,7 @@ A ITS precisa sobreviver à inserção na plataforma de documentação da empres
 
 **Teste pré-entrega.** Antes de entregar, responda quatro perguntas sobre o documento pronto:
 1. *Teste do implementador:* alguma instrução admite duas implementações diferentes? Se sim, é uma pergunta que o implementador devolverá — feche-a agora.
-2. *Teste do leitor frio:* alguém que nunca viu a story — sem acesso aos casos de uso, aos ADRs nem aos catálogos do prime-core — entende o documento inteiro e consegue executar o plano sem abrir outro documento, exceto os padrões gerais do time, que são a base de quem implementa (veja Nível de detalhe)? Algum identificador de outro documento aparece fora de Referências?
+2. *Teste do leitor frio:* alguém que nunca viu a story — sem acesso aos casos de uso, aos ADRs nem aos catálogos dos contratos — entende o documento inteiro e consegue executar o plano sem abrir outro documento, exceto os padrões gerais do time, que são a base de quem implementa (veja Nível de detalhe)? Algum identificador de outro documento aparece fora de Referências?
 3. *Teste da colagem:* inserido como marcação na plataforma de documentação, tabelas, hierarquia de títulos e numeração das listas sobrevivem?
 4. *Teste do autor:* alguma frase descreve como o documento foi produzido em vez do que deve ser feito? Alguma instrução faz hedge de uma decisão que já está fechada?
 

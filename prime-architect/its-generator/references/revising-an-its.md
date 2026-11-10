@@ -1,6 +1,6 @@
 # Revisando uma ITS entregue
 
-Parte do `prime-architect/its-generator`, lida só quando uma ITS entregue volta para revisão.
+Parte do `its-generator`, lida só quando uma ITS entregue volta para revisão.
 
 Uma ITS volta quando o plano não sobreviveu ao contato com o código: o implementador devolveu uma pergunta que o documento não consegue responder, ou o quarto veredito do code review devolveu a story ao arquiteto. A revisão é este mesmo processo sobre uma entrada mais estreita, sob quatro restrições.
 

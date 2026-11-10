@@ -1,8 +1,8 @@
 # Slots de Convenção
 
-Catálogo canônico de slots de propriedade do `prime-core/coding-standards`. O SKILL.md define o que é um slot, os padrões versionados e a evolução; as classes de aplicação, o registro de áreas, a disciplina de migração e as regras de consumo vivem em `references/consumer-rules.md` — este índice e os arquivos de família em `references/convention-slots/` são os slots.
+Catálogo canônico de slots de propriedade do `coding-standards`. O SKILL.md define o que é um slot, os padrões versionados e a evolução; as classes de aplicação, o registro de áreas, a disciplina de migração e as regras de consumo vivem em `references/consumer-rules.md` — este índice e os arquivos de família em `references/convention-slots/` são os slots.
 
-**Um slot é uma pergunta, não uma resposta.** Cada entrada declara a decisão que um projeto precisa ter tomado. Os valores vivem nos padrões da stack — o índice `references/defaults-<stack>.md` e a pasta `references/defaults-<stack>/` — (padrão do time, na release do Apex Prime que o projeto fixa) e no `docs/prime-config.md` (override do projeto, que vence). Um slot só existe onde há uma escolha a fazer: uma exigência sem alternativa é um critério do `prime-core/quality-model`, verificado por ferramenta, e não vira slot.
+**Um slot é uma pergunta, não uma resposta.** Cada entrada declara a decisão que um projeto precisa ter tomado. Os valores vivem nos padrões da stack — o índice `references/defaults-<stack>.md` e a pasta `references/defaults-<stack>/` — (padrão do time, na release do Apex Prime que o projeto fixa) e no `docs/prime-config.md` (override do projeto, que vence). Um slot só existe onde há uma escolha a fazer: uma exigência sem alternativa é um critério do `quality-model`, verificado por ferramenta, e não vira slot.
 
 **O que cada slot declara.**
 - **Classe.** **[INVARIANT]** vale para toda linha escrita ou alterada, em qualquer área. **[CONVENTIONAL]** segue o estado registrado da área: numa área legada, o padrão local vence.

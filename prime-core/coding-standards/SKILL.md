@@ -3,7 +3,7 @@ name: coding-standards
 description: O contrato das convenções concretas de código - o catálogo de slots (CS-XX-N), os padrões do time por stack, as classes invariante e convencional, o legado e as migrações declaradas. Consulte ao planejar, escrever ou revisar código e quando um critério de qualidade precisar de uma convenção concreta; os valores do projeto, no docs/prime-config.md, têm precedência. Referencie os slots por ID, nunca os duplique.
 ---
 
-# Padrões de Código (prime-core)
+# Padrões de Código
 
 O `quality-model` responde *o que é bom*. Esta skill responde *como o bom se parece aqui* — as convenções concretas a que os critérios dele remetem. Onde o modelo diz "nenhuma espera sem limite" (`QM-RB-1`), esta skill diz qual é o timeout padrão e onde ele é configurado; onde ele diz "o padrão local vence" (`QM-CN-2`), esta skill diz como uma área é classificada, em primeiro lugar, como território de padrão local.
 
@@ -17,10 +17,10 @@ Os índices do catálogo e dos padrões são lidos sempre; o arquivo de uma fam�
 
 ## Fronteiras
 
-- O **prime-core/quality-model** é dono dos princípios, do piso inegociável, dos níveis de criticidade e dos gatilhos de especificação. Esta skill nunca repete um critério: cada slot declara a que critérios serve e fornece a forma concreta que os torna verificáveis.
-- O **prime-core/prime-config** é dono do arquivo do projeto: onde ficam os overrides, o registro de áreas, a release fixada, os exemplos canônicos e as exclusões. A precedência é a do contrato da configuração: explícito vence detectado, a configuração sobrescreve padrões declarados, a configuração nunca dispensa uma regra do core.
-- O **prime-core/its-contract** é dono das decisões que sobrevivem à story e do formato da ITS. Uma convenção que muda para o projeto inteiro é decidida num ADR antes de virar valor de slot; na ITS, uma convenção chega como a escolha concreta, nunca como o ID do slot.
-- O **prime-architect/code-review** é dono do enforcement. Esta skill define a convenção; o revisor decide se uma dada mudança a cumpriu.
+- O **quality-model** é dono dos princípios, do piso inegociável, dos níveis de criticidade e dos gatilhos de especificação. Esta skill nunca repete um critério: cada slot declara a que critérios serve e fornece a forma concreta que os torna verificáveis.
+- O **prime-config** é dono do arquivo do projeto: onde ficam os overrides, o registro de áreas, a release fixada, os exemplos canônicos e as exclusões. A precedência é a do contrato da configuração: explícito vence detectado, a configuração sobrescreve padrões declarados, a configuração nunca dispensa uma regra do core.
+- O **its-contract** é dono das decisões que sobrevivem à story e do formato da ITS. Uma convenção que muda para o projeto inteiro é decidida num ADR antes de virar valor de slot; na ITS, uma convenção chega como a escolha concreta, nunca como o ID do slot.
+- O **code-review** é dono do enforcement. Esta skill define a convenção; o revisor decide se uma dada mudança a cumpriu.
 
 ## O que é um slot
 
@@ -47,7 +47,7 @@ Num arquivo de padrões ou na configuração, cada **valor** carrega:
 Um arquivo de padrões é uma resposta compartilhada por todos os projetos que não a sobrescrevem. Se ele mudasse em silêncio, todos esses projetos mudariam de convenção de uma vez, e o código existente passaria a ser "o jeito antigo" sem nenhuma migração — a erosão do `QM-CN-1` em escala. Por isso:
 
 - **A versão é a release.** Os arquivos de padrões não carregam número próprio: são versionados junto com o resto do Apex Prime, pela release — a tag — que o instalador usa e que o manifesto da instalação registra. Mudar um valor só chega aos projetos numa release nova; a anterior continua válida para quem a fixou.
-- **O projeto fixa a release que segue** na configuração. Sem release fixada, vale a instalada, e a ausência da fixação é uma lacuna a reportar. Uma release instalada diferente da fixada é uma divergência, tratada como o `prime-core/prime-config` trata a configuração que contradiz o código: reportada, nunca resolvida em silêncio. A fixação importa sobretudo quando as skills são instaladas no perfil do usuário e servem a vários projetos ao mesmo tempo; um projeto que as instala no próprio repositório fixa a release também pelo que commita.
+- **O projeto fixa a release que segue** na configuração. Sem release fixada, vale a instalada, e a ausência da fixação é uma lacuna a reportar. Uma release instalada diferente da fixada é uma divergência, tratada como o `prime-config` trata a configuração que contradiz o código: reportada, nunca resolvida em silêncio. A fixação importa sobretudo quando as skills são instaladas no perfil do usuário e servem a vários projetos ao mesmo tempo; um projeto que as instala no próprio repositório fixa a release também pelo que commita.
 - **Subir a release é uma decisão do projeto.** A diferença dos arquivos de padrões entre as duas tags, no controle de versão, é a lista dos valores que mudaram, e para cada um a decisão diz o que acontece com o código existente:
   - num slot CONVENTIONAL, uma migração declarada, ou as áreas afetadas registradas como `legacy-maintained`;
   - num slot INVARIANT, sempre uma migração declarada.

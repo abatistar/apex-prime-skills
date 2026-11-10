@@ -1,6 +1,6 @@
 # Template de Caso de Uso
 
-Este é o template canônico — a cópia única, de propriedade do prime-architect/use-case. Se o `prime-config.md` do projeto declarar um caminho de template customizado ou seções obrigatórias adicionais, a configuração do projeto tem precedência.
+Este é o template canônico — a cópia única, de propriedade do use-case. Se o `prime-config.md` do projeto declarar um caminho de template customizado ou seções obrigatórias adicionais, a configuração do projeto tem precedência.
 
 As regras de que quem só lê um caso de uso também precisa — a lista das seções obrigatórias e opcionais, a estabilidade dos identificadores internos, o ciclo de vida do status, as regras do Histórico de revisões e os marcadores de incerteza — vivem em `references/consumer-rules.md`, e as menções a elas neste arquivo apontam para lá. Quem escreve um documento, ou o valida contra as regras de qualidade, lê os dois.
 
@@ -116,7 +116,7 @@ de uso, em sucesso ou em falha. Extensão sem desfecho é defeito, não abrevia�
 - **CA-3** (cenário principal, não funcional): Dado [carga ou condição], quando [ação], então [atributo medido e limite]
 [Todo critério precisa ser objetivamente verificável e declara entre parênteses o que cobre: o cenário principal, um passo, uma ou mais extensões ou uma regra (RN-N). O Cenário principal de sucesso e toda extensão aparecem no rótulo de ao menos um critério. Um critério removido permanece como lápide, como nas regras de negócio.]
 [Um critério rotulado com uma regra deriva dela: a característica de `Onde` e o estado de `Enquanto` vão para o Dado, o gatilho de `Quando` ou a condição de `Se` vai para o quando, e a resposta vai para o então.]
-[Um requisito não funcional deste fluxo — tempo de resposta, volume, disponibilidade, acessibilidade, retenção — é um critério como os outros, com `não funcional` acrescentado ao rótulo e a métrica no resultado (ex.: "então o PDF fica pronto em até 30 s (p95)"). O que vale para o sistema inteiro não se repete em cada caso de uso: é decisão de um ADR. A qualidade interna do código pertence ao prime-core/quality-model e nunca entra num caso de uso.]
+[Um requisito não funcional deste fluxo — tempo de resposta, volume, disponibilidade, acessibilidade, retenção — é um critério como os outros, com `não funcional` acrescentado ao rótulo e a métrica no resultado (ex.: "então o PDF fica pronto em até 30 s (p95)"). O que vale para o sistema inteiro não se repete em cada caso de uso: é decisão de um ADR. A qualidade interna do código pertence ao quality-model e nunca entra num caso de uso.]
 
 ## Diagrama UML (resumo gráfico)
 

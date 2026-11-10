@@ -1,6 +1,6 @@
 # Regras para quem consome os padrões de código
 
-Parte do contrato do `prime-core/coding-standards`, e a que as skills do fluxo leem: onde cada valor vale (as duas classes), o registro de áreas, as migrações declaradas, os overrides, as lacunas, a verificação e como cada papel usa os slots. O SKILL.md — o que é um slot, os padrões versionados, o sinal de saúde e a evolução — é lido por quem implementa, junto com este arquivo, e pelo dono do catálogo.
+Parte do contrato do `coding-standards`, e a que as skills do fluxo leem: onde cada valor vale (as duas classes), o registro de áreas, as migrações declaradas, os overrides, as lacunas, a verificação e como cada papel usa os slots. O SKILL.md — o que é um slot, os padrões versionados, o sinal de saúde e a evolução — é lido por quem implementa, junto com este arquivo, e pelo dono do catálogo.
 
 ## Duas classes de aplicação
 
@@ -19,7 +19,7 @@ A consequência, dita às claras: **código antigo continuar antigo é correto, 
 
 ## Legado: o registro de áreas
 
-A classificação é declarada, não julgada a cada pull request. O `docs/prime-config.md` registra cada área numa linha; a forma do registro pertence ao `prime-core/prime-config`. A linha carrega duas dimensões, cada uma com seu dono:
+A classificação é declarada, não julgada a cada pull request. O `docs/prime-config.md` registra cada área numa linha; a forma do registro pertence ao `prime-config`. A linha carrega duas dimensões, cada uma com seu dono:
 
 - **o estado**, definido aqui;
 - **o nível de criticidade**, definido pelo `quality-model` (`efêmera`, `padrão`, `crítica`).

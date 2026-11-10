@@ -3,7 +3,7 @@ name: use-case
 description: O formato canônico do documento de caso de uso - template, regras de qualidade, histórico de revisões (delta), ciclo de vida do status e marcadores de incerteza. Consulte para criar, atualizar, validar ou ler um caso de uso; quem só lê usa references/consumer-rules.md. Referencie-o, nunca o duplique.
 ---
 
-# Formato de Caso de Uso (prime-architect)
+# Formato de Caso de Uso
 
 Esta skill é dona do formato do documento de caso de uso. Tem um endereço e um dono; toda outra skill o referencia em vez de copiá-lo. Uma mudança aqui atualiza escrita e leitura ao mesmo tempo.
 

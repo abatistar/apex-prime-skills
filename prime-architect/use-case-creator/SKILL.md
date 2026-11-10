@@ -3,17 +3,17 @@ name: use-case-creator
 description: Cria ou atualiza documentos de caso de uso a partir de stories, PRDs ou descrições de mudança - "escreva o caso de uso desta story", "derive os casos de uso deste PRD", "adicione uma exceção ao UC-042". Use também para resolver os CONFIRM de um Draft, tratar divergência entre código e caso de uso, retirar um caso de uso cuja funcionalidade sai do sistema e reorganizar ou reescrever sem mudar comportamento. NÃO use para documentar comportamento já implementado sem caso de uso (use-case-extractor) nem para gerar uma ITS (its-generator).
 ---
 
-# Use Case Creator (prime-architect)
+# Use Case Creator
 
 Cria e mantém o repositório de casos de uso do projeto — a documentação viva do comportamento do sistema. Stories são unidades de mudança; casos de uso são o estado a que essas mudanças se aplicam. Toda story que altera comportamento precisa deixar o repositório atualizado, com um delta explícito registrado para que o its-generator possa planejar a implementação.
 
-O formato do documento NÃO é definido aqui — é de propriedade do **prime-architect/use-case** (template em `../use-case/references/use-case-template.md` e regras de consumo em `../use-case/references/consumer-rules.md`). Leia-o integralmente, incluindo suas regras de qualidade, antes de escrever: elas fazem parte do contrato desta skill.
+O formato do documento NÃO é definido aqui — é de propriedade do **use-case** (template em `../use-case/references/use-case-template.md` e regras de consumo em `../use-case/references/consumer-rules.md`). Leia-o integralmente, incluindo suas regras de qualidade, antes de escrever: elas fazem parte do contrato desta skill.
 
 ## Passo 0 — Carregar a configuração do projeto e o formato de caso de uso
 
-Leia o `docs/prime-config.md` conforme as regras de consumo do **prime-core/prime-config** (`../prime-config/references/consumer-rules.md`).
+Leia o `docs/prime-config.md` conforme as regras de consumo do **prime-config** (`../prime-config/references/consumer-rules.md`).
 
-Da configuração esta skill usa: a localização e a nomenclatura do repositório de casos de uso, os overrides de caso de uso (caminho de um template customizado e seções obrigatórias extras) e o formato do identificador de story (padrão `S-NNN`). Em seguida carregue o formato do prime-architect/use-case; um template customizado declarado na configuração tem precedência sobre o template padrão do formato, e as seções obrigatórias extras entram em todo documento que esta skill escreve.
+Da configuração esta skill usa: a localização e a nomenclatura do repositório de casos de uso, os overrides de caso de uso (caminho de um template customizado e seções obrigatórias extras) e o formato do identificador de story (padrão `S-NNN`). Em seguida carregue o formato do use-case; um template customizado declarado na configuração tem precedência sobre o template padrão do formato, e as seções obrigatórias extras entram em todo documento que esta skill escreve.
 
 ## Passo 1 — Rotear: o que a entrada pede de cada documento
 
@@ -115,7 +115,7 @@ Apresente os documentos criados/atualizados. Para atualizações e conformidades
 
 Informe o Status resultante de cada documento: um documento que voltou a `Draft` só alimenta o its-generator depois que o arquiteto o promover; um `Retired` por retirada já o alimenta. Entregue os marcadores pendentes como a Lista de perguntas do formato, com recomendação e evidência em cada item — são as perguntas que o arquiteto precisa responder antes de promover cada documento. Reporte também os documentos em que a story espera (base em `Draft`) e as dependências entre stories (delta escrito sobre o de outra story).
 
-A passada operacional vive em `checklists/creation-checklist.md`. Leia-a depois de escrever, para conferir antes de entregar — não no Passo 0. O template do próprio documento não: ele é de propriedade do `prime-architect/use-case` e é lido de lá.
+A passada operacional vive em `checklists/creation-checklist.md`. Leia-a depois de escrever, para conferir antes de entregar — não no Passo 0. O template do próprio documento não: ele é de propriedade do `use-case` e é lido de lá.
 
 ## Saída
 

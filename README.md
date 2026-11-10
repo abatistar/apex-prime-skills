@@ -88,7 +88,8 @@ apex-prime-skills/
     │   ├── checklists/
     │   │   └── impact-map-checklist.md
     │   └── references/
-    │       └── reformulation.md            # a reformulação da mudança, lida também pela feasibility-analysis
+    │       ├── reformulation.md            # a reformulação da mudança, lida também pela feasibility-analysis
+    │       └── consumer-rules.md           # o que o mapa entrega a quem julga sobre ele: a fonte única do hand-off
     ├── feasibility-analysis/
     │   ├── SKILL.md                        # julga uma demanda contra o sistema, antes de qualquer especificação
     │   └── checklists/

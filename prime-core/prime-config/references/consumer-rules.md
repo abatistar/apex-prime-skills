@@ -56,6 +56,6 @@ Fora desses dois caminhos, nenhuma skill edita a configuração. Uma skill que d
 
 ## Regra de consumo (para as skills)
 
-As skills referenciam este arquivo em vez de descrever o procedimento: *"Quando precisar de um fato do projeto, leia a seção correspondente do `docs/prime-config.md` conforme as regras de consumo do prime-core/prime-config (`../prime-config/references/consumer-rules.md`)."* O caminho é relativo ao diretório da skill que lê, na instalação, em que as camadas ficam lado a lado num único diretório de skills.
+As skills referenciam este arquivo em vez de descrever o procedimento: *"Quando precisar de um fato do projeto, leia a seção correspondente do `docs/prime-config.md` conforme as regras de consumo do prime-config (`../prime-config/references/consumer-rules.md`)."* O caminho é relativo ao diretório da skill que lê, na instalação, em que as camadas ficam lado a lado num único diretório de skills.
 
 Os documentos do Apex Prime — casos de uso, ITS, ADRs — são lidos e escritos sob a raiz de documentos que a configuração declara. Quando ela é uma pasta paralela, a sessão precisa enxergar as duas pastas, e o PR do código cita a ITS e a revisão da documentação que implementou, para que a revisão julgue contra a versão certa.

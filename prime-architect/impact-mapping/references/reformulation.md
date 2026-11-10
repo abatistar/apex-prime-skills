@@ -1,6 +1,6 @@
 # Reformular a mudança como comportamento
 
-Parte do `prime-architect/impact-mapping`, e a única definição da reformulação. O impact-mapping a executa no seu Passo 1. A `feasibility-analysis` a executa no seu próprio Passo 1, na conversa com o arquiteto, e entrega a reformulação pronta ao mapa — nesse caminho o Passo 1 do mapa é pulado, e a reformulação vira a linha de assunto como está.
+Parte do `impact-mapping`, e a única definição da reformulação. O impact-mapping a executa no seu Passo 1. A `feasibility-analysis` a executa no seu próprio Passo 1, na conversa com o arquiteto, e entrega a reformulação pronta ao mapa — nesse caminho o Passo 1 do mapa é pulado, e a reformulação vira a linha de assunto como está.
 
 A entrada costuma chegar como uma solução: *"adicionar uma coluna"*, *"cachear a consulta de cliente"*, *"mudar o endpoint"*. Reformule-a como o delta de comportamento observável — o que um usuário, um chamador ou um sistema a jusante verá de diferente. Depois delimite: declare explicitamente o que **não** muda, nos mesmos termos.
 

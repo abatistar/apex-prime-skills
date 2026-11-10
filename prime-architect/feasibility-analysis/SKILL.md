@@ -3,7 +3,7 @@ name: feasibility-analysis
 description: Julga se uma demanda pode ser absorvida pelo sistema, antes de qualquer especificação - executa o impact-mapping e emite achados classificados e exatamente um veredito. Use quando o arquiteto trouxer uma story, PRD, épico ou proposta e perguntar "isso é factível", "o que bloqueia esta story", "o product owner quer X, o que quebra". NÃO use para só mapear o alcance (impact-mapping), para estimar esforço nem para planejar uma mudança aprovada (its-generator).
 ---
 
-# Feasibility Analysis (prime-architect)
+# Feasibility Analysis
 
 O `code-review` julga **código contra um plano, depois**. Esta skill julga **uma demanda contra o sistema, antes** — mesmo formato, extremo oposto do pipeline. Ambos transformam critérios versionados em achados classificados e exatamente um veredito; nenhum escreve o artefato que julga.
 
@@ -13,9 +13,9 @@ Ela é **invocada, nunca obrigatória**. Nada adiante exige um veredito de viabi
 
 ## Evidência e julgamento são atos separados
 
-Esta skill não deriva alcance. O `impact-mapping` produz a evidência — o que a demanda toca, em qual estado registrado, contra qual comportamento documentado — e esta skill decide sobre ela. A divisão é deliberada e é a mesma que o repositório já traça entre o `prime-core/quality-model` e o `prime-architect/code-review`: definir e julgar falham de modos diferentes, e uma skill que produz sua própria evidência e depois decide sobre ela não tem ninguém conferindo a primeira metade.
+Esta skill não deriva alcance. O `impact-mapping` produz a evidência — o que a demanda toca, em qual estado registrado, contra qual comportamento documentado — e esta skill decide sobre ela. A divisão é a mesma que o repositório traça entre o `quality-model` e o `code-review`: definir e julgar falham de modos diferentes, e uma skill que produz a própria evidência e depois decide sobre ela não tem ninguém conferindo a primeira metade.
 
-Na prática: **referencie o mapa, nunca o repita.** O relatório cita o mapa; não copia a superfície para dentro de si.
+**Referencie o mapa, nunca o repita:** o relatório cita o mapa, não copia a superfície para dentro de si.
 
 ## O que esta skill não faz
 
@@ -25,19 +25,21 @@ Na prática: **referencie o mapa, nunca o repita.** O relatório cita o mapa; n�
 
 ## Passo 0 — Carregar a configuração e os critérios
 
-Leia o `docs/prime-config.md` conforme as regras de consumo do **prime-core/prime-config** (`../prime-config/references/consumer-rules.md`). Da configuração esta skill usa:
+Leia o `docs/prime-config.md` conforme as regras de consumo do **prime-config** (`../prime-config/references/consumer-rules.md`). Da configuração esta skill usa:
 
 - a **stack** e as versões — o teto sob o qual todo caminho proposto precisa caber;
-- a seção **Convenções e restrições** por inteiro: a release fixada do Apex Prime, o registro de áreas, os overrides de slots, as migrações declaradas (responsável, escopo e módulo substituto de cada uma), a postura do modelo de qualidade e as **regras do projeto** — áreas proibidas, restrições operacionais e de compliance, janelas de deploy —, que são a entrada direta da lente Restrição;
+- da seção **Convenções e restrições**: a release fixada do Apex Prime, os overrides de slots, as migrações declaradas (responsável e escopo de cada uma), a postura do modelo de qualidade e as **regras do projeto** — áreas proibidas, restrições operacionais e de compliance, janelas de deploy —, que são a entrada direta da lente Restrição;
 - os **Responsáveis** — de onde vem o responsável de cada `Condition:` (Passo 5);
 - o **Tracker** — o formato do item de backlog com que os follow-ups são redigidos;
 - as localizações de documentos, incluindo o repositório de ADRs, e os comandos de verificação.
 
-Em seguida carregue, como os critérios em que o julgamento se ancora: as regras de consumo do **prime-core/quality-model** (`../quality-model/references/consumer-rules.md`) com `../quality-model/references/quality-triggers.md` — os gatilhos que a lente de mesmo nome percorre —, as regras de consumo do **prime-core/coding-standards** (`../coding-standards/references/consumer-rules.md`) e os **ADRs** `Accepted` e `Proposed`.
+**O registro de áreas não é lido aqui.** Os estados, os níveis de criticidade, os módulos substitutos e as exclusões chegam pela sobreposição do mapa, que já diz *quais* áreas a demanda toca (Passo 2). Ler o registro cru traz áreas que a demanda não alcança e deixa as duas leituras divergirem. As **regras do projeto** são a exceção, e são lidas por inteiro: a lente Restrição alcança tetos que não estão ligados a nenhuma área tocada.
 
-Os catálogos desses contratos não são carregados inteiros. Quando uma lente aplica um ID, leia no catálogo do dono o índice e o arquivo da lente ou família do ID: `../quality-model/references/quality-criteria/XX.md` para `QM-XX-N`; `../coding-standards/references/convention-slots/XX.md` para `CS-XX-N` e, quando a lente precisa do valor do slot, o arquivo de mesmo nome nos padrões da stack na release fixada. Os slots que servem a um critério — os que um gatilho alcança — estão no mapa Critério → slots do índice `../coding-standards/references/convention-slots.md`.
+Em seguida carregue, como os critérios em que o julgamento se ancora: as regras de consumo do **quality-model** (`../quality-model/references/consumer-rules.md`) com `../quality-model/references/quality-triggers.md` — os gatilhos que a lente de mesmo nome percorre —, as regras de consumo do **coding-standards** (`../coding-standards/references/consumer-rules.md`) e os **ADRs** `Accepted` e `Proposed`.
 
-**Custo é evidência, nunca um critério.** O modelo de qualidade responde *o que é bom*, não *quanto isto custa*; não o estique até virar um vocabulário de custo que ele não possui. Onde a confrontação precisa de um critério que não existe — um slot de convenção sem padrão da stack nem override do projeto — **reporte a lacuna** conforme o `coding-standards` e nunca improvise o valor. Um critério de que a confrontação precisou e que o catálogo não tem vira follow-up ao dono do modelo de qualidade em toda execução que o encontrar (Passo 7): quem agrega as ocorrências e decide o PR de governança é ele, não esta skill.
+Os catálogos desses contratos não são carregados inteiros. Quando uma lente aplica um ID, leia no catálogo do dono o índice e o arquivo da lente ou família daquele ID. Para `QM-XX-N`: `../quality-model/references/quality-criteria/XX.md`. Para `CS-XX-N`: `../coding-standards/references/convention-slots/XX.md` e, quando a lente precisa do valor do slot, o arquivo de mesmo nome nos padrões da stack na release fixada. Os slots que servem a um critério — os que um gatilho alcança — estão no mapa Critério → slots do índice `../coding-standards/references/convention-slots.md`.
+
+**Custo é evidência, nunca um critério.** O modelo de qualidade responde *o que é bom*, não *quanto isto custa*; não o estique até virar um vocabulário de custo que ele não possui. Onde a confrontação precisa de um critério que não existe — um slot de convenção sem padrão da stack nem override do projeto — **reporte a lacuna** conforme o `coding-standards` e nunca improvise o valor. Um critério de que a confrontação precisou e que o catálogo não tem vira follow-up ao dono do modelo de qualidade (Passo 7), em toda execução que o encontrar. Agregar as ocorrências e decidir o PR de governança é dele, não desta skill.
 
 ## Passo 1 — Reformular a demanda como algo verificável
 
@@ -45,49 +47,40 @@ Execute a reformulação do `impact-mapping` (`../impact-mapping/references/refo
 
 Uma demanda que não se reduz a uma mudança observável no comportamento do sistema — que nomeia uma tecnologia, uma preferência ou uma aspiração em vez de um resultado — termina em **`Insufficient input`**: pare, devolva as perguntas e não emita veredito. Não há nada a julgar, e julgá-la mesmo assim é como esta skill degeneraria em opinião.
 
-**Uma demanda, um projeto.** Uma demanda cujo resultado exige mudança em outro projeto é quebrada por projeto antes de ser julgada (prime-core/prime-config): esta execução julga a parte que cabe a este projeto. A parte do outro entra pela lente de contrato — o outro serviço como consumidor ou fornecedor — e, quando o resultado daqui depende dela, como uma `Condition:` roteada à demanda correspondente naquele projeto. Uma demanda cujo resultado vive quase todo fora deste projeto é devolvida para ser quebrada, sem veredito.
+**Uma demanda, um projeto.** Uma demanda cujo resultado exige mudança em outro projeto é quebrada por projeto antes de ser julgada (prime-config): esta execução julga a parte que cabe a este projeto. A parte do outro entra pela lente de contrato, como consumidor ou fornecedor. Quando o resultado daqui depende dela, entra também como uma `Condition:` roteada à demanda correspondente naquele projeto. Uma demanda cujo resultado vive quase todo fora deste projeto é devolvida para ser quebrada, sem veredito.
 
 ## Passo 2 — Executar o mapa
 
-Execute o `impact-mapping` sobre a demanda **como reformulada no Passo 1** — essa reformulação é a linha de assunto do mapa, e o Passo 1 do próprio mapa não é reexecutado. Passe nos argumentos da invocação a reformulação e a fronteira declarada: o mapa pode rodar isolado, sem ver esta conversa. O que esta skill consome dele:
+Execute o `impact-mapping` sobre a demanda **como reformulada no Passo 1** — essa reformulação é a linha de assunto do mapa, e o Passo 1 do próprio mapa não é reexecutado. Passe nos argumentos da invocação a reformulação e a fronteira declarada: o mapa pode rodar isolado, sem ver esta conversa.
 
-- os **três graus** de alcance — direto, acoplado, superfície de contrato — e os **dados existentes**;
-- a sobreposição de **estados de área** (`current`, `legacy-maintained`, `strangler`) e de **níveis de criticidade** (`efêmera`, `padrão`, `crítica`), com o substituto de cada área `strangler` e as regras do projeto que alcançam as áreas;
-- a **camada documentada** — cobertura por casos de uso com o status de cada um, divergências encontradas, ADRs `Accepted` e `Proposed`;
-- a **marcação de proveniência** em cada linha (ancorada, `[INFERRED]`, `[UNVERIFIED]`, lacuna), cujo vocabulário é definido por aquela skill e reutilizado aqui sem alteração;
-- o **perfil de evidência** e **como o alcance foi buscado** — quanto foi lido, quanto foi deduzido e que tipo de omissão é plausível;
-- e, decisivamente, a **borda declarada** — onde o mapa deliberadamente parou.
+**O que o mapa entrega, o que cada estado de proveniência sustenta e o que conferir antes de julgar vivem em um lugar só:** as regras de consumo do mapa (`../impact-mapping/references/consumer-rules.md`). Leia-as aqui. Esta skill não repete essa lista do seu lado — duas cópias de um hand-off divergem, e a que divergir primeiro será a de quem julga.
 
-A borda é o que faz de *Undecidable* um veredito honesto em vez de uma evasiva. Decidir sobre um mapa que truncou o próprio alcance em silêncio produz um veredito confiante sobre um quadro parcial, que é a pior saída que esta skill pode produzir.
-
-**O mapa é citado por ID e revisão.** Um mapa trazido pronto, de uma execução avulsa anterior, só é usado se ainda vale: quando os arquivos que ele cita mudaram desde a revisão que ele registra (`git diff <revisão>..HEAD -- <arquivos>`), refaça o mapa — ou ao menos as linhas desses arquivos — antes de julgar. Julgar sobre um mapa envelhecido é julgar um sistema que já não existe.
-
-Um mapa avulso trazido pronto que parou em `Insufficient input` encerra esta execução do mesmo modo que o Passo 1: perguntas devolvidas, nenhum veredito.
+Duas regras valem só para quem emite veredito. A **borda** é o que faz de *Undecidable* um veredito honesto em vez de evasiva: um veredito confiante sobre um quadro parcial é a pior saída desta skill. E um mapa avulso que parou em `Insufficient input` encerra esta execução como o Passo 1 — perguntas devolvidas, nenhum veredito, e nenhum *Undecidable*, porque nada foi julgado.
 
 ### A baseline de cada área
 
 Antes de qualquer lente rodar, classifique a baseline de cada área tocada — o comportamento documentado contra o qual a demanda é julgada —, porque ela muda o que um veredito pode significar:
 
-- **documentada** — coberta por casos de uso `Reviewed`, sem divergência com o código. Um delta pendente que o mapa registrou não é divergência (prime-architect/use-case, Ciclo de vida do status): a demanda é julgada sobre o estado-alvo da story em curso, que entra como `Condition:` quando o resultado daqui depende da ordem de implementação — rota: a story em curso, responsável o arquiteto responsável — e como `FYI:` quando só convive com ela;
+- **documentada** — coberta por casos de uso `Reviewed`, sem divergência com o código. Um delta pendente que o mapa registrou não é divergência (use-case, Ciclo de vida do status): julgue a demanda sobre o estado-alvo da story em curso. Essa story entra como `Condition:` quando o resultado daqui depende da ordem de implementação — rota: a própria story, responsável o arquiteto responsável. Quando apenas convive com ela, entra como `FYI:`;
 - **parcial** — sem caso de uso, coberta só por um documento `Draft`, coberta por um `Retired` que o código ainda executa, ou com divergência código × caso de uso. Onde código e documento discordam, **nenhum dos dois é um baseline seguro**, e um veredito apoiado no errado se dissolve ao primeiro contato;
 - **green-field** — adição que não toca nenhum comportamento existente; dispensa baseline.
 
 Toda baseline parcial segue uma regra só:
 
 - **Em outro ponto** → uma `Condition:` com responsável e rota: o `use-case-extractor` para a área sem caso de uso; o `use-case-creator` para o `Draft` (modo validação) e para a divergência (conformidade ou reconciliação); o arquiteto para o `Retired` que o código ainda executa. Uma lacuna conhecida com rota conhecida é exatamente para o que serve uma condição.
-- **Onde o veredito se apoia** — a área que carrega a restrição mais dura da demanda, onde um `Blocker:` se apoiaria → *Undecidable with current evidence*, nomeando a execução que decidiria. A ausência de um blocker carrega o mesmo ônus de evidência que um blocker: *Viable with conditions* afirma que nada bloqueia, e afirmar isso sobre comportamento que ninguém descreveu, ou descreveu de dois jeitos, é a falha que esta skill existe para prevenir. A escolha é declarada e justificada no relatório, nunca presumida em silêncio.
+- **Onde o veredito se apoia** — a área que carrega a restrição mais dura da demanda, onde um `Blocker:` se apoiaria → *Undecidable with current evidence*, nomeando a execução que decidiria. A ausência de um blocker carrega o mesmo ônus de evidência que um blocker: *Viable with conditions* afirma que nada bloqueia, e ninguém afirma isso sobre comportamento que nenhum documento descreve, ou que dois descrevem de jeitos diferentes. Declare e justifique a escolha no relatório, nunca a presuma.
 
 ## Passo 3 — As lentes, em ordem decrescente do que mata uma demanda
 
 Cada lente aponta para onde seu critério vive — nunca o redefine. Rode-as sobre o mapa; não reande o código que o mapa já andou. A intensidade segue o nível de criticidade de cada área tocada.
 
-- **Restrição** — os tetos rígidos: stack e versão (configuração), plataforma, dados que não existem, uma dependência externa ou licença que o projeto não possui, uma fronteira regulatória e as **regras do projeto** que alcançam as áreas tocadas — uma área proibida, uma restrição de compliance ou de residência de dados, uma janela de deploy. Uma exclusão gerada a partir do contrato de um terceiro muda na origem, que o projeto pode não controlar. Esta lente produz os únicos achados que tornam algo genuinamente impossível, razão pela qual é lida primeiro e costuma ser a mais curta.
+- **Restrição** — os tetos rígidos: stack e versão (configuração), plataforma, dados que não existem, uma dependência externa ou licença que o projeto não possui, uma fronteira regulatória e as **regras do projeto** que alcançam as áreas tocadas — uma área proibida, uma restrição de compliance ou de residência de dados, uma janela de deploy. Uma exclusão gerada a partir do contrato de um terceiro muda na origem, que o projeto pode não controlar. Só esta lente produz achados que tornam algo genuinamente impossível. Por isso é lida primeiro, e costuma ser a mais curta.
 - **Encaixe estrutural** — a demanda briga com a forma do sistema? `QM-CC-1..7`, `CS-AR-1..5` e a incidência de ADR trazida do mapa.
   - Uma regra de negócio que o mapa encontrou replicada (`QM-CC-6`) é um `Cost driver:` — a mudança vai unificá-la ou alterar todas as cópias.
-  - Numa área `strangler`, comportamento novo nasce no módulo substituto que o registro nomeia, e o caminho viável é julgado ali. Se o substituto ainda não comporta a demanda, isso é uma `Condition:` de responsabilidade do dono da migração.
-  - **Uma demanda que contradiz um ADR Accepted não é inviável** — é uma questão de ADR. Ela vira uma `Condition:` nomeando o ADR, de responsabilidade do arquiteto e roteada ao ciclo de vida do ADR: a decisão precisa ser revisitada antes de a demanda entrar em especificação. Uma demanda que depende de uma decisão ainda `Proposed` recebe a mesma `Condition:`: a decisão é tomada antes da especificação. Esta skill não redige o ADR. Redigir exige uma Decisão, e esta skill não projeta nada — ela julga. O registro é arquivado pelo fluxo que o its-contract define: pelo arquiteto diretamente nesta etapa, em que ainda não existe plano, ou pelo its-generator quando um plano precisar se comprometer com ele. Nunca trate uma decisão registrada como um muro, e nunca deixe uma ser derrubada em silêncio dentro de uma análise.
-- **Superfície de contrato** — de tudo que o mapa colocou fora desta base de código (formatos de API, esquema de banco, payloads de eventos, arquivos exportados, assinaturas compartilhadas, telemetria consumida fora), todo consumidor conhecido pode ser migrado sem quebra silenciosa (`QM-CC-7`, `CS-CT-1`, gatilho G2), e o conjunto de consumidores pode ser enumerado? Um conjunto de consumidores não enumerável é um achado por si só. Um consumidor noutro projeto é migrado pela demanda daquele projeto: uma `Condition:` roteada a ela (Passo 1).
-- **Entrega e reversibilidade** — a mudança pode ser entregue em etapas e revertida? Uma mudança incompatível de contrato ou de esquema convive com a versão em produção por expansão, migração e contração (`QM-CC-7`, `CS-CT-1`; uma migração já aplicada nunca é editada, `CS-DA-4`); os dados existentes que o mapa trouxe têm caminho de migração ou de preenchimento; o comportamento novo pode sair atrás de uma flag com condição de remoção (`CS-EV-1`) quando o projeto ou o risco o pedem; as janelas e restrições de deploy das regras do projeto comportam a entrega. Sem caminho que conviva com a versão em produção, a entrega coordenada ou a indisponibilidade é uma `Condition:` — uma decisão com responsável —, e só um `Blocker:` quando uma regra do projeto, ancorada, proíbe o único caminho.
+  - Numa área `strangler`, comportamento novo nasce no módulo substituto que o mapa nomeia, e o caminho viável é julgado ali. Se o substituto ainda não comporta a demanda, isso é uma `Condition:` de responsabilidade do dono da migração.
+  - **Uma demanda que contradiz um ADR Accepted não é inviável** — é uma questão de ADR. Ela vira uma `Condition:` nomeando o ADR, de responsabilidade do arquiteto e roteada ao ciclo de vida do ADR: a decisão é revisitada antes da especificação. Uma demanda que depende de uma decisão ainda `Proposed` recebe a mesma `Condition:`. Esta skill não redige o ADR — redigir exige uma Decisão, e esta skill julga, não projeta. O registro é arquivado pelo fluxo do its-contract: pelo arquiteto nesta etapa, em que ainda não existe plano, ou pelo its-generator quando um plano precisar se comprometer com ele. Nunca trate uma decisão registrada como um muro, e nunca deixe uma cair em silêncio dentro de uma análise.
+- **Superfície de contrato** — de tudo que o mapa pôs neste grau, todo consumidor conhecido pode ser migrado sem quebra silenciosa (`QM-CC-7`, `CS-CT-1`, gatilho G2), e o conjunto de consumidores pode ser enumerado? Um conjunto de consumidores não enumerável é um achado por si só. Um consumidor noutro projeto é migrado pela demanda daquele projeto: uma `Condition:` roteada a ela (Passo 1).
+- **Entrega e reversibilidade** — a mudança pode ser entregue em etapas e revertida? Confira quatro coisas. Uma mudança incompatível de contrato ou de esquema convive com a versão em produção por expansão, migração e contração (`QM-CC-7`, `CS-CT-1`), e uma migração já aplicada nunca é editada (`CS-DA-4`). Os dados existentes que o mapa trouxe têm caminho de migração ou de preenchimento. O comportamento novo pode sair atrás de uma flag com condição de remoção (`CS-EV-1`), quando o projeto ou o risco o pedem. As janelas e restrições de deploy das regras do projeto comportam a entrega. Sem caminho que conviva com a versão em produção, a entrega coordenada ou a indisponibilidade é uma `Condition:`, uma decisão com responsável. É um `Blocker:` só quando uma regra do projeto, ancorada, proíbe o único caminho.
 - **Gatilhos de especificação** — passe a demanda pelos gatilhos do `../quality-model/references/quality-triggers.md`: são as decisões de qualidade que a ITS vai precisar tomar, e este é o ponto barato de descobrir as que ninguém consegue tomar. Para cada gatilho disparado:
   - a decisão depende de um slot sem valor — nem padrão da stack nem override → `Condition:` de lacuna de slot, roteada à configuração (`coding-standards`, Slots não preenchidos);
   - a decisão vale além da story — o primeiro outbox do sistema, a política de idempotência de todos os consumidores → `Condition:` de ADR a levantar, responsável o arquiteto;
@@ -97,10 +90,10 @@ Cada lente aponta para onde seu critério vive — nunca o redefine. Rode-as sob
   - chamada externa (G3), falha parcial (G4), repetição (G5), concorrência (G6) e volume (G8) → `Cost driver:` quando o sistema já tem o mecanismo e o slot dá o valor; quando não, caem num dos casos acima.
 
   Não fabrique gatilhos que a demanda não dispara.
-- **Verificação** — o resultado afirmado pode ser provado como entregue? Os comandos de verificação da configuração, a observabilidade que as áreas afetadas realmente têm (`QM-EO-7`) e a obrigação de teste que a mudança carregaria (`CS-TS-1`). Uma meta não funcional sem forma de ser medida (G10, `QM-EF-2`) — e, em geral, uma demanda que ninguém consegue verificar como entregue — é viável apenas sob a condição de que se construa uma forma de verificá-la.
-- **Risco de erosão** — o caminho viável mais barato introduz uma *segunda* forma de fazer algo que o projeto já faz de uma só (`QM-CN-1`), ou aumenta a contagem de uma migração declarada em curso? Responder sim não bloqueia; nomeia a dívida que a demanda criaria, para que possa ser assumida deliberadamente (`QM-MT-1`) em vez de descoberta depois na revisão.
+- **Verificação** — o resultado afirmado pode ser provado como entregue? Os comandos de verificação da configuração, a observabilidade que as áreas afetadas realmente têm (`QM-EO-7`) e a obrigação de teste que a mudança carregaria (`CS-TS-1`). Uma meta não funcional sem forma de ser medida (G10, `QM-EF-2`) é viável só sob a condição de se construir essa medição. O mesmo vale para qualquer demanda que ninguém consegue verificar como entregue.
+- **Risco de erosão** — o caminho viável mais barato introduz uma *segunda* forma de fazer algo que o projeto já faz de uma só (`QM-CN-1`), ou aumenta a contagem de uma migração declarada em curso? Responder sim não bloqueia. Nomeia a dívida que a demanda criaria, para que o time a assuma deliberadamente (`QM-MT-1`) em vez de descobri-la na revisão.
 
-**Cobertura das lentes.** Toda lente termina num de três resultados, e o relatório registra qual: os achados que produziu; *examinada, nada encontrado*, com o que foi examinado em uma linha; ou *não se aplica*, com a razão. "Nada encontrado" e "não examinada" são fatos diferentes, e só o primeiro sustenta um *Viable* — é o não-risco que uma avaliação de arquitetura também registra. É também o que mantém a análise proporcional: numa demanda pequena, a maioria das lentes cabe numa linha.
+**Cobertura das lentes.** Toda lente termina num de três resultados, e o relatório registra qual: os achados que produziu; *examinada, nada encontrado*, com o que foi examinado em uma linha; ou *não se aplica*, com a razão. "Nada encontrado" e "não examinada" são fatos diferentes, e só o primeiro sustenta um *Viable*. Isso também mantém a análise proporcional: numa demanda pequena, a maioria das lentes cabe numa linha.
 
 ## Passo 4 — Disciplina de evidência
 
@@ -126,9 +119,8 @@ Agregação: vários achados causados por um único fato estrutural são um acha
 O veredito não é lido apenas dos achados. Ele se resolve a partir de duas entradas — os achados classificados no Passo 5 e o **estado da base de evidência** trazido do mapa —, aplicadas nesta ordem, vale a primeira que casar:
 
 1. **Existe um `Blocker:` ancorado** → *Not viable as specified*. Um blocker ancorado é
-   autossuficiente: lacunas em outros pontos da evidência não o suavizam, porque nada que ainda
-   falte descobrir o dissolve — só uma mudança na demanda. Registre as lacunas como
-   follow-ups e decida.
+   autossuficiente: lacunas em outros pontos não o suavizam, porque só uma mudança na demanda o
+   dissolve. Registre as lacunas como follow-ups e decida.
 2. **Nenhum blocker ancorado, e a base de evidência não sustenta afirmar que nenhum existe**
    → *Undecidable with current evidence*. Um blocker apoiado em evidência `[INFERRED]` ou
    `[UNVERIFIED]`, ou que a refutação não confirmou nem derrubou, cai aqui, não na regra 1 (Passo 4).
@@ -161,8 +153,8 @@ execução que o encontrou nomeada — nunca ampliando a regra localmente. É a 
 - **Not viable as specified** — blockers listados separadamente. Nunca entregue como uma recusa seca:
   declare **o que teria de mudar na demanda** para que o blocker se dissolva. Uma demanda
   devolvida sem uma porta é um obstáculo, não um gate.
-- **Undecidable with current evidence** — nomeie a **única execução que decidiria** (extractor
-  na área X, um spike com tempo limitado em Y, uma medição de Z) e o que a torna decisiva: a pergunta
+- **Undecidable with current evidence** — nomeie a **única execução que decidiria**: o extractor
+  na área X, um spike com tempo limitado em Y, uma medição de Z. Diga o que a torna decisiva: a pergunta
   que ela responde, quem a executa e o veredito a que cada resultado leva — "p99 ≤ 300 ms → *Viable with
   conditions*; acima → *Not viable as specified*". Uma execução cujo resultado ninguém sabe ler não decide
   nada. Feita a execução, a análise roda de novo (`FA-<demand-id>-2`) sobre um mapa novo (`IM-<demand-id>-2`). Este veredito é
@@ -170,7 +162,7 @@ execução que o encontrou nomeada — nunca ampliando a regra localmente. É a 
 
 **Em todo veredito, as premissas.** Liste as linhas não ancoradas — `[INFERRED]` e `[UNVERIFIED]` — de que
 o veredito depende sem que sejam blockers, cada uma com o que mudaria se fosse falsa. São os pontos de
-sensibilidade da análise: quem lê sabe o que conferir primeiro e o que reabriria o veredito. Sem premissas
+sensibilidade: quem lê sabe o que conferir primeiro e o que reabriria o veredito. Sem premissas
 desse tipo, escreva "nenhuma".
 
 Nunca entregue um veredito sobre uma demanda que você não entendeu. "Provavelmente está bem" não é um veredito.
@@ -195,9 +187,8 @@ a data, a demanda e o mapa em que se apoia, por ID e revisão.
 
 Contém a demanda reformulada e sua fronteira, **a referência ao mapa de impacto — por ID e revisão**, a
 baseline de cada área tocada, os achados, a cobertura das lentes, as premissas do veredito, o veredito com
-sua razão de uma linha e os follow-ups por destino. Uma referência a um mapa sem a sua revisão não é uma
-referência: a regra 2 do Passo 6 depende de onde aquele mapa específico parou, e só a revisão diz se a sua
-borda ainda vale. A passada operacional e o template do relatório vivem em `checklists/feasibility-checklist.md`. Leia-o depois do veredito, para conferir a análise e montar o relatório — não no Passo 0.
+sua razão de uma linha e os follow-ups por destino. Um mapa citado sem a revisão não está citado: a regra 2 do
+Passo 6 depende de onde aquele mapa parou, e só a revisão diz se a borda ainda vale. A passada operacional e o template do relatório vivem em `checklists/feasibility-checklist.md`. Leia-o depois do veredito, para conferir a análise e montar o relatório — não no Passo 0.
 
 Nem este relatório nem o mapa que ele cita são obrigatórios para que uma demanda exista ou avance. O
 time é dono da demanda; são ferramentas que o arquiteto usa dentro desse processo.

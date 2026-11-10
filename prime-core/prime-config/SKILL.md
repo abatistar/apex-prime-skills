@@ -3,7 +3,7 @@ name: prime-config
 description: O contrato do docs/prime-config.md - as cinco seções (Stack, Estrutura, Repositório de documentos, Comandos de verificação, Opções), a validação e o bootstrap. Consulte para fazer o bootstrap, validar ou atualizar a configuração. Para apenas ler um fato do projeto, use references/consumer-rules.md, sem carregar este contrato.
 ---
 
-# Contrato do Prime Config (prime-core)
+# Contrato do Prime Config
 
 O `prime-config.md` guarda os fatos do projeto que as skills não devem adivinhar: stack, estrutura, onde vive a documentação, como verificar o código e as opções que o projeto liga. Esta skill é dona do contrato do arquivo — seções, validação e bootstrap.
 
@@ -17,7 +17,7 @@ Template canônico: `references/prime-config-template.md`. Leia-o integralmente 
 
 As cinco são obrigatórias. Falta uma: a configuração está incompleta (veja Divergências e lacunas, em `references/consumer-rules.md`).
 
-**Stack** — linguagem e versão, framework, build, banco, migrações, mensageria. As versões têm peso: as skills planejam e revisam contra elas. Mais de um componente: uma Stack por componente, cada uma com seu tipo (`serviço` ou `cliente`, conforme o prime-core/coding-standards).
+**Stack** — linguagem e versão, framework, build, banco, migrações, mensageria. As versões têm peso: as skills planejam e revisam contra elas. Mais de um componente: uma Stack por componente, cada uma com seu tipo (`serviço` ou `cliente`, conforme o coding-standards).
 
 **Estrutura** — a arquitetura do projeto e o pacote que representa cada elemento dela. No hexagonal: domínio, aplicação (portas de entrada, portas de saída, serviços), adaptadores de entrada e de saída, montagem. Os padrões do time definem os elementos e as regras entre eles, nunca os nomes dos pacotes — esse mapa é do projeto. Um projeto legado (Opções › Legado) declara a arquitetura que tem de fato, camadas por exemplo. É o mapa que o teste de arquitetura verifica, o que o its-generator usa para inspecionar código e o que o extractor usa para inventariar pontos de entrada.
 
@@ -27,7 +27,7 @@ As cinco são obrigatórias. Falta uma: a configuração está incompleta (veja 
 - A localização e a nomenclatura de casos de uso, ITS e ADRs, relativas à raiz.
 - O caminho de um template de caso de uso customizado e as seções obrigatórias extras dele.
 
-Os contratos donos — o `prime-architect/use-case` e o `prime-core/its-contract` — têm padrões para isso, e a configuração os declara de forma explícita. O template de caso de uso é substituível; a estrutura da ITS e do ADR não. Mudá-la é mudança de contrato, pelo PR de governança, não entrada de configuração.
+Os contratos donos — o `use-case` e o `its-contract` — têm padrões para isso, e a configuração os declara de forma explícita. O template de caso de uso é substituível; a estrutura da ITS e do ADR não. Mudá-la é mudança de contrato, pelo PR de governança, não entrada de configuração.
 
 **Comandos de verificação** — como compilar, testar e rodar as verificações que o projeto tem: a suíte inteira, um teste isolado, o teste de arquitetura e, onde houver, mutação e contrato. Lidos por quem planeja, julga ou verifica — o its-generator fecha o plano da ITS com eles, o code-review os executa como pré-condição de uma revisão — e por quem implementa, que os roda antes do PR.
 
@@ -36,7 +36,7 @@ Os contratos donos — o `prime-architect/use-case` e o `prime-core/its-contract
 | Opção | Valores | Padrão | O que decide |
 |---|---|---|---|
 | Legado | `true` / `false` | `false` | O projeto é um sistema legado: não nasceu sob os padrões do time. |
-| Template da ITS | `Markdown` / `Confluence` | `Markdown` | O formato de saída da ITS, conforme o prime-core/its-contract, e a extensão do arquivo declarada em Repositório de documentos (`.md` ou `.wiki`). As seções e o nível de detalhe da ITS são os mesmos nos dois formatos. |
+| Template da ITS | `Markdown` / `Confluence` | `Markdown` | O formato de saída da ITS, conforme o its-contract, e a extensão do arquivo declarada em Repositório de documentos (`.md` ou `.wiki`). As seções e o nível de detalhe da ITS são os mesmos nos dois formatos. |
 
 Projetos podem adicionar seções além destas. Seções desconhecidas são preservadas, nunca apagadas por nenhuma skill.
 
@@ -65,4 +65,4 @@ Execute quando a configuração estiver ausente, ou restrito às seções ausent
 3. **Decidir as Opções.** Elicite cada uma; nunca infira. Legado não se deduz de nome de diretório nem da idade dos arquivos — pergunte. O Template da ITS segue a ferramenta em que a equipe publica a documentação.
 4. **Ligar os arquivos de contexto do agente.** Se o projeto tem `AGENTS.md`, `CLAUDE.md` ou `.github/copilot-instructions.md`, ofereça acrescentar uma linha que aponta para a configuração como fonte dos fatos do projeto. Não copie nenhum fato para lá: duas cópias dos comandos de build divergem na primeira mudança.
 5. **Entregar como rascunho para revisão.** O usuário valida antes do commit. Uma configuração que ninguém revisou é detecção, não configuração — e explícito-vence-detectado só significa algo se um humano o tornou explícito.
-6. **Marcar o que foi deduzido** e não confirmado com `[CONFIRM: ...]`, na mesma disciplina de marcadores do prime-architect/use-case.
+6. **Marcar o que foi deduzido** e não confirmado com `[CONFIRM: ...]`, na mesma disciplina de marcadores do use-case.

@@ -1,8 +1,8 @@
 # Checklist de Revisão
 
-Passada operacional de propriedade do `prime-architect/code-review`. O SKILL.md define o padrão, as severidades, os vereditos e as fronteiras — este arquivo é a sequência e a forma do relatório.
+Passada operacional de propriedade do `code-review`. O SKILL.md define o padrão, as severidades, os vereditos e as fronteiras — este arquivo é a sequência e a forma do relatório.
 
-**Este checklist não guarda critérios.** Todo item aponta para onde a resposta vive: o catálogo (`QM-XX-N` no `prime-core/quality-model`, `CS-XX-N` no `prime-core/coding-standards`), o item ou a unidade da ITS, ou o passo do SKILL.md — o Passo 4 é o único mapa de lentes para IDs. Um item que você não consegue resolver em um ID não é um achado — é uma preferência, ou uma lacuna a reportar.
+**Este checklist não guarda critérios.** Todo item aponta para onde a resposta vive: o catálogo (`QM-XX-N` no `quality-model`, `CS-XX-N` no `coding-standards`), o item ou a unidade da ITS, ou o passo do SKILL.md — o Passo 4 é o único mapa de lentes para IDs. Um item que você não consegue resolver em um ID não é um achado — é uma preferência, ou uma lacuna a reportar.
 
 ---
 

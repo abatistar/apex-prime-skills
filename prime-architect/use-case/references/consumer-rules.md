@@ -1,6 +1,6 @@
 # Regras para quem lê um caso de uso
 
-Parte do formato do `prime-architect/use-case`, e a única que quem só lê um caso de uso precisa — o its-generator, o code-review e o impact-mapping: que seções um documento precisa ter, que identificadores são estáveis, o que cada status significa, como ler o Histórico de revisões e os marcadores de incerteza. Quem escreve um documento, ou o valida contra as regras de qualidade, lê também o template (`references/use-case-template.md`).
+Parte do formato do `use-case`, e a única que quem só lê um caso de uso precisa — o its-generator, o code-review e o impact-mapping: que seções um documento precisa ter, que identificadores são estáveis, o que cada status significa, como ler o Histórico de revisões e os marcadores de incerteza. Quem escreve um documento, ou o valida contra as regras de qualidade, lê também o template (`references/use-case-template.md`).
 
 ## Seções do documento
 

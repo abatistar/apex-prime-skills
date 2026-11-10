@@ -1,6 +1,6 @@
 # Template de ADR
 
-Template canônico de propriedade do prime-core/its-contract. O its-generator redige contra ele quando um plano precisa se comprometer com a decisão, e o arquiteto redige contra ele diretamente quando ainda não existe plano; o arquiteto aprova em ambos os casos, e o code-review bloqueia uma decisão que chegou ao código sem registro. Veja o SKILL.md do its-contract para a fronteira de decisão, que diz quando uma decisão deve um ADR, e as Regras de escrita (`references/writing-rules.md`, *Conteúdo, não ponteiro*) para como uma ITS escreve o que um ADR exige do seu plano.
+Template canônico de propriedade do its-contract. O its-generator redige contra ele quando um plano precisa se comprometer com a decisão, e o arquiteto redige contra ele diretamente quando ainda não existe plano; o arquiteto aprova em ambos os casos, e o code-review bloqueia uma decisão que chegou ao código sem registro. Veja o SKILL.md do its-contract para a fronteira de decisão, que diz quando uma decisão deve um ADR, e as Regras de escrita (`references/writing-rules.md`, *Conteúdo, não ponteiro*) para como uma ITS escreve o que um ADR exige do seu plano.
 
 **Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — `ADR-NNN`, os valores de status (`Proposed`, `Accepted`, `Rejected`, `Superseded by ADR-NNN`), `UC-NNN`, `ITS-<story-id>`, `QM-XX-N`, `CS-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
 
@@ -57,6 +57,6 @@ Só o arquiteto move um ADR entre status, quem quer que tenha escrito o registro
 
 **Ganhos:** [o que a decisão compra]
 **Custos:** [o que ela cobra, incluindo o que passa a ser mais caro ou impossível]
-**Dívida aceita:** [se houver — nomeada, com responsável e condição de saída, conforme o registro de exceção do prime-core/quality-model (QM-MT-1). Senão, "nenhuma"]
+**Dívida aceita:** [se houver — nomeada, com responsável e condição de saída, conforme o registro de exceção do quality-model (QM-MT-1). Senão, "nenhuma"]
 **Revisitar quando:** [a condição que tornaria esta decisão obsoleta, ou "sem gatilho previsto"]
 ````

@@ -3,11 +3,11 @@ name: its-contract
 description: O contrato da ITS (Instruções Técnicas de Sistema), o artefato autossuficiente que o arquiteto passa a quem implementa - seções, nível de detalhe, rastreabilidade, a fronteira com os ADRs e as regras de escrita. Consulte para escrever, validar ou ler uma ITS. Referencie-o, nunca o duplique.
 ---
 
-# Contrato da ITS (prime-core)
+# Contrato da ITS
 
 A ITS é o artefato de passagem de bastão do fluxo: o Arquiteto de Soluções a escreve, o Desenvolvedor implementa a partir dela, e o code review do arquiteto valida contra ela. Esta skill é dona do seu formato. Como quem escreve e quem lê consomem o mesmo contrato, uma mudança aqui atualiza os dois lados de uma vez — sem descolamento entre especificação e implementação.
 
-A ITS tem um lar canônico (o repositório) e mais de um leitor: o implementador (dev humano e/ou o agente), o revisor, lideranças técnicas e compliance. Boa parte deles a lê **fora do contexto em que foi escrita** — na plataforma de documentação da empresa, ou numa sessão que não carrega o repositório de casos de uso, os ADRs nem os catálogos do prime-core. Por isso a ITS é **autossuficiente**: tudo o que ela exige está escrito nela, e os documentos de que foi derivada aparecem apenas como procedência, na seção Referências (veja Regras de escrita, em `references/writing-rules.md`). Um único documento atende a todos por meio da **leitura em camadas**: leitores não técnicos param na Descrição e nas frases de síntese de O que muda; o implementador consome toda a profundidade técnica. O documento é escrito uma vez — nunca em versões por audiência.
+A ITS tem um lar canônico (o repositório) e mais de um leitor: o implementador (dev humano e/ou o agente), o revisor, lideranças técnicas e compliance. Boa parte deles a lê **fora do contexto em que foi escrita** — na plataforma de documentação da empresa, ou numa sessão que não carrega o repositório de casos de uso, os ADRs nem os catálogos dos contratos. Por isso a ITS é **autossuficiente**: tudo o que ela exige está escrito nela, e os documentos de que foi derivada aparecem apenas como procedência, na seção Referências (veja Regras de escrita, em `references/writing-rules.md`). Um único documento atende a todos por meio da **leitura em camadas**: leitores não técnicos param na Descrição e nas frases de síntese de O que muda; o implementador consome toda a profundidade técnica. O documento é escrito uma vez — nunca em versões por audiência.
 
 ## Nomenclatura de arquivo
 

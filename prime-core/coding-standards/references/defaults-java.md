@@ -1,6 +1,6 @@
 # Padrões do Time — Java
 
-Valores padrão de slots para a stack Java do time, de propriedade do `prime-core/coding-standards`. Aplicados quando o `docs/prime-config.md` nada declara para o slot; qualquer valor que o projeto declare vence. Estes padrões são versionados pela release do Apex Prime que os traz: o projeto fixa na configuração a release que segue, e uma release nova só o alcança quando ele a adota (SKILL.md, Padrões do time). As definições dos slots e as classes de aplicação vivem em `convention-slots.md` — este índice e os arquivos de família em `references/defaults-java/` apenas fornecem respostas.
+Valores padrão de slots para a stack Java do time, de propriedade do `coding-standards`. Aplicados quando o `docs/prime-config.md` nada declara para o slot; qualquer valor que o projeto declare vence. Estes padrões são versionados pela release do Apex Prime que os traz: o projeto fixa na configuração a release que segue, e uma release nova só o alcança quando ele a adota (SKILL.md, Padrões do time). As definições dos slots e as classes de aplicação vivem em `convention-slots.md` — este índice e os arquivos de família em `references/defaults-java/` apenas fornecem respostas.
 
 Cada entrada traz o valor, a **razão** — a falha que ele evita — e a **verificação** concreta. Os exemplos canônicos são do projeto, declarados na configuração: um padrão do time não conhece o código de ninguém.
 

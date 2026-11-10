@@ -1,6 +1,6 @@
 # Rodadas seguintes
 
-Parte do `prime-architect/code-review`, lida a partir da segunda rodada sobre o mesmo pull request, antes do Passo 1.
+Parte do `code-review`, lida a partir da segunda rodada sobre o mesmo pull request, antes do Passo 1.
 
 A segunda rodada não é uma revisão nova da mesma mudança. Ela começa quando o autor responde à anterior e segue quatro regras:
 

@@ -1,6 +1,6 @@
 # Critérios de Qualidade
 
-Catálogo canônico de propriedade do `prime-core/quality-model`. O SKILL.md define o que o modelo cobre e a prática de quem implementa; os níveis, a calibração por criticidade, a precedência, a disciplina de exceção e o uso pelo its-generator e pelo code-review vivem em `references/consumer-rules.md` — este índice e os arquivos de lente em `references/quality-criteria/` são os critérios e os perfis de criticidade. Os gatilhos que tornam critérios em decisões de especificação vivem em `references/quality-triggers.md`.
+Catálogo canônico de propriedade do `quality-model`. O SKILL.md define o que o modelo cobre e a prática de quem implementa; os níveis, a calibração por criticidade, a precedência, a disciplina de exceção e o uso pelo its-generator e pelo code-review vivem em `references/consumer-rules.md` — este índice e os arquivos de lente em `references/quality-criteria/` são os critérios e os perfis de criticidade. Os gatilhos que tornam critérios em decisões de especificação vivem em `references/quality-triggers.md`.
 
 Cite os critérios por ID (`QM-XX-N`) em análises, achados e na seção Referências de uma ITS. Dentro de um artefato, o critério chega como a exigência concreta que impõe, nunca como o ID. Os IDs são estáveis e nunca renumerados; um critério aposentado mantém seu ID aposentado (veja o fim do arquivo).
 

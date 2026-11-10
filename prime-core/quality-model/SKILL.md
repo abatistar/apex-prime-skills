@@ -3,7 +3,7 @@ name: quality-model
 description: O modelo de qualidade canônico do time - o que é qualidade, o piso inegociável, a calibração por criticidade e os gatilhos de especificação, com critérios QM-XX-N. Referência compartilhada para especificar, implementar e revisar; o enforcement pertence ao code-review, e as convenções concretas, ao coding-standards.
 ---
 
-# Modelo de Qualidade (prime-core)
+# Modelo de Qualidade
 
 Esta skill é dona da definição de qualidade do time, e é a mesma definição nas três pontas do fluxo. O `its-generator` se apoia nela para decidir a qualidade do que especifica; quem implementa — pessoa ou agente — a segue na prática; o `code-review` julga a mudança contra ela. Especificação, implementação e revisão medem com a mesma régua, na mesma versão, e uma mudança aqui atualiza as três de uma vez.
 
@@ -65,9 +65,9 @@ A ITS diz o que construir e as decisões de qualidade desta story; o modelo diz 
 
 - **Não substitui o julgamento.** O piso é um mínimo, não uma definição de bom.
 - **Não é um gate.** Define a régua; o `code-review` decide se uma mudança a superou.
-- **Não são os padrões de código.** Este modelo é dono de princípios, do piso e dos gatilhos; o `prime-core/coding-standards` é dono das convenções concretas — qual nomenclatura, qual divisão em camadas, qual timeout padrão. Quando um critério precisa de uma convenção concreta para ser verificável, ele remete a um slot; nunca inventa um valor. Os slots INVARIANT valem em qualquer área: os que são proibições são a forma concreta, na stack do projeto, do que o piso exige; os demais são formas únicas do sistema. Ambos só admitem desvio por exceção registrada.
-- **Não é o formato da ITS.** Como um critério entra na ITS — como instrução concreta no corpo, com o ID apenas nas Referências — é regra do `prime-core/its-contract`.
-- **Não é o lar das decisões arquiteturais.** Decisões que sobrevivem à story vivem em ADRs, de propriedade da fronteira de decisão do `prime-core/its-contract`.
+- **Não são os padrões de código.** Este modelo é dono de princípios, do piso e dos gatilhos; o `coding-standards` é dono das convenções concretas — qual nomenclatura, qual divisão em camadas, qual timeout padrão. Quando um critério precisa de uma convenção concreta para ser verificável, ele remete a um slot; nunca inventa um valor. Os slots INVARIANT valem em qualquer área: os que são proibições são a forma concreta, na stack do projeto, do que o piso exige; os demais são formas únicas do sistema. Ambos só admitem desvio por exceção registrada.
+- **Não é o formato da ITS.** Como um critério entra na ITS — como instrução concreta no corpo, com o ID apenas nas Referências — é regra do `its-contract`.
+- **Não é o lar das decisões arquiteturais.** Decisões que sobrevivem à story vivem em ADRs, de propriedade da fronteira de decisão do `its-contract`.
 - **Não fixa metas de produto.** As metas vêm dos casos de uso e dos ADRs.
 
 ## Sinais e evolução

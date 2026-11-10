@@ -1,12 +1,12 @@
 # Análise de viabilidade — passada operacional
 
-Passada operacional de propriedade do `prime-architect/feasibility-analysis`. O SKILL.md define a baseline, as lentes, as severidades, o veredito e as fronteiras — este arquivo é a sequência e a forma do relatório.
+Passada operacional de propriedade do `feasibility-analysis`. O SKILL.md define a baseline, as lentes, as severidades, o veredito e as fronteiras — este arquivo é a sequência e a forma do relatório.
 
 ## 0. Entradas carregadas
 
-- [ ] `docs/prime-config.md` lido conforme as regras de consumo do `prime-core/prime-config`, com o que o Passo 0 do SKILL.md usa dele.
-- [ ] Regras de consumo do `prime-core/quality-model` + `../quality-model/references/quality-triggers.md`.
-- [ ] Regras de consumo do `prime-core/coding-standards`.
+- [ ] `docs/prime-config.md` lido conforme as regras de consumo do `prime-config`, com o que o Passo 0 do SKILL.md usa dele — **sem o registro de áreas**, que chega pela sobreposição do mapa (§2).
+- [ ] Regras de consumo do `quality-model` + `../quality-model/references/quality-triggers.md`.
+- [ ] Regras de consumo do `coding-standards`.
 - [ ] Catálogos não carregados inteiros: cada ID aplicado é lido no arquivo da sua lente ou família, com o índice do catálogo (SKILL, Passo 0).
 - [ ] ADRs `Accepted` e `Proposed` examinados.
 
@@ -20,13 +20,10 @@ Passada operacional de propriedade do `prime-architect/feasibility-analysis`. O 
 ## 2. O mapa
 
 - [ ] `impact-mapping` executado sobre a demanda reformulada.
+- [ ] Mapa lido conforme as regras de consumo do mapa (`../impact-mapping/references/consumer-rules.md`): o relatório inteiro, o estado de proveniência de cada linha e as conferências que elas exigem antes de julgar — validade na revisão registrada, borda lida antes das conclusões, o que não é desta skill encaminhado.
+- [ ] Mapa citado por **ID e revisão**.
 - [ ] Mapa avulso trazido já parado em **Insufficient input** → esta execução para como no §1.
-- [ ] Mapa citado por **ID e revisão**. Mapa trazido pronto cujos arquivos mudaram desde a revisão registrada → refeito, ao menos nas linhas desses arquivos, antes de julgar.
-- [ ] Três graus e dados existentes lidos.
-- [ ] Estados de área lidos da sobreposição do registro do mapa, com o substituto das áreas `strangler` e as regras do projeto que alcançam as áreas.
-- [ ] Camada documentada lida: cobertura com o status de cada caso de uso, divergências, ADRs `Accepted` e `Proposed`.
-- [ ] Perfil de evidência e "como o alcance foi buscado" lidos.
-- [ ] **Borda declarada** lida — onde o mapa parou, e se o veredito depende de algo além dela.
+- [ ] **Borda declarada** confrontada com o veredito — se ele depende de algo além dela, regra 2 do §6.
 - [ ] Baseline de cada área tocada classificada: documentada (`Reviewed`, sem divergência) · parcial (sem caso de uso, só `Draft`, `Retired` ainda executado, divergência) · green-field.
 - [ ] Delta pendente registrado pelo mapa → baseline documentada, julgada sobre o estado-alvo da story em curso; dependência da ordem de implementação → `Condition:` (responsável o arquiteto responsável); só convivência → `FYI:`.
 - [ ] Baseline parcial em outro ponto → `Condition:` com responsável e rota (`use-case-extractor`; `use-case-creator` em validação, conformidade ou reconciliação; o arquiteto para o `Retired`). Baseline parcial onde o veredito se apoia → Undecidable, declarado e justificado.
@@ -127,7 +124,7 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 | 1 | Blocker | `pom.xml` (ancorado) | teto de stack — config | [o que é impossível e por quê; a refutação tentada e por que não o derrubou] |
 | 2 | Condition | UC-042 ausente (ancorado) | baseline | [o que precisa ser verdade antes] · responsável: [nome, dos Responsáveis] · rota: use-case-extractor |
 | 3 | Condition | `POST /payments` (ancorado) | G1, `QM-SR-8` | [fronteira de acesso nova] · responsável: [responsável de segurança] · rota: avaliação antes da especificação |
-| 4 | Cost driver | `billing/legacy` (ancorado) | registro de áreas | [o que aumenta o tamanho] |
+| 4 | Cost driver | `billing/legacy` (ancorado) | estados das áreas, do mapa | [o que aumenta o tamanho] |
 | 5 | FYI | `[INFERRED]` [o que foi deduzido] | [o raciocínio, na própria linha] | [contexto; evidência assim nunca sustenta um Blocker — §6, regra 2] |
 
 ## Cobertura das lentes

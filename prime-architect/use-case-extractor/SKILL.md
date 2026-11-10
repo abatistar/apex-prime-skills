@@ -3,17 +3,17 @@ name: use-case-extractor
 description: Faz engenharia reversa de casos de uso a partir do código existente - documenta o comportamento já implementado de um módulo, uma jornada, um conjunto de endpoints ou um fluxo. Use para "documente como X funciona hoje", "mapeie os casos de uso do módulo Y" e quando o its-generator reportar que falta o caso de uso de uma story de mudança. NÃO use para comportamento novo ou planejado (use-case-creator) nem para gerar uma ITS (its-generator).
 ---
 
-# Use Case Extractor (prime-architect)
+# Use Case Extractor
 
 Produz documentos de caso de uso que descrevem o comportamento **já implementado** na base de código, lendo o código — não inventando intenção. A saída popula o repositório de casos de uso do projeto, que o use-case-creator mantém e o its-generator consome.
 
 Mentalidade central: o código diz o que o sistema *faz*, não o que ele *deveria fazer*. A intenção pode ter se perdido, e bugs podem ter sido consagrados como comportamento. Seu trabalho é documentar com fidelidade e confessar explicitamente cada dúvida, para que um humano valide antes de o documento virar fonte de verdade.
 
-O formato do documento NÃO é definido aqui — é de propriedade do **prime-architect/use-case** (template em `../use-case/references/use-case-template.md` e regras de consumo em `../use-case/references/consumer-rules.md`), incluindo os marcadores de incerteza dos quais esta skill depende. Leia-o integralmente antes de escrever.
+O formato do documento NÃO é definido aqui — é de propriedade do **use-case** (template em `../use-case/references/use-case-template.md` e regras de consumo em `../use-case/references/consumer-rules.md`), incluindo os marcadores de incerteza dos quais esta skill depende. Leia-o integralmente antes de escrever.
 
 ## Passo 0 — Carregar a configuração do projeto e o formato de caso de uso
 
-Leia o `docs/prime-config.md` conforme as regras de consumo do **prime-core/prime-config** (`../prime-config/references/consumer-rules.md`). Da configuração esta skill usa: a stack, a estrutura de pastas como mapa para o inventário de pontos de entrada, a localização e a nomenclatura do repositório de casos de uso e os overrides de caso de uso (caminho de um template customizado e seções obrigatórias extras). Em seguida carregue o formato do prime-architect/use-case; um template customizado declarado na configuração tem precedência, e as seções obrigatórias extras entram em todo documento que esta skill escreve.
+Leia o `docs/prime-config.md` conforme as regras de consumo do **prime-config** (`../prime-config/references/consumer-rules.md`). Da configuração esta skill usa: a stack, a estrutura de pastas como mapa para o inventário de pontos de entrada, a localização e a nomenclatura do repositório de casos de uso e os overrides de caso de uso (caminho de um template customizado e seções obrigatórias extras). Em seguida carregue o formato do use-case; um template customizado declarado na configuração tem precedência, e as seções obrigatórias extras entram em todo documento que esta skill escreve.
 
 ## Passo 1 — Delimitar o escopo com o usuário
 
@@ -58,7 +58,7 @@ Nunca normalize em silêncio um comportamento estranho transformando-o numa regr
 
 Encerre a execução com a Lista de perguntas do formato: todos os marcadores pendentes, por documento, cada um com a recomendação e a evidência `arquivo:linha`. Declare explicitamente que os documentos só se tornam fonte de verdade (status "Reviewed") depois que um humano resolver os marcadores; a resolução passa pelo modo validação do use-case-creator, com as respostas do arquiteto. Não promova o status por conta própria: a edição só acontece por ordem explícita do arquiteto para aquele documento. Liste também os documentos existentes que receberam apenas o link recíproco em Casos de uso relacionados.
 
-A passada operacional vive em `checklists/extraction-checklist.md`. Leia-a depois de escrever, para conferir antes de entregar — não no Passo 0. O template do próprio documento não: ele é de propriedade do `prime-architect/use-case` e é lido de lá.
+A passada operacional vive em `checklists/extraction-checklist.md`. Leia-a depois de escrever, para conferir antes de entregar — não no Passo 0. O template do próprio documento não: ele é de propriedade do `use-case` e é lido de lá.
 
 ## Saída
 

@@ -1,10 +1,10 @@
 # Mapa de impacto — passada operacional
 
-Passada operacional de propriedade do `prime-architect/impact-mapping`. O SKILL.md define os estados de proveniência, os graus, as regras de busca e a borda — este arquivo é a sequência e a forma do relatório.
+Passada operacional de propriedade do `impact-mapping`. O SKILL.md define os estados de proveniência, os graus, as regras de busca e a borda — este arquivo é a sequência e a forma do relatório.
 
 ## Configuração e revisão
 
-- [ ] `docs/prime-config.md` lido conforme as regras de consumo do **prime-core/prime-config**.
+- [ ] `docs/prime-config.md` lido conforme as regras de consumo do **prime-config**.
 - [ ] Da configuração, o que o Passo 0 do SKILL.md lista.
 - [ ] Área que o registro não lista escrita como `current` · `padrão`, marcada *não registrada* — o padrão do contrato, não uma lacuna.
 - [ ] Subseção Registro de áreas ausente ou slot sem valor de que o mapa precisa registrados como lacuna (`coding-standards`, Slots não preenchidos) — nunca improvisados.

@@ -1,6 +1,6 @@
 # Entrega no pull request
 
-Parte do `prime-architect/code-review`, lida com o relatório pronto, para desdobrá-lo no pull request.
+Parte do `code-review`, lida com o relatório pronto, para desdobrá-lo no pull request.
 
 O relatório é o registro completo; no pull request, ele se desdobra para que cada achado tenha a sua conversa e o veredito governe o merge pelas políticas da plataforma. A plataforma e as políticas de PR são as que a configuração declara em Pipeline. Sem elas declaradas, o relatório é entregue inteiro ao arquiteto, que decide onde publicá-lo.
 

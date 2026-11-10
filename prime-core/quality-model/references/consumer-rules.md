@@ -1,6 +1,6 @@
 # Regras para quem consome o modelo de qualidade
 
-Parte do contrato do `prime-core/quality-model`, e a que as skills do fluxo leem: como os critérios são classificados e calibrados, a precedência, as exceções, o que o projeto pode sobrescrever, os pontos em que o código gerado mais falha e como o its-generator e o code-review usam o modelo. O SKILL.md — o que é qualidade aqui, o que o modelo cobre, as fronteiras, a prática de quem implementa e a evolução do modelo — é lido por quem implementa, junto com este arquivo, e pelo dono do modelo.
+Parte do contrato do `quality-model`, e a que as skills do fluxo leem: como os critérios são classificados e calibrados, a precedência, as exceções, o que o projeto pode sobrescrever, os pontos em que o código gerado mais falha e como o its-generator e o code-review usam o modelo. O SKILL.md — o que é qualidade aqui, o que o modelo cobre, as fronteiras, a prática de quem implementa e a evolução do modelo — é lido por quem implementa, junto com este arquivo, e pelo dono do modelo.
 
 ## Como os critérios são classificados
 
@@ -54,7 +54,7 @@ Uma exceção sem condição de saída é permanente, e uma exceção permanente
 
 **Quem concede.**
 
-- **O arquiteto, na ITS**, para o que o plano decide. A ITS registra o afastamento por extenso num dos seus veículos — a alternativa descartada da unidade, a fronteira de fora de escopo ou um ADR —, conforme o `prime-core/its-contract`; o critério aparece só nas Referências. Quem assina a ITS é o responsável.
+- **O arquiteto, na ITS**, para o que o plano decide. A ITS registra o afastamento por extenso num dos seus veículos — a alternativa descartada da unidade, a fronteira de fora de escopo ou um ADR —, conforme o `its-contract`; o critério aparece só nas Referências. Quem assina a ITS é o responsável.
 - **O responsável de segurança que o projeto declara**, junto com o arquiteto, para uma exceção de segurança. Ela é uma decisão de modelo de ameaças, não uma linha rotineira de dívida.
 - **Um ADR**, para relaxar um critério no projeto inteiro.
 - **Nunca quem implementa.** Quando o piso não pode ser cumprido como o plano previu, isso volta ao arquiteto como pergunta.
@@ -70,7 +70,7 @@ O `docs/prime-config.md` pode **elevar** a régua e **declarar o contexto**:
 - endurecer a intensidade de um critério calibrado num nível;
 - registrar uma postura permanente diante de legado ou dívida — por exemplo, "o módulo X é legado sob migração strangler-fig; siga seus padrões locais, não os estenda".
 
-O projeto não pode **dispensar em silêncio** um inegociável do core: relaxar um é uma decisão deliberada e com responsável — um ADR —, não uma edição de configuração. Isso espelha a regra de precedência do `prime-core/prime-config`: a configuração sobrescreve padrões declarados, nunca regras do core.
+O projeto não pode **dispensar em silêncio** um inegociável do core: relaxar um é uma decisão deliberada e com responsável — um ADR —, não uma edição de configuração. Isso espelha a regra de precedência do `prime-config`: a configuração sobrescreve padrões declarados, nunca regras do core.
 
 ## Código gerado
 
