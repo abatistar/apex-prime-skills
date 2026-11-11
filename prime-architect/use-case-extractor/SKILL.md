@@ -19,11 +19,11 @@ A configuração do projeto não é lida aqui. Quando precisar de um fato dela, 
 
 ## Passo 1 — Delimitar o escopo com o usuário
 
-Nunca mapeie "o sistema inteiro" em uma execução. Peça uma fatia delimitada: um módulo, uma jornada de usuário, um conjunto de endpoints. Com um escopo já indicado no pedido, confirme seu entendimento das fronteiras. Cada execução produz uma saída revisável — como regra prática, no máximo 3–5 documentos de caso de uso. Mais que isso, divida o trabalho em execuções e confirme cada fatia com o usuário.
+Nunca mapeie "o sistema inteiro" em uma execução. Peça uma fatia delimitada: um módulo, uma jornada de usuário, um conjunto de endpoints. Com um escopo já indicado no pedido, confirme seu entendimento das fronteiras. Cada execução produz uma saída revisável — como regra prática, no máximo 3–5 documentos de caso de uso. Mais que isso, divida o trabalho em execuções e confirme cada fatia com o usuário. Nenhum código é aberto antes de o escopo estar acordado.
 
 ## Passo 2 — Inventariar os pontos de entrada
 
-Dentro do escopo, liste toda superfície de interação: rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos. Leia a seção **Estrutura** da configuração para saber onde procurar — ela dá o pacote de cada elemento da arquitetura. Se o framework não for evidente no código que você abriu, leia também a **Stack**. Os pontos de entrada não são os candidatos: agrupe-os pelo objetivo do ator, conforme a Granularidade do formato. Cada objetivo é um caso de uso candidato, e cada ponto de entrada cabe num deles, como passo ou extensão. Um ponto técnico sem objetivo de ator (health check, rotina de manutenção) fica fora e é listado como tal. Apresente ao usuário o inventário agrupado — os objetivos e os pontos de entrada de cada um — e acorde quais candidatos viram documentos antes de escrever qualquer coisa.
+Dentro do escopo, liste toda superfície de interação: rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos. Leia a seção **Estrutura** da configuração para saber onde procurar — ela dá o pacote de cada elemento da arquitetura. O inventário sai da busca nesses pacotes — anotações de rota, registros de consumidor, agendamentos, comandos —, e de cada ponto abre-se só o que basta para agrupá-lo: a rota, a assinatura, o nome do handler. O caminho de execução fica para o Passo 3, e só dos candidatos acordados. Se o framework não for evidente no código que você abriu, leia também a **Stack**. Os pontos de entrada não são os candidatos: agrupe-os pelo objetivo do ator, conforme a Granularidade do formato. Cada objetivo é um caso de uso candidato, e cada ponto de entrada cabe num deles, como passo ou extensão. Um ponto técnico sem objetivo de ator (health check, rotina de manutenção) fica fora e é listado como tal. Apresente ao usuário o inventário agrupado — os objetivos e os pontos de entrada de cada um — e acorde quais candidatos viram documentos antes de escrever qualquer coisa.
 
 Confira os candidatos contra o repositório de casos de uso. Para achá-lo, leia a seção **Repositório de documentos** da configuração: a raiz de documentos e a localização e a nomenclatura dos casos de uso. A forma do documento não vem da configuração — o template do formato é o único.
 
@@ -33,7 +33,7 @@ Um candidato que já tem caso de uso no repositório fica fora. Se o documento d
 
 ## Passo 3 — Reconstruir cada cenário a partir do código
 
-Para cada candidato acordado, trace o caminho de execução e traduza o código para os elementos do template:
+Para cada candidato acordado, trace o caminho de execução — do ponto de entrada aos efeitos, sem abrir o módulo em volta — e traduza o código para os elementos do template:
 
 - Validações de entrada e guardas que o fluxo executa → **extensões** (tratamento de falha). Só vira **pré-condição** o que este fluxo não verifica porque já chega garantido — por outro caso de uso ou por um controle transversal anterior ao ponto de entrada, como o filtro de autenticação
 - Ramificações de lógica de negócio → **passos do Cenário principal de sucesso**, **extensões** (alternativas) e **regras de negócio (RN-N)**

@@ -15,6 +15,7 @@ Passada operacional de propriedade do `code-review`. O SKILL.md define o padrão
 - [ ] As **verificações obrigatórias estão verdes**, conforme o Passo 0. Nenhum pipeline declarado → os comandos de verificação da configuração rodaram em seu lugar. Vermelho por causa de um teste instável → a revisão começa e isso é um achado `Blocking:` por si só (`QM-TS-1`).
 - [ ] O diff é revisável de uma só sentada. Se não for: peça uma divisão, ou declare as unidades do plano que você revisará e em que ordem.
 - [ ] A **rodada** está identificada. Rodada seguinte → aplique também a seção 7.
+- [ ] Nenhum código aberto antes destas pré-condições conferidas.
 
 *Sem ITS, PR sem a revisão da documentação em pasta paralela, ou verificações vermelhas por outra causa → `Not reviewable`, sem veredito: reporte a pré-condição que falta e quem a resolve. Exceção: mudança declarada fora do processo → declare que a conformidade de escopo não pôde ser verificada e revise só contra o core.*
 
@@ -24,8 +25,9 @@ Passada operacional de propriedade do `code-review`. O SKILL.md define o padrão
 - [ ] A direção tomada corresponde ao plano, ou o autor resolveu um problema diferente?
 - [ ] Quais arquivos deveriam ter sido tocados — lidos das unidades do plano — e qual comportamento precisa continuar funcionando (os pontos de regressão e a unidade que reivindicou cada um)?
 - [ ] Onde o plano pede atenção redobrada (Riscos e pontos de atenção da ITS)?
+- [ ] Antes do diff, só a lista de arquivos alterados; o diff de cada unidade aberto ao chegar nela, nunca o PR inteiro de uma vez.
 - [ ] Percurso unidade por unidade, na ordem do plano, com os testes de cada unidade lidos antes do código de produção.
-- [ ] Fora do diff, onde o defeito mora fora dele: autorização (configuração de segurança, chamadores), concorrência, transação.
+- [ ] Fora do diff, onde o defeito mora fora dele: autorização (configuração de segurança, chamadores), concorrência, transação — aberto o ponto que decide a dúvida, não o módulo.
 
 *Direção errada → pare aqui e diga isso. Não anote código que não deveria existir.*
 

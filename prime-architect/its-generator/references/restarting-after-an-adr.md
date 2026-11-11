@@ -19,6 +19,7 @@ Recomeçar não é refazer tudo. O que foi produzido antes da parada pode ser ap
 - **O delta não depende da decisão.** Os itens `D` vêm dos casos de uso, que o ADR não muda. O resultado do Passo 2 é reaproveitado como está.
 - **Da inspeção em diante, pergunte de cada nota se a decisão a alcança:** o componente mapeado, a classificação existe / modificar / criar, o ponto de regressão, a fronteira de fora de escopo, o caso de borda, o gatilho de qualidade. O alcance da decisão é o campo Escopo do ADR mais tudo o que a linha Vincula obriga a mudar. A nota alcançada é refeita no passo em que nasceu; a que não é alcançada segue.
 - **A decisão muda a solução inteira** — outros componentes, outro ponto de integração, outra estratégia → refaça do Passo 3 em diante, sem aproveitar notas. Conferir nota por nota custa mais que inspecionar de novo, e uma nota do desenho antigo que escapa vira instrução errada.
+- **Reinspecionar não é reler.** O que se refaz é a nota, não a leitura: código já lido nesta sessão e inalterado desde então não é aberto de novo. Abre-se só o que a decisão traz para o plano e ainda não foi lido.
 - **Um trecho da ITS já escrito**, quando a parada aconteceu durante o Passo 5, é rascunho, nunca documento. Toda seção que a decisão alcança é reescrita, e o documento inteiro passa pelo Passo 6 como qualquer ITS nova. Nada escrito antes da decisão é entregue sem essa conferência.
 
 ## O que a nova ITS precisa mostrar

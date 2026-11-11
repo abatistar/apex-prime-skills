@@ -39,6 +39,7 @@ Passada operacional de propriedade do `impact-mapping`. O SKILL.md define os est
 - [ ] Busca textual pelos nomes de contrato (endpoint, tópico, fila, evento, tabela, coluna, chave de configuração, flag) em todos os arquivos: SQL em strings, configuração, migrações, scripts, infraestrutura como código, testes, pipeline.
 - [ ] Leitores do mesmo estado persistido procurados.
 - [ ] Histórico de mudanças dos arquivos diretos consultado: o que mudou junto foi inspecionado e ancorado, ou entra `[INFERRED]` com a contagem — nunca como evidência de comportamento.
+- [ ] Busca antes de abrir: de cada resultado, só o trecho que decide e ancora; arquivo inteiro só quando o trecho depende do que o cerca; nenhum pacote inteiro; nada aberto além da borda.
 - [ ] Sementes e buscas registradas no relatório.
 
 ## Sobreposição do registro de áreas

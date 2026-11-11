@@ -33,7 +33,8 @@ A passada operacional do `its-generator`. **Nenhum template de documento vive aq
 
 - [ ] A inspeção realizada aqui por inteiro. Nenhum mapa do `impact-mapping` usado como entrada, por mais recente que seja.
 - [ ] Nada planejado contra código que não foi aberto.
-- [ ] Criação: pontos de entrada, camadas e modelos localizados; funcionalidades semelhantes encontradas para reaproveitar padrões; todo passo do fluxo principal e todo fluxo de exceção mapeado para um componente classificado como existe como está / modificar / criar.
+- [ ] Nenhum código aberto antes do Passo 3. Localizado pela Estrutura e por busca, aberto no trecho de que a nota precisa; arquivo inteiro só quando o trecho depende do que o cerca; nenhum pacote ou módulo inteiro; nada relido sem ter mudado.
+- [ ] Criação: pontos de entrada, camadas e modelos localizados; a funcionalidade mais semelhante encontrada para reaproveitar padrões, aberta só nos trechos deles; todo passo do fluxo principal e todo fluxo de exceção mapeado para um componente classificado como existe como está / modificar / criar.
 - [ ] Criação: todo componente classificado como **modificar** levado à varredura do Passo 4, que transforma o comportamento que ele já atende em pontos de regressão.
 - [ ] Alteração: apenas os itens de delta mapeados para código.
 - [ ] Alteração: pontos de regressão numerados (`RG-1`, `RG-2`) em sequência contínua, a partir do corpo do caso de uso, não do delta, cada um anotado com sua origem.

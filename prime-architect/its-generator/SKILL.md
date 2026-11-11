@@ -9,7 +9,7 @@ Gera uma ITS por story: a instrução de trabalho a partir da qual o Desenvolved
 
 Esta skill não redige ADR. Quando o plano depende de uma decisão de arquitetura que ainda não tem registro, a geração da ITS para e o ADR é proposto ao arquiteto (Passo 4.5). Aceita a proposta, quem redige o registro e o conduz até a aprovação é outra skill, o **adr-generator**, e a ITS recomeça do início depois da decisão dele.
 
-Disciplina central: **leia antes de propor**. Nunca planeje mudanças em código que você não inspecionou. E processe **exatamente o delta** que pertence à story em questão.
+Disciplina central: **leia antes de propor, e só o que o plano usa**. Nunca planeje mudanças em código que você não inspecionou, nem abra código de que o plano não precisa. E processe **exatamente o delta** que pertence à story em questão.
 
 ## Passo 0 — Carregar a configuração do projeto e os contratos
 
@@ -58,9 +58,11 @@ Numere os itens de delta conforme os localiza (`D1`, `D2`, ...), em sequência c
 
 **A inspeção sempre acontece aqui.** Um mapa do `impact-mapping` não é uma entrada deste passo, mesmo quando existe um para a demanda de que esta story veio. Um mapa tem escopo de uma demanda em refinamento e uma ITS de exatamente uma story; o refinamento pode durar meses entre os dois, e, quando o plano existe, verificar o mapa custa o mesmo que derivar o alcance do zero. O `impact-mapping` declara a mesma fronteira do seu lado. O arquiteto pode, claro, ter lido o mapa; o que não acontece é um plano herdar um alcance que nunca verificou.
 
+**O código entra neste passo, e só o que o plano usa.** Nenhum código é aberto antes dele: as paradas dos Passos 1 e 2 não dependem do código, e um plano que para ali não paga a leitura. Localize pela Estrutura da configuração e por busca — símbolo, rota, tabela, nome de contrato — e abra o trecho de que a nota precisa. O arquivo inteiro entra só quando o trecho depende do que o cerca; um pacote ou módulo inteiro, nunca. Código já lido nesta sessão, e inalterado desde a leitura, não é relido. As mesmas regras valem para a varredura do Passo 4.
+
 **Cenário de criação** — exploração ampla e dirigida:
 - Localize pontos de entrada, camadas e modelos relacionados ao ator/ação, guiado pelo mapa de estrutura da configuração.
-- Encontre funcionalidades existentes semelhantes para reaproveitar padrões (tratamento de erros, estilo de validação, organização de testes).
+- Encontre a funcionalidade existente mais semelhante para reaproveitar padrões (tratamento de erros, estilo de validação, organização de testes), e outra só para o padrão que ela não mostra. Abra os trechos desses padrões, não a funcionalidade inteira.
 - Mapeie cada passo do fluxo principal e cada fluxo de exceção para um componente, classificando cada um como: existe como está / modificar / criar.
 - Todo componente classificado como **modificar** já atende a comportamento que esta story não muda. Ele entra na varredura do Passo 4, que transforma esse comportamento em pontos de regressão (`RG-N`), reivindicados pela unidade que o modifica como em qualquer outro cenário.
 

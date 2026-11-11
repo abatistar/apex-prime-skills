@@ -247,6 +247,7 @@ Todo achado, toda exceção e todo elo de rastreabilidade cita um desses. Uma af
 - **Ambiguidade volta, não é presumida.** Se a ITS é ambígua, quem implementa não preenche as lacunas por conta própria — devolve perguntas ao arquiteto.
 - **Qualidade como gate, não como opinião.** O code review valida contra critérios versionados do `quality-model` e do `coding-standards`, não contra preferências do momento.
 - **Não preenchido é lacuna, não escolha livre.** Uma decisão que ninguém tomou é reportada, nunca improvisada.
+- **Contexto sob demanda.** Nada entra no contexto antes do passo que o usa: skill, seção da configuração, documento ou código. O código da aplicação é localizado por busca e aberto no trecho de que o passo precisa — nunca um módulo inteiro por garantia, nunca de novo quando já foi lido e não mudou. Cada skill declara em que passo o código entra e quanto dele.
 
 ## Governança
 

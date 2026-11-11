@@ -15,6 +15,8 @@ Carregue o formato do **use-case** por inteiro: é o contrato contra o qual esta
 
 A configuração do projeto não é lida aqui. Quando precisar de um fato dela, leia só a seção que o carrega do `docs/prime-config.md`, conforme as regras de consumo do **prime-config** (`../prime-config/references/consumer-rules.md`). Esta skill precisa de uma seção: **Repositório de documentos**, no Passo 1.
 
+O código da aplicação também não é lido aqui. A única exceção é o trecho citado pela evidência de uma divergência, no Passo 2c: o comportamento que esta skill escreve vem da entrada e dos casos de uso, e o que o código faz hoje é trabalho do use-case-extractor.
+
 ## Passo 1 — Rotear: o que a entrada pede de cada documento
 
 Leia a entrada — user story, trecho de PRD, descrição informal, achado de divergência ou respostas a marcadores.
@@ -75,7 +77,7 @@ Se a story modifica comportamento existente e não há caso de uso correspondent
 
 O código e o documento discordam — achado trazido pelo impact-mapping, pela feasibility-analysis, pelo code-review ou por uma story de correção.
 
-1. Leia o documento **por inteiro** e o trecho de código citado pela evidência da divergência. Se a divergência não cabe num trecho ancorado — o documento inteiro deixou de descrever o sistema —, reporte ao arquiteto em vez de remendar.
+1. Leia o documento **por inteiro** e só o trecho de código citado pela evidência da divergência. Se a divergência não cabe num trecho ancorado — o documento inteiro deixou de descrever o sistema —, reporte ao arquiteto em vez de remendar.
 2. Confira se não é um delta pendente (formato, Ciclo de vida do status): o código diverge só nos itens do delta de uma story ainda não entregue e faz ali o que o documento descrevia antes dele. Nesse caso não há divergência a tratar — diga isso ao arquiteto, com o ID da story, e não registre nada. Reconciliar agora apagaria a mudança que a story planejou.
 3. Apresente os dois lados — o que o documento afirma (com seus identificadores) e o que o código faz (arquivo e linha) — e deixe o arquiteto decidir qual está certo. Nunca decida por ele: a escolha define se haverá implementação.
 4. **O código está errado → conformidade.** O corpo do documento não muda. Registre uma entrada de conformidade com o ID da story que corrigirá o código e o Resumo `Conformidade:` seguido dos identificadores que o código passa a cumprir (por exemplo, "Conformidade: o código passa a cumprir o passo 5 e o CA-3"). O Status não muda. Se ainda não há story, reporte que a correção precisa de uma; a entrada é registrada quando ela existir.

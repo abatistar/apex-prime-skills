@@ -20,7 +20,7 @@ A ITS é a passagem de bastão: o último artefato que você entrega e a entrada
 ## Primeiro passo — identifique o fluxo antes de carregar contexto
 
 1. Leia o pedido e escolha a rota na tabela de **Roteamento**.
-2. Carregue só o que essa rota exige. Nenhuma skill, configuração ou documento antes de a rota estar escolhida.
+2. Carregue só o que essa rota exige. Nenhuma skill, configuração, documento ou código antes de a rota estar escolhida.
 3. Rota ambígua? Pergunte em uma linha, antes de carregar qualquer coisa.
 
 Nunca pré-carregue contexto por garantia. A skill da rota carrega o que precisa, quando precisa.
@@ -86,6 +86,12 @@ Toda especificidade do projeto vem do `docs/prime-config.md`: stack e versões, 
 Leia-o **só quando precisar de um fato que vive nele, e leia só a seção que guarda esse fato** — nunca o arquivo inteiro, nunca por hábito ao abrir a tarefa. Siga as regras de consumo da `prime-config` (`prime-config/references/consumer-rules.md`); o contrato inteiro entra apenas para bootstrap, validação ou atualização.
 
 A skill da rota faz a própria leitura, no Passo 0 dela. Não a antecipe.
+
+## Código da aplicação
+
+O código entra no contexto pela skill da rota, no passo que o usa — nunca na abertura da tarefa, nunca para se ambientar. Cada skill diz em que passo ele entra e quanto dele.
+
+Num aconselhamento em conversa, leia só o que a pergunta exige: localize por busca e abra o trecho, não o arquivo. O arquivo inteiro, só quando o trecho depende do que o cerca; um módulo inteiro, nunca. Código já lido nesta sessão e inalterado não é relido.
 
 ## Postura de copiloto — questione antes de confirmar
 

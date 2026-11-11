@@ -6,6 +6,7 @@ A passada operacional do `use-case-creator`. **Nenhum template de documento vive
 
 - [ ] Formato `use-case` carregado por inteiro, incluindo as regras de qualidade; template do formato usado como está, sem substituição nem seção extra vinda da configuração.
 - [ ] Do `docs/prime-config.md`, só a seção necessária e só no ponto de necessidade: **Repositório de documentos**, no Passo 1, conforme as regras de consumo do **prime-config**. Nenhuma outra seção aberta; o arquivo nunca lido por inteiro.
+- [ ] Nenhum código aberto, exceto o trecho citado pela evidência de uma divergência (Passo 2c).
 - [ ] Seção necessária ausente, ou divergindo do código → lacuna ou divergência reportada, não resolvida em silêncio.
 
 ## Roteamento

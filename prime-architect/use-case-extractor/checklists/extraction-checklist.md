@@ -12,10 +12,11 @@ A passada operacional do `use-case-extractor`. **Nenhum template de documento vi
 
 - [ ] Uma fatia delimitada — módulo, jornada de usuário, conjunto de endpoints —, nunca "o sistema inteiro". Fronteiras confirmadas com o usuário.
 - [ ] No máximo 3–5 documentos por execução. Mais que isso → trabalho dividido em execuções, cada fatia confirmada com o usuário.
+- [ ] Nenhum código aberto antes de o escopo estar acordado.
 
 ## Inventário
 
-- [ ] Toda superfície de interação do escopo listada — rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos —, procurada pelo mapa da seção **Estrutura** da configuração.
+- [ ] Toda superfície de interação do escopo listada — rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos —, procurada pelo mapa da seção **Estrutura** da configuração. De cada ponto, aberto só o que o agrupa: rota, assinatura, handler.
 - [ ] Pontos de entrada agrupados pelo objetivo do ator (Granularidade do formato): cada objetivo é um candidato; ponto técnico sem objetivo de ator listado à parte.
 - [ ] Candidatos conferidos pelo índice; nenhum deixado de fora sem abrir o documento que o cobre. Sem índice numa pasta com documentos → criação dele acordada com o usuário.
 - [ ] Nenhum candidato que já tenha caso de uso no repositório. Documento existente que diverge do código → `use-case-creator` (conformidade ou reconciliação), nunca um documento novo; delta pendente de uma story ainda não entregue não é divergência — só mencionado ao arquiteto. Candidato coberto por um documento `Retired` → reportado ao arquiteto.
@@ -23,7 +24,7 @@ A passada operacional do `use-case-extractor`. **Nenhum template de documento vi
 
 ## Reconstrução
 
-- [ ] Caminho de execução de cada candidato rastreado no código, não deduzido de nomes.
+- [ ] Caminho de execução de cada candidato acordado rastreado no código, não deduzido de nomes; aberto só o caminho, não o módulo em volta.
 - [ ] Código traduzido para os elementos do template: validações e guardas que o fluxo executa → extensões; ramificações de negócio → passos, extensões e `RN-N`; efeitos persistidos, eventos e chamadas externas → Garantias de sucesso; o que se mantém na falha → Garantias mínimas; tratamento de erro → extensões com desfecho; autorização do próprio fluxo → extensões; timeouts, limites de volume, janelas e expurgos → critério `não funcional` com `[CONFIRM: ...]` (requisito ou restrição técnica?).
 - [ ] Toda `RN-N` num padrão da Forma das regras de negócio, escolhido pela forma do código: cálculo ou constante → ubíquo; handler ou consumidor → `Quando`; guarda de estado → `Enquanto`; ramo de erro → `Se … então`, citada por uma extensão; flag ou configuração → `Onde`, com `[INFERRED]`. Uma resposta por regra; nenhuma regra cita passo nem extensão.
 - [ ] Pré-condição só o que o fluxo não verifica porque já chega garantido — outro caso de uso, controle transversal anterior ao ponto de entrada.

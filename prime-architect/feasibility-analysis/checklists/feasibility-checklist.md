@@ -45,7 +45,7 @@ Passada operacional de propriedade do `feasibility-analysis`. O SKILL.md define 
 - [ ] Todo achado carrega sua âncora do mapa: **ancorada**, `[INFERRED]` ou `[UNVERIFIED]`.
 - [ ] Vocabulário reutilizado do `impact-mapping`, não redefinido aqui.
 - [ ] Nenhum `Blocker:` apoiado em evidência `[INFERRED]` ou `[UNVERIFIED]`.
-- [ ] Todo `Blocker:` passou pela refutação: caminho alternativo para o mesmo resultado, teto que é na verdade configuração, regra que não alcança a área, âncora que não diz o que o achado afirma. O que não sobreviveu caiu; o que não foi confirmado nem derrubado vai para a regra 2.
+- [ ] Todo `Blocker:` passou pela refutação: caminho alternativo para o mesmo resultado, teto que é na verdade configuração, regra que não alcança a área, âncora que não diz o que o achado afirma. No código, só a âncora conferida foi aberta; caminho além da borda do mapa não foi rastreado. O que não sobreviveu caiu; o que não foi confirmado nem derrubado vai para a regra 2.
 
 ## 5. Classificação
 

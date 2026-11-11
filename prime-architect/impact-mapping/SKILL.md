@@ -68,6 +68,8 @@ Alcance não é uma lista só. Fundir os três graus transforma o mapa em ruído
 - **leitores do mesmo estado persistido** — toda consulta, job ou relatório que lê a tabela ou a coleção que muda;
 - **o histórico de mudanças** dos arquivos do conjunto direto (`git log`). Arquivos que mudaram junto na maior parte dos commits revelam um acoplamento que nenhuma análise estática vê. O histórico aponta onde inspecionar; não é evidência de comportamento. Inspecionado e confirmado, o item entra ancorado pelo código lido; não inspecionado, entra `[INFERRED]`, com a contagem na linha ("mudou junto com `X` em 7 de 9 commits").
 
+**Busque antes de abrir.** A busca localiza; de cada resultado abre-se o trecho que decide se ele entra no mapa e que o ancora. O arquivo inteiro, só quando o trecho depende do que o cerca; um pacote inteiro, nunca. A borda do Passo 6 também limita a leitura: o que fica além dela não é aberto.
+
 Para cada item: localização, grau e uma linha sobre *por que está no mapa*. Uma entrada sem razão declarada não pode ser contestada, e um mapa incontestável não é evidência.
 
 ## Passo 4 — Sobrepor o registro de áreas
