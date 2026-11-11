@@ -1,6 +1,6 @@
 ---
 name: use-case
-description: O formato canônico do documento de caso de uso - template, regras de qualidade, histórico de revisões (delta), ciclo de vida do status e marcadores de incerteza. Consulte para criar, atualizar, validar ou ler um caso de uso; quem só lê usa references/consumer-rules.md. Referencie-o, nunca o duplique.
+description: O formato canônico do documento de caso de uso - template, regras de qualidade, histórico de revisões (delta), ciclo de vida do status, marcadores de incerteza e o índice do repositório. Consulte para criar, atualizar, validar ou ler um caso de uso; quem só lê usa references/consumer-rules.md. Referencie-o, nunca o duplique.
 ---
 
 # Formato de Caso de Uso
@@ -12,6 +12,7 @@ Esta skill é dona do formato do documento de caso de uso. O formato tem um ende
 `references/use-case-template.md` define a forma do documento:
 
 - a nomenclatura de arquivo — `use-cases/UC-NNN-titulo-curto.md`, sob a raiz de documentos do projeto;
+- o índice do repositório — `use-cases/README.md`, uma linha por documento, derivada dele: a forma, quando muda e como se reconstrói;
 - a granularidade: o que um documento descreve, e o que é nível, extensão ou documento próprio;
 - a reorganização entre documentos — divisão e incorporação;
 - a forma das regras de negócio, em padrões adaptados do EARS;
@@ -21,6 +22,7 @@ Esta skill é dona do formato do documento de caso de uso. O formato tem um ende
 
 `references/consumer-rules.md` define o que quem só lê também precisa:
 
+- o uso do índice: decide quais documentos abrir, nunca o que eles dizem;
 - as seções obrigatórias e opcionais do documento;
 - a estabilidade dos identificadores;
 - o ciclo de vida de status (Draft · Reviewed · Retired): quando um documento volta a Draft e quando passa a Retired;
@@ -28,7 +30,7 @@ Esta skill é dona do formato do documento de caso de uso. O formato tem um ende
 - os tipos de entrada do histórico de revisões;
 - os marcadores de incerteza (`[INFERRED]`, `[CONFIRM: ...]`) para conteúdo não verificado.
 
-Quem escreve um documento de caso de uso, ou o valida contra as regras de qualidade, lê os dois arquivos por inteiro. Quem só lê — o its-generator, o code-review, o impact-mapping — lê só `references/consumer-rules.md`: basta para conferir o status e as seções obrigatórias de um documento recebido como entrada.
+Quem escreve um documento de caso de uso, ou o valida contra as regras de qualidade, lê os dois arquivos por inteiro. Quem só lê — o its-generator, o code-review, o impact-mapping — lê só `references/consumer-rules.md`: basta para escolher pelo índice quais documentos abrir e para conferir o status e as seções obrigatórias de um documento recebido como entrada.
 
 ## Regras inegociáveis (resumo — o template e as regras de consumo são a autoridade)
 
@@ -37,4 +39,5 @@ Quem escreve um documento de caso de uso, ou o valida contra as regras de qualid
 - `UC-NNN`, `RN-N` e `CA-N` nunca são renumerados nem reaproveitados. Um item removido ou movido vira lápide, e um documento que deixa de descrever comportamento vivo passa a `Retired`, nunca é apagado. Passos e extensões podem ser renumerados, desde que o delta declare a renumeração. Reorganizar documentos e mudar comportamento nunca acontecem na mesma entrada.
 - Documentos com marcadores de incerteza não resolvidos permanecem em status Draft e não são fonte de verdade. Somente documentos Reviewed alimentam o ITS Generator — a única exceção é um documento Retired pela entrada de retirada da própria story. Uma entrada de alteração, de reconciliação ou de revisão editorial, ou um marcador novo, devolve um documento Reviewed a Draft: quem escreve rebaixa. A promoção é sempre um ato humano — a edição do Status só acontece por ordem explícita do arquiteto para aquele documento.
 - `Reviewed` é validado, não implementado. Até a story ser entregue, o código pode fazer o que o documento descrevia antes do delta dela: isso é um delta pendente, e quem compara documento e código nunca o trata como divergência.
+- O índice `use-cases/README.md` é derivado, nunca fonte de verdade. Ele escolhe quais documentos abrir; nada se cita, valida ou numera por ele, e em divergência vale o documento. Quem escreve um documento atualiza a linha dele no mesmo trabalho, sem entrada no Histórico de revisões.
 - O formato não é sobrescrevível. A configuração do projeto declara onde os casos de uso vivem, nunca a forma deles. Nenhum template customizado, nenhuma seção obrigatória extra. Mudar o formato é mudança deste contrato, pelo PR de governança. Quem precisa do caminho lê só a seção **Repositório de documentos** do `docs/prime-config.md`, no ponto da necessidade — nunca o arquivo inteiro, nunca como passo de abertura.

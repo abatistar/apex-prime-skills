@@ -1,6 +1,6 @@
 ---
 name: use-case-creator
-description: Cria ou atualiza documentos de caso de uso a partir de stories, PRDs ou descrições de mudança - "escreva o caso de uso desta story", "derive os casos de uso deste PRD", "adicione uma exceção ao UC-042". Use também para resolver os CONFIRM de um Draft, tratar divergência entre código e caso de uso, retirar um caso de uso cuja funcionalidade sai do sistema e reorganizar ou reescrever sem mudar comportamento. NÃO use para documentar comportamento já implementado sem caso de uso (use-case-extractor) nem para gerar uma ITS (its-generator).
+description: Cria ou atualiza documentos de caso de uso a partir de stories, PRDs ou descrições de mudança - "escreva o caso de uso desta story", "derive os casos de uso deste PRD", "adicione uma exceção ao UC-042". Use também para resolver os CONFIRM de um Draft, tratar divergência entre código e caso de uso, retirar um caso de uso cuja funcionalidade sai do sistema, reorganizar ou reescrever sem mudar comportamento e criar ou reconstruir o índice (README) dos casos de uso. NÃO use para documentar comportamento já implementado sem caso de uso (use-case-extractor) nem para gerar uma ITS (its-generator).
 ---
 
 # Use Case Creator
@@ -21,7 +21,9 @@ Leia a entrada — user story, trecho de PRD, descrição informal, achado de di
 
 Para achar o repositório de casos de uso, leia a seção **Repositório de documentos** da configuração: a raiz de documentos e a localização e a nomenclatura dos casos de uso (`use-cases/` sob a raiz, por padrão). A forma do documento não vem da configuração — o template do formato é o único.
 
-Examine o repositório e classifique o que a entrada pede de cada documento:
+Examine o repositório pelo índice (`README.md` na pasta dos casos de uso), conforme as regras de consumo do formato: ele diz quais documentos abrir, e a classificação se decide sobre os documentos abertos. Sem índice numa pasta com documentos, examine os documentos e inclua a criação do índice (Passo 2g) no mapeamento que você confirma.
+
+Classifique o que a entrada pede de cada documento:
 
 - **Criação** — comportamento novo, sem documento existente (Passo 2a).
 - **Atualização** — muda comportamento documentado (Passo 2b).
@@ -29,6 +31,7 @@ Examine o repositório e classifique o que a entrada pede de cada documento:
 - **Validação** — resolver os marcadores de incerteza de um documento em `Draft` com as respostas do arquiteto (Passo 2d).
 - **Retirada** — a story remove do sistema todo o comportamento de um documento (Passo 2e). Remover só parte dele é atualização.
 - **Revisão editorial** — muda a redação ou o lugar em que o comportamento está descrito, sem mudar o comportamento: ajuste de redação, divisão, incorporação (Passo 2f).
+- **Índice** — criar o índice do repositório ou corrigi-lo quando diverge dos documentos (Passo 2g). Não muda documento nenhum.
 
 Uma story que não muda o comportamento observável de nenhum ator é técnica, conforme as Regras do Histórico de revisões do formato: não há documento a escrever. Diga isso ao arquiteto e roteie a story ao its-generator (cenário técnico); se ele discordar, é porque algo observável muda, e esse algo é o que você mapeia.
 
@@ -107,15 +110,25 @@ Muda a redação ou o lugar em que o comportamento está descrito, sem mudar o c
 5. Devolva a `Draft` todo documento `Reviewed` cujo corpo mudou; o absorvido numa incorporação vai a `Retired`. Não há ITS: o comportamento não muda.
 6. Nunca junto com o delta de uma story. Se a story pede também uma reorganização, faça-a primeiro, como revisão editorial; o delta entra depois que o arquiteto promover a base reorganizada.
 
+## Passo 2g — Modo índice
+
+Cria o índice do repositório ou o corrige — a pedido do arquiteto, ou porque outra skill reportou o índice ausente ou divergente. Siga o Índice do repositório do template do formato.
+
+1. **Divergência apontada numa linha:** corrija essa linha a partir do documento aberto.
+2. **Índice ausente, ou sem apontamento preciso:** reconstrua-o inteiro, uma linha por arquivo `UC-NNN-*.md` da pasta, `Retired` inclusive. Nunca parta do índice antigo: ele é o que está em dúvida.
+3. Nenhum documento muda: sem entrada no Histórico de revisões, sem mudança de Status. Um defeito notado num documento durante a leitura é reportado, não corrigido aqui.
+
 ## Passo 3 — Validar antes de entregar
 
 **Qualidade, documento a documento.** Verifique todo documento escrito ou alterado contra as regras de qualidade do formato, uma a uma — nunca pela impressão de que o documento parece completo. O its-generator só confere o Status e as seções obrigatórias: uma extensão sem critério de aceite ou uma regra órfã que passe daqui chega à ITS e ao code review. Corrija toda violação; quando a correção depende de uma resposta do arquiteto, marque `[CONFIRM: ...]` no ponto exato.
 
-**Consistência cruzada.** Examine o repositório em busca de conflitos: o comportamento novo/alterado contradiz um cenário, extensão, regra ou garantia documentados em outro caso de uso (por exemplo, uma nova regra de permissão que outro cenário assume inexistente)? Havendo conflito, reporte-o ao usuário em vez de prosseguir em silêncio. Se a resolução exigir alterar também o outro documento, trate-o como parte do mapeamento da mesma story (volte ao Passo 1).
+**Índice.** Atualize a linha de cada documento escrito ou alterado, conforme o Índice do repositório do formato (regra de qualidade 14). É atualização derivada, como o link recíproco.
+
+**Consistência cruzada.** Examine o repositório em busca de conflitos, abrindo os documentos que o índice mostra sobre o mesmo ator ou objeto de negócio: o comportamento novo/alterado contradiz um cenário, extensão, regra ou garantia documentados em outro caso de uso (por exemplo, uma nova regra de permissão que outro cenário assume inexistente)? Havendo conflito, reporte-o ao usuário em vez de prosseguir em silêncio. Se a resolução exigir alterar também o outro documento, trate-o como parte do mapeamento da mesma story (volte ao Passo 1).
 
 ## Passo 4 — Entregar
 
-Apresente os documentos criados/atualizados. Resuma o delta explicitamente na sua resposta, para que o usuário o valide — é o que o its-generator transformará em uma ITS. O que resumir depende do modo: numa alteração ou conformidade, o delta; numa retirada, o que sai do sistema; numa reconciliação, o que mudou no corpo; numa revisão editorial, o que mudou de redação ou de lugar e o mapa de identificadores. Liste também os documentos que receberam apenas o link recíproco em Casos de uso relacionados, ou que deixaram de citar um documento retirado.
+Apresente os documentos criados/atualizados. Resuma o delta explicitamente na sua resposta, para que o usuário o valide — é o que o its-generator transformará em uma ITS. O que resumir depende do modo: numa alteração ou conformidade, o delta; numa retirada, o que sai do sistema; numa reconciliação, o que mudou no corpo; numa revisão editorial, o que mudou de redação ou de lugar e o mapa de identificadores. Liste também os documentos que receberam apenas o link recíproco em Casos de uso relacionados, ou que deixaram de citar um documento retirado. Diga se o índice foi criado ou reconstruído.
 
 Informe o Status resultante de cada documento: um documento que voltou a `Draft` só alimenta o its-generator depois que o arquiteto o promover; um `Retired` por retirada já o alimenta. Entregue os marcadores pendentes como a Lista de perguntas do formato, com recomendação e evidência em cada item — são as perguntas que o arquiteto precisa responder antes de promover cada documento. Reporte também os documentos em que a story espera (base em `Draft`) e as dependências entre stories (delta escrito sobre o de outra story).
 
@@ -123,4 +136,4 @@ A passada operacional vive em `checklists/creation-checklist.md`. Leia-a depois 
 
 ## Saída
 
-Arquivos `UC-NNN-titulo-curto.md` criados e/ou revisados no repositório configurado, com o Status resultante de cada um. Cada entrada do Histórico de revisões num dos tipos que o formato define: criação, alteração, conformidade, retirada, reconciliação, revisão editorial. Mais os conflitos reportados entre documentos e a lista de perguntas dos marcadores pendentes.
+Arquivos `UC-NNN-titulo-curto.md` criados e/ou revisados no repositório configurado, com o Status resultante de cada um, e o índice da pasta atualizado. Cada entrada do Histórico de revisões num dos tipos que o formato define: criação, alteração, conformidade, retirada, reconciliação, revisão editorial. Mais os conflitos reportados entre documentos e a lista de perguntas dos marcadores pendentes.

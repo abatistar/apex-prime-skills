@@ -17,6 +17,7 @@ A passada operacional do `use-case-extractor`. **Nenhum template de documento vi
 
 - [ ] Toda superfície de interação do escopo listada — rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos —, procurada pelo mapa da seção **Estrutura** da configuração.
 - [ ] Pontos de entrada agrupados pelo objetivo do ator (Granularidade do formato): cada objetivo é um candidato; ponto técnico sem objetivo de ator listado à parte.
+- [ ] Candidatos conferidos pelo índice; nenhum deixado de fora sem abrir o documento que o cobre. Sem índice numa pasta com documentos → criação dele acordada com o usuário.
 - [ ] Nenhum candidato que já tenha caso de uso no repositório. Documento existente que diverge do código → `use-case-creator` (conformidade ou reconciliação), nunca um documento novo; delta pendente de uma story ainda não entregue não é divergência — só mencionado ao arquiteto. Candidato coberto por um documento `Retired` → reportado ao arquiteto.
 - [ ] Inventário agrupado apresentado e candidatos acordados com o usuário antes de escrever qualquer documento.
 
@@ -37,11 +38,12 @@ A passada operacional do `use-case-extractor`. **Nenhum template de documento vi
 
 ## Escrita
 
-- [ ] Template do formato e convenção de nomenclatura; numeração a partir do maior número de UC já usado + 1, documentos `Retired` inclusive.
+- [ ] Template do formato e convenção de nomenclatura; numeração a partir do maior número de UC já usado + 1, tirado da listagem da pasta (nunca do índice), documentos `Retired` inclusive.
 - [ ] Status `Draft`.
 - [ ] Primeira entrada do tipo mapeamento inicial: `mapeamento inicial a partir do código` na coluna Story, o escopo no Resumo.
 - [ ] Diagrama UML só quando há relações a mostrar, restrito ao caso de uso e às suas relações diretas.
 - [ ] Casos de uso relacionados preenchidos nos dois lados, inclusive com documentos já existentes. Link recíproco sem entrada no histórico e sem mudança de Status no outro documento.
+- [ ] Linha de cada documento escrito acrescentada ao índice; índice criado com todos os documentos da pasta, se acordado.
 - [ ] Regras de qualidade do formato verificadas uma a uma em todo documento escrito.
 
 ## Entrega

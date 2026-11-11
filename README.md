@@ -74,8 +74,8 @@ apex-prime-skills/
     ├── use-case/
     │   ├── SKILL.md                        # o formato de caso de uso: o que cada arquivo define e as regras inegociáveis, em resumo
     │   └── references/
-    │       ├── consumer-rules.md           # o que quem só lê precisa: seções, identificadores, status, histórico, marcadores
-    │       └── use-case-template.md        # a estrutura do documento e as regras de qualidade
+    │       ├── consumer-rules.md           # o que quem só lê precisa: índice, seções, identificadores, status, histórico, marcadores
+    │       └── use-case-template.md        # a estrutura do documento, o índice do repositório e as regras de qualidade
     ├── use-case-creator/
     │   ├── SKILL.md                        # como criar e atualizar casos de uso
     │   └── checklists/

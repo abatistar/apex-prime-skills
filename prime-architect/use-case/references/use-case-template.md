@@ -2,13 +2,35 @@
 
 Este é o template canônico — a cópia única, de propriedade do use-case, e a única forma válida de um caso de uso. Nenhum projeto o substitui por um template próprio nem lhe acrescenta seções obrigatórias. Mudá-lo é mudança deste formato, pelo PR de governança.
 
-As regras de que quem só lê um caso de uso também precisa vivem em `references/consumer-rules.md`: a lista das seções obrigatórias e opcionais, a estabilidade dos identificadores internos, o ciclo de vida do status, as regras do Histórico de revisões e os marcadores de incerteza. As menções a elas neste arquivo apontam para lá. Quem escreve um documento, ou o valida contra as regras de qualidade, lê os dois.
+As regras de que quem só lê um caso de uso também precisa vivem em `references/consumer-rules.md`: o uso do índice do repositório, a lista das seções obrigatórias e opcionais, a estabilidade dos identificadores internos, o ciclo de vida do status, as regras do Histórico de revisões e os marcadores de incerteza. As menções a elas neste arquivo apontam para lá. Quem escreve um documento, ou o valida contra as regras de qualidade, lê os dois.
 
 **Idioma.** O bloco do artefato abaixo é o documento que quem escreve produz, no idioma de documento deste formato: `pt-BR`. Os títulos de seção fazem parte do artefato e por isso são traduzidos. Os **tokens estáveis** que este formato declara nunca são traduzidos, em nenhum idioma: identificadores (`UC-NNN`, `RN-N`, `CA-N`, `S-NNN`), valores de status (`Draft`, `Reviewed`, `Retired`), os marcadores de incerteza (`[INFERRED]`, `[CONFIRM: ...]`), padrões de nomenclatura de arquivo e caminhos.
 
 ## Convenção de nomenclatura de arquivo
 
 `use-cases/UC-NNN-titulo-curto.md` (por exemplo, `UC-042-exportar-relatorio-pdf.md`), sob a raiz de documentos que a configuração do projeto declara — `docs/` quando a documentação vive no repositório do código. `NNN` é um número sequencial com zeros à esquerda, estável durante toda a vida do documento. Nunca renumere casos de uso existentes nem reaproveite um número: o próximo documento recebe o maior número já usado no repositório + 1. Por isso um documento nunca é apagado — o que deixa de descrever um comportamento vivo permanece no mesmo caminho, com Status `Retired` (veja Ciclo de vida do status). O slug segue o idioma do documento; o prefixo `UC-NNN` não.
+
+## Índice do repositório
+
+`use-cases/README.md`, na mesma pasta dos documentos. É derivado: cada linha copia metadados do documento, e só o resumo é escrito para o índice. A leitura dele segue as regras de consumo (Índice do repositório).
+
+````markdown
+# Casos de uso — índice
+
+Derivado dos documentos desta pasta. Em divergência, vale o documento.
+
+| UC | Nome | Nível | Ator principal | Status | Resumo |
+|---|---|---|---|---|---|
+| [UC-001](UC-001-comprar-mercadoria.md) | Comprar mercadoria | Objetivo de usuário | Cliente | Reviewed | O cliente fecha o carrinho e paga; o sistema reserva o estoque, cobra o cartão e emite o pedido. |
+| [UC-007](UC-007-exportar-relatorio-csv.md) | Exportar relatório em CSV | Objetivo de usuário | Analista | Retired | O analista exporta o relatório de vendas do período em CSV. Incorporado ao UC-042. |
+````
+
+- **Uma linha por documento**, `Retired` inclusive, em ordem de ID. Nenhum agrupamento nem coluna extra: tudo no índice sai do documento.
+- **Nome, Nível e Status** são copiados da tabela de metadados. **Ator principal** é o primeiro do campo Atores.
+- **Resumo:** uma frase de até 30 palavras, no nível de intenção (regra de qualidade 1). Diz o que o ator quer e o que o sistema faz ou garante de essencial. Nomeia os objetos de negócio com os termos do documento. É ele que decide se o documento é aberto: um resumo vago obriga a abrir todos. Num `Retired` por incorporação, termina com "Incorporado ao UC-XXX".
+- **Quando muda.** Quem escreve atualiza a linha no mesmo trabalho em que cria o documento, muda o Nome, o Nível, os Atores ou o Status dele, ou muda o comportamento a ponto de o resumo deixar de descrevê-lo. Numa pasta ainda sem documentos, o primeiro escrito cria o índice. É atualização derivada: sem entrada no Histórico de revisões e sem mudança de Status.
+- **Numeração.** O número de um documento novo vem da listagem da pasta, nunca do índice.
+- **Criar ou reconstruir.** Uma linha por arquivo `UC-NNN-*.md` da pasta. De cada um, leia a tabela de metadados e o que o resumo pede: o Cenário principal de sucesso e as Garantias de sucesso.
 
 ## Granularidade
 
@@ -171,6 +193,7 @@ Aplique todas estas antes de considerar um documento pronto:
 11. Nenhum `UC-NNN`, `RN-N` ou `CA-N` foi renumerado ou reaproveitado, e toda renumeração de passos está declarada no Histórico de revisões (veja Estabilidade dos identificadores internos).
 12. Toda pré-condição é algo que este caso de uso não verifica, porque já chega garantido — por outro caso de uso ou por um controle transversal anterior ao fluxo, como a autenticação. Uma verificação que o sistema executa durante o fluxo e que pode falhar — validação de entrada, permissão própria do fluxo, limite, estado de um objeto — é uma extensão com desfecho, nunca uma pré-condição.
 13. Toda regra de negócio escrita ou alterada segue um dos padrões de Forma das regras de negócio, com uma resposta só, e não cita passo nem extensão. Toda regra `Se … então` é citada por ao menos uma extensão — é ali que o fluxo diz como termina.
+14. O documento tem uma linha no índice do repositório, e ela confere com ele: Nome, Nível, Ator principal e Status iguais aos da tabela de metadados, e um resumo que descreve o comportamento atual.
 
 ## Lista de perguntas
 

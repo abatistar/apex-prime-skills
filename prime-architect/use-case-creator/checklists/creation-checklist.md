@@ -11,7 +11,8 @@ A passada operacional do `use-case-creator`. **Nenhum template de documento vive
 ## Roteamento
 
 - [ ] Story que não muda o comportamento observável de nenhum ator → técnica: nenhum documento escrito; roteada ao its-generator (cenário técnico).
-- [ ] Cada documento classificado: criação | atualização | conformidade ou reconciliação | validação | retirada | revisão editorial.
+- [ ] Repositório examinado pelo índice; todo documento que o resumo não excluía com certeza aberto antes de classificar. Sem índice numa pasta com documentos → criação dele incluída no mapeamento.
+- [ ] Cada documento classificado: criação | atualização | conformidade ou reconciliação | validação | retirada | revisão editorial | índice.
 - [ ] Mapeamento N-para-N (documentos existentes afetados e novos a nascer, com o modo de cada um) confirmado com o usuário antes de escrever.
 - [ ] ID da story confirmado junto com o mapeamento. Sem story → origem seguida de `[CONFIRM: story de origem]`, documento em `Draft`.
 - [ ] Alteração, conformidade e retirada só sobre documento `Reviewed`. Documento em `Draft` → a story espera (marcadores pendentes → modo validação; delta de outra story → promoção do arquiteto), e a espera consta do mapeamento.
@@ -26,7 +27,7 @@ A passada operacional do `use-case-creator`. **Nenhum template de documento vive
 - [ ] Todo critério de aceite rotulado com o que cobre; uma renumeração de passos levou junto os rótulos.
 - [ ] Requisito não funcional deste fluxo como critério `não funcional`, com métrica e condição. Meta pedida sem número → `[CONFIRM: ...]`; nenhuma meta inventada; nada sistêmico (ADR) nem de qualidade interna do código.
 - [ ] Nada inventado para preencher uma seção opcional; diagrama UML só quando há relações a mostrar.
-- [ ] Criação: maior número de UC já usado + 1, documentos `Retired` inclusive; Status `Draft`; primeira entrada `Criação` com o ID da story.
+- [ ] Criação: maior número de UC já usado + 1, tirado da listagem da pasta (nunca do índice), documentos `Retired` inclusive; Status `Draft`; primeira entrada `Criação` com o ID da story.
 - [ ] Atualização: documento lido por inteiro antes de qualquer edição; efeitos colaterais internos corrigidos ou sinalizados.
 - [ ] Identificadores: nenhum `RN-N` ou `CA-N` renumerado ou reaproveitado; removidos viraram lápide; toda renumeração de passos declarada no delta.
 - [ ] Uma entrada por story por documento. Reexecução → a entrada existente reescrita, nunca uma segunda — e só enquanto ela é a mais recente do documento; com outra por cima → reportado ao arquiteto.
@@ -37,6 +38,8 @@ A passada operacional do `use-case-creator`. **Nenhum template de documento vive
 - [ ] Revisão editorial: só sobre documento `Reviewed`; nenhuma mudança de comportamento; itens movidos em lápide apontando o destino; mapa de identificadores no Resumo; documento absorvido em `Retired`; nunca junto com o delta de uma story.
 - [ ] Diagrama (criado ou removido conforme haja relações a mostrar) e Casos de uso relacionados atualizados nos dois lados, sem entrada no histórico e sem mudança de Status no outro documento.
 - [ ] Histórico de revisões com no máximo 5 entradas.
+- [ ] Índice: linha de todo documento criado, retirado ou com Nome, Nível, Atores, Status ou comportamento resumido mudado atualizada no mesmo trabalho; sem entrada no histórico.
+- [ ] Modo índice: linha apontada corrigida a partir do documento, ou índice reconstruído da listagem da pasta (`Retired` inclusive), nunca do índice antigo; nenhum documento alterado.
 
 ## Validação antes de entregar
 
@@ -47,7 +50,7 @@ A passada operacional do `use-case-creator`. **Nenhum template de documento vive
 ## Entrega
 
 - [ ] Delta resumido na resposta (alteração e conformidade); o que sai do sistema (retirada); o que mudou no corpo (reconciliação); o que mudou de redação ou de lugar e o mapa de identificadores (revisão editorial).
-- [ ] Documentos que receberam apenas o link recíproco, ou que deixaram de citar um documento retirado, listados.
+- [ ] Documentos que receberam apenas o link recíproco, ou que deixaram de citar um documento retirado, listados. Criação ou reconstrução do índice informada.
 - [ ] Status resultante de cada documento informado. O que voltou a `Draft` só alimenta o its-generator depois da promoção; um `Retired` por retirada já o alimenta.
 - [ ] Marcadores pendentes entregues como a Lista de perguntas do formato, com recomendação e evidência em cada item.
 - [ ] Stories em espera (base em `Draft`) e dependências entre stories reportadas.

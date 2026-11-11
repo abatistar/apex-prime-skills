@@ -82,7 +82,7 @@ O mesmo alcance custa de forma diferente conforme o estado e o nível: os mesmos
 
 Cruze o alcance com o que o repositório afirma ser verdade.
 
-- **Cobertura por casos de uso.** Quais `UC-NNN` cobrem o comportamento tocado, citados pelo elemento quando a cobertura é específica (`RN-N`, `CA-N`, passo, extensão), **cada um com seu status**. Só um documento `Reviewed` é fonte de verdade (regras de consumo do use-case, `../use-case/references/consumer-rules.md`):
+- **Cobertura por casos de uso.** Quais `UC-NNN` cobrem o comportamento tocado, citados pelo elemento quando a cobertura é específica (`RN-N`, `CA-N`, passo, extensão), **cada um com seu status**. O índice do repositório escolhe quais documentos abrir (regras de consumo do use-case); uma linha do índice nunca é âncora — a cobertura cita o documento aberto. Só um documento `Reviewed` é fonte de verdade (regras de consumo do use-case, `../use-case/references/consumer-rules.md`):
   - `Reviewed` — cobertura.
   - `Reviewed` com **delta pendente** — o documento descreve o estado-alvo de uma story ainda não entregue, e o código ainda faz, nos itens do delta, o que o documento descrevia antes dele (use-case, Ciclo de vida do status). É cobertura do estado-alvo, não divergência. Registre o ID da story: é outra demanda em curso sobre o mesmo comportamento, e a ordem de implementação importa. Sem como saber se a story já foi entregue, a linha é `[INFERRED]`, com o raciocínio (o código faz o estado anterior; a entrega da story não foi confirmada), e a pergunta vai para Lacunas.
   - `Draft` — cobertura ainda não validada. Diga o que o mantém em `Draft` (marcadores pendentes, o delta de outra story aguardando promoção) e a rota: o `use-case-creator` (modo validação), ou o arquiteto, para promover.

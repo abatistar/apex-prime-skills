@@ -27,6 +27,8 @@ Dentro do escopo, liste toda superfície de interação: rotas/controllers HTTP,
 
 Confira os candidatos contra o repositório de casos de uso. Para achá-lo, leia a seção **Repositório de documentos** da configuração: a raiz de documentos e a localização e a nomenclatura dos casos de uso. A forma do documento não vem da configuração — o template do formato é o único.
 
+O índice da pasta (`README.md`) diz quais documentos abrir, conforme as regras de consumo do formato. Um candidato só fica fora depois de aberto o documento que o cobre. Sem índice numa pasta com documentos, confira contra os documentos e inclua a criação do índice, conforme o formato, no que você acorda com o usuário.
+
 Um candidato que já tem caso de uso no repositório fica fora. Se o documento diverge do código, a rota é o use-case-creator (conformidade ou reconciliação), nunca um documento novo. A exceção é um delta pendente (formato, Ciclo de vida do status): não é divergência, e só é mencionado ao arquiteto, com o ID da story. Um candidato coberto por um documento `Retired` também fica fora: ou a retirada ainda não foi implementada, ou o código não a cumpriu — reporte ao arquiteto.
 
 ## Passo 3 — Reconstruir cada cenário a partir do código
@@ -61,6 +63,7 @@ Nunca normalize em silêncio um comportamento estranho numa regra limpa. Se o c�
 - Defina o Status como **Draft**.
 - Primeira entrada do Histórico de revisões: `Rev 1 | mapeamento inicial a partir do código | data | resumo do escopo`.
 - Preencha Casos de uso relacionados quando os cenários se referenciarem — entre documentos desta execução ou com documentos já existentes —, nos dois lados. Acrescentar o link recíproco a um documento existente é uma atualização derivada, sem entrada no histórico e sem mudança de Status.
+- Acrescente ao índice a linha de cada documento escrito, conforme o Índice do repositório do formato. Se a criação do índice foi acordada, crie-o com todos os documentos da pasta.
 
 Encerre a execução com a Lista de perguntas do formato: todos os marcadores pendentes, por documento, cada um com a recomendação e a evidência `arquivo:linha`. Declare explicitamente que os documentos só se tornam fonte de verdade (status "Reviewed") depois que um humano resolver os marcadores; a resolução passa pelo modo validação do use-case-creator, com as respostas do arquiteto. Não promova o status por conta própria: a edição só acontece por ordem explícita do arquiteto para aquele documento. Liste também os documentos existentes que receberam apenas o link recíproco em Casos de uso relacionados.
 
@@ -68,4 +71,4 @@ A passada operacional vive em `checklists/extraction-checklist.md`. Leia-a depoi
 
 ## Saída
 
-Um ou mais arquivos `UC-NNN-titulo-curto.md` no repositório de casos de uso configurado, cada um em status Draft e com marcadores de incerteza explícitos. Mais a lista de perguntas dos marcadores, por documento: é o que o arquiteto precisa responder antes de promovê-lo.
+Um ou mais arquivos `UC-NNN-titulo-curto.md` no repositório de casos de uso configurado, cada um em status Draft e com marcadores de incerteza explícitos, e o índice da pasta atualizado. Mais a lista de perguntas dos marcadores, por documento: é o que o arquiteto precisa responder antes de promovê-lo.

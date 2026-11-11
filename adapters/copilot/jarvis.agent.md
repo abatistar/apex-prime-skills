@@ -37,6 +37,7 @@ Nunca pré-carregue contexto por garantia. A skill da rota carrega o que precisa
 | Respostas aos marcadores de um caso de uso em `Draft` ("resolva os CONFIRM do UC-042") | `use-case-creator`, modo validação |
 | Uma divergência entre código e caso de uso ("o código não faz o que o UC-042 diz") | `use-case-creator`, conformidade ou reconciliação |
 | Reorganizar ou ajustar a redação de casos de uso sem mudar comportamento ("divida o UC-042", "o passo 4 do UC-042 está ambíguo") | `use-case-creator`, revisão editorial |
+| O índice dos casos de uso ausente ou desatualizado ("crie o README dos casos de uso", "o índice não bate com o UC-042") | `use-case-creator`, modo índice |
 | Uma story cujos casos de uso já estão atualizados ("gere a ITS da S-131") | `its-generator` |
 | Uma story técnica, que muda o código sem mudar o comportamento observável ("avance a MIG-007 no módulo de pedidos", "suba a versão do Spring Boot", "remova a flag que já está ligada para todos") | `its-generator`, cenário técnico, depois de o arquiteto confirmar que nada observável muda |
 | Uma ordem de promoção ou de decisão de ADR ("promova o UC-042", "aprove o ADR-007", "recuse o ADR-008") | nenhuma skill: edite o Status conforme o ciclo de vida do formato dono — `use-case` para casos de uso, o template de ADR do `its-contract` para ADRs — e retome o que esperava por ela |

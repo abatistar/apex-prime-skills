@@ -86,7 +86,7 @@ Anote, por fim, os casos de borda de cada mudança, como o its-contract os defin
 
 ## Passo 4 — Verificação de risco em todo o repositório e a fronteira de fora de escopo
 
-Para cada componente previsto para modificação, verifique se ele também atende a outros casos de uso documentados (busque no repositório). Essa única varredura rende duas saídas diferentes — pontos de regressão e fronteiras de fora de escopo —, e fundi-las é o erro a evitar.
+Para cada componente previsto para modificação, verifique se ele também atende a outros casos de uso documentados. O índice do repositório diz quais abrir, conforme as regras de consumo do use-case; a linha do índice nunca substitui o documento. Essa única varredura rende duas saídas diferentes — pontos de regressão e fronteiras de fora de escopo —, e fundi-las é o erro a evitar.
 
 **Pontos de regressão de outros casos de uso.** Vale para todo cenário — criação, alteração, retirada e técnico. O comportamento de outro caso de uso que passa pelo código que o plano modifica vira ponto de regressão, na mesma sequência `RG-N` do Passo 3, anotado com o caso de uso e o elemento de origem, e é reivindicado pela unidade que toca o código compartilhado como qualquer outro. Um caso de uso que usa o mesmo componente sem passar pelo código modificado não gera ponto: quando há risco de alteração acidental, ele é uma fronteira de fora de escopo (abaixo).
 

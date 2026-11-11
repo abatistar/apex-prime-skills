@@ -1,6 +1,15 @@
 # Regras para quem lê um caso de uso
 
-Parte do formato do `use-case` — a única que quem só lê um caso de uso precisa: o its-generator, o code-review e o impact-mapping. Diz que seções um documento precisa ter, que identificadores são estáveis, o que cada status significa e como ler o Histórico de revisões e os marcadores de incerteza. Quem escreve um documento, ou o valida contra as regras de qualidade, lê também o template (`references/use-case-template.md`).
+Parte do formato do `use-case` — a única que quem só lê um caso de uso precisa: o its-generator, o code-review e o impact-mapping. Diz como usar o índice do repositório, que seções um documento precisa ter, que identificadores são estáveis, o que cada status significa e como ler o Histórico de revisões e os marcadores de incerteza. Quem escreve um documento, ou o valida contra as regras de qualidade, lê também o template (`references/use-case-template.md`).
+
+## Índice do repositório
+
+A pasta dos casos de uso tem um índice: `README.md`, ao lado dos documentos. Uma linha por documento, `Retired` inclusive: ID, Nome, Nível, Ator principal, Status e um resumo de uma frase. Ele existe para que se decida quais documentos abrir sem abrir todos.
+
+- **Escolhe; na dúvida, não descarta.** Abra todo documento cujo resumo não o exclui com certeza: um caso de uso perdido custa mais que uma leitura. O resumo não lista toda regra; complemente com uma busca textual na pasta pelo termo de negócio ou pelo ID da story.
+- **Nunca é fonte.** Nada se cita, ancora ou valida pela linha do índice. Status, seções e conteúdo são conferidos no documento aberto.
+- **O documento vence.** Linha divergente do documento, ou documento sem linha: siga o documento e reporte o índice desatualizado. Rota: use-case-creator, modo índice. Quem só lê nunca edita o índice.
+- **Índice ausente** numa pasta com documentos: examine os documentos e reporte a ausência, com a mesma rota.
 
 ## Seções do documento
 
@@ -23,7 +32,7 @@ Os identificadores de dentro do documento são citados de fora dele — pelo del
 - **Reviewed** — validado por um humano; todos os marcadores de incerteza resolvidos. Fonte de verdade do comportamento do sistema; entrada válida para o ITS Generator.
 - **Retired** — deixou de descrever um comportamento vivo: o comportamento sai do sistema (entrada de retirada) ou passou a ser descrito por outro documento (incorporação). Não é fonte de verdade do comportamento atual. Permanece no mesmo caminho, para que o número nunca seja reaproveitado e as citações antigas continuem resolvendo. Seu corpo não é mais editado, e ele não volta a outro status — comportamento reintroduzido nasce em um caso de uso novo.
 
-A promoção de Draft para Reviewed é sempre um ato humano: nenhuma skill promove o status por conta própria. O ato humano é a decisão, não a edição do campo. Por ordem explícita do arquiteto para aquele documento ("promova o UC-042"), quem está na sessão aplica a edição. Nunca por julgamento próprio de que o documento parece pronto, nunca por uma ordem genérica, nunca com marcador de incerteza pendente. Com um marcador pendente, aponte-o em vez de promover. Os valores de status são tokens estáveis: escrevem-se `Draft`, `Reviewed` e `Retired` seja qual for o idioma do documento.
+A promoção de Draft para Reviewed é sempre um ato humano: nenhuma skill promove o status por conta própria. O ato humano é a decisão, não a edição do campo. Por ordem explícita do arquiteto para aquele documento ("promova o UC-042"), quem está na sessão aplica a edição — no documento e na linha dele no índice. Nunca por julgamento próprio de que o documento parece pronto, nunca por uma ordem genérica, nunca com marcador de incerteza pendente. Com um marcador pendente, aponte-o em vez de promover. Os valores de status são tokens estáveis: escrevem-se `Draft`, `Reviewed` e `Retired` seja qual for o idioma do documento.
 
 O caminho inverso é regra, não julgamento. Um documento `Reviewed` volta a `Draft` quando recebe uma entrada de alteração, de reconciliação ou de revisão editorial, ou um marcador de incerteza: o conteúdo novo ainda não foi validado. Quem escreve faz o rebaixamento; o arquiteto promove de novo depois de validar a mudança. Uma entrada de conformidade não rebaixa, porque o corpo do documento não muda; uma atualização apenas de diagrama ou do campo Casos de uso relacionados também não.
 

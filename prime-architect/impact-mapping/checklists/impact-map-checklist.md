@@ -50,7 +50,7 @@ Passada operacional de propriedade do `impact-mapping`. O SKILL.md define os est
 
 ## Sobreposição da camada documentada
 
-- [ ] Cobertura por casos de uso listada (`UC-NNN`, com `RN-N`, `CA-N`, passo ou extensão quando específica), **cada um com seu status**.
+- [ ] Cobertura por casos de uso listada (`UC-NNN`, com `RN-N`, `CA-N`, passo ou extensão quando específica), **cada um com seu status**. Documentos escolhidos pelo índice e abertos; nenhuma linha do índice usada como âncora. Índice ausente ou divergente → em Lacunas, rota `use-case-creator` (modo índice).
 - [ ] `Draft` → o que o mantém em `Draft` e a rota (`use-case-creator` modo validação, ou o arquiteto para promover). `Retired` cobrindo código que ainda executa → divergência.
 - [ ] Comportamento tocado sem caso de uso → lacuna de documentação, área nomeada, `use-case-extractor` anotado como a rota.
 - [ ] Delta pendente conferido antes de qualquer divergência: código diferente só nos itens do delta de uma story ainda não entregue, fazendo ali o que o documento descrevia antes → cobertura do estado-alvo, com o ID da story; entrega incerta → `[INFERRED]` com o raciocínio e pergunta em Lacunas.
