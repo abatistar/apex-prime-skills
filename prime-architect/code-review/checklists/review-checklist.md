@@ -8,7 +8,7 @@ Passada operacional de propriedade do `code-review`. O SKILL.md define o padrão
 
 ## 0. Pré-condições — não comece sem elas
 
-- [ ] A **ITS da story** está localizada e lida, junto com todo ADR listado em suas Referências. Documentação em pasta paralela → lida na revisão que o PR cita.
+- [ ] A **ITS da story** está localizada e lida, junto com todo ADR citado nas premissas do plano dela (Decisões registradas). Documentação em pasta paralela → lida na revisão que o PR cita.
 - [ ] Os **casos de uso** listados nas Referências da ITS estão lidos — para a lente Documentação; o julgamento funcional é contra os itens da ITS.
 - [ ] `docs/prime-config.md` está carregado, com o que o Passo 0 do SKILL.md usa dele.
 - [ ] O estado e o nível de criticidade de cada área tocada foram lidos nas premissas da ITS — não rejulgados —, junto com o que o perfil de cada nível exige.

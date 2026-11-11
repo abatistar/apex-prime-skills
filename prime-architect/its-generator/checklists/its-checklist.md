@@ -1,18 +1,19 @@
 # ITS — passada operacional
 
-A passada operacional do `its-generator`. **Nenhum template de documento vive aqui:** a estrutura da ITS é de propriedade do `its-contract` (`../its-contract/templates/its-template.md`) e nunca é copiada para esta camada. Este arquivo confere o *processo*; aquele arquivo fornece a *forma*.
+A passada operacional do `its-generator`. **Nenhum template de documento vive aqui:** a estrutura da ITS é de propriedade do `its-contract` (`../its-contract/templates/its-template-markdown.md` ou `its-template-confluence.md`, conforme o formato de saída do projeto) e nunca é copiada para esta camada. Este arquivo confere o *processo*; o template fornece a *forma*.
 
 ## Configuração e contratos
 
 - [ ] `docs/prime-config.md` lido conforme as regras de consumo do **prime-config**.
 - [ ] Da configuração, o que o Passo 0 do SKILL.md lista.
-- [ ] Contratos carregados: `its-contract` (o template e as Regras de escrita só no Passo 5), `use-case` (regras de consumo), `coding-standards` (regras de consumo + os índices `../coding-standards/references/convention-slots.md` e dos padrões da stack na release fixada), `quality-model` (regras de consumo + o índice `../quality-model/references/quality-criteria.md` e `../quality-model/references/quality-triggers.md`); arquivos de lente e de família só para os IDs citados ou aplicados.
+- [ ] Contratos carregados: `its-contract` (o template e as Regras de escrita só no Passo 5), `adr-contract` (sem o template dele), `use-case` (regras de consumo), `coding-standards` (regras de consumo + os índices `../coding-standards/references/convention-slots.md` e dos padrões da stack na release fixada), `quality-model` (regras de consumo + o índice `../quality-model/references/quality-criteria.md` e `../quality-model/references/quality-triggers.md`); arquivos de lente e de família só para os IDs citados ou aplicados.
 - [ ] Slot de que o plano depende e sem valor → reportado como lacuna (`coding-standards`, Slots não preenchidos). Nunca improvisado.
 - [ ] Divergência entre configuração e código → reportada, não resolvida em silêncio.
 
 ## Entradas
 
 - [ ] Story identificada; casos de uso afetados listados, ou encontrados buscando o ID da story no Histórico de revisões.
+- [ ] Nível de detalhe lido do pedido (`simplificado` · `médio` · `detalhista`, ou a senioridade: sênior · pleno · júnior). Sem nível, ou com valor fora dos três → `detalhista`, sem perguntar. O nível não reduz nenhum passo anterior à escrita.
 - [ ] Story técnica (muda o código sem mudar comportamento observável) → confirmada com o arquiteto antes de planejar; entra só com a story, segue o cenário técnico e pula as duas verificações seguintes. Arquiteto discorda → algo observável muda → use-case-creator primeiro.
 - [ ] Todo documento afetado tem Status `Reviewed`. Qualquer outro → reportar e parar; marcadores pendentes → use-case-creator (modo validação); delta ainda não validado → arquiteto, para validar e promover. A promoção é um ato humano, e a edição do Status só acontece por ordem explícita do arquiteto. Única exceção: `Retired` pela entrada de retirada desta story.
 - [ ] Todo documento afetado tem as seções obrigatórias (`use-case`, Seções do documento, nas regras de consumo) — a lista inteira, sem acréscimo da configuração.
@@ -40,6 +41,7 @@ A passada operacional do `its-generator`. **Nenhum template de documento vive aq
 - [ ] Delta pendente de outra story num caso de uso lido (o alterado ou um que fornece regressão) → ordem de entrega presumida: delta empilhado no mesmo caso de uso presume a outra entregue antes; caso de uso só de regressão → ordem confirmada com o arquiteto, e os pontos de regressão no estado que ela presume.
 - [ ] Todo ponto com mais de um caminho de implementação viável anotado para a linha de alternativa descartada ou para o passo de ADR.
 - [ ] Anotados para o Passo 4.6: os gatilhos de especificação que a story dispara, o código que só comporta a mudança se for distorcido e o código sem testes que o plano altera.
+- [ ] Casos de borda de cada mudança anotados, em qualquer nível de detalhe, cada um com o item `D`, o ponto de regressão ou a decisão de qualidade que decide o comportamento. Caso que nada decide → delta que falta: reportado e roteado ao use-case-creator, nunca decidido no plano.
 
 ## Risco e fronteira de fora de escopo
 
@@ -52,13 +54,15 @@ A passada operacional do `its-generator`. **Nenhum template de documento vive aq
 
 ## Decisões (ADR)
 
-- [ ] Cada ponto de decisão testado contra a fronteira de decisão do contrato: restringe implementações futuras · afeta mais de um caso de uso ou módulo · precisa de justificativa legível fora desta ITS.
-- [ ] Candidato redigido conforme o template de ADR do `its-contract` (`../its-contract/templates/adr-template.md`), status `Proposed`, na localização configurada, com as alternativas consideradas e as consequências declarando custos além dos ganhos.
-- [ ] Apresentado ao arquiteto. Nenhuma ITS entregue enquanto um ADR que ela referencia ainda estiver Proposed.
-- [ ] Recusado → registro em `Rejected`, com a razão; recusado como escopo de story → a decisão recai numa linha de alternativa descartada.
-- [ ] Aprovado → listado em Referências, e sua restrição escrita como instrução em toda unidade que ele vincula.
-- [ ] Contradição com um ADR Accepted → ou o plano cabe sob ele, ou um registro substituto é roteado para aprovação. Nunca resolvida em silêncio.
-- [ ] Nenhum ADR produzido para preencher uma seção. A maioria das stories rende zero.
+- [ ] Cada ponto de decisão testado contra os critérios do `adr-contract`: restringe implementações futuras · afeta mais de um caso de uso ou módulo · precisa de justificativa legível fora desta ITS.
+- [ ] Decisão candidata → geração parada no ponto em que apareceu (nenhum passo seguinte executado, nada da ITS escrito) e ADR proposto em poucas frases: a decisão · por que precisa de ADR · que parte da ITS depende dela. Nenhum arquivo criado pela proposta.
+- [ ] Proposta recusada → nenhum ADR redigido; a decisão recai numa linha de alternativa descartada, e a geração continuou de onde parou.
+- [ ] Proposta aceita → geração encerrada e `adr-generator` executado, com a decisão, os caminhos e o que a inspeção mostrou de cada um, o caminho recomendado, o critério e a origem `ITS-<story-id>` nos argumentos. Nenhum ADR redigido, ajustado ou aprovado por esta skill; `adr-generator` indisponível → dito ao arquiteto, e parada.
+- [ ] ITS recomeçada do Passo 0, nunca do ponto em que parou, só depois da decisão do arquiteto sobre o ADR, conforme `references/restarting-after-an-adr.md`: `Accepted` → entrada; `Rejected` → decisão em escopo de story; `Proposed` → nada recomeça.
+- [ ] Na nova geração, toda nota e todo trecho que a decisão alcança conferido ou refeito; nada escrito antes da decisão entregue sem conferência.
+- [ ] Todo ADR que vincula o plano citado nas premissas, em Decisões registradas, com as unidades que restringe; a restrição escrita como instrução em cada uma delas. Nenhum ADR `Proposed` de que o plano dependa.
+- [ ] Contradição com um ADR Accepted → ou o plano cabe sob ele, ou um registro substituto é proposto pelo mesmo ciclo. Nunca resolvida em silêncio.
+- [ ] Nenhum ADR proposto para preencher uma seção. A maioria das stories rende zero.
 
 ## Qualidade e convenções
 
@@ -73,17 +77,22 @@ A passada operacional do `its-generator`. **Nenhum template de documento vive aq
 - [ ] Slots CONVENTIONAL: o valor corresponde ao estado registrado de cada área — padrão atual em `current`, padrão local em `legacy-maintained` e `strangler`, o novo valor dentro do escopo de uma migração declarada.
 - [ ] Nenhum comportamento novo planejado para uma área `strangler`.
 - [ ] Valor de convenção escrito no documento só quando uma decisão de gatilho precisa dele ou quando a área segue valor diferente do padrão do time; sempre o valor, nunca o slot.
-- [ ] Todo afastamento registrado em um dos veículos da ITS: linha de alternativa descartada na unidade · fronteira de fora de escopo · ADR listado em Referências. No documento, escrito por extenso — o que deixa de fazer, onde, por quê e a condição de saída; o `QM-XX-N` ou `CS-XX-N` só em Referências. Afastamento de segurança com o responsável de segurança do projeto; afastamento sem condição de saída vira ADR.
+- [ ] Todo afastamento registrado em um dos veículos da ITS: linha de alternativa descartada na unidade · fronteira de fora de escopo · ADR citado nas premissas. No documento, escrito por extenso — o que deixa de fazer, onde, por quê e a condição de saída; o `QM-XX-N` ou `CS-XX-N` só em Referências. Afastamento de segurança com o responsável de segurança do projeto; afastamento sem condição de saída vira ADR.
 
 ## Escrita
 
 - [ ] Escrita conforme o `its-contract`: nomenclatura, as quatro seções (Descrição · O que muda · Plano de implementação · Referências), nível de detalhe, "instrui, não implementa".
 - [ ] O que muda organizado por área de comportamento, nomeada pelo comportamento; cada item é a exigência inteira e verificável, não um apontamento.
-- [ ] Marcação de wiki do Confluence conforme o template, nunca Markdown: títulos `hN.`, código em linha `{{ }}`, blocos `{code}` só em Trechos fixados e Verificação (conforme o contrato), nenhuma lista interrompida por linha em branco ou bloco de código, `[` e `{` literais escapados.
-- [ ] Cada item de O que fazer é uma instrução: alvo exato, verbo no imperativo, condição e resultado verificável; um alvo com várias instruções em subitens.
+- [ ] Formato de saída lido da opção `Template da ITS` da configuração (`Markdown` · `Confluence`; ausente → `Markdown`), só o template desse formato lido, e o arquivo com a extensão dele (`.md` · `.wiki`). Valor fora dos dois ou extensão declarada que não confere → reportado antes de escrever.
+- [ ] Uma marcação só no documento inteiro, a do template lido, com as armadilhas dele evitadas; blocos de código só em Trechos fixados e Verificação (conforme o contrato), nunca dentro de uma lista.
+  - Markdown: uma linha em branco entre títulos, campos, listas e blocos; listas numeradas com os números em sequência; identificadores, tipos genéricos e caminhos em código em linha; nenhum HTML.
+  - Confluence: títulos `hN.`, código em linha `{{ }}`, blocos `{code}`; nenhuma lista interrompida por linha em branco ou bloco de código; `[` e `{` literais escapados.
+- [ ] Cada item de O que fazer é uma instrução: alvo exato, verbo de ação no infinitivo, condição e resultado verificável; um alvo com várias instruções em subitens.
+- [ ] Escrito no nível de detalhe do pedido: a linha de nível copiada do template sob o título; primeiro o que é igual nos três níveis, depois os campos do nível (Arquivos e Casos de borda a partir do `médio`; Como verificar só no `detalhista`).
+- [ ] Um termo por conceito e uma grafia por valor no documento inteiro; título de cada unidade nomeando o resultado; nenhuma frase que só repete outra; nenhuma explicação de conceito nem justificativa de desenho além das razões que o contrato exige.
 - [ ] Migração de esquema planejada como unidade (arquivo em Arquivos, esquema em Trechos fixados); a seção de migrações só com ordem, compatibilidade e carga de dados.
 - [ ] Plano escrito em ordem de execução, abrindo com as premissas técnicas (stack, versões, padrões do time) e as áreas tocadas (estado e nível); O que muda carrega as mudanças e o que continua valendo e nada que o plano repita.
-- [ ] Toda exigência escrita no ponto em que é usada: regra como condição e resposta, critério de aceite como resultado verificável, ADR como o que exige do plano, convenção como a escolha concreta. Nenhum identificador de outro documento fora de Referências.
+- [ ] Toda exigência escrita no ponto em que é usada: regra como condição e resposta, critério de aceite como resultado verificável, ADR como o que exige do plano, convenção como a escolha concreta. Nenhum identificador de outro documento fora de Referências, salvo o ADR citado em Decisões registradas.
 - [ ] Nenhuma frase narra como o plano foi produzido. Notas de trabalho ficaram fora do documento.
 - [ ] Referências preenchidas a partir dos documentos já abertos: uma linha por fonte (inclusive a story de que o plano depende), `R1` = story, Usada em com o elemento interno da fonte; nenhuma glosa nem resumo.
 - [ ] Descrição escrita por último.
@@ -94,18 +103,21 @@ A passada operacional do `its-generator`. **Nenhum template de documento vive aq
 - [ ] **Plano → delta:** toda unidade nomeia seus itens ou uma consequência técnica declarada.
 - [ ] **Regressão → plano:** todo `RG-N` reivindicado por exatamente uma unidade, com o teste de não regressão nomeado ali.
 - [ ] **Fonte → item:** todo item e todo ponto de regressão aparece em Referências, na linha da fonte de que veio.
-- [ ] **Alternativa descartada:** toda escolha real da inspeção está fechada por uma linha na unidade, com sua razão decisiva, ou por um ADR listado em Referências.
-- [ ] **Fronteira:** nenhuma decisão arquitetural tomada no corpo; nenhum ADR listado ainda Proposed.
+- [ ] **Alternativa descartada:** toda escolha real da inspeção está fechada por uma linha na unidade, com sua razão decisiva, ou por um ADR citado nas premissas.
+- [ ] **Fronteira de decisão:** nenhuma decisão arquitetural tomada no corpo; todo ADR citado está `Accepted`, e nenhuma instrução o contradiz.
 - [ ] **Fora de escopo:** toda entrada declara por que é uma borda; nenhuma duplica um ponto de regressão.
 - [ ] **Qualidade:** áreas tocadas declaradas com estado e nível; todo gatilho disparado decidido numa unidade; todo afastamento de um critério `QM-XX-N` ou de um slot `CS-XX-N` registrado como uma exceção nomeada, com condição de saída. Nenhum inegociável silencioso e nenhuma violação INVARIANT silenciosa permanece.
 - [ ] **Dependência:** todo delta pendente de outra story com a ordem de entrega presumida nas premissas e a outra story em Referências como dependência.
-- [ ] **Autossuficiência:** nenhum identificador de outro documento fora de Referências; nenhuma instrução depende de abrir a fonte; toda linha de Referências diz onde foi usada e nenhuma carrega conteúdo que o corpo deveria carregar.
+- [ ] **Autossuficiência:** nenhum identificador de outro documento fora de Referências, salvo o ADR citado em Decisões registradas; nenhuma instrução depende de abrir a fonte; toda linha de Referências diz onde foi usada e nenhuma carrega conteúdo que o corpo deveria carregar.
+- [ ] **Nível:** a linha sob o título declara o nível de detalhe do pedido; toda unidade tem os campos desse nível e só eles; todo item, ponto de regressão, restrição, decisão de qualidade, trecho fixado, teste devido e fronteira do plano fechado está no documento, seja qual for o nível; todo caso de borda escrito remonta a um item, a um ponto de regressão ou a uma decisão de qualidade.
 - [ ] Nenhuma tabela de rastreabilidade escrita no documento: a verificação roda sobre o que ele já declara.
-- [ ] Os quatro testes pré-entrega do contrato executados sobre o documento pronto: implementador · leitor frio · colagem · autor.
+- [ ] Os seis testes pré-entrega do contrato executados sobre o documento pronto: implementador · leitor frio · colagem · autor · coerência · nível.
+- [ ] Mensagem de entrega diz o nível de detalhe usado e, sem nível no pedido, que `detalhista` foi o padrão.
 
 ## Ao revisar uma ITS entregue
 
 - [ ] Reentrou no passo em que o problema vive, não no topo.
+- [ ] Nível de detalhe do documento entregue mantido, salvo pedido do arquiteto. Mudança de nível reescreve só a orientação das unidades e a linha de nível.
 - [ ] Numeração das unidades preservada. Trabalho novo acrescentado como novas unidades; nada já implementado renumerado. Unidade nova que precisa rodar antes de uma existente declara Executar antes de.
 - [ ] Unidade que deixou de se aplicar mantida com o número, declarada sem efeito na forma do template e apontando a substituta; seus itens no Atende da substituta; se já implementada, a substituta diz o que fazer com o código dela.
 - [ ] Delta, regressão ou fontes mudaram → `D`, `RG` e `R` renumerados no documento inteiro, Atende/Testes/Usada em atualizados em todas as unidades, e a correspondência antiga → nova entregue ao implementador.

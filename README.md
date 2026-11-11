@@ -67,7 +67,8 @@ apex-prime-skills/
 │       ├── references/
 │       │   └── writing-rules.md            # as regras de escrita, lidas só por quem escreve a ITS
 │       └── templates/
-│           ├── its-template.md             # a ITS canônica que o arquiteto escreve e o dev consome
+│           ├── its-template-markdown.md    # a ITS canônica que o arquiteto escreve e o dev consome, em Markdown (o padrão)
+│           ├── its-template-confluence.md  # a mesma ITS na marcação de wiki do Confluence; a opção Template da ITS do prime-config escolhe
 │           └── adr-template.md             # os registros de decisão que uma ITS referencia
 └── prime-architect/                        # camada do Arquiteto de Soluções ("Jarvis Skills")
     ├── use-case/
