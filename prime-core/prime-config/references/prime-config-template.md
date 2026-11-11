@@ -40,8 +40,6 @@ divergência com os arquivos de build é reportada.
 - Casos de uso: `use-cases/UC-NNN-titulo-curto.md`
 - ITS: `its/ITS-<story-id>-titulo-curto.md`
 - ADRs: `adr/ADR-NNN-titulo-curto.md`
-- Template de caso de uso customizado: nenhum
-- Seções obrigatórias extras de caso de uso: nenhuma
 
 ## Comandos de verificação
 <!-- prime-config › Seções. Só comandos que o projeto tem de fato. -->

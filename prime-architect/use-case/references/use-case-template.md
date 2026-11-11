@@ -1,10 +1,10 @@
 # Template de Caso de Uso
 
-Este é o template canônico — a cópia única, de propriedade do use-case. Se o `prime-config.md` do projeto declarar um caminho de template customizado ou seções obrigatórias adicionais, a configuração do projeto tem precedência.
+Este é o template canônico — a cópia única, de propriedade do use-case, e a única forma válida de um caso de uso. Nenhum projeto o substitui por um template próprio nem lhe acrescenta seções obrigatórias. Mudá-lo é mudança deste formato, pelo PR de governança.
 
-As regras de que quem só lê um caso de uso também precisa — a lista das seções obrigatórias e opcionais, a estabilidade dos identificadores internos, o ciclo de vida do status, as regras do Histórico de revisões e os marcadores de incerteza — vivem em `references/consumer-rules.md`, e as menções a elas neste arquivo apontam para lá. Quem escreve um documento, ou o valida contra as regras de qualidade, lê os dois.
+As regras de que quem só lê um caso de uso também precisa vivem em `references/consumer-rules.md`: a lista das seções obrigatórias e opcionais, a estabilidade dos identificadores internos, o ciclo de vida do status, as regras do Histórico de revisões e os marcadores de incerteza. As menções a elas neste arquivo apontam para lá. Quem escreve um documento, ou o valida contra as regras de qualidade, lê os dois.
 
-**Idioma.** O bloco do artefato abaixo é o documento que quem escreve produz, e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção fazem parte do artefato e por isso são traduzidos; os **tokens estáveis** que este formato declara — identificadores (`UC-NNN`, `RN-N`, `CA-N`, `S-NNN`), valores de status (`Draft`, `Reviewed`, `Retired`), os marcadores de incerteza (`[INFERRED]`, `[CONFIRM: ...]`), padrões de nomenclatura de arquivo e caminhos — nunca são traduzidos, em nenhum idioma.
+**Idioma.** O bloco do artefato abaixo é o documento que quem escreve produz, no idioma de documento deste formato: `pt-BR`. Os títulos de seção fazem parte do artefato e por isso são traduzidos. Os **tokens estáveis** que este formato declara nunca são traduzidos, em nenhum idioma: identificadores (`UC-NNN`, `RN-N`, `CA-N`, `S-NNN`), valores de status (`Draft`, `Reviewed`, `Retired`), os marcadores de incerteza (`[INFERRED]`, `[CONFIRM: ...]`), padrões de nomenclatura de arquivo e caminhos.
 
 ## Convenção de nomenclatura de arquivo
 
@@ -161,7 +161,7 @@ Aplique todas estas antes de considerar um documento pronto:
 1. Nível de intenção, não de interface. Sem nomes de widgets de UI em cenários ou extensões.
 2. Toda extensão tem um desfecho definido: ou retorna a um passo numerado ou encerra o caso de uso (em sucesso ou em falha). Sem extensões soltas.
 3. Todo critério de aceite é verificável. Nada de "o sistema deve ser rápido" sem uma métrica. Um critério `não funcional` declara a métrica e a condição em que ela é medida e trata só deste fluxo — o que vale para o sistema inteiro é decisão de um ADR, e a qualidade interna do código nunca entra num caso de uso.
-4. Todo critério de aceite declara entre parênteses o que cobre — o cenário principal, um passo, uma ou mais extensões ou uma regra —, acrescido de `não funcional` quando mede um atributo de qualidade, e o rótulo aponta para algo que existe no documento. O `Cenário principal de sucesso` e toda extensão aparecem no rótulo de ao menos um critério.
+4. Todo critério de aceite declara entre parênteses o que cobre: o cenário principal, um passo, uma ou mais extensões ou uma regra, acrescido de `não funcional` quando mede um atributo de qualidade. O rótulo aponta para algo que existe no documento. O `Cenário principal de sucesso` e toda extensão aparecem no rótulo de ao menos um critério.
 5. Toda regra de negócio (RN-N) referenciada em um cenário ou extensão existe na seção `Regras de negócio`, e toda regra da seção, exceto as lápides, é referenciada. Nenhum fluxo referencia uma lápide.
 6. As `Garantias mínimas` declaram o que se mantém mesmo em caso de falha.
 7. O diagrama UML existe quando há relações a mostrar (atores secundários, «include»/«extend», casos de uso relacionados) e é omitido quando não há. Quando existe, cobre apenas este caso de uso e suas relações diretas, e é consistente com os campos `Atores` e `Casos de uso relacionados` e com as `Extensões`.

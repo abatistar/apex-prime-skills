@@ -2,11 +2,11 @@
 
 A passada operacional do `use-case-creator`. **Nenhum template de documento vive aqui:** a estrutura do caso de uso e as regras de qualidade (`../use-case/references/use-case-template.md`), os tipos de entrada do Histórico de revisões, a estabilidade dos identificadores e os marcadores (`../use-case/references/consumer-rules.md`) são de propriedade do `use-case` e nunca são copiados para esta camada. Este arquivo confere o *processo*; aquele arquivo fornece a *forma*.
 
-## Configuração e formato
+## Formato e configuração
 
-- [ ] `docs/prime-config.md` lido conforme as regras de consumo do **prime-config**.
-- [ ] Da configuração, o que o Passo 0 do SKILL.md lista.
-- [ ] Formato `use-case` carregado por inteiro, incluindo as regras de qualidade; template customizado, quando declarado, no lugar do padrão.
+- [ ] Formato `use-case` carregado por inteiro, incluindo as regras de qualidade; template do formato usado como está, sem substituição nem seção extra vinda da configuração.
+- [ ] Do `docs/prime-config.md`, só a seção necessária e só no ponto de necessidade: **Repositório de documentos**, no Passo 1, conforme as regras de consumo do **prime-config**. Nenhuma outra seção aberta; o arquivo nunca lido por inteiro.
+- [ ] Seção necessária ausente, ou divergindo do código → lacuna ou divergência reportada, não resolvida em silêncio.
 
 ## Roteamento
 

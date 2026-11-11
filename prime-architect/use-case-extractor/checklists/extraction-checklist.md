@@ -2,12 +2,11 @@
 
 A passada operacional do `use-case-extractor`. **Nenhum template de documento vive aqui:** a estrutura do caso de uso e as regras de qualidade (`../use-case/references/use-case-template.md`), os tipos de entrada do Histórico de revisões e os marcadores (`../use-case/references/consumer-rules.md`) são de propriedade do `use-case` e nunca são copiados para esta camada. Este arquivo confere o *processo*; aquele arquivo fornece a *forma*.
 
-## Configuração e formato
+## Formato e configuração
 
-- [ ] `docs/prime-config.md` lido conforme as regras de consumo do **prime-config**.
-- [ ] Da configuração, o que o Passo 0 do SKILL.md lista.
-- [ ] Formato `use-case` carregado por inteiro, incluindo as regras de qualidade e os marcadores; template customizado, quando declarado, no lugar do padrão.
-- [ ] Divergência entre configuração e código → reportada, não resolvida em silêncio.
+- [ ] Formato `use-case` carregado por inteiro, incluindo as regras de qualidade e os marcadores; template do formato usado como está, sem substituição nem seção extra vinda da configuração.
+- [ ] Do `docs/prime-config.md`, só as seções necessárias e só no ponto de necessidade: **Estrutura** e **Repositório de documentos** no Passo 2; **Stack** apenas se o framework não era evidente no código. Conforme as regras de consumo do **prime-config**; o arquivo nunca lido por inteiro.
+- [ ] Seção necessária ausente, ou divergindo do código → lacuna ou divergência reportada, não resolvida em silêncio.
 
 ## Escopo
 
@@ -16,7 +15,7 @@ A passada operacional do `use-case-extractor`. **Nenhum template de documento vi
 
 ## Inventário
 
-- [ ] Toda superfície de interação do escopo listada — rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos —, procurada pelo mapa de estrutura da configuração.
+- [ ] Toda superfície de interação do escopo listada — rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos —, procurada pelo mapa da seção **Estrutura** da configuração.
 - [ ] Pontos de entrada agrupados pelo objetivo do ator (Granularidade do formato): cada objetivo é um candidato; ponto técnico sem objetivo de ator listado à parte.
 - [ ] Nenhum candidato que já tenha caso de uso no repositório. Documento existente que diverge do código → `use-case-creator` (conformidade ou reconciliação), nunca um documento novo; delta pendente de uma story ainda não entregue não é divergência — só mencionado ao arquiteto. Candidato coberto por um documento `Retired` → reportado ao arquiteto.
 - [ ] Inventário agrupado apresentado e candidatos acordados com o usuário antes de escrever qualquer documento.

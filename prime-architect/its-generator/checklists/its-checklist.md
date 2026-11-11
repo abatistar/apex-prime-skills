@@ -15,7 +15,7 @@ A passada operacional do `its-generator`. **Nenhum template de documento vive aq
 - [ ] Story identificada; casos de uso afetados listados, ou encontrados buscando o ID da story no Histórico de revisões.
 - [ ] Story técnica (muda o código sem mudar comportamento observável) → confirmada com o arquiteto antes de planejar; entra só com a story, segue o cenário técnico e pula as duas verificações seguintes. Arquiteto discorda → algo observável muda → use-case-creator primeiro.
 - [ ] Todo documento afetado tem Status `Reviewed`. Qualquer outro → reportar e parar; marcadores pendentes → use-case-creator (modo validação); delta ainda não validado → arquiteto, para validar e promover. A promoção é um ato humano, e a edição do Status só acontece por ordem explícita do arquiteto. Única exceção: `Retired` pela entrada de retirada desta story.
-- [ ] Todo documento afetado tem as seções obrigatórias (`use-case`, Seções do documento, nas regras de consumo), inclusive as extras e as do template customizado que a configuração declara.
+- [ ] Todo documento afetado tem as seções obrigatórias (`use-case`, Seções do documento, nas regras de consumo) — a lista inteira, sem acréscimo da configuração.
 - [ ] Comportamento sem nenhum caso de uso → `use-case-extractor` recomendado para aquela área primeiro.
 - [ ] ADRs Accepted que tocam a área afetada listados. Um delta que não pode ser satisfeito sem contradizer um deles → roteado ao passo de ADR, nunca absorvido no plano.
 

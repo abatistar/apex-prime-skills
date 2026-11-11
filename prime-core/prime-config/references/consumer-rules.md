@@ -20,7 +20,7 @@ A configuração não é um passo de abertura. Leia-a quando precisar de um fato
 |---|---|
 | Linguagem, versões, framework, build, banco, migrações, mensageria | Stack |
 | Arquitetura, pacote de cada elemento, onde vivem os testes | Estrutura |
-| Caminho e nomenclatura de casos de uso, ITS e ADRs; template de caso de uso | Repositório de documentos |
+| Caminho e nomenclatura de casos de uso, ITS e ADRs | Repositório de documentos |
 | Como compilar, testar, rodar o teste de arquitetura e as demais verificações | Comandos de verificação |
 | Projeto legado, formato de saída da ITS | Opções |
 
