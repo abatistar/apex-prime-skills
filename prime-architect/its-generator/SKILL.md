@@ -44,7 +44,7 @@ Se a story modifica comportamento cujo caso de uso não existe de forma alguma, 
 
 Examine também o repositório de ADRs em busca de ADRs Accepted que toquem a área afetada — eles restringem o plano, e são também onde o projeto decide um valor de convenção diferente do padrão do time e onde declara uma migração (coding-standards, Desvios do projeto e Migrações). Um delta que não pode ser satisfeito sem contradizer um deles é uma decisão, não um detalhe de planejamento: roteia-se para o Passo 4.5 e nunca é absorvido no plano.
 
-O mesmo exame diz se a geração desta ITS já parou antes por uma decisão. Um ADR `Proposed` cuja Origem é a ITS desta story significa que ela espera o arquiteto: não planeje nem escreva nada — diga qual registro a ITS espera e o que ele pode responder (aprovar, pedir ajustes ou recusar). Um ADR `Accepted` ou `Rejected` com essa Origem é a decisão que a geração anterior esperava: esta é a geração que recomeça, e ela segue `references/restarting-after-an-adr.md`.
+O mesmo exame diz se a geração desta ITS já parou antes por uma decisão. Um ADR `Proposed` cuja Origem é a ITS desta story significa que ela espera o arquiteto: não planeje nem escreva nada — diga qual registro a ITS espera e o que ele pode responder (aprovar, pedir ajustes ou recusar). Um ADR `Accepted` ou `Rejected` com essa Origem, quando a ITS da story ainda não existe no repositório, é a decisão que a geração anterior esperava: esta é a geração que recomeça, e ela segue `references/restarting-after-an-adr.md`. Com a ITS já entregue, o registro é só mais um ADR do repositório: o `Accepted` restringe o plano como qualquer outro, e o `Rejected` não incide.
 
 ## Passo 2 — Localizar o delta e classificar o cenário
 

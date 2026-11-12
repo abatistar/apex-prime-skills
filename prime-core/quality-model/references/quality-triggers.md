@@ -7,7 +7,7 @@ Três papéis leem esta lista. O `its-generator` passa a story por ela e escreve
 **Como ler.** Cada gatilho traz quando dispara, os critérios que ativa, o que a especificação decide e a verificação esperada. A intensidade segue o nível de criticidade da demanda (Perfis de criticidade, no catálogo): numa demanda `efêmera`, o gatilho exige o que o piso exige; numa demanda `crítica`, tudo o que ele lista. Os gatilhos são numerados para a conversa; o que se cita num achado ou nas Referências de uma ITS é o critério.
 
 **Três regras.**
-- A decisão chega à ITS como instrução, na unidade que a implementa, com o valor concreto — "timeout de 2 s; no máximo 3 tentativas, com espera de 200 ms, 400 ms e 800 ms, só para erro de conexão e HTTP 503" —, nunca como "um timeout adequado" nem como o ID do critério.
+- A decisão chega à ITS como instrução, na unidade que a implementa, com o valor concreto — "timeout de 2 s; no máximo 3 novas tentativas, com espera de 200 ms, 400 ms e 800 ms, só para erro de conexão e HTTP 503" —, nunca como "um timeout adequado" nem como o ID do critério.
 - Onde o `coding-standards` ou um ADR `Accepted` do projeto já decide o valor, a ITS escreve esse valor. Onde ninguém decidiu, a lacuna é reportada, não inventada.
 - Uma decisão que vale além desta story — o primeiro outbox do sistema, a política de idempotência de todos os consumidores — é um ADR, conforme o `adr-contract` (Quando uma decisão merece um ADR).
 
@@ -119,7 +119,7 @@ Três papéis leem esta lista. O `its-generator` passa a story por ela e escreve
 
 ## G12 — Estrutura que não comporta a mudança
 *Dispara quando:* a inspeção mostra que a mudança só cabe distorcendo o código — duplicando, acrescentando uma flag de controle, alargando uma função já sobrecarregada.
-*Critérios:* `QM-MT-3`, `QM-CC-2`, `QM-RC-2`.
+*Critérios:* `QM-MT-3`, `QM-CC-2`, `QM-RC-2`, `QM-TS-8`.
 *A especificação decide:* uma unidade de refatoração preparatória, sem mudança de comportamento, antes das unidades de comportamento, dizendo o que muda de forma e o que fica igual.
 *Verificação:* a suíte existente passa sem nenhuma alteração depois da refatoração (`QM-TS-8`).
 

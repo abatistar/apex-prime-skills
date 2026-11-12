@@ -125,7 +125,7 @@ apex-prime-skills/
 
 **O que cada skill carrega.** Um contrato separa o que os consumidores leem (`references/consumer-rules.md`) do que só quem o escreve ou o mantém precisa (o SKILL.md). Os catálogos têm um índice, lido sempre, e um arquivo por lente ou família, lido quando um ID dela é citado ou aplicado. Checklists, templates e procedimentos de um caminho só são lidos no passo que os usa.
 
-Toda skill é um diretório com um `SKILL.md` cujo frontmatter traz `name` e `description`. As skills do core mantêm seu material normativo em `references/` ou `templates/`; as skills de papel mantêm suas listas operacionais em `checklists/`.
+Toda skill é um diretório com um `SKILL.md` cujo frontmatter traz `name` e `description`. As skills do core mantêm seu material normativo em `references/` ou `templates/`; as skills de papel mantêm suas listas operacionais em `checklists/` e, em `references/`, os procedimentos que só um caminho lê.
 
 ## Instalação
 
@@ -263,7 +263,7 @@ Todo achado, toda exceção e todo elo de rastreabilidade cita um desses. Uma af
 ## Governança
 
 - Mudanças no `prime-core` afetam todos os agentes e passam por um PR revisado pelo dono do modelo de qualidade.
-- A camada do arquiteto (`prime-architect`) evolui com mais liberdade, desde que respeite a fundação. A exceção é o formato de caso de uso (`prime-architect/use-case`): embora viva na camada do arquiteto, é um contrato — duas skills escrevem contra ele e duas validam contra ele, e uma mudança nas suas regras muda a escrita e a leitura ao mesmo tempo. Por isso passa pela mesma revisão do `prime-core`.
+- A camada do arquiteto (`prime-architect`) evolui com mais liberdade, desde que respeite a fundação. A exceção é o formato de caso de uso (`prime-architect/use-case`): embora viva na camada do arquiteto, é um contrato — duas skills escrevem contra ele (use-case-creator e use-case-extractor) e três leem contra ele (its-generator, code-review e impact-mapping), e uma mudança nas suas regras muda a escrita e a leitura ao mesmo tempo. Por isso passa pela mesma revisão do `prime-core`.
 - IDs de critérios e de slots são estáveis e nunca renumerados; um ID aposentado permanece aposentado.
 - **A versão é a release.** Catálogos, gatilhos e padrões do time são versionados juntos pela tag do repositório — a mesma que o `-Ref` do instalador usa e que o manifesto registra —, e nenhum arquivo carrega número de versão próprio. Acrescentar um critério, um gatilho ou um slot, ou mudar um valor de padrão, sobe a versão menor; aposentar ou reclassificar sobe a maior.
 - A release que vale para um projeto é a instalada. Uma release nova só o alcança quando ele a instala, e a diferença dos padrões entre as duas tags é o que ele decide como migrar.

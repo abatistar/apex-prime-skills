@@ -122,7 +122,7 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 | # | Severidade | Onde | Critério / evidência | Achado e implicação |
 |---|---|---|---|---|
 | 1 | Blocker | `pom.xml` (ancorado) | teto de stack — config | [o que é impossível e por quê; a refutação tentada e por que não o derrubou] |
-| 2 | Condition | UC-042 ausente (ancorado) | baseline | [o que precisa ser verdade antes] · responsável: [papel, e o nome quando informado] · rota: use-case-extractor |
+| 2 | Condition | `caminho/Arquivo.ext:42` — comportamento sem caso de uso (ancorado) | baseline | [o que precisa ser verdade antes] · responsável: [papel, e o nome quando informado] · rota: use-case-extractor |
 | 3 | Condition | `POST /payments` (ancorado) | G1, `QM-SR-8` | [fronteira de acesso nova] · responsável: [responsável de segurança] · rota: avaliação antes da especificação |
 | 4 | Cost driver | `billing/legacy` (ancorado) | contexto do projeto, do mapa | [o que aumenta o tamanho] |
 | 5 | FYI | `[INFERRED]` [o que foi deduzido] | [o raciocínio, na própria linha] | [contexto; evidência assim nunca sustenta um Blocker — §6, regra 2] |

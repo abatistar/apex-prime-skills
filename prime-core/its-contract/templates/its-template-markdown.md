@@ -88,23 +88,23 @@ Restrições de formatação (das regras de escrita do contrato): no máximo 3 n
 
 **O que fazer:** <uma instrução por item, nesta ordem: o alvo exato em código em linha (arquivo, Classe.metodo(Tipo), endpoint ou coluna), o verbo de ação no infinitivo, a condição em que vale e o resultado verificável, com nomes, códigos e valores concretos. Um alvo com mais de uma instrução vira item com subitens, uma instrução por subitem. O nível de detalhe decide quantas instruções há, nunca a forma de cada uma. Simplificado: só as instruções que carregam uma exigência, uma restrição, um contrato ou uma decisão de qualidade. Médio: uma instrução por componente que a unidade cria ou altera, em ordem de execução, nomeando o ponto de integração com o código existente. Detalhista: também os passos dentro de cada componente, como subitens.>
 
-1. `<alvo>` — <instrução. Ex.: `OrderController` — mapear `CREDIT_LIMIT_EXCEEDED` para HTTP 422 com `ErrorResponse(code, message)` e a mensagem "Limite de crédito excedido".>
+1. `<alvo>` — <instrução. Ex.: `ApiExceptionHandler` — mapear `CREDIT_LIMIT_EXCEEDED` para HTTP 422, em `ProblemDetail` com o membro `code` e o detalhe "Limite de crédito excedido".>
 2. `<alvo>` — <o momento ou a condição comum aos subitens. Ex.: `ConfirmOrderService.confirm(ConfirmOrderCommand)` — antes de `saveOrderPort.save`:>
-   - <subinstrução. Ex.: comparar `order.getTotal()` com `creditPolicy.availableLimit(customerId)`;>
-   - <subinstrução. Ex.: quando o total for maior, lançar `BusinessException` com o código `CREDIT_LIMIT_EXCEEDED` e não gravar o pedido.>
+   - <subinstrução. Ex.: ler o limite vigente com `loadCustomerCreditPort.load(customerId)`;>
+   - <subinstrução. Ex.: quando `creditPolicy.allows(order.getTotal(), limit)` for falso, lançar `BusinessException` com o código `CREDIT_LIMIT_EXCEEDED` e não gravar o pedido.>
 3. `<alvo>` — <restrição de uma decisão registrada, escrita como instrução. Ex.: `ConfirmOrderService.confirm(ConfirmOrderCommand)` — publicar `PedidoConfirmado` pela porta `PublishOrderEventPort`, cujo adaptador grava no outbox na mesma transação; nunca direto no broker.>
 4. `<alvo>` — <decisão de qualidade da story, com o valor concreto, uma por subitem. Ex.: `CardNetworkClient.authorize(Payment)` (criar) — seguir a forma de `src/main/java/com/acme/app/adapter/out/http/AcquirerClient.java`:>
    - <ex.: usar timeout de leitura de 15 s;>
    - <ex.: repetir no máximo 3 vezes, com espera de 200 ms, 400 ms e 800 ms, só em erro de conexão e em HTTP 503;>
    - <ex.: enviar a mesma chave de idempotência `payment.id` em todas as tentativas.>
-5. `<alvo>` — <instrução que depende de um trecho exato, apontando-o. Ex.: `CreditPolicy` (criar) — expor `availableLimit` com a assinatura de Trechos fixados.>
+5. `<alvo>` — <instrução que depende de um trecho exato, apontando-o. Ex.: `CreditPolicy` (criar) — expor `allows` com a assinatura de Trechos fixados.>
 
 **Trechos fixados:** <somente quando uma assinatura, um contrato ou um esquema precisa ser fixado exatamente. Um bloco por trecho, precedido pela instrução que o exige, sempre depois da lista. Na abertura da cerca, a linguagem do trecho: java, sql, json, ...>
 
-Instrução <N> — <o que o trecho fixa. Ex.: assinatura de `CreditPolicy.availableLimit`>:
+Instrução <N> — <o que o trecho fixa. Ex.: assinatura de `CreditPolicy.allows`>:
 
 ```java
-BigDecimal availableLimit(CustomerId customerId)
+boolean allows(BigDecimal orderTotal, BigDecimal creditLimit)
 ```
 
 **Casos de borda:** <a partir do nível médio, e somente quando a unidade tem algum: a entrada ou o estado em que duas implementações razoáveis da instrução se comportariam de modo diferente. Médio: o caso, nomeado. Detalhista: o caso, o comportamento esperado e o item, o ponto de regressão ou a decisão de qualidade de que ele decorre — o campo nunca cria exigência.>
@@ -168,9 +168,9 @@ Exemplo da unidade que atende ao item `D1` do bloco acima. Só os campos que o n
 
 **O que fazer:**
 
-1. `CreditPolicy` (criar) — expor `availableLimit` com a assinatura de Trechos fixados.
-2. `ConfirmOrderService.confirm(ConfirmOrderCommand)` — quando o total do pedido exceder `creditPolicy.availableLimit(customerId)`, lançar `BusinessException` com o código `CREDIT_LIMIT_EXCEEDED` e não gravar o pedido.
-3. `OrderController` — mapear `CREDIT_LIMIT_EXCEEDED` para HTTP 422 com `ErrorResponse(code, message)` e a mensagem "Limite de crédito excedido".
+1. `CreditPolicy` (criar), no domínio — expor `allows` com a assinatura de Trechos fixados.
+2. `ConfirmOrderService.confirm(ConfirmOrderCommand)` — quando `creditPolicy.allows` recusar o total do pedido contra o limite de crédito vigente do cliente, lançar `BusinessException` com o código `CREDIT_LIMIT_EXCEEDED` e não gravar o pedido.
+3. `ApiExceptionHandler` — mapear `CREDIT_LIMIT_EXCEEDED` para HTTP 422, em `ProblemDetail` com o membro `code` e o detalhe "Limite de crédito excedido".
 ````
 
 `médio` — a sequência por componente, os pontos de integração e os casos de borda nomeados:
@@ -180,15 +180,15 @@ Exemplo da unidade que atende ao item `D1` do bloco acima. Só os campos que o n
 
 **Arquivos:**
 
-1. `src/main/java/com/acme/app/application/ConfirmOrderService.java` (modificar)
-2. `src/main/java/com/acme/app/adapter/in/web/OrderController.java` (modificar)
-3. `src/test/java/com/acme/app/application/ConfirmOrderServiceTest.java` (modificar)
+1. `src/main/java/com/acme/app/application/service/ConfirmOrderService.java` (modificar)
+2. `src/main/java/com/acme/app/adapter/in/web/ApiExceptionHandler.java` (modificar)
+3. `src/test/java/com/acme/app/application/service/ConfirmOrderServiceTest.java` (modificar)
 
 **O que fazer:**
 
-1. `CreditPolicy` (criar) — expor `availableLimit` com a assinatura de Trechos fixados, lendo o limite pela porta existente `LoadCustomerCreditPort`.
-2. `ConfirmOrderService.confirm(ConfirmOrderCommand)` — antes de `saveOrderPort.save`, quando o total do pedido exceder `creditPolicy.availableLimit(customerId)`, lançar `BusinessException` com o código `CREDIT_LIMIT_EXCEEDED` e não gravar o pedido.
-3. `OrderController` — mapear `CREDIT_LIMIT_EXCEEDED` para HTTP 422 com `ErrorResponse(code, message)` e a mensagem "Limite de crédito excedido", no tratador de `BusinessException` que o controlador já tem.
+1. `CreditPolicy` (criar), no domínio — expor `allows` com a assinatura de Trechos fixados, sem depender de nada fora do domínio.
+2. `ConfirmOrderService.confirm(ConfirmOrderCommand)` — antes de `saveOrderPort.save`, ler o limite vigente pela porta existente `LoadCustomerCreditPort` e, quando `creditPolicy.allows` recusar o total do pedido, lançar `BusinessException` com o código `CREDIT_LIMIT_EXCEEDED` e não gravar o pedido.
+3. `ApiExceptionHandler` — no tratador de `BusinessException` que a classe já tem, mapear `CREDIT_LIMIT_EXCEEDED` para HTTP 422, em `ProblemDetail` com o membro `code` e o detalhe "Limite de crédito excedido".
 
 **Casos de borda:**
 
@@ -203,21 +203,21 @@ Exemplo da unidade que atende ao item `D1` do bloco acima. Só os campos que o n
 
 **Arquivos:**
 
-1. `src/main/java/com/acme/app/application/ConfirmOrderService.java` (modificar)
-2. `src/main/java/com/acme/app/adapter/in/web/OrderController.java` (modificar)
+1. `src/main/java/com/acme/app/application/service/ConfirmOrderService.java` (modificar)
+2. `src/main/java/com/acme/app/adapter/in/web/ApiExceptionHandler.java` (modificar)
 3. `src/main/java/com/acme/app/domain/CreditPolicy.java` (criar)
-4. `src/test/java/com/acme/app/application/ConfirmOrderServiceTest.java` (modificar)
+4. `src/test/java/com/acme/app/application/service/ConfirmOrderServiceTest.java` (modificar)
 
 **O que fazer:**
 
-1. `CreditPolicy` (criar) — expor `availableLimit` com a assinatura de Trechos fixados:
-   - receber `LoadCustomerCreditPort` pelo construtor;
-   - devolver o limite que `LoadCustomerCreditPort.load(customerId)` retorna.
-2. `ConfirmOrderService` — receber `CreditPolicy` pelo construtor.
+1. `CreditPolicy` (criar), no domínio — expor `allows` com a assinatura de Trechos fixados:
+   - devolver verdadeiro quando o total for menor ou igual ao limite;
+   - não depender de nenhum tipo fora do domínio.
+2. `ConfirmOrderService` — receber `LoadCustomerCreditPort` pelo construtor e manter uma instância de `CreditPolicy`.
 3. `ConfirmOrderService.confirm(ConfirmOrderCommand)` — antes de `saveOrderPort.save`:
-   - comparar `order.getTotal()` com `creditPolicy.availableLimit(customerId)`;
-   - quando o total for maior, lançar `BusinessException` com o código `CREDIT_LIMIT_EXCEEDED` e não gravar o pedido.
-4. `OrderController` — no tratador de `BusinessException` que o controlador já tem, mapear `CREDIT_LIMIT_EXCEEDED` para HTTP 422 com `ErrorResponse(code, message)` e a mensagem "Limite de crédito excedido".
+   - ler o limite vigente com `loadCustomerCreditPort.load(customerId)`;
+   - quando `creditPolicy.allows(order.getTotal(), limit)` for falso, lançar `BusinessException` com o código `CREDIT_LIMIT_EXCEEDED` e não gravar o pedido.
+4. `ApiExceptionHandler` — no tratador de `BusinessException` que a classe já tem, mapear `CREDIT_LIMIT_EXCEEDED` para HTTP 422, em `ProblemDetail` com o membro `code` e o detalhe "Limite de crédito excedido".
 
 **Casos de borda:**
 
@@ -232,10 +232,10 @@ Iguais nos três. No documento, cada campo ocupa a posição que o bloco princip
 ````text
 **Trechos fixados:**
 
-Instrução 1 — assinatura de `CreditPolicy.availableLimit`:
+Instrução 1 — assinatura de `CreditPolicy.allows`:
 
 ```java
-BigDecimal availableLimit(CustomerId customerId)
+boolean allows(BigDecimal orderTotal, BigDecimal creditLimit)
 ```
 
 **Atende:** D1

@@ -43,7 +43,7 @@ Um documento descreve **um objetivo de um ator** — o que o ator quer conseguir
 
 ## Reorganização entre documentos
 
-Dividir um caso de uso que cresceu demais, incorporar um caso de uso a outro ou mover uma regra para o documento a que ela pertence muda onde o comportamento está descrito, não o comportamento. É sempre uma revisão editorial (veja Regras do Histórico de revisões) e nunca trabalho para o ITS Generator.
+Dividir um caso de uso que cresceu demais, incorporar um caso de uso a outro ou mover uma regra para o documento a que ela pertence muda onde o comportamento está descrito, não o comportamento. É sempre uma revisão editorial (veja Regras do Histórico de revisões) e nunca trabalho para o its-generator.
 
 - **Divisão.** O documento de origem mantém o número e perde os itens movidos: cada `RN-N` e `CA-N` movido vira lápide que aponta o destino, e os passos e extensões que saem são declarados no Resumo, junto com a renumeração do que fica. O documento novo recebe o próximo número, numera suas `RN-N` e `CA-N` a partir de 1 e nasce em `Draft`, com uma entrada de revisão editorial que nomeia a origem.
 - **Incorporação.** O documento que absorve numera os itens recebidos a partir do maior número que já usa. O absorvido passa a `Retired`, com o corpo congelado; sua entrada de revisão editorial nomeia o destino e traz o mapa de identificadores antigos para novos, para que uma citação antiga ainda chegue ao endereço atual.
@@ -58,7 +58,7 @@ Toda `RN-N` é uma frase num dos padrões abaixo, adaptados do EARS (Easy Approa
 | Ubíquo | O sistema <resposta>. | Vale sempre: cálculo, derivação, limite fixo | O sistema calcula o frete como 10% do subtotal, com mínimo de R$ 15,00. |
 | Por evento | Quando <gatilho>, o sistema <resposta>. | Reação a algo esperado que acontece no fluxo | Quando o pedido for confirmado, o sistema reserva o estoque de cada item por 30 minutos. |
 | Por estado | Enquanto <estado>, o sistema <resposta>. | Vale durante um estado do objeto ou do ator | Enquanto a fatura estiver em disputa, o sistema suspende a cobrança de juros sobre ela. |
-| Indesejado | Se <condição indesejada>, então o sistema <resposta>. | Falha, violação de limite, entrada inválida ou ausente | Se o total do pedido exceder o limite de crédito vigente do cliente, então o sistema rejeita a confirmação. |
+| Indesejado | Se <condição indesejada>, então o sistema <resposta>. | Falha, violação de limite, entrada inválida ou ausente | Se o total do pedido exceder o limite de crédito vigente do cliente, então o sistema recusa a confirmação. |
 | Opcional | Onde <característica>, o sistema <resposta>. | Depende de configuração, contrato ou variante de produto | Onde o contrato do cliente incluir faturamento consolidado, o sistema agrupa os pedidos do mês numa única fatura. |
 
 - **Combinações.** Os padrões se combinam na ordem Onde → Enquanto → Quando ou Se: "Enquanto o cliente estiver inadimplente, quando ele solicitar um novo pedido, o sistema exige pagamento antecipado."
@@ -187,7 +187,7 @@ Aplique todas estas antes de considerar um documento pronto:
 5. Toda regra de negócio (RN-N) referenciada em um cenário ou extensão existe na seção `Regras de negócio`, e toda regra da seção, exceto as lápides, é referenciada. Nenhum fluxo referencia uma lápide.
 6. As `Garantias mínimas` declaram o que se mantém mesmo em caso de falha.
 7. O diagrama UML existe quando há relações a mostrar (atores secundários, «include»/«extend», casos de uso relacionados) e é omitido quando não há. Quando existe, cobre apenas este caso de uso e suas relações diretas, e é consistente com os campos `Atores` e `Casos de uso relacionados` e com as `Extensões`.
-8. Toda entrada do `Histórico de revisões` segue um dos tipos das Regras do Histórico de revisões. As que são trabalho para o ITS Generator carregam o ID da story de origem e referenciam os identificadores de passo, extensão e seção afetados — o ITS Generator depende disso para localizar o delta. Atualizações apenas de diagrama nunca são itens de delta.
+8. Toda entrada do `Histórico de revisões` segue um dos tipos das Regras do Histórico de revisões. As que são trabalho para o its-generator carregam o ID da story de origem e referenciam os identificadores de passo, extensão e seção afetados — o its-generator depende disso para localizar o delta. Atualizações apenas de diagrama nunca são itens de delta.
 9. O documento é escrito de ponta a ponta no idioma de documento do formato, sem nenhum token estável traduzido (`RN-N` nunca vira `BR-N`, `Draft` nunca vira `Rascunho`).
 10. O campo `Casos de uso relacionados` é recíproco: todo UC-XXX citado também cita este documento. Nenhum documento vivo cita um documento `Retired`; o campo de um `Retired` fica congelado como estava na retirada.
 11. Nenhum `UC-NNN`, `RN-N` ou `CA-N` foi renumerado ou reaproveitado, e toda renumeração de passos está declarada no Histórico de revisões (veja Estabilidade dos identificadores internos).
@@ -200,7 +200,7 @@ Aplique todas estas antes de considerar um documento pronto:
 Os marcadores pendentes chegam ao arquiteto como uma lista de perguntas — na entrega de quem escreve e no início do modo validação —, para que ele responda tudo de uma vez e cada resposta volte ao ponto certo:
 
 - Um bloco por documento, encabeçado pelo `UC-NNN` e pelo título; dentro dele, os marcadores numerados a partir de 1, na ordem em que aparecem no documento. A numeração é determinística: refeita a partir do mesmo documento, a lista sai igual.
-- Cada item traz o marcador; o local (seção e passo, extensão ou identificador); a pergunta — num `[INFERRED]`, o que foi deduzido, posto como afirmação a confirmar; a **recomendação**, com a resposta que quem escreve daria e o porquê; e a **evidência**, quando houver — `arquivo:linha` no Use Case Extractor, o trecho da entrada no Use Case Creator.
+- Cada item traz o marcador; o local (seção e passo, extensão ou identificador); a pergunta — num `[INFERRED]`, o que foi deduzido, posto como afirmação a confirmar; a **recomendação**, com a resposta que quem escreve daria e o porquê; e a **evidência**, quando houver — `arquivo:linha` no use-case-extractor, o trecho da entrada no use-case-creator.
 - A evidência fica na lista, nunca no documento: o caso de uso continua no nível de intenção (regra 1), e a lista se esgota quando os marcadores são resolvidos.
 
 ```markdown
