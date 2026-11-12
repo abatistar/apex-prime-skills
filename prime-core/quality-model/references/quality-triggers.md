@@ -9,7 +9,7 @@ Três papéis leem esta lista. O `its-generator` passa a story por ela e escreve
 **Três regras.**
 - A decisão chega à ITS como instrução, na unidade que a implementa, com o valor concreto — "timeout de 2 s; no máximo 3 tentativas, com espera de 200 ms, 400 ms e 800 ms, só para erro de conexão e HTTP 503" —, nunca como "um timeout adequado" nem como o ID do critério.
 - Onde o `coding-standards` ou um ADR `Accepted` do projeto já decide o valor, a ITS escreve esse valor. Onde ninguém decidiu, a lacuna é reportada, não inventada.
-- Uma decisão que vale além desta story — o primeiro outbox do sistema, a política de idempotência de todos os consumidores — é um ADR, conforme a fronteira de decisão do `its-contract`.
+- Uma decisão que vale além desta story — o primeiro outbox do sistema, a política de idempotência de todos os consumidores — é um ADR, conforme o `adr-contract` (Quando uma decisão merece um ADR).
 
 ---
 

@@ -25,7 +25,7 @@ O Apex Prime é a fonte única de verdade dos padrões de qualidade, convençõe
 
 Quando os padrões de qualidade vivem espalhados — na cabeça das pessoas, em documentos soltos, duplicados entre ferramentas — eles divergem. O dev implementa contra uma versão do padrão, a revisão cobra outra, e o atrito aparece exatamente onde o processo deveria dar fluidez. O Apex Prime resolve isso com dois princípios:
 
-1. **Fundação única.** O modelo de qualidade, as convenções de código, o contrato da ITS e o contrato de configuração do projeto têm um único dono e um único endereço: a camada `prime-core`. Todo agente consome a mesma fundação — atualize o padrão uma vez, e ele se atualiza para todos.
+1. **Fundação única.** O modelo de qualidade, as convenções de código, os contratos da ITS e do ADR e o contrato de configuração do projeto têm um único dono e um único endereço: a camada `prime-core`. Todo agente consome a mesma fundação — atualize o padrão uma vez, e ele se atualiza para todos.
 2. **A ITS como especificação completa.** O arquiteto especifica e revisa; nunca implementa. A implementação fica com quem desenvolve — pessoa ou agente de codificação, com a ferramenta que o time preferir —, e a ITS basta para isso: é autossuficiente, e tudo o que a mudança exige está escrito nela. Os gates do fluxo — a ITS antes do código, o code review antes do merge — deixam de ser convenção e passam a ser arquitetura.
 
 ## Estrutura do repositório
@@ -50,9 +50,9 @@ apex-prime-skills/
 │   │       ├── quality-criteria/           # uma lente por arquivo (RC.md, CC.md, ...), com os critérios QM-XX-N
 │   │       └── quality-triggers.md         # os gatilhos que tornam critérios em decisões que a ITS precisa tomar
 │   ├── coding-standards/
-│   │   ├── SKILL.md                        # como o bom se parece aqui: o que é um slot, padrões versionados e fixados, sinal de saúde
+│   │   ├── SKILL.md                        # como o bom se parece aqui: o que é um slot, padrões versionados pela release, sinal de saúde
 │   │   └── references/
-│   │       ├── consumer-rules.md           # o que as skills do fluxo leem: classes, legado, migrações, lacunas
+│   │       ├── consumer-rules.md           # o que as skills do fluxo leem: classes, projeto legado, migrações, desvios, lacunas
 │   │       ├── convention-slots.md         # índice do catálogo fechado de slots: os invariantes e o mapa critério → slots
 │   │       ├── convention-slots/           # uma família por arquivo (AR.md, ER.md, ...), com os slots CS-XX-N
 │   │       ├── defaults-java.md            # índice dos padrões do time para Java: plataforma e toolchain
@@ -60,16 +60,20 @@ apex-prime-skills/
 │   ├── prime-config/
 │   │   ├── SKILL.md                        # contrato do docs/prime-config.md: as cinco seções, validação, bootstrap
 │   │   └── references/
-│   │       ├── consumer-rules.md           # o que o Passo 0 de cada skill lê: precedência, divergências, ciclo de vida
+│   │       ├── consumer-rules.md           # o que cada skill segue ao ler um fato: leitura sob demanda, precedência, divergências, ciclo de vida
 │   │       └── prime-config-template.md    # o template canônico de configuração do projeto
-│   └── its-contract/
-│       ├── SKILL.md                        # o formato da ITS, o nível de detalhe e a fronteira com os ADRs
-│       ├── references/
-│       │   └── writing-rules.md            # as regras de escrita, lidas só por quem escreve a ITS
+│   ├── its-contract/
+│   │   ├── SKILL.md                        # o formato da ITS, o nível de detalhe e como ela cita um ADR
+│   │   ├── references/
+│   │   │   ├── writing-rules.md            # as regras de escrita, lidas só por quem escreve a ITS
+│   │   │   └── implementer-rules.md        # o que quem implementa segue ao ler a ITS
+│   │   └── templates/
+│   │       ├── its-template-markdown.md    # a ITS canônica que o arquiteto escreve e o dev consome, em Markdown (o padrão)
+│   │       └── its-template-confluence.md  # a mesma ITS na marcação de wiki do Confluence; a opção Template da ITS do prime-config escolhe
+│   └── adr-contract/
+│       ├── SKILL.md                        # o formato do ADR: quando uma decisão merece um, ciclo de vida do status, quem redige e quem aprova
 │       └── templates/
-│           ├── its-template-markdown.md    # a ITS canônica que o arquiteto escreve e o dev consome, em Markdown (o padrão)
-│           ├── its-template-confluence.md  # a mesma ITS na marcação de wiki do Confluence; a opção Template da ITS do prime-config escolhe
-│           └── adr-template.md             # os registros de decisão que uma ITS referencia
+│           └── adr-template.md             # o registro de decisão que uma ITS cita
 └── prime-architect/                        # camada do Arquiteto de Soluções ("Jarvis Skills")
     ├── use-case/
     │   ├── SKILL.md                        # o formato de caso de uso: o que cada arquivo define e as regras inegociáveis, em resumo
@@ -100,7 +104,12 @@ apex-prime-skills/
     │   ├── checklists/
     │   │   └── its-checklist.md
     │   └── references/
-    │       └── revising-an-its.md          # lido só quando uma ITS entregue volta
+    │       ├── revising-an-its.md          # lido só quando uma ITS entregue volta
+    │       └── restarting-after-an-adr.md  # lido quando a ITS recomeça depois da decisão sobre um ADR
+    ├── adr-generator/
+    │   ├── SKILL.md                        # como redigir um ADR e conduzi-lo até a palavra do arquiteto
+    │   └── checklists/
+    │       └── adr-checklist.md
     ├── code-review/
     │   ├── SKILL.md                        # roteiro de revisão: valida a implementação contra a ITS + os padrões do core
     │   ├── checklists/
@@ -215,14 +224,16 @@ Três capacidades do arquiteto ficam fora dessa linha e são invocadas, nunca ob
 
 | Camada | Status |
 |---|---|
-| `prime-core` | Escrita — quality-model (catálogo de critérios e gatilhos), coding-standards (catálogo de slots e padrões Java), prime-config, its-contract |
-| `prime-architect` | Escrita — use-case (formato), use-case-creator, use-case-extractor, impact-mapping, feasibility-analysis, its-generator, code-review. **Stub** — troubleshooting |
+| `prime-core` | Escrita — quality-model (catálogo de critérios e gatilhos), coding-standards (catálogo de slots e padrões Java), prime-config, its-contract, adr-contract |
+| `prime-architect` | Escrita — use-case (formato), use-case-creator, use-case-extractor, impact-mapping, feasibility-analysis, its-generator, adr-generator, code-review. **Stub** — troubleshooting |
 
 O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → revisão); só o diagnóstico de problemas já existentes espera pelo troubleshooting.
 
 ## Os contratos do core
 
-**A ITS.** A peça central da plataforma. O formato da ITS (Instruções Técnicas de Sistema) vive em `prime-core/its-contract` e é consumido pelos dois lados: o arquiteto escreve contra ele, quem implementa — pessoa ou agente — lê a partir dele. Uma mudança no contrato atualiza a escrita e a leitura ao mesmo tempo, eliminando o descolamento entre especificação e implementação. O mesmo contrato é dono da fronteira com os ADRs — uma decisão estrutural que sobrevive à story é referenciada por uma ITS, nunca embutida nela.
+**A ITS.** A peça central da plataforma. O formato da ITS (Instruções Técnicas de Sistema) vive em `prime-core/its-contract` e é consumido pelos dois lados: o arquiteto escreve contra ele, quem implementa — pessoa ou agente — lê a partir dele. Uma mudança no contrato atualiza a escrita e a leitura ao mesmo tempo, eliminando o descolamento entre especificação e implementação. O mesmo contrato diz como a ITS cita um ADR — uma decisão estrutural que sobrevive à story é referenciada por uma ITS, nunca embutida nela.
+
+**O ADR.** O registro de uma decisão de arquitetura que sobrevive à story tem contrato próprio, o `prime-core/adr-contract`: quando uma decisão merece um registro, o ciclo de vida do status, quem redige e quem aprova, e o template. A decisão vem antes do plano: o `its-generator` detecta a decisão sem registro, para a ITS e a propõe; o `prime-architect/adr-generator` redige o ADR por palavra do arquiteto; e a ITS recomeça do início depois que ele aprova ou recusa. É também num ADR `Accepted` que um projeto registra um desvio dos padrões do time ou uma migração.
 
 **O padrão: dois contratos, um único ponto de enforcement.** O `prime-core/quality-model` responde *o que é qualidade* — dez lentes, um piso inegociável com IDs estáveis (`QM-XX-N`), uma calibração por nível de criticidade da demanda, declarado na ITS, os gatilhos que dizem que decisões de qualidade cada ITS precisa tomar e uma disciplina de exceção que distingue dívida deliberada de atalho silencioso. O `prime-core/coding-standards` responde *como a qualidade se parece aqui* — o catálogo fechado de slots de convenção (`CS-XX-N`) que todo projeto precisa ter decidido, os padrões do time por stack, versionados pela release, e as regras do projeto legado, das migrações e dos desvios, que vivem em ADRs. Nenhum dos dois aprova ou reprova nada: o enforcement pertence ao `prime-architect/code-review`, que transforma ambos em achados classificados e um veredito, sempre citando um ID em vez de uma preferência.
 
@@ -235,8 +246,8 @@ O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → re
 | `QM-XX-N` | Critério de qualidade | `prime-core/quality-model` |
 | `CS-XX-N` | Slot de convenção | `prime-core/coding-standards` |
 | `UC-NNN` · `UC-NNN/RN-N` · `UC-NNN/CA-N` | Caso de uso · uma de suas regras de negócio · um de seus critérios de aceite | `prime-architect/use-case` |
-| `ITS-<story-id>` | Instrução de trabalho de uma story | `prime-core/its-contract` |
-| ADR | Decisão estrutural que sobrevive à story | `prime-core/its-contract` |
+| `ITS-<story-id>` | Instruções Técnicas de Sistema de uma story | `prime-core/its-contract` |
+| `ADR-NNN` | Decisão estrutural que sobrevive à story | `prime-core/adr-contract` |
 
 Todo achado, toda exceção e todo elo de rastreabilidade cita um desses. Uma afirmação que não cita nada é uma preferência.
 

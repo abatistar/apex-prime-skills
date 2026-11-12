@@ -24,7 +24,7 @@ Para redigir, a skill precisa de quatro coisas:
 - **A origem** — `ITS-<story-id>`, quando a decisão vem da geração de uma ITS; `demanda em refinamento` ou `aconselhamento arquitetural`, quando vem direto do arquiteto.
 - **A evidência** — o que se sabe do código e das restrições que pesam na escolha.
 
-Invocada pelo its-generator, a skill recebe as quatro nos argumentos da invocação e roda isolada, sem ver a conversa da ITS. Invocada pelo arquiteto, pergunte só o que faltar da decisão e dos caminhos; a evidência a skill reúne no Passo 3. Nunca colete requisitos: o registro é de uma decisão, não de uma demanda.
+Invocada pelo its-generator, a skill recebe as quatro nos argumentos da invocação e redige a partir deles, nunca da conversa da ITS: o registro tem de se entender sem ela (Passo 4). Invocada pelo arquiteto, pergunte só o que faltar da decisão e dos caminhos; a evidência a skill reúne no Passo 3. Nunca colete requisitos: o registro é de uma decisão, não de uma demanda.
 
 Um pedido de ajuste sobre um registro `Proposed` que já existe ("ajuste o ADR-012") entra direto no Passo 6.
 

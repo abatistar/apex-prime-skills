@@ -108,7 +108,7 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 
 ## 8. Follow-ups a registrar antes de encerrar — cada um com o seu destino
 
-- [ ] **its-generator**: ADR a propor (o arquiteto aprova); ITS a revisar, com a seção nomeada.
+- [ ] **Arquiteto**: decisão de arquitetura sem registro (o adr-generator redige, por palavra dele). **its-generator**: ITS a revisar, com a seção nomeada.
 - [ ] **Skills de caso de uso**: caso de uso que o comportamento entregue contradiz.
 - [ ] **Configuração**: seção de que a revisão precisou e que falta ou diverge do código. **Arquiteto**: slot não preenchido (`coding-standards`, Slots não preenchidos) — nunca improvisado.
 - [ ] **Backlog**, redigido como item, com responsável e condição de saída, para o arquiteto registrar: lacuna de toolchain (uma verificação que um humano fez e que uma ferramenta deveria possuir, ou um slot de verificação `ferramenta` sem regra no pipeline — `QM-MT-7`); dívida deliberada (`QM-MT-1`).
@@ -156,7 +156,7 @@ Os trechos entre `[` e `]` são orientação de preenchimento. Quando o resultad
 - Diff → plano: [limpo | escopo excedido listado abaixo]
 - Trechos fixados e alternativas descartadas: [respeitados | violados em ...]
 - Fronteiras de fora de escopo: [respeitadas | cruzadas em ...]
-- ADRs: [consistente | conflito com ADR-NNN | ADR a propor]
+- ADRs: [consistente | conflito com ADR-NNN | decisão de arquitetura sem registro]
 
 ## Achados
 | # | Severidade | Local | Base | O que exige aqui · o que está errado · o que se espera |
@@ -175,7 +175,7 @@ Os trechos entre `[` e `]` são orientação de preenchimento. Quando o resultad
 - Revisão de especialista pendente: [responsável de segurança | nenhuma]
 
 ## Follow-ups
-- its-generator: [ADR a propor | seção da ITS a revisar]
+- Arquiteto: [decisão de arquitetura sem registro] · its-generator: [seção da ITS a revisar]
 - Casos de uso: [UC-NNN contradito pelo comportamento entregue, e em quê]
 - Configuração: [seção ausente ou divergente] · Arquiteto: [slot não preenchido]
 - Backlog, a registrar pelo arquiteto: [título; lacuna de toolchain ou dívida; responsável; condição de saída]

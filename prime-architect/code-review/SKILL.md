@@ -86,7 +86,7 @@ O its-generator provou plano ⇄ delta antes da entrega. Agora você prova **dif
 - **Código gerado ou de terceiros.** Não foi editado à mão: a mudança está na entrada do gerador ou na origem.
 - **Configuração.** Quando a ITS planejou a atualização do `docs/prime-config.md` — elemento ou pacote novo na Estrutura, comando novo, mudança de stack —, a unidade chegou no mesmo PR, como qualquer outra. Uma mudança na configuração que nenhuma unidade pede é escopo excedido.
 - **Fronteiras.** Nada da lista "Fora de escopo — não alterar" da ITS foi tocado. Essa seção existe justamente para tornar verificável o "tudo e nada além".
-- **Decisões.** Nada contradiz um ADR Accepted. Nenhuma decisão arquitetural chegou ao código sem um ADR que a registre (its-contract, fronteira de decisão). Se a implementação precisou tomar essa decisão, o resultado é um ADR a propor — não um achado registrado contra o autor.
+- **Decisões.** Nada contradiz um ADR Accepted. Nenhuma decisão arquitetural chegou ao código sem um ADR que a registre (adr-contract, Quando uma decisão merece um ADR). Se a implementação precisou tomar essa decisão, o resultado é uma decisão devolvida ao arquiteto, que decide se a registra — não um achado registrado contra o autor.
 - **Divergência.** Onde a implementação se afastou do plano, o afastamento foi devolvido como pergunta e a ITS revisada? Um afastamento **silencioso** é um achado. Um afastamento que está *certo* porque o plano não sobreviveu ao contato com o código não é defeito do autor — é da ITS, e roteia para o quarto veredito.
 
 ## Passo 3 — A varredura do piso
@@ -158,7 +158,7 @@ Uma revisão que começou termina em exatamente um veredito, declarado explicita
 - **Approve** — nenhum achado bloqueante e nada que peça resposta. Nits ficam a critério do autor; não segure um merge por eles.
 - **Approve with comments** — nada bloqueante, mas Considers ou Questions que pedem resposta — aceitar ou declinar com uma razão — antes do merge, sem outra rodada de revisão. Use-o à vontade: uma rodada extra custa mais ao fluxo do que o risco residual.
 - **Request changes** — pelo menos um `Blocking:`, ou uma `Question:` cuja resposta pode tornar um achado bloqueante. Liste os itens que governam o merge numerados e separados de todo o resto, para que o autor saiba exatamente o que precisa fazer.
-- **Return to the architect** — a revisão descobriu que o *plano* está errado, incompleto ou ultrapassado pelo código, ou que uma decisão precisa de um ADR. Não é um achado contra o autor: sai da revisão e reentra no its-generator (caminho de revisão da ITS) ou nas skills de caso de uso (o caso de uso já não descreve o sistema). Declare o que precisa mudar, em qual documento, antes que a implementação possa sequer ser julgada. Esta skill não edita o documento.
+- **Return to the architect** — a revisão descobriu que o *plano* está errado, incompleto ou ultrapassado pelo código, ou que uma decisão precisa de um ADR. Não é um achado contra o autor: sai da revisão e reentra no its-generator (caminho de revisão da ITS), nas skills de caso de uso (o caso de uso já não descreve o sistema) ou no adr-generator (a decisão sem registro, por palavra do arquiteto). Declare o que precisa mudar, em qual documento, antes que a implementação possa sequer ser julgada. Esta skill não edita o documento.
 
 **O responsável de segurança.** Numa demanda `crítica` ou numa mudança que carrega uma exceção de segurança, a revisão inclui o responsável de segurança do projeto: *Approve* e *Approve with comments* saem pendentes da revisão dele, e o relatório diz isso. Quem ele é, o arquiteto informa; a skill não o presume.
 
@@ -200,7 +200,8 @@ Um relatório de revisão — o registro completo, publicado no pull request con
 4. **Achados**, numerados, cada um com severidade, local, ID citado, o que ele exige ali e a expectativa.
 5. A **cobertura**: o que foi lido linha a linha, o que foi só percorrido (código gerado, dados), o que ficou fora e por quê, e a revisão de especialista pendente — o responsável de segurança, quando o Passo 6 o exige.
 6. **Follow-ups**, cada um com o seu destino:
-   - ao its-generator — o ADR a propor, a seção da ITS a revisar;
+   - ao arquiteto — a decisão de arquitetura sem registro, que o adr-generator redige por palavra dele;
+   - ao its-generator — a seção da ITS a revisar;
    - às skills de caso de uso — o caso de uso que o comportamento entregue contradiz;
    - à configuração — a seção de que a revisão precisou e que falta ou diverge do código;
    - ao arquiteto — o slot não preenchido;

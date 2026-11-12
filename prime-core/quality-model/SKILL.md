@@ -67,7 +67,7 @@ A ITS diz o que construir e as decisões de qualidade desta story; o modelo diz 
 - **Não é um gate.** Define a régua; o `code-review` decide se uma mudança a superou.
 - **Não são os padrões de código.** Este modelo é dono de princípios, do piso e dos gatilhos; o `coding-standards` é dono das convenções concretas — qual nomenclatura, qual divisão em camadas, qual timeout padrão. Quando um critério precisa de uma convenção concreta para ser verificável, ele remete a um slot; nunca inventa um valor. Os slots INVARIANT valem em qualquer projeto: os que são proibições são a forma concreta, na stack do projeto, do que o piso exige; os demais são formas únicas do sistema. Ambos só admitem desvio por exceção registrada.
 - **Não é o formato da ITS.** Como um critério entra na ITS — como instrução concreta no corpo, com o ID apenas nas Referências — é regra do `its-contract`.
-- **Não é o lar das decisões arquiteturais.** Decisões que sobrevivem à story vivem em ADRs, de propriedade da fronteira de decisão do `its-contract`.
+- **Não é o lar das decisões arquiteturais.** Decisões que sobrevivem à story vivem em ADRs, de propriedade do `adr-contract`.
 - **Não fixa metas de produto.** As metas vêm dos casos de uso e dos ADRs.
 
 ## Sinais e evolução

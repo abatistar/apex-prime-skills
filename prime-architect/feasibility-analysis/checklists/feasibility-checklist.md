@@ -79,7 +79,7 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 ## 7. Follow-ups, por destino
 
 - [ ] **Skills de caso de uso** — execução do extractor para um baseline; validação de `Draft` e divergência (`QM-DO-1`) ao use-case-creator. Nunca remendadas aqui.
-- [ ] **Arquiteto** — decisão de ADR a levantar (`Accepted` desafiado ou `Proposed` de que a demanda depende), como `Condition:`. O ADR é redigido pelo fluxo do its-contract, pelo arquiteto nesta etapa ou pelo its-generator quando um plano se comprometer com ele, nunca neste relatório. Caso de uso `Retired` que o código ainda executa.
+- [ ] **Arquiteto** — decisão de ADR a levantar (`Accepted` desafiado ou `Proposed` de que a demanda depende), como `Condition:`. O ADR é redigido pelo adr-generator, por palavra do arquiteto, nunca neste relatório. Caso de uso `Retired` que o código ainda executa.
 - [ ] **Configuração** — seção de que a análise precisou e que falta ou diverge do código. Slot não preenchido (`coding-standards`) → ao arquiteto. Nunca improvisados.
 - [ ] **Outro projeto** — a demanda correspondente, quando o resultado daqui depende dela.
 - [ ] **Backlog** — dívida que o caminho viável criaria, com responsável prospectivo (`QM-MT-1`), como item para o arquiteto registrar.

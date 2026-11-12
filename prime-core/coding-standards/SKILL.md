@@ -19,7 +19,8 @@ Os índices do catálogo e dos padrões são lidos sempre; o arquivo de uma fam�
 
 - O **quality-model** é dono dos princípios, do piso inegociável, dos níveis de criticidade e dos gatilhos de especificação. Esta skill nunca repete um critério: cada slot declara a que critérios serve e fornece a forma concreta que os torna verificáveis.
 - O **prime-config** é dono do arquivo do projeto, que guarda fatos: a stack, a Estrutura e a opção Legado, que esta skill lê. A configuração não carrega valor de slot nenhum. Um valor diferente do padrão do time é uma decisão, e vive num ADR Accepted (Desvios do projeto, em `references/consumer-rules.md`).
-- O **its-contract** é dono das decisões que sobrevivem à story e do formato da ITS. Uma convenção que muda para o projeto inteiro é decidida num ADR antes de virar valor de slot; na ITS, uma convenção chega como a escolha concreta, nunca como o ID do slot.
+- O **adr-contract** é dono do registro das decisões que sobrevivem à story. Uma convenção que muda para o projeto inteiro é decidida num ADR, e é o ADR `Accepted` que carrega o valor.
+- O **its-contract** é dono do formato da ITS. Nela, uma convenção chega como a escolha concreta, nunca como o ID do slot.
 - O **code-review** é dono do enforcement. Esta skill define a convenção; o revisor decide se uma dada mudança a cumpriu.
 
 ## O que é um slot

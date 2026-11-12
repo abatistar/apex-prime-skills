@@ -26,7 +26,7 @@ As cinco são obrigatórias. Falta uma: a configuração está incompleta (veja 
 - **Raiz de documentos:** `docs`, no repositório do código e versionada com ele, ou uma pasta paralela ao projeto (sugestão: `../<projeto>-docs`), com versionamento próprio. A escolha é do projeto e é declarada. Sem declaração, vale `docs`.
 - A localização e a nomenclatura de casos de uso, ITS e ADRs, relativas à raiz.
 
-Os contratos donos — o `use-case` e o `its-contract` — têm padrões para isso, e a configuração os declara de forma explícita. Ela diz onde os documentos vivem, nunca que forma eles têm. O template de caso de uso, a estrutura da ITS e a do ADR não são substituíveis: mudá-las é mudança de contrato, pelo PR de governança, não entrada de configuração.
+Os contratos donos — o `use-case`, o `its-contract` e o `adr-contract` — têm padrões para isso, e a configuração os declara de forma explícita. Ela diz onde os documentos vivem, nunca que forma eles têm. O template de caso de uso, a estrutura da ITS e a do ADR não são substituíveis: mudá-las é mudança de contrato, pelo PR de governança, não entrada de configuração.
 
 **Comandos de verificação** — como compilar, testar e rodar as verificações que o projeto tem: a suíte inteira, um teste isolado, o teste de arquitetura e, onde houver, mutação e contrato. Lidos por quem planeja, julga ou verifica — o its-generator fecha o plano da ITS com eles, o code-review os executa como pré-condição de uma revisão — e por quem implementa, que os roda antes do PR.
 
