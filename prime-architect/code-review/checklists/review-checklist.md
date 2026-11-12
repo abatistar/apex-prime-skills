@@ -11,19 +11,20 @@ Passada operacional de propriedade do `code-review`. O SKILL.md define o padrão
 - [ ] A **ITS da story** está localizada e lida, junto com todo ADR citado nas premissas do plano dela (Decisões registradas). Documentação em pasta paralela → lida na revisão que o PR cita.
 - [ ] Os **casos de uso** listados nas Referências da ITS estão lidos — para a lente Documentação; o julgamento funcional é contra os itens da ITS.
 - [ ] Do `docs/prime-config.md`, só a seção necessária e só quando a revisão precisa dela, conforme as regras de consumo do `prime-config`: Repositório de documentos, Comandos de verificação, Estrutura, Opções. O arquivo nunca lido por inteiro.
+- [ ] O **nível de detalhe** da ITS (`simplificado` · `médio` · `detalhista`) foi lido na linha sob o título: o que o plano fixa e o que delega.
 - [ ] O nível de criticidade da demanda e, num projeto legado, a declaração de que o plano segue o padrão do código existente foram lidos nas premissas da ITS — não rejulgados —, junto com o que o perfil do nível exige.
 - [ ] As **verificações obrigatórias estão verdes**, conforme o Passo 0. PR sem o resultado das verificações → os comandos de verificação da configuração rodaram em seu lugar. Vermelho por causa de um teste instável → a revisão começa e isso é um achado `Blocking:` por si só (`QM-TS-1`).
 - [ ] O diff é revisável de uma só sentada. Se não for: peça uma divisão, ou declare as unidades do plano que você revisará e em que ordem.
 - [ ] A **rodada** está identificada. Rodada seguinte → aplique também a seção 7.
 - [ ] Nenhum código aberto antes destas pré-condições conferidas.
 
-*Sem ITS, PR sem a revisão da documentação em pasta paralela, ou verificações vermelhas por outra causa → `Not reviewable`, sem veredito: reporte a pré-condição que falta e quem a resolve. Exceção: mudança declarada fora do processo → declare que a conformidade de escopo não pôde ser verificada e revise só contra o core.*
+*Sem ITS, PR que não declara a ITS que implementa, PR sem a revisão da documentação em pasta paralela, ou verificações vermelhas por outra causa → `Not reviewable`, sem veredito: reporte a pré-condição que falta e quem a resolve. Exceção: mudança declarada fora do processo → declare que a conformidade de escopo não pôde ser verificada e revise só contra o core.*
 
 ## 1. Primeira passada — a mudança faz sentido como um todo?
 
 - [ ] Consigo dizer o que esta mudança deveria fazer antes de ler o diff?
 - [ ] A direção tomada corresponde ao plano, ou o autor resolveu um problema diferente?
-- [ ] Quais arquivos deveriam ter sido tocados — lidos das unidades do plano — e qual comportamento precisa continuar funcionando (os pontos de regressão e a unidade que reivindicou cada um)?
+- [ ] O que deveria ter mudado — lido das unidades do plano: os componentes das instruções e, onde o nível os lista, os arquivos — e qual comportamento precisa continuar funcionando (os pontos de regressão e a unidade que reivindicou cada um)?
 - [ ] Onde o plano pede atenção redobrada (Riscos e pontos de atenção da ITS)?
 - [ ] Antes do diff, só a lista de arquivos alterados; o diff de cada unidade aberto ao chegar nela, nunca o PR inteiro de uma vez.
 - [ ] Percurso unidade por unidade, na ordem do plano, com os testes de cada unidade lidos antes do código de produção.
@@ -34,7 +35,7 @@ Passada operacional de propriedade do `code-review`. O SKILL.md define o padrão
 ## 2. Conformidade de escopo (diff ⇄ plano, nas duas direções)
 
 - [ ] **Plano → diff**: toda unidade do plano está presente, ou sua ausência está justificada; todo teste que uma unidade deve existe.
-- [ ] **Diff → plano**: todo arquivo alterado remonta a uma unidade ou a uma consequência técnica declarada. Melhorias não solicitadas contam como escopo excedido (`QM-CN-1`); só a arrumação mecânica nas linhas que a unidade já altera, em commit separado, é aceita (`QM-MT-3`).
+- [ ] **Diff → plano**: todo arquivo alterado remonta a uma unidade ou a uma consequência técnica declarada — pela lista de Arquivos, no `detalhista`; por implementar uma instrução de uma unidade, no `simplificado` e no `médio`. Escolha que o nível delegou (passos, nomes internos, arquivos novos) não é escopo excedido nem divergência. Melhorias não solicitadas contam como escopo excedido (`QM-CN-1`); só a arrumação mecânica nas linhas que a unidade já altera, em commit separado, é aceita (`QM-MT-3`).
 - [ ] **Trechos fixados**: assinaturas, contratos e esquemas chegaram exatamente como fixados.
 - [ ] **Alternativas descartadas**: nenhuma unidade tomou o caminho que a sua alternativa descartada recusou.
 - [ ] **Decisões de qualidade**: toda decisão de gatilho da ITS chegou ao código com o valor declarado e com o teste ou a medição devida. Gatilho disparado sem decisão na ITS → defeito do plano, não do autor.
@@ -162,7 +163,7 @@ Os trechos entre `[` e `]` são orientação de preenchimento. Quando o resultad
 | # | Severidade | Local | Base | O que exige aqui · o que está errado · o que se espera |
 |---|---|---|---|---|
 | 1 | Blocking | `caminho/Arquivo.java:42` | QM-EO-1 / CS-ER-6 | Nenhum erro engolido. O catch registra em DEBUG e devolve sucesso: com o broker fora, o pedido é dado como publicado e some sem rastro. Esperado: propagar a falha ou tratá-la com o motivo escrito no ponto. |
-| 2 | Blocking | `caminho/Novo.java` (arquivo inteiro) | ITS › Plano | Nenhuma unidade do plano pede este arquivo: escopo excedido. Esperado: remover, ou devolver ao arquiteto a pergunta que o motivou. |
+| 2 | Blocking | `caminho/Novo.java` (arquivo inteiro) | ITS › Plano | Nenhuma unidade do plano pede este arquivo, e ele não implementa instrução de nenhuma: escopo excedido. Esperado: remover, ou devolver ao arquiteto a pergunta que o motivou. |
 | 3 | Blocking | `caminho/Pedido.java:120` | ITS › D3 | D3 exige recusar a confirmação acima do limite de crédito sem gravar o pedido; com total = limite + 0,01, o pedido é gravado antes da recusa. Esperado: validar antes de persistir. |
 | 4 | Question | `caminho/Conta.java:57` | QM-SR-8 / CS-SC-1 | Toda operação confere se o recurso pertence ao chamador. O método não confere a titularidade, e não achei a regra na configuração de segurança: ela existe em outro lugar? |
 | 5 | Consider | `caminho/Outro.java:88` | QM-RC-4 | [o que o critério pede aqui e o argumento; o autor pode declinar com uma razão] |
