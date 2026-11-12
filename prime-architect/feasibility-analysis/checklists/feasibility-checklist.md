@@ -27,13 +27,14 @@ Passada operacional de propriedade do `feasibility-analysis`. O SKILL.md define 
 - [ ] Baseline de cada área tocada classificada: documentada (`Reviewed`, sem divergência) · parcial (sem caso de uso, só `Draft`, `Retired` ainda executado, divergência) · green-field.
 - [ ] Delta pendente registrado pelo mapa → baseline documentada, julgada sobre o estado-alvo da story em curso; dependência da ordem de implementação → `Condition:` (responsável o arquiteto responsável); só convivência → `FYI:`.
 - [ ] Baseline parcial em outro ponto → `Condition:` com responsável e rota (`use-case-extractor`; `use-case-creator` em validação, conformidade ou reconciliação; o arquiteto para o `Retired`). Baseline parcial onde o veredito se apoia → Undecidable, declarado e justificado.
+- [ ] **Restrições que só o arquiteto conhece**: perguntadas uma vez, depois do mapa e antes das lentes, com a pergunta dirigida pelo que a demanda toca. Só o que limita o que pode ser construído (regulação ou contrato, dependência ou licença, dado indisponível, limite de plataforma) — nunca prazo, esforço, janela de deploy ou processo de aprovação. Resposta registrada, inclusive "nenhuma"; pergunta dispensada só com a razão dita.
 
 ## 3. Lentes, em ordem
 
-- [ ] **Restrição** — teto de stack/versão, plataforma, dados ausentes, dependência externa, licença, regulação, restrições operacionais e de compliance registradas em ADR `Accepted` ou declaradas na demanda (residência de dados, janela de deploy), código gerado de contrato de terceiro. A única fonte de impossibilidade verdadeira.
+- [ ] **Restrição** — teto de stack/versão, plataforma, dados ausentes, dependência externa, licença, o que um ADR `Accepted` proíbe, restrições declaradas pelo arquiteto (regulação, contrato, dado que não pode ser usado), código gerado de contrato de terceiro. A única fonte de impossibilidade verdadeira.
 - [ ] **Encaixe estrutural** — `QM-CC-1..7`, `CS-AR-1..5`, incidência de ADR do mapa. Regra replicada (`QM-CC-6`) → `Cost driver:`. Projeto legado → caminho julgado contra a arquitetura que o código tem. Alcance no escopo de uma migração em curso → caminho no valor de destino; migração que não comporta → `Condition:` do responsável que o ADR nomeia. Contradizer um ADR Accepted, ou depender de um `Proposed`, é uma **questão de ADR**, não um blocker: `Condition:` nomeando o ADR, responsável o arquiteto, rota para o ciclo de vida do ADR. Nenhum ADR redigido aqui.
 - [ ] **Superfície de contrato** — todo consumidor conhecido pode ser migrado sem quebra silenciosa (`QM-CC-7`, `CS-CT-1`, G2)? O conjunto de consumidores é enumerável? Consumidor noutro projeto → `Condition:` roteada à demanda daquele projeto.
-- [ ] **Entrega e reversibilidade** — expansão, migração e contração para contrato e esquema (`QM-CC-7`, `CS-CT-1`, `CS-DA-4`); caminho para os dados existentes; flag com condição de remoção quando pedida (`CS-EV-1`); janelas e restrições de deploy. Sem convivência com a versão em produção → `Condition:`; `Blocker:` só se uma restrição ancorada proíbe o único caminho.
+- [ ] **Entrega e reversibilidade** — expansão, migração e contração para contrato e esquema (`QM-CC-7`, `CS-CT-1`, `CS-DA-4`); caminho para os dados existentes; flag com condição de remoção quando pedida (`CS-EV-1`). Sem convivência com a versão em produção → `Condition:`; `Blocker:` só se uma restrição ancorada ou declarada pelo arquiteto proíbe o único caminho.
 - [ ] **Gatilhos de especificação** — a demanda passada pelo G1–G15. Slot sem valor → `Condition:` de lacuna de slot. Decisão que vale além da story → `Condition:` de ADR. G13 → `Condition:` de admissão (`CS-DP-1`, `CS-DP-2`). G14, G1 com regra de acesso ou sinal de `crítica` no mapa → `Condition:` do responsável de segurança (`QM-SR-*`, `CS-SC-*`; `QM-SR-8`, `QM-SR-10`, `CS-SC-6`). G11, G12 → `Cost driver:`. G3–G6, G8 → `Cost driver:` quando o mecanismo e o valor existem. Nenhum gatilho fabricado.
 - [ ] **Verificação** — comandos de verificação, observabilidade presente (`QM-EO-7`), obrigação de teste (`CS-TS-1`), meta não funcional mensurável (G10, `QM-EF-2`).
 - [ ] **Risco de erosão** — o caminho mais barato cria uma segunda forma de fazer algo (`QM-CN-1`) ou aumenta a contagem de uma migração em curso?
@@ -42,9 +43,9 @@ Passada operacional de propriedade do `feasibility-analysis`. O SKILL.md define 
 
 ## 4. Evidência
 
-- [ ] Todo achado carrega sua âncora do mapa: **ancorada**, `[INFERRED]` ou `[UNVERIFIED]`.
+- [ ] Todo achado carrega sua evidência: **ancorada**, `[INFERRED]` ou `[UNVERIFIED]`, do mapa, ou **declarada pelo arquiteto**, da pergunta do §2. Afirmação da story, do PRD ou de outra pessoa → `[UNVERIFIED]`.
 - [ ] Vocabulário reutilizado do `impact-mapping`, não redefinido aqui.
-- [ ] Nenhum `Blocker:` apoiado em evidência `[INFERRED]` ou `[UNVERIFIED]`.
+- [ ] Nenhum `Blocker:` apoiado em evidência `[INFERRED]` ou `[UNVERIFIED]`; um apoiado em restrição declarada lista a restrição nas premissas do veredito.
 - [ ] Todo `Blocker:` passou pela refutação: caminho alternativo para o mesmo resultado, teto que o projeto pode mudar por decisão, restrição que não alcança o código, âncora que não diz o que o achado afirma. No código, só a âncora conferida foi aberta; caminho além da borda do mapa não foi rastreado. O que não sobreviveu caiu; o que não foi confirmado nem derrubado vai para a regra 2.
 
 ## 5. Classificação
@@ -53,7 +54,7 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 
 | Severidade | Exige | Contribui para |
 |---|---|---|
-| `Blocker:` | evidência ancorada que sobreviveu à refutação | Not viable as specified |
+| `Blocker:` | evidência ancorada, ou restrição declarada pelo arquiteto, que sobreviveu à refutação | Not viable as specified |
 | `Condition:` | responsável + rota | Viable with conditions |
 | `Cost driver:` | — | nenhum |
 | `FYI:` | — | nenhum |
@@ -118,6 +119,10 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 
 - Borda do mapa: [o veredito depende de algo além dela? sim/não — se sim, o veredito é Undecidable (§6, regra 2)]
 
+## Restrições declaradas pelo arquiteto
+- [a restrição, nas palavras dele, e o que ela proíbe]
+- [ou: perguntado, nenhuma declarada · ou: não perguntado — a razão]
+
 ## Achados
 | # | Severidade | Onde | Critério / evidência | Achado e implicação |
 |---|---|---|---|---|
@@ -139,7 +144,7 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 | Risco de erosão | [...] |
 
 ## Premissas do veredito
-- [linha `[INFERRED]` ou `[UNVERIFIED]` de que o veredito depende] — [o que mudaria se fosse falsa]
+- [linha `[INFERRED]` ou `[UNVERIFIED]`, ou restrição declarada pelo arquiteto, de que o veredito depende] — [o que mudaria se fosse falsa]
 - [ou: nenhuma]
 
 ## Se Not viable — o que teria de mudar na demanda

@@ -31,7 +31,7 @@ A configuração do projeto não é lida aqui. Cada fato dela é lido quando uma
 - **Comandos de verificação** — o que o projeto sabe verificar (lente Verificação);
 - **Repositório de documentos** — onde vivem os ADRs.
 
-**O contexto do projeto não é relido aqui.** Se o projeto é legado, os sinais de criticidade, as migrações em curso e o código gerado ou de terceiros chegam pela sobreposição do mapa, que já diz o que a demanda toca (Passo 2). Uma restrição operacional ou de compliance que alcança a demanda — uma fronteira regulatória, a residência de um dado, uma janela de deploy — entra por um ADR `Accepted` ou pelo que o arquiteto declara na demanda. A que ninguém declarou não é presumida, e a que foi só afirmada fica `[UNVERIFIED]`.
+**O contexto do projeto não é relido aqui.** Se o projeto é legado, os sinais de criticidade, as migrações em curso e o código gerado ou de terceiros chegam pela sobreposição do mapa, que já diz o que a demanda toca (Passo 2). As restrições que não estão no código nem nos documentos chegam pela pergunta ao arquiteto, depois do mapa (Passo 2).
 
 Carregue, como os critérios em que o julgamento se ancora: as regras de consumo do **quality-model** (`../quality-model/references/consumer-rules.md`) com `../quality-model/references/quality-triggers.md` — os gatilhos que a lente de mesmo nome percorre —, as regras de consumo do **coding-standards** (`../coding-standards/references/consumer-rules.md`) e os **ADRs** `Accepted` e `Proposed`.
 
@@ -68,17 +68,28 @@ Toda baseline parcial segue uma regra só:
 - **Em outro ponto** → uma `Condition:` com responsável e rota: o `use-case-extractor` para a área sem caso de uso; o `use-case-creator` para o `Draft` (modo validação) e para a divergência (conformidade ou reconciliação); o arquiteto para o `Retired` que o código ainda executa. Uma lacuna conhecida com rota conhecida é exatamente para o que serve uma condição.
 - **Onde o veredito se apoia** — a área que carrega a restrição mais dura da demanda, onde um `Blocker:` se apoiaria → *Undecidable with current evidence*, nomeando a execução que decidiria. A ausência de um blocker carrega o mesmo ônus de evidência que um blocker: *Viable with conditions* afirma que nada bloqueia, e ninguém afirma isso sobre comportamento que nenhum documento descreve, ou que dois descrevem de jeitos diferentes. Declare e justifique a escolha no relatório, nunca a presuma.
 
+### As restrições que só o arquiteto conhece
+
+Algumas restrições que tornam uma demanda inviável não estão no código nem nos documentos: só o arquiteto as conhece. Com o mapa lido, e antes das lentes, pergunte por elas — uma parada só, numa mensagem só.
+
+- **A pergunta é dirigida pelo mapa.** Nomeie o que a demanda toca e pergunte se há restrição externa sobre isso que o código não mostra: "a demanda toca dado pessoal e a integração com o adquirente; há restrição regulatória, contratual ou de licença sobre isso?". Uma pergunta genérica recebe um "não" por reflexo.
+- **O escopo é fechado: só o que limita o que pode ser construído.** Regulação ou contrato que proíbe um caminho; dependência externa ou licença que o projeto não tem nem pode ter; dado que não existe ou não pode ser usado; limite da plataforma. Prazo, esforço, janela de deploy e processo de aprovação não entram: não mudam o que o código pode vir a ser.
+- **"Nenhuma" é resposta, e fica registrada.** O relatório distingue *perguntado, nada declarado* de *não perguntado*.
+- **Não pergunte** quando o pedido já trouxe as restrições, nem quando o mapa não toca nada que as atraia — uma mudança de rótulo, um ajuste de validação. Diga no relatório por que não perguntou.
+
+O que o arquiteto responde entra como **restrição declarada** (Passo 4) e alimenta a lente Restrição.
+
 ## Passo 3 — As lentes, em ordem decrescente do que mata uma demanda
 
 Cada lente aponta para onde seu critério vive — nunca o redefine. Rode-as sobre o mapa; não reande o código que o mapa já andou. A intensidade segue os sinais de criticidade que o mapa trouxe: uma demanda com sinal de `crítica` é julgada com tudo o que cada lente lista. O nível em si é declarado adiante, na ITS.
 
-- **Restrição** — os tetos rígidos: stack e versão (configuração), plataforma, dados que não existem, uma dependência externa ou licença que o projeto não possui, uma fronteira regulatória e as restrições operacionais e de compliance que um ADR `Accepted` registra ou que o arquiteto declarou na demanda — residência de dados, uma janela de deploy. Código gerado a partir do contrato de um terceiro muda na origem, que o projeto pode não controlar. Só esta lente produz achados que tornam algo genuinamente impossível. Por isso é lida primeiro, e costuma ser a mais curta.
+- **Restrição** — os tetos rígidos: stack e versão (configuração), plataforma, dados que não existem, uma dependência externa ou licença que o projeto não possui, o que um ADR `Accepted` proíbe e as restrições que o arquiteto declarou (Passo 2) — uma fronteira regulatória ou contratual, um dado que não pode ser usado. Código gerado a partir do contrato de um terceiro muda na origem, que o projeto pode não controlar. Só esta lente produz achados que tornam algo genuinamente impossível. Por isso é lida primeiro, e costuma ser a mais curta.
 - **Encaixe estrutural** — a demanda briga com a forma do sistema? `QM-CC-1..7`, `CS-AR-1..5` e a incidência de ADR trazida do mapa.
   - Uma regra de negócio que o mapa encontrou replicada (`QM-CC-6`) é um `Cost driver:` — a mudança vai unificá-la ou alterar todas as cópias.
   - Num projeto legado, o caminho viável é julgado contra a arquitetura que o código tem, não contra a do time. Quando o alcance está no escopo de uma migração em curso, o caminho segue o valor de destino dela; se a migração ainda não comporta a demanda, isso é uma `Condition:` de responsabilidade do responsável que o ADR da migração nomeia.
   - **Uma demanda que contradiz um ADR Accepted não é inviável** — é uma questão de ADR. Ela vira uma `Condition:` nomeando o ADR, de responsabilidade do arquiteto e roteada ao ciclo de vida do ADR: a decisão é revisitada antes da especificação. Uma demanda que depende de uma decisão ainda `Proposed` recebe a mesma `Condition:`. Esta skill não redige o ADR — redigir exige uma Decisão, e esta skill julga, não projeta. O registro é redigido pelo adr-generator, por palavra do arquiteto (adr-contract, Quem detecta, quem redige, quem aprova). Nunca trate uma decisão registrada como um muro, e nunca deixe uma cair em silêncio dentro de uma análise.
 - **Superfície de contrato** — de tudo que o mapa pôs neste grau, todo consumidor conhecido pode ser migrado sem quebra silenciosa (`QM-CC-7`, `CS-CT-1`, gatilho G2), e o conjunto de consumidores pode ser enumerado? Um conjunto de consumidores não enumerável é um achado por si só. Um consumidor noutro projeto é migrado pela demanda daquele projeto: uma `Condition:` roteada a ela (Passo 1).
-- **Entrega e reversibilidade** — a mudança pode ser entregue em etapas e revertida? Confira quatro coisas. Uma mudança incompatível de contrato ou de esquema convive com a versão em produção por expansão, migração e contração (`QM-CC-7`, `CS-CT-1`), e uma migração já aplicada nunca é editada (`CS-DA-4`). Os dados existentes que o mapa trouxe têm caminho de migração ou de preenchimento. O comportamento novo pode sair atrás de uma flag com condição de remoção (`CS-EV-1`), quando o projeto ou o risco o pedem. As janelas e restrições de deploy declaradas comportam a entrega. Sem caminho que conviva com a versão em produção, a entrega coordenada ou a indisponibilidade é uma `Condition:`, uma decisão com responsável. É um `Blocker:` só quando uma restrição ancorada proíbe o único caminho.
+- **Entrega e reversibilidade** — a mudança pode ser entregue em etapas e revertida? Confira três coisas. Uma mudança incompatível de contrato ou de esquema convive com a versão em produção por expansão, migração e contração (`QM-CC-7`, `CS-CT-1`), e uma migração já aplicada nunca é editada (`CS-DA-4`). Os dados existentes que o mapa trouxe têm caminho de migração ou de preenchimento. O comportamento novo pode sair atrás de uma flag com condição de remoção (`CS-EV-1`), quando o projeto ou o risco o pedem. Sem caminho que conviva com a versão em produção, a entrega coordenada ou a indisponibilidade é uma `Condition:`, uma decisão com responsável. É um `Blocker:` só quando uma restrição ancorada ou declarada pelo arquiteto proíbe o único caminho.
 - **Gatilhos de especificação** — passe a demanda pelos gatilhos do `../quality-model/references/quality-triggers.md`: são as decisões de qualidade que a ITS vai precisar tomar, e este é o ponto barato de descobrir as que ninguém consegue tomar. Para cada gatilho disparado:
   - a decisão depende de um slot sem valor — nem padrão da stack nem ADR do projeto → `Condition:` de lacuna de slot, de responsabilidade do arquiteto (`coding-standards`, Slots não preenchidos);
   - a decisão vale além da story — o primeiro outbox do sistema, a política de idempotência de todos os consumidores → `Condition:` de ADR a levantar, responsável o arquiteto;
@@ -95,11 +106,13 @@ Cada lente aponta para onde seu critério vive — nunca o redefine. Rode-as sob
 
 ## Passo 4 — Disciplina de evidência
 
-Todo achado herda sua âncora do mapa e a carrega de forma visível. O vocabulário é o do `impact-mapping`; esta skill acrescenta duas regras próprias.
+Todo achado herda sua âncora do mapa e a carrega de forma visível. O vocabulário é o do `impact-mapping`; esta skill acrescenta um estado e duas regras próprias.
 
-**Um `Blocker:` exige evidência ancorada.** Um blocker apoiado em evidência `[INFERRED]` ou `[UNVERIFIED]` não é um blocker — é o motivo pelo qual o veredito é *Undecidable with current evidence*. Qualquer coisa afirmada pela demanda e nunca conferida contra o código permanece `[UNVERIFIED]`, por mais plausível que soe.
+**Restrição declarada.** O que o arquiteto respondeu à pergunta do Passo 2 não tem âncora no código, e não precisa: ele é quem decide no processo, e a palavra dele sobre o ambiente do projeto é evidência. O achado a carrega como *declarada pelo arquiteto*, e o relatório a lista nas premissas do veredito, para que quem leia saiba em que o julgamento se apoia. Só a resposta do arquiteto tem esse peso: o que a story, o PRD ou outra pessoa afirmam continua `[UNVERIFIED]`.
 
-**Um `Blocker:` sobrevive à refutação.** Antes de classificá-lo, tente derrubá-lo: existe outro caminho que entrega o mesmo resultado observável — outro módulo, outra forma de integração, outra sequência de entrega? O teto é rígido, ou é um valor que o projeto pode mudar por decisão? A restrição alcança mesmo este código? A âncora diz o que o achado afirma? A tentativa trabalha sobre o mapa: no código, abre só a âncora que confere, e um caminho que exigiria rastrear além da borda dele não é rastreado aqui. O blocker que não sobrevive cai — vira `Condition:` ou deixa de existir. O que a tentativa não consegue confirmar nem derrubar, esse caminho inclusive, é tratado como evidência não ancorada (Passo 6, regra 2). É a mesma disciplina que o `code-review` aplica a um `Blocking:`.
+**Um `Blocker:` exige evidência ancorada ou uma restrição declarada.** Um blocker apoiado em evidência `[INFERRED]` ou `[UNVERIFIED]` não é um blocker — é o motivo pelo qual o veredito é *Undecidable with current evidence*. Qualquer coisa afirmada pela demanda e nunca conferida contra o código permanece `[UNVERIFIED]`, por mais plausível que soe.
+
+**Um `Blocker:` sobrevive à refutação.** Antes de classificá-lo, tente derrubá-lo: existe outro caminho que entrega o mesmo resultado observável — outro módulo, outra forma de integração, outra sequência de entrega? O teto é rígido, ou é um valor que o projeto pode mudar por decisão? A restrição alcança mesmo este código — e, quando é declarada, o arquiteto confirma que ela alcança este caminho, e não só o primeiro que a demanda sugeriu? A âncora diz o que o achado afirma? A tentativa trabalha sobre o mapa: no código, abre só a âncora que confere, e um caminho que exigiria rastrear além da borda dele não é rastreado aqui. O blocker que não sobrevive cai — vira `Condition:` ou deixa de existir. O que a tentativa não consegue confirmar nem derrubar, esse caminho inclusive, é tratado como evidência não ancorada (Passo 6, regra 2). É a mesma disciplina que o `code-review` aplica a um `Blocking:`.
 
 ## Passo 5 — Classificar cada achado
 
@@ -116,10 +129,10 @@ Agregação: vários achados causados por um único fato estrutural são um acha
 
 O veredito não é lido apenas dos achados. Ele se resolve a partir de duas entradas — os achados classificados no Passo 5 e o **estado da base de evidência** trazido do mapa —, aplicadas nesta ordem, vale a primeira que casar:
 
-1. **Existe um `Blocker:` ancorado** → *Not viable as specified*. Um blocker ancorado é
+1. **Existe um `Blocker:` ancorado ou apoiado numa restrição declarada** → *Not viable as specified*. Esse blocker é
    autossuficiente: lacunas em outros pontos não o suavizam, porque só uma mudança na demanda o
    dissolve. Registre as lacunas como follow-ups e decida.
-2. **Nenhum blocker ancorado, e a base de evidência não sustenta afirmar que nenhum existe**
+2. **Nenhum blocker da regra 1, e a base de evidência não sustenta afirmar que nenhum existe**
    → *Undecidable with current evidence*. Um blocker apoiado em evidência `[INFERRED]` ou
    `[UNVERIFIED]`, ou que a refutação não confirmou nem derrubou, cai aqui, não na regra 1 (Passo 4).
 3. **Caso contrário, pelo menos uma `Condition:`** → *Viable with conditions*.
@@ -184,7 +197,7 @@ raiz de documentos, e não aparece em nenhuma configuração. Cabeçalho pela me
 a data, a demanda e o mapa em que se apoia, por ID e revisão.
 
 Contém a demanda reformulada e sua fronteira, **a referência ao mapa de impacto — por ID e revisão**, a
-baseline de cada área tocada, os achados, a cobertura das lentes, as premissas do veredito, o veredito com
+baseline de cada área tocada, as restrições declaradas pelo arquiteto, os achados, a cobertura das lentes, as premissas do veredito, o veredito com
 sua razão de uma linha e os follow-ups por destino. Um mapa citado sem a revisão não está citado: a regra 2 do
 Passo 6 depende de onde aquele mapa parou, e só a revisão diz se a borda ainda vale. A passada operacional e o template do relatório vivem em `checklists/feasibility-checklist.md`. Leia-o depois do veredito, para conferir a análise e montar o relatório — não no Passo 0.
 
