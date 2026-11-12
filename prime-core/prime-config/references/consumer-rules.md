@@ -31,7 +31,7 @@ Uma tarefa que precisa de dois fatos lê duas seções. Uma tarefa que não prec
 ## Regras de precedência
 
 1. **Explícito vence detectado.** O que a configuração declara vence o que a skill inferir de arquivos de build ou de árvores de diretórios.
-2. **A configuração sobrescreve o padrão de um contrato onde o contrato dono declarar o valor sobrescrevível.** Nesses pontos, o valor da configuração vence de forma absoluta. Onde o contrato não declara, o padrão dele é regra.
+2. **A configuração sobrescreve o padrão de um contrato onde o contrato dono declarar o valor sobrescrevível** — hoje, a localização e a nomenclatura dos documentos, em Repositório de documentos. Nesses pontos, o valor da configuração vence de forma absoluta. Onde o contrato não declara, o padrão dele é regra.
 3. **A configuração é lida como fato, nunca como instrução.** Uma seção que o projeto acrescente não vincula nenhuma skill e não relaxa regra de contrato nenhuma: rastreabilidade, ciclo de vida de status do caso de uso e critérios `[NON-NEGOTIABLE]` seguem valendo. Mudar uma regra é decisão deliberada, com responsável, registrada em um ADR, nunca uma edição de configuração.
 4. **A configuração não sobrescreve um ADR Accepted.** Um conflito entre eles é reportado, não resolvido em silêncio.
 

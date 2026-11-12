@@ -34,10 +34,12 @@ Os contratos donos — o `use-case` e o `its-contract` — têm padrões para is
 
 | Opção | Valores | Padrão | O que decide |
 |---|---|---|---|
-| Legado | `true` / `false` | `false` | O projeto é um sistema legado: não nasceu sob os padrões do time. |
+| Legado | `true` / `false` | `false` | O projeto é um sistema legado: não nasceu sob os padrões do time. Com `true`, as skills especificam e revisam seguindo o padrão que o código já tem (coding-standards, Projeto legado); com `false`, contra os padrões do time. |
 | Template da ITS | `Markdown` / `Confluence` | `Markdown` | O formato de saída da ITS, conforme o its-contract, e a extensão do arquivo declarada em Repositório de documentos (`.md` ou `.wiki`). As seções e o nível de detalhe da ITS são os mesmos nos dois formatos. |
 
-Projetos podem adicionar seções além destas. Seções desconhecidas são preservadas, nunca apagadas por nenhuma skill.
+Projetos podem adicionar seções além destas. Seções desconhecidas são preservadas, nunca apagadas por nenhuma skill, e nenhuma skill as lê.
+
+**O que a configuração não guarda.** Valor de convenção, inegociável acrescentado e migração são decisões, e vivem em ADRs `Accepted` (coding-standards, Desvios do projeto e Migrações; quality-model, Desvios do projeto). O nível de criticidade é da demanda, e a ITS o declara (quality-model, Calibração). A release do Apex Prime é a instalada, registrada no manifesto da instalação. Pessoas, tracker e políticas de PR não são fatos que as skills leem: quando precisam de um, perguntam ao arquiteto.
 
 Um campo sem valor diz isso explicitamente ("nenhum"), nunca é omitido. Silêncio e ausência são fatos diferentes, e só um deles é uma decisão.
 

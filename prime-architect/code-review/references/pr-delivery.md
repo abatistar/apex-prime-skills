@@ -2,7 +2,7 @@
 
 Parte do `code-review`, lida com o relatório pronto, para desdobrá-lo no pull request.
 
-O relatório é o registro completo; no pull request, ele se desdobra para que cada achado tenha a sua conversa e o veredito governe o merge pelas políticas da plataforma. A plataforma e as políticas de PR são as que a configuração declara em Pipeline. Sem elas declaradas, o relatório é entregue inteiro ao arquiteto, que decide onde publicá-lo.
+O relatório é o registro completo; no pull request, ele se desdobra para que cada achado tenha a sua conversa e o veredito governe o merge pelas políticas da plataforma. A plataforma é aquela em que o PR vive, e as políticas são as que ela aplica ao PR. Onde a skill não alcança o PR, o relatório é entregue inteiro ao arquiteto, que decide onde publicá-lo.
 
 **Quem publica.** Esta skill redige os comentários, o voto e os itens de backlog; publicá-los, votar e registrar os itens é ato do arquiteto — ou do agente, por ordem explícita dele para aquela revisão. Um comentário publicado chega ao autor e fica no histórico do PR: nada sai sem que o arquiteto tenha visto o que sai.
 

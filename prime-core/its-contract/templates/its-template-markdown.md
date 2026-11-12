@@ -2,7 +2,7 @@
 
 Template canônico de propriedade do its-contract para o formato de saída `Markdown` — o valor da opção `Template da ITS` na configuração do projeto, e o padrão quando ela está ausente. O formato `Confluence` tem o seu, `its-template-confluence.md`, com as mesmas seções, os mesmos campos e a mesma orientação: só a marcação muda, e uma mudança de conteúdo é feita nos dois. O its-generator lê só o template do formato do projeto, no passo em que escreve a ITS. Quem implementa e o code review leem a ITS pronta, nunca este arquivo: o documento entregue já tem a forma daqui. Veja o SKILL.md do its-contract para as regras de nível de detalhe, rastreabilidade e fronteira entre ITS e ADR, e o `references/writing-rules.md` dele para as regras de escrita.
 
-**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — os identificadores do próprio documento (`D1`, `RG-1`), `ITS-<story-id>`, `ADR-NNN`, os estados de área (`current`, `legacy-maintained`, `strangler`) e os níveis de criticidade (`efêmera`, `padrão`, `crítica`), caminhos de arquivo e identificadores de código — nunca são traduzidos. Cada token continua pertencendo ao contrato que o declara; esta nota apenas afirma que nenhum deles é traduzido.
+**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — os identificadores do próprio documento (`D1`, `RG-1`), `ITS-<story-id>`, `ADR-NNN`, os níveis de criticidade (`efêmera`, `padrão`, `crítica`), caminhos de arquivo e identificadores de código — nunca são traduzidos. Cada token continua pertencendo ao contrato que o declara; esta nota apenas afirma que nenhum deles é traduzido.
 
 **Marcação.** O bloco abaixo é escrito em Markdown, a mesma marcação dos casos de uso e dos ADRs, e o documento inteiro usa só ela. O que o template usa:
 
@@ -69,9 +69,9 @@ Restrições de formatação (das regras de escrita do contrato): no máximo 3 n
 
 <A espinha do documento, em ordem de execução. Quem implementa lê daqui até o fim sem sair do documento: toda exigência é escrita na instrução — a regra, o resultado esperado, a restrição de uma decisão registrada, a convenção do projeto como escolha concreta —, nunca apontada.>
 
-**Premissas técnicas:** <stack e versões que o plano assume e a release do Apex Prime que a configuração fixa — ex.: Java 17 · Spring Boot 3.2 · PostgreSQL 15 · Apex Prime na release fixada pela configuração>
+**Premissas técnicas:** <stack e versões que o plano assume — ex.: Java 25 · Spring Boot 4.1 · PostgreSQL 17>
 
-**Áreas tocadas:** <cada área que o plano altera, com o estado e o nível de criticidade registrados na configuração; uma área efêmera leva a condição de remoção — ex.: `payments` — current, crítica · `billing` — legacy-maintained, padrão · `promo/blackfriday` — current, efêmera, remover após 2026-12-15>
+**Calibração:** <o nível de criticidade da demanda, com a razão em uma linha; uma demanda efêmera leva a condição de remoção; num projeto legado, a linha diz que o plano segue o padrão do código existente — ex.: crítica — altera a regra que libera crédito ao cliente · ex.: efêmera — campanha promocional, remover após 2026-12-15 · ex.: padrão · projeto legado: o plano segue o padrão do código existente>
 
 **Ordem de entrega:** <somente quando um caso de uso que o plano lê tem a mudança de outra story ainda não entregue: a mudança que o plano presume já no código, ou não, por extenso — ex.: o plano presume entregue a recusa de pedidos acima do limite de crédito; implementar depois dela.>
 

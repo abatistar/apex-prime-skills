@@ -4,11 +4,10 @@ A passada operacional do `its-generator`. **Nenhum template de documento vive aq
 
 ## Configuração e contratos
 
-- [ ] `docs/prime-config.md` lido conforme as regras de consumo do **prime-config**.
-- [ ] Da configuração, o que o Passo 0 do SKILL.md lista.
-- [ ] Contratos carregados: `its-contract` (o template e as Regras de escrita só no Passo 5), `adr-contract` (sem o template dele), `use-case` (regras de consumo), `coding-standards` (regras de consumo + os índices `../coding-standards/references/convention-slots.md` e dos padrões da stack na release fixada), `quality-model` (regras de consumo + o índice `../quality-model/references/quality-criteria.md` e `../quality-model/references/quality-triggers.md`); arquivos de lente e de família só para os IDs citados ou aplicados.
+- [ ] Do `docs/prime-config.md`, só a seção necessária e só no passo que a usa, conforme as regras de consumo do **prime-config**: Repositório de documentos (Passo 1), Stack e Estrutura (Passo 3), Opções (Passos 4.6 e 5), Comandos de verificação (Passo 5). O arquivo nunca lido por inteiro.
+- [ ] Contratos carregados: `its-contract` (o template e as Regras de escrita só no Passo 5), `adr-contract` (sem o template dele), `use-case` (regras de consumo), `coding-standards` (regras de consumo + os índices `../coding-standards/references/convention-slots.md` e dos padrões da stack), `quality-model` (regras de consumo + o índice `../quality-model/references/quality-criteria.md` e `../quality-model/references/quality-triggers.md`); arquivos de lente e de família só para os IDs citados ou aplicados.
 - [ ] Slot de que o plano depende e sem valor → reportado como lacuna (`coding-standards`, Slots não preenchidos). Nunca improvisado.
-- [ ] Divergência entre configuração e código → reportada, não resolvida em silêncio.
+- [ ] Seção necessária ausente, ou divergência entre configuração e código → reportada, não resolvida em silêncio.
 
 ## Entradas
 
@@ -67,16 +66,15 @@ A passada operacional do `its-generator`. **Nenhum template de documento vive aq
 
 ## Qualidade e convenções
 
-- [ ] Estado e nível de criticidade de toda área que o plano altera lidos do registro e escritos nas premissas; área `efêmera` com a condição de remoção; área não registrada tratada como `current` e `padrão`.
+- [ ] Nível de criticidade da demanda proposto pelo que ela altera e pelo que uma falha custa, com a razão em uma linha, e escrito nas premissas; demanda `efêmera` com a condição de remoção; sem razão para outro nível, `padrão`. Opção Legado lida; num projeto legado, as premissas dizem que o plano segue o padrão do código existente.
 - [ ] Todo gatilho de especificação disparado (`quality-triggers.md`) decidido na unidade que o implementa: valor concreto e teste ou medição que o prova.
-- [ ] Valor de cada decisão tirado do slot efetivo da área (override da área, do nível, do projeto ou padrão do time na release fixada); valor próprio da story justificado na unidade; slot sem valor reportado como lacuna, nunca inventado.
+- [ ] Valor de cada decisão tirado do slot efetivo (ADR `Accepted` do projeto, onde há um, ou padrão do time, no nível da demanda); valor próprio da story justificado na unidade; slot sem valor reportado como lacuna, nunca inventado.
 - [ ] Decisão de gatilho que vale além da story roteada ao passo de ADR.
 - [ ] Refatoração preparatória e testes de caracterização planejados como unidades próprias, antes das unidades de comportamento.
 - [ ] Critérios `[NON-NEGOTIABLE]`: nenhum afastamento silencioso em qualquer ponto do plano (`QM-XX-N` citado por ID na análise).
 - [ ] Nível de cuidado calibrado ao nível de criticidade declarado (`QM-MT-4`). Sub e over-engineering ambos sinalizados.
 - [ ] Slots INVARIANT: nenhuma violação planejada (`CS-XX-N` citado por ID na análise).
-- [ ] Slots CONVENTIONAL: o valor corresponde ao estado registrado de cada área — padrão atual em `current`, padrão local em `legacy-maintained` e `strangler`, o novo valor dentro do escopo de uma migração declarada.
-- [ ] Nenhum comportamento novo planejado para uma área `strangler`.
+- [ ] Slots CONVENTIONAL: o valor efetivo — padrão do time num projeto que não é legado; padrão do código existente e formas únicas que o sistema já expõe num projeto legado; valor do ADR `Accepted` do projeto, onde há um; o novo valor dentro do escopo de uma migração.
 - [ ] Valor de convenção escrito no documento só quando uma decisão de gatilho precisa dele ou quando a área segue valor diferente do padrão do time; sempre o valor, nunca o slot.
 - [ ] Todo afastamento registrado em um dos veículos da ITS: linha de alternativa descartada na unidade · fronteira de fora de escopo · ADR citado nas premissas. No documento, escrito por extenso — o que deixa de fazer, onde, por quê e a condição de saída; o `QM-XX-N` ou `CS-XX-N` só em Referências. Afastamento de segurança com o responsável de segurança do projeto; afastamento sem condição de saída vira ADR.
 
@@ -107,7 +105,7 @@ A passada operacional do `its-generator`. **Nenhum template de documento vive aq
 - [ ] **Alternativa descartada:** toda escolha real da inspeção está fechada por uma linha na unidade, com sua razão decisiva, ou por um ADR citado nas premissas.
 - [ ] **Fronteira de decisão:** nenhuma decisão arquitetural tomada no corpo; todo ADR citado está `Accepted`, e nenhuma instrução o contradiz.
 - [ ] **Fora de escopo:** toda entrada declara por que é uma borda; nenhuma duplica um ponto de regressão.
-- [ ] **Qualidade:** áreas tocadas declaradas com estado e nível; todo gatilho disparado decidido numa unidade; todo afastamento de um critério `QM-XX-N` ou de um slot `CS-XX-N` registrado como uma exceção nomeada, com condição de saída. Nenhum inegociável silencioso e nenhuma violação INVARIANT silenciosa permanece.
+- [ ] **Qualidade:** nível de criticidade da demanda declarado nas premissas, com a razão; todo gatilho disparado decidido numa unidade; todo afastamento de um critério `QM-XX-N` ou de um slot `CS-XX-N` registrado como uma exceção nomeada, com condição de saída. Nenhum inegociável silencioso e nenhuma violação INVARIANT silenciosa permanece.
 - [ ] **Dependência:** todo delta pendente de outra story com a ordem de entrega presumida nas premissas e a outra story em Referências como dependência.
 - [ ] **Autossuficiência:** nenhum identificador de outro documento fora de Referências, salvo o ADR citado em Decisões registradas; nenhuma instrução depende de abrir a fonte; toda linha de Referências diz onde foi usada e nenhuma carrega conteúdo que o corpo deveria carregar.
 - [ ] **Nível:** a linha sob o título declara o nível de detalhe do pedido; toda unidade tem os campos desse nível e só eles; todo item, ponto de regressão, restrição, decisão de qualidade, trecho fixado, teste devido e fronteira do plano fechado está no documento, seja qual for o nível; todo caso de borda escrito remonta a um item, a um ponto de regressão ou a uma decisão de qualidade.

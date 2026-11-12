@@ -14,7 +14,7 @@ O cabeçalho é por onde o mapa é citado: **ID** (`IM-<demand-id>-N`), **Revis�
 | **Alcance — superfície de contrato** | o que é visível fora desta base de código, com os consumidores conhecidos nomeados e não adentrados |
 | **Dados existentes** | o estado persistido que a mudança obriga a migrar, preencher ou reinterpretar: forma e volume, ou o volume como lacuna |
 | **Como o alcance foi buscado** | as sementes e as buscas — é o que diz que tipo de omissão é plausível |
-| **Estados das áreas** | por área tocada, o estado registrado, o nível de criticidade, o substituto e o `MIG-NNN` de uma `strangler`, as exclusões e a regra do projeto que a alcança. Área fora do registro vem `current` · `padrão`, marcada *não registrada* |
+| **Contexto do projeto** | se o projeto é legado (opção Legado da configuração), os sinais de criticidade ancorados — o que no alcance pesa para o nível da demanda, sem declarar o nível —, as migrações em curso que cobrem o alcance, com o ADR de cada uma, e o código gerado ou de terceiros |
 | **Camada documentada** | cobertura por casos de uso com o status de cada um (num `Reviewed` com delta pendente, o ID da story em curso), as divergências código × caso de uso, as lacunas de documentação e os ADRs `Accepted` e `Proposed` que incidem |
 | **Lacunas e questões em aberto** | cada uma com o que a resolveria |
 | **Onde o mapa para** | a borda: o que deliberadamente não foi rastreado, e o que justificaria rastrear |

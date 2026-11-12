@@ -4,10 +4,8 @@ Passada operacional de propriedade do `impact-mapping`. O SKILL.md define os est
 
 ## Configuração e revisão
 
-- [ ] `docs/prime-config.md` lido conforme as regras de consumo do **prime-config**.
-- [ ] Da configuração, o que o Passo 0 do SKILL.md lista.
-- [ ] Área que o registro não lista escrita como `current` · `padrão`, marcada *não registrada* — o padrão do contrato, não uma lacuna.
-- [ ] Subseção Registro de áreas ausente ou slot sem valor de que o mapa precisa registrados como lacuna (`coding-standards`, Slots não preenchidos) — nunca improvisados.
+- [ ] Do `docs/prime-config.md`, só a seção necessária e só no passo que a usa, conforme as regras de consumo do **prime-config**: Estrutura (Passos 2 e 3), Comandos de verificação (Passo 3), Opções (Passo 4), Repositório de documentos (Passo 5). O arquivo nunca lido por inteiro.
+- [ ] Seção necessária ausente → lacuna reportada, nunca improvisada.
 - [ ] Revisão registrada: o commit lido, as mudanças não commitadas declaradas e, com raiz de documentos paralela, a revisão dela. Sem controle de versão acessível, isso dito.
 
 ## A mudança, como comportamento
@@ -42,12 +40,13 @@ Passada operacional de propriedade do `impact-mapping`. O SKILL.md define os est
 - [ ] Busca antes de abrir: de cada resultado, só o trecho que decide e ancora; arquivo inteiro só quando o trecho depende do que o cerca; nenhum pacote inteiro; nada aberto além da borda.
 - [ ] Sementes e buscas registradas no relatório.
 
-## Sobreposição do registro de áreas
+## Sobreposição do contexto do projeto
 
-- [ ] Cada área tocada carrega seu estado registrado (`current` / `legacy-maintained` / `strangler`) e seu nível de criticidade (`efêmera` / `padrão` / `crítica`), ou `current` · `padrão` *não registrada*; código de exclusão marcado como tal.
-- [ ] Estado tirado da configuração — nunca inferido do nome do diretório ou da idade do arquivo.
-- [ ] Área `strangler` com o módulo substituto e o ID da migração; área proibida ou restrita pelas regras do projeto com a regra citada.
-- [ ] Estado registrado, **não** precificado.
+- [ ] Legado: o valor da opção Legado da configuração — nunca inferido do nome do diretório ou da idade do arquivo.
+- [ ] Sinais de criticidade ancorados (dinheiro, dado pessoal ou sensível, autenticação e autorização, obrigação regulatória, muitos dependentes, prazo de vida declarado). Nível **não** declarado: é da ITS.
+- [ ] Migrações em curso cujo escopo cobre o alcance, com o ADR `Accepted` que as declara e o valor de destino.
+- [ ] Código gerado ou de terceiros no alcance marcado como tal.
+- [ ] Contexto registrado, **não** precificado.
 
 ## Sobreposição da camada documentada
 
@@ -78,7 +77,7 @@ Passada operacional de propriedade do `impact-mapping`. O SKILL.md define os est
 
 ## Template do relatório
 
-**Idioma.** O bloco abaixo é o artefato que o arquiteto arquiva, e é escrito no idioma de documento que os templates do core usam: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis — `IM-<demand-id>-N`, os marcadores de proveniência (`[INFERRED]`, `[UNVERIFIED]`), os estados de área (`current`, `legacy-maintained`, `strangler`), os níveis de criticidade (`efêmera`, `padrão`, `crítica`), os status de caso de uso (`Draft`, `Reviewed`, `Retired`) e de ADR (`Proposed`, `Accepted`), `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `MIG-NNN`, `QM-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
+**Idioma.** O bloco abaixo é o artefato que o arquiteto arquiva, e é escrito no idioma de documento que os templates do core usam: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis — `IM-<demand-id>-N`, os marcadores de proveniência (`[INFERRED]`, `[UNVERIFIED]`), os níveis de criticidade (`efêmera`, `padrão`, `crítica`), os status de caso de uso (`Draft`, `Reviewed`, `Retired`) e de ADR (`Proposed`, `Accepted`), `UC-NNN`, `RN-N`, `CA-N`, `ADR-NNN`, `QM-XX-N`, caminhos de arquivo e identificadores — nunca são traduzidos.
 
 ````markdown
 # Mapa de impacto — IM-<demand-id>-N
@@ -130,10 +129,11 @@ não entra aqui — vai para Lacunas.]
 - **Sementes:** [os pontos de entrada do Passo 2]
 - **Buscas:** [referências de símbolo; nomes de contrato procurados e onde; leitores do estado persistido; histórico consultado]
 
-## Estados das áreas
-| Área | Estado registrado | Nível de criticidade | Marcas |
-|---|---|---|---|
-| [área] | current / legacy-maintained / strangler / exclusão — ou current *não registrada* | efêmera / padrão / crítica — ou padrão *não registrada* | [strangler: substituto e MIG-NNN · regra do projeto citada · nenhuma] |
+## Contexto do projeto
+- **Legado:** [true / false, da opção Legado da configuração]
+- **Sinais de criticidade:** [o que no alcance pesa para o nível da demanda, cada sinal com a âncora — ou nenhum encontrado]
+- **Migrações em curso:** [ADR-NNN — valor de destino, código do alcance que o escopo cobre — ou nenhuma]
+- **Código gerado ou de terceiros:** [caminho e origem — ou nenhum]
 
 ## Camada documentada
 - **Cobertura:** UC-NNN (`Reviewed`; RN-N, CA-N) cobre [o quê]

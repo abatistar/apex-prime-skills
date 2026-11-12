@@ -4,7 +4,7 @@ Passada operacional de propriedade do `feasibility-analysis`. O SKILL.md define 
 
 ## 0. Entradas carregadas
 
-- [ ] `docs/prime-config.md` lido conforme as regras de consumo do `prime-config`, com o que o Passo 0 do SKILL.md usa dele — **sem o registro de áreas**, que chega pela sobreposição do mapa (§2).
+- [ ] Do `docs/prime-config.md`, só a seção necessária e só quando uma lente precisa dela, conforme as regras de consumo do `prime-config`: Stack, Comandos de verificação, Repositório de documentos. O contexto do projeto chega pela sobreposição do mapa (§2); o arquivo nunca lido por inteiro.
 - [ ] Regras de consumo do `quality-model` + `../quality-model/references/quality-triggers.md`.
 - [ ] Regras de consumo do `coding-standards`.
 - [ ] Catálogos não carregados inteiros: cada ID aplicado é lido no arquivo da sua lente ou família, com o índice do catálogo (SKILL, Passo 0).
@@ -30,11 +30,11 @@ Passada operacional de propriedade do `feasibility-analysis`. O SKILL.md define 
 
 ## 3. Lentes, em ordem
 
-- [ ] **Restrição** — teto de stack/versão, plataforma, dados ausentes, dependência externa, licença, regulação, **regras do projeto** (área proibida, compliance, residência de dados, janela de deploy), exclusão gerada de contrato de terceiro. A única fonte de impossibilidade verdadeira.
-- [ ] **Encaixe estrutural** — `QM-CC-1..7`, `CS-AR-1..5`, incidência de ADR do mapa. Regra replicada (`QM-CC-6`) → `Cost driver:`. Área `strangler` → caminho julgado no substituto; substituto que não comporta → `Condition:` do dono da migração. Contradizer um ADR Accepted, ou depender de um `Proposed`, é uma **questão de ADR**, não um blocker: `Condition:` nomeando o ADR, responsável o arquiteto, rota para o ciclo de vida do ADR. Nenhum ADR redigido aqui.
+- [ ] **Restrição** — teto de stack/versão, plataforma, dados ausentes, dependência externa, licença, regulação, restrições operacionais e de compliance registradas em ADR `Accepted` ou declaradas na demanda (residência de dados, janela de deploy), código gerado de contrato de terceiro. A única fonte de impossibilidade verdadeira.
+- [ ] **Encaixe estrutural** — `QM-CC-1..7`, `CS-AR-1..5`, incidência de ADR do mapa. Regra replicada (`QM-CC-6`) → `Cost driver:`. Projeto legado → caminho julgado contra a arquitetura que o código tem. Alcance no escopo de uma migração em curso → caminho no valor de destino; migração que não comporta → `Condition:` do responsável que o ADR nomeia. Contradizer um ADR Accepted, ou depender de um `Proposed`, é uma **questão de ADR**, não um blocker: `Condition:` nomeando o ADR, responsável o arquiteto, rota para o ciclo de vida do ADR. Nenhum ADR redigido aqui.
 - [ ] **Superfície de contrato** — todo consumidor conhecido pode ser migrado sem quebra silenciosa (`QM-CC-7`, `CS-CT-1`, G2)? O conjunto de consumidores é enumerável? Consumidor noutro projeto → `Condition:` roteada à demanda daquele projeto.
-- [ ] **Entrega e reversibilidade** — expansão, migração e contração para contrato e esquema (`QM-CC-7`, `CS-CT-1`, `CS-DA-4`); caminho para os dados existentes; flag com condição de remoção quando pedida (`CS-EV-1`); janelas e restrições de deploy. Sem convivência com a versão em produção → `Condition:`; `Blocker:` só se uma regra ancorada proíbe o único caminho.
-- [ ] **Gatilhos de especificação** — a demanda passada pelo G1–G15. Slot sem valor → `Condition:` de lacuna de slot. Decisão que vale além da story → `Condition:` de ADR. G13 → `Condition:` de admissão (`CS-DP-1`, `CS-DP-2`). G14, G1 com regra de acesso ou área `crítica` → `Condition:` do responsável de segurança (`QM-SR-*`, `CS-SC-*`; `QM-SR-8`, `QM-SR-10`, `CS-SC-6`). G11, G12 → `Cost driver:`. G3–G6, G8 → `Cost driver:` quando o mecanismo e o valor existem. Nenhum gatilho fabricado.
+- [ ] **Entrega e reversibilidade** — expansão, migração e contração para contrato e esquema (`QM-CC-7`, `CS-CT-1`, `CS-DA-4`); caminho para os dados existentes; flag com condição de remoção quando pedida (`CS-EV-1`); janelas e restrições de deploy. Sem convivência com a versão em produção → `Condition:`; `Blocker:` só se uma restrição ancorada proíbe o único caminho.
+- [ ] **Gatilhos de especificação** — a demanda passada pelo G1–G15. Slot sem valor → `Condition:` de lacuna de slot. Decisão que vale além da story → `Condition:` de ADR. G13 → `Condition:` de admissão (`CS-DP-1`, `CS-DP-2`). G14, G1 com regra de acesso ou sinal de `crítica` no mapa → `Condition:` do responsável de segurança (`QM-SR-*`, `CS-SC-*`; `QM-SR-8`, `QM-SR-10`, `CS-SC-6`). G11, G12 → `Cost driver:`. G3–G6, G8 → `Cost driver:` quando o mecanismo e o valor existem. Nenhum gatilho fabricado.
 - [ ] **Verificação** — comandos de verificação, observabilidade presente (`QM-EO-7`), obrigação de teste (`CS-TS-1`), meta não funcional mensurável (G10, `QM-EF-2`).
 - [ ] **Risco de erosão** — o caminho mais barato cria uma segunda forma de fazer algo (`QM-CN-1`) ou aumenta a contagem de uma migração em curso?
 - [ ] Nenhum reandar de código que o mapa já andou.
@@ -45,7 +45,7 @@ Passada operacional de propriedade do `feasibility-analysis`. O SKILL.md define 
 - [ ] Todo achado carrega sua âncora do mapa: **ancorada**, `[INFERRED]` ou `[UNVERIFIED]`.
 - [ ] Vocabulário reutilizado do `impact-mapping`, não redefinido aqui.
 - [ ] Nenhum `Blocker:` apoiado em evidência `[INFERRED]` ou `[UNVERIFIED]`.
-- [ ] Todo `Blocker:` passou pela refutação: caminho alternativo para o mesmo resultado, teto que é na verdade configuração, regra que não alcança a área, âncora que não diz o que o achado afirma. No código, só a âncora conferida foi aberta; caminho além da borda do mapa não foi rastreado. O que não sobreviveu caiu; o que não foi confirmado nem derrubado vai para a regra 2.
+- [ ] Todo `Blocker:` passou pela refutação: caminho alternativo para o mesmo resultado, teto que o projeto pode mudar por decisão, restrição que não alcança o código, âncora que não diz o que o achado afirma. No código, só a âncora conferida foi aberta; caminho além da borda do mapa não foi rastreado. O que não sobreviveu caiu; o que não foi confirmado nem derrubado vai para a regra 2.
 
 ## 5. Classificação
 
@@ -59,7 +59,7 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 | `FYI:` | — | nenhum |
 
 - [ ] Todo achado cita um ID ou uma âncora de evidência.
-- [ ] Toda `Condition:` tem responsável e rota (uma condição sem rota é um blocker disfarçado). Responsável tirado dos Responsáveis da configuração — arquiteto responsável, responsável de segurança, responsável da migração, arquiteto responsável do outro projeto; papel sem nome escrito "não declarado ainda" e reportado.
+- [ ] Toda `Condition:` tem responsável e rota (uma condição sem rota é um blocker disfarçado). Responsável escrito pelo papel — arquiteto, responsável de segurança, responsável que o ADR da migração nomeia, arquiteto do outro projeto; nome só quando informado pelo arquiteto ou registrado num ADR.
 - [ ] Achados causados por um único fato estrutural agregados nesse fato.
 - [ ] Nenhuma estimativa de esforço em horas, pontos ou sprints em qualquer parte do relatório.
 
@@ -80,9 +80,9 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 
 - [ ] **Skills de caso de uso** — execução do extractor para um baseline; validação de `Draft` e divergência (`QM-DO-1`) ao use-case-creator. Nunca remendadas aqui.
 - [ ] **Arquiteto** — decisão de ADR a levantar (`Accepted` desafiado ou `Proposed` de que a demanda depende), como `Condition:`. O ADR é redigido pelo fluxo do its-contract, pelo arquiteto nesta etapa ou pelo its-generator quando um plano se comprometer com ele, nunca neste relatório. Caso de uso `Retired` que o código ainda executa.
-- [ ] **Configuração** — slot não preenchido (`coding-standards`), papel de Responsáveis sem nome, fato do projeto de que a análise precisou e que a configuração não carrega. Nunca improvisados.
+- [ ] **Configuração** — seção de que a análise precisou e que falta ou diverge do código. Slot não preenchido (`coding-standards`) → ao arquiteto. Nunca improvisados.
 - [ ] **Outro projeto** — a demanda correspondente, quando o resultado daqui depende dela.
-- [ ] **Backlog** — dívida que o caminho viável criaria, com responsável prospectivo (`QM-MT-1`), no formato do Tracker.
+- [ ] **Backlog** — dívida que o caminho viável criaria, com responsável prospectivo (`QM-MT-1`), como item para o arquiteto registrar.
 - [ ] **Dono do modelo de qualidade** — critério de que a confrontação precisou e que o catálogo não tem.
 
 ## 8. Verificação de fronteira antes de entregar
@@ -122,9 +122,9 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 | # | Severidade | Onde | Critério / evidência | Achado e implicação |
 |---|---|---|---|---|
 | 1 | Blocker | `pom.xml` (ancorado) | teto de stack — config | [o que é impossível e por quê; a refutação tentada e por que não o derrubou] |
-| 2 | Condition | UC-042 ausente (ancorado) | baseline | [o que precisa ser verdade antes] · responsável: [nome, dos Responsáveis] · rota: use-case-extractor |
+| 2 | Condition | UC-042 ausente (ancorado) | baseline | [o que precisa ser verdade antes] · responsável: [papel, e o nome quando informado] · rota: use-case-extractor |
 | 3 | Condition | `POST /payments` (ancorado) | G1, `QM-SR-8` | [fronteira de acesso nova] · responsável: [responsável de segurança] · rota: avaliação antes da especificação |
-| 4 | Cost driver | `billing/legacy` (ancorado) | estados das áreas, do mapa | [o que aumenta o tamanho] |
+| 4 | Cost driver | `billing/legacy` (ancorado) | contexto do projeto, do mapa | [o que aumenta o tamanho] |
 | 5 | FYI | `[INFERRED]` [o que foi deduzido] | [o raciocínio, na própria linha] | [contexto; evidência assim nunca sustenta um Blocker — §6, regra 2] |
 
 ## Cobertura das lentes
@@ -155,6 +155,6 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 - **Arquiteto:** [decisão de ADR a levantar / caso de uso Retired ainda executado]
 - **Configuração:** [slot não preenchido / papel sem nome / fato ausente]
 - **Outro projeto:** [demanda correspondente]
-- **Backlog:** [dívida, no formato do Tracker, com responsável prospectivo]
+- **Backlog:** [dívida, com responsável prospectivo]
 - **Dono do modelo de qualidade:** [critério ausente]
 ````

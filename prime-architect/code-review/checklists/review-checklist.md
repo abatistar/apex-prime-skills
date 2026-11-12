@@ -10,9 +10,9 @@ Passada operacional de propriedade do `code-review`. O SKILL.md define o padrão
 
 - [ ] A **ITS da story** está localizada e lida, junto com todo ADR citado nas premissas do plano dela (Decisões registradas). Documentação em pasta paralela → lida na revisão que o PR cita.
 - [ ] Os **casos de uso** listados nas Referências da ITS estão lidos — para a lente Documentação; o julgamento funcional é contra os itens da ITS.
-- [ ] `docs/prime-config.md` está carregado, com o que o Passo 0 do SKILL.md usa dele.
-- [ ] O estado e o nível de criticidade de cada área tocada foram lidos nas premissas da ITS — não rejulgados —, junto com o que o perfil de cada nível exige.
-- [ ] As **verificações obrigatórias estão verdes**, conforme o Passo 0. Nenhum pipeline declarado → os comandos de verificação da configuração rodaram em seu lugar. Vermelho por causa de um teste instável → a revisão começa e isso é um achado `Blocking:` por si só (`QM-TS-1`).
+- [ ] Do `docs/prime-config.md`, só a seção necessária e só quando a revisão precisa dela, conforme as regras de consumo do `prime-config`: Repositório de documentos, Comandos de verificação, Estrutura, Opções. O arquivo nunca lido por inteiro.
+- [ ] O nível de criticidade da demanda e, num projeto legado, a declaração de que o plano segue o padrão do código existente foram lidos nas premissas da ITS — não rejulgados —, junto com o que o perfil do nível exige.
+- [ ] As **verificações obrigatórias estão verdes**, conforme o Passo 0. PR sem o resultado das verificações → os comandos de verificação da configuração rodaram em seu lugar. Vermelho por causa de um teste instável → a revisão começa e isso é um achado `Blocking:` por si só (`QM-TS-1`).
 - [ ] O diff é revisável de uma só sentada. Se não for: peça uma divisão, ou declare as unidades do plano que você revisará e em que ordem.
 - [ ] A **rodada** está identificada. Rodada seguinte → aplique também a seção 7.
 - [ ] Nenhum código aberto antes destas pré-condições conferidas.
@@ -39,8 +39,8 @@ Passada operacional de propriedade do `code-review`. O SKILL.md define o padrão
 - [ ] **Alternativas descartadas**: nenhuma unidade tomou o caminho que a sua alternativa descartada recusou.
 - [ ] **Decisões de qualidade**: toda decisão de gatilho da ITS chegou ao código com o valor declarado e com o teste ou a medição devida. Gatilho disparado sem decisão na ITS → defeito do plano, não do autor.
 - [ ] **Migrações de esquema**: na ordem que a ITS declara, convivendo com a versão em produção (`QM-CC-7`, `CS-CT-1`); nenhuma migração aplicada editada (`CS-DA-4`).
-- [ ] **Migrações declaradas**: nenhuma contagem de migração de convenção em curso aumentou (`QM-CN-1`).
-- [ ] **Registro de áreas**: nenhum comportamento novo numa área `strangler`; nenhuma exclusão editada à mão.
+- [ ] **Migrações de convenção**: nenhuma contagem de migração em curso, declarada num ADR `Accepted`, aumentou (`QM-CN-1`).
+- [ ] **Código gerado ou de terceiros**: nada editado à mão.
 - [ ] **Configuração**: a atualização do `docs/prime-config.md` que a ITS planejou está no PR; nenhuma mudança na configuração sem unidade que a peça.
 - [ ] **Fronteiras**: nada em "Fora de escopo — não alterar" foi tocado.
 - [ ] **ADRs**: nenhuma contradição com um ADR Accepted; nenhuma decisão arquitetural chegou sem um.
@@ -49,15 +49,15 @@ Passada operacional de propriedade do `code-review`. O SKILL.md define o padrão
 ## 3. Varredura do piso — inteira, independentemente das pistas
 
 - [ ] Cada inegociável de "O piso num relance" (`../quality-model/references/quality-criteria.md`); o que alcança o diff, julgado pelo teste de *Violação* no arquivo da lente.
-- [ ] Os inegociáveis acrescentados pela postura do modelo de qualidade do projeto.
-- [ ] Cada slot de "Os invariantes num relance" (`../coding-standards/references/convention-slots.md`); o que alcança o diff, julgado no valor efetivo da área. Slots de verificação `ferramenta` cobertos pelo pipeline não são reverificados; os não cobertos são varridos e viram lacuna de toolchain.
+- [ ] Os inegociáveis que o projeto acrescentou por ADR `Accepted`.
+- [ ] Cada slot de "Os invariantes num relance" (`../coding-standards/references/convention-slots.md`); o que alcança o diff, julgado no valor efetivo (ADR do projeto, padrão da stack; num projeto legado, a forma única que o sistema já expõe). Slots de verificação `ferramenta` cobertos pelo pipeline não são reverificados; os não cobertos são varridos e viram lacuna de toolchain.
 - [ ] Atenção redobrada aos pontos em que o código gerado mais falha (quality-model, Código gerado).
 
 ## 4. Lentes, em ordem — o mapa de IDs é o Passo 4 do SKILL.md
 
 - [ ] **Design** — as peças pertencem aonde estão; a mudança se encaixa no sistema.
 - [ ] **Funcionalidade** — o resultado de cada item de O que muda; o comportamento sob o ambiente que falha; os caminhos de erro.
-- [ ] **Segurança** — toda fronteira aberta ou tocada. Área `crítica` → responsável de segurança na revisão (Passo 6).
+- [ ] **Segurança** — toda fronteira aberta ou tocada. Demanda `crítica` → responsável de segurança na revisão (Passo 6).
 - [ ] **Eficiência** — nenhum trabalho ilimitado; acesso a dados para o volume de produção; meta não funcional medida como a ITS declarou.
 - [ ] **Observabilidade** — o comportamento novo se explica em produção, na intensidade do nível.
 - [ ] **Complexidade** — legível rapidamente; nada especulativo, na régua do nível declarado.
@@ -65,7 +65,7 @@ Passada operacional de propriedade do `code-review`. O SKILL.md define o padrão
 - [ ] **Nomenclatura** — nenhum nome ocultando I/O, mutação ou um evento.
 - [ ] **Comentários** — *porquê*, não *quê*.
 - [ ] **Documentação** — nenhum documento co-localizado deixado mentindo. Diferença da ITS → Funcionalidade, contra o autor; ITS cumprida mas diferente do caso de uso → *Return to the architect* (ITS mal traduzida → its-generator; caso de uso desatualizado → skills de caso de uso). Delta pendente de outra story não é defeito: julgado contra a ordem de entrega das premissas da ITS. Nada remendado aqui.
-- [ ] **Estilo e consistência** — slots convencionais contra o estado registrado da área (`current` / `legacy-maintained` / `strangler`) e contra o exemplo canônico, quando declarado. Em legacy-maintained, um achado convencional só é válido se um **terceiro** padrão foi introduzido.
+- [ ] **Estilo e consistência** — slots convencionais contra o valor efetivo e contra o exemplo canônico, quando a ITS aponta um. Num projeto legado, um achado convencional só é válido se a mudança introduziu um padrão que o código não tinha.
 - [ ] **Cada linha** que um humano vai manter foi realmente lida; o que foi só percorrido está na Cobertura.
 - [ ] **Uma coisa bem feita** foi identificada e nomeada.
 
@@ -95,7 +95,7 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 - [ ] Um só: **Approve** · **Approve with comments** · **Request changes** · **Return to the architect** — com a razão em uma linha.
 - [ ] Request changes → os itens que governam o merge numerados e separados de todo o resto.
 - [ ] Return to the architect → o que precisa mudar e em qual documento, roteado ao its-generator ou às skills de caso de uso; a ITS não é editada aqui.
-- [ ] Área `crítica` ou exceção de segurança → aprovação pendente da revisão do responsável de segurança; sem responsável declarado → lacuna reportada e veredito pendente.
+- [ ] Demanda `crítica` ou exceção de segurança → aprovação pendente da revisão do responsável de segurança, que o arquiteto informa.
 
 *Nunca aprove uma mudança que você não entendeu.*
 
@@ -110,8 +110,8 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 
 - [ ] **its-generator**: ADR a propor (o arquiteto aprova); ITS a revisar, com a seção nomeada.
 - [ ] **Skills de caso de uso**: caso de uso que o comportamento entregue contradiz.
-- [ ] **Configuração**: slot não preenchido (`coding-standards`, Slots não preenchidos) — nunca improvisado; papel de Responsáveis sem nome de que a revisão precisou.
-- [ ] **Backlog**, redigido como item no formato do Tracker, com responsável e condição de saída, para o arquiteto registrar: lacuna de toolchain (uma verificação que um humano fez e que uma ferramenta deveria possuir, ou um slot de verificação `ferramenta` sem regra no pipeline — `QM-MT-7`); dívida deliberada (`QM-MT-1`).
+- [ ] **Configuração**: seção de que a revisão precisou e que falta ou diverge do código. **Arquiteto**: slot não preenchido (`coding-standards`, Slots não preenchidos) — nunca improvisado.
+- [ ] **Backlog**, redigido como item, com responsável e condição de saída, para o arquiteto registrar: lacuna de toolchain (uma verificação que um humano fez e que uma ferramenta deveria possuir, ou um slot de verificação `ferramenta` sem regra no pipeline — `QM-MT-7`); dívida deliberada (`QM-MT-1`).
 - [ ] **Dono do modelo de qualidade**: `Blocking:` que repete o que revisões anteriores já bloquearam — critério cobrado tarde demais.
 - [ ] A coluna de base de cada achado carrega o ID exato, sem paráfrase.
 
@@ -125,7 +125,7 @@ As severidades e o que cabe em cada uma são os do Passo 5 do SKILL.md; a tabela
 
 ## 10. Entrega no pull request — conforme `references/pr-delivery.md`
 
-- [ ] Plataforma e políticas de PR lidas da seção Pipeline da configuração; sem elas, o relatório inteiro vai ao arquiteto.
+- [ ] Plataforma e políticas: as do próprio PR; onde a skill não alcança o PR, o relatório inteiro vai ao arquiteto.
 - [ ] Um comentário por achado com local, na linha ou no arquivo, começando pelo token da severidade; achados sem local e o resumo na conversa geral.
 - [ ] Nenhum comentário com código pronto para aplicar, nem como sugestão de alteração.
 - [ ] `Blocking:`, `Question:` e `Consider:` ativos; `Nit:` e `FYI:` publicados já fechados.
@@ -177,8 +177,8 @@ Os trechos entre `[` e `]` são orientação de preenchimento. Quando o resultad
 ## Follow-ups
 - its-generator: [ADR a propor | seção da ITS a revisar]
 - Casos de uso: [UC-NNN contradito pelo comportamento entregue, e em quê]
-- Configuração: [slot não preenchido | papel de Responsáveis sem nome]
-- Backlog, a registrar pelo arquiteto: [item no formato do Tracker — título; lacuna de toolchain ou dívida; responsável; condição de saída]
+- Configuração: [seção ausente ou divergente] · Arquiteto: [slot não preenchido]
+- Backlog, a registrar pelo arquiteto: [título; lacuna de toolchain ou dívida; responsável; condição de saída]
 - Dono do modelo de qualidade: [critério que voltou a bloquear no mesmo ponto]
 
 ## Feito bem

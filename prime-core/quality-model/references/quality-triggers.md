@@ -4,11 +4,11 @@ Referência de propriedade do `quality-model`. Um gatilho é algo que uma story 
 
 Três papéis leem esta lista. O `its-generator` passa a story por ela e escreve cada decisão disparada na unidade que a implementa. Quem implementa a usa para reconhecer, no código que escreve, um gatilho que a ITS deixou sem decisão. O `code-review` confere contra ela: um gatilho disparado e não decidido é defeito do plano, não do autor.
 
-**Como ler.** Cada gatilho traz quando dispara, os critérios que ativa, o que a especificação decide e a verificação esperada. A intensidade segue o nível de criticidade da área tocada (Perfis de criticidade, no catálogo): numa área `efêmera`, o gatilho exige o que o piso exige; numa área `crítica`, tudo o que ele lista. Os gatilhos são numerados para a conversa; o que se cita num achado ou nas Referências de uma ITS é o critério.
+**Como ler.** Cada gatilho traz quando dispara, os critérios que ativa, o que a especificação decide e a verificação esperada. A intensidade segue o nível de criticidade da demanda (Perfis de criticidade, no catálogo): numa demanda `efêmera`, o gatilho exige o que o piso exige; numa demanda `crítica`, tudo o que ele lista. Os gatilhos são numerados para a conversa; o que se cita num achado ou nas Referências de uma ITS é o critério.
 
 **Três regras.**
 - A decisão chega à ITS como instrução, na unidade que a implementa, com o valor concreto — "timeout de 2 s; no máximo 3 tentativas, com espera de 200 ms, 400 ms e 800 ms, só para erro de conexão e HTTP 503" —, nunca como "um timeout adequado" nem como o ID do critério.
-- Onde o `coding-standards` ou a configuração do projeto já decide o valor, a ITS escreve esse valor. Onde ninguém decidiu, a lacuna é reportada, não inventada.
+- Onde o `coding-standards` ou um ADR `Accepted` do projeto já decide o valor, a ITS escreve esse valor. Onde ninguém decidiu, a lacuna é reportada, não inventada.
 - Uma decisão que vale além desta story — o primeiro outbox do sistema, a política de idempotência de todos os consumidores — é um ADR, conforme a fronteira de decisão do `its-contract`.
 
 ---
@@ -142,10 +142,10 @@ Três papéis leem esta lista. O `its-generator` passa a story por ela e escreve
 *Verificação:* o evento é registrado sem o dado sensível; o acesso indevido é negado.
 
 ## G15 — Comportamento novo em produção
-*Dispara quando:* a story entrega comportamento novo, exceto numa área `efêmera` cuja pergunta não pede medição.
+*Dispara quando:* a story entrega comportamento novo, exceto numa demanda `efêmera` cuja pergunta não pede medição.
 *Critérios:* `QM-EO-7`, `QM-EO-8`.
 *A especificação decide:*
 - o sinal que mostra em produção que o comportamento funciona — a métrica ou o evento de log estruturado;
 - o nível de log dos caminhos de erro.
 
-*Verificação:* revisão do sinal no diff; numa área `crítica`, um teste confere que ele é emitido.
+*Verificação:* revisão do sinal no diff; numa demanda `crítica`, um teste confere que ele é emitido.

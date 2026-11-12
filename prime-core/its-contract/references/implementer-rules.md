@@ -10,7 +10,7 @@ Parte do contrato do `its-contract`, lida por quem implementa — pessoa ou agen
   - a ITS que o PR implementa e, quando a documentação do projeto vive numa pasta paralela, versionada à parte, a revisão da documentação implementada — é contra essa revisão que a implementação é julgada;
   - as unidades implementadas, pelo número, e a unidade que ficou de fora, com o motivo;
   - as perguntas devolvidas ao arquiteto durante a implementação e a revisão da ITS que as respondeu;
-  - a dívida herdada encontrada no código tocado, com os elementos do registro de exceção do quality-model e o item de backlog no formato que a configuração declara em Tracker;
+  - a dívida herdada encontrada no código tocado, com os elementos do registro de exceção do quality-model e o identificador do item de backlog que a registra;
   - os commits de arrumação mecânica, separados dos que mudam comportamento;
   - os comandos de verificação executados e o resultado, ou a execução do pipeline.
 - Desvios descobertos durante a implementação (o plano não sobrevive ao contato com o código) → reporte; o arquiteto revisa a ITS. O documento permanece como fonte de verdade do que foi acordado. Cópias publicadas em outros lugares são visões; validar a divergência entre elas e o repositório é responsabilidade do arquiteto, não do implementador.

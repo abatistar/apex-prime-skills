@@ -1,6 +1,6 @@
 ---
 name: impact-mapping
-description: Mapeia o alcance de uma mudança pretendida no código e na camada documentada - o que ela toca, o que depende dela, as áreas registradas, os casos de uso e os ADRs que incidem -, como evidência ancorada e nunca um veredito. Use quando o arquiteto perguntar o que uma mudança alcança - "o que a mudança na regra de preço toca", "mapeie o raio de impacto da S-131", "o que quebra se mudarmos este payload" - e como primeira passada da feasibility-analysis. NÃO use para decidir se a mudança deve ser feita (feasibility-analysis) nem para o impact mapping de produto.
+description: Mapeia o alcance de uma mudança pretendida no código e na camada documentada - o que ela toca, o que depende dela, o contexto do projeto, os casos de uso e os ADRs que incidem -, como evidência ancorada e nunca um veredito. Use quando o arquiteto perguntar o que uma mudança alcança - "o que a mudança na regra de preço toca", "mapeie o raio de impacto da S-131", "o que quebra se mudarmos este payload" - e como primeira passada da feasibility-analysis. NÃO use para decidir se a mudança deve ser feita (feasibility-analysis) nem para o impact mapping de produto.
 context: fork
 background: false
 ---
@@ -26,18 +26,16 @@ Um mapa é bom quando um leitor que discorda de todas as conclusões ainda conse
 
 Este vocabulário é definido aqui e **reutilizado, nunca redefinido**, por toda skill que consome o mapa. Dois defeitos importam mais: uma inferência sem marca, que vira fundamento de veredito, e uma âncora errada, que passa por fato. Agentes de código citam arquivos que não existem e linhas deslocadas. Uma âncora só existe depois de aberta, nunca de memória (Passo 7).
 
-## Passo 0 — Ler a configuração e registrar a revisão
+## Passo 0 — Registrar a revisão
 
-Leia o `docs/prime-config.md` conforme as regras de consumo do **prime-config** (`../prime-config/references/consumer-rules.md`). Consuma dele:
+A configuração do projeto não é lida aqui. Cada fato dela é lido no passo que o usa, e só a seção que o carrega, conforme as regras de consumo do **prime-config** (`../prime-config/references/consumer-rules.md`):
 
-- o **mapa de estrutura** — onde as coisas vivem;
-- o **registro de áreas** — o estado de cada área (`current`, `legacy-maintained`, `strangler`), o nível de criticidade (`efêmera`, `padrão`, `crítica`) e as exclusões;
-- as **migrações declaradas** — para uma área `strangler`, o módulo substituto e o ID da migração;
-- as **regras do projeto** — as áreas proibidas e as restrições operacionais e de compliance que alcançam as áreas tocadas;
-- as localizações do **repositório de documentos** para casos de uso e ADRs, sob a raiz de documentos;
-- os **comandos de verificação** — quais verificações o projeto sabe executar (suíte, teste de arquitetura, contrato, mutação). Eles não dizem quais testes exercitam o quê; isso vem da leitura dos testes, no Passo 3.
+- **Estrutura**, nos Passos 2 e 3 — onde as coisas vivem;
+- **Comandos de verificação**, no Passo 3 — quais verificações o projeto sabe executar (suíte, teste de arquitetura, contrato, mutação). Eles não dizem quais testes exercitam o quê; isso vem da leitura dos testes;
+- **Opções**, no Passo 4 — a opção Legado;
+- **Repositório de documentos**, no Passo 5 — onde vivem os casos de uso e os ADRs.
 
-Área que o registro não lista é `current` e `padrão`, escrita assim e marcada *não registrada* — o padrão que o contrato declara, não uma lacuna. Lacuna é a subseção Registro de áreas ausente, ou um slot sem valor de que o mapa precise: reporte conforme as regras de consumo do `coding-standards` (`../coding-standards/references/consumer-rules.md`, Slots não preenchidos), nunca improvise.
+A seção de que um passo precisa e que falta é uma lacuna: reporte-a conforme as mesmas regras, nunca improvise.
 
 **Registre a revisão.** O alcance decai a partir dela. Anote o commit lido (`git rev-parse HEAD`). Declare as mudanças não commitadas quando houver: o mapa leu algo que nenhum commit guarda. Com raiz de documentos em pasta paralela, versionada à parte, anote a revisão dela também. Sem controle de versão acessível, a data é o único registro, e o mapa diz isso.
 
@@ -72,13 +70,16 @@ Alcance não é uma lista só. Fundir os três graus transforma o mapa em ruído
 
 Para cada item: localização, grau e uma linha sobre *por que está no mapa*. Uma entrada sem razão declarada não pode ser contestada, e um mapa incontestável não é evidência.
 
-## Passo 4 — Sobrepor o registro de áreas
+## Passo 4 — Sobrepor o contexto do projeto
 
-Toda área tocada carrega o **estado** e o **nível de criticidade** registrados na configuração, ou `current` e `padrão` marcados *não registrada* (Passo 0). Os dois são elicitados, nunca inferidos do nome de um diretório nem da idade de um arquivo — o bootstrap do `prime-config` é explícito, e esta skill não o suaviza. Código declarado como exclusão (gerado ou de terceiros) entra no mapa como tal, e a mudança nele vai para a origem — o gerador ou o fornecedor.
+O mesmo alcance custa de forma diferente conforme o projeto e o peso do que a mudança faz. Registre quatro fatos, cada um lido, nunca inferido do nome de um diretório nem da idade de um arquivo:
 
-Duas marcas acompanham a área quando a configuração as declara. Uma área `strangler` leva o módulo substituto e o ID da migração que as migrações declaradas nomeiam: é ali que comportamento novo nasce, e o mapa diz isso como fato. Uma área que as regras do projeto proíbem ou restringem leva a regra citada.
+- **Legado.** O valor da opção Legado da configuração. Num projeto legado, o código existente é a referência para o que for escrito (`coding-standards`, Projeto legado), e o mapa diz isso como fato.
+- **Sinais de criticidade.** O que, no alcance, pesa para o nível de criticidade da demanda, conforme a Calibração do `quality-model`: dinheiro, dado pessoal ou sensível, autenticação e autorização, obrigação regulatória, código com muitos dependentes — ou um prazo de vida declarado na demanda. Cada sinal vai ancorado. O mapa não declara o nível: quem o declara é a ITS.
+- **Migrações em curso.** Os ADRs `Accepted` que declaram migração (`coding-standards`, Migrações) cujo escopo cobre código do alcance, com o número do ADR e o valor de destino.
+- **Código gerado ou de terceiros.** O que, no alcance, não é editado à mão: a mudança nele vai para a origem — o gerador ou o fornecedor.
 
-O mesmo alcance custa de forma diferente conforme o estado e o nível: os mesmos três arquivos numa área `current` e numa `legacy-maintained`, ou numa `padrão` e numa `crítica`, não são a mesma mudança. Registre os dois. Não os precifique — precificar é da `feasibility-analysis`.
+Não precifique nenhum deles — precificar é da `feasibility-analysis`.
 
 ## Passo 5 — Sobrepor a camada documentada
 
@@ -130,7 +131,7 @@ O corpo contém:
 1. **A mudança**, reformulada como comportamento, com sua fronteira explícita.
 2. **O mapa**, separado por grau — direto, acoplado, superfície de contrato —, cada entrada ancorada, localizada e justificada em uma linha, mais os dados existentes.
 3. **Como o alcance foi buscado** — as sementes e as buscas do Passo 3.
-4. **Estados das áreas**, do registro.
+4. **Contexto do projeto** — legado, sinais de criticidade, migrações em curso, código gerado ou de terceiros.
 5. **A camada documentada** — cobertura por casos de uso com o status de cada um, divergências encontradas, incidência de ADR.
 6. **Lacunas e questões em aberto**, cada uma com o que a resolveria.
 7. **Onde o mapa para**, e por quê.

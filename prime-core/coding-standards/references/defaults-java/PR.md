@@ -2,7 +2,7 @@
 
 Leia com o índice, `references/defaults-java.md`; as definições estão em `references/convention-slots/`, mesmo nome.
 
-- **CS-PR-1** — O registro cresce por projeto no `docs/prime-config.md`, cada entrada com seu exemplo canônico. Entradas válidas para o time todo:
+- **CS-PR-1** — A solução do projeto para um problema recorrente é a que o código já usa, e o exemplo canônico é o arquivo que a mostra, localizado pela Estrutura da configuração. Uma solução nova para o projeto inteiro é decidida num ADR. Entradas válidas para o time todo:
   - chamada a outro serviço: um adaptador de saída `*Client` que implementa a porta de saída sobre uma interface de cliente de serviço HTTP (`@HttpExchange`), registrada com `@ImportHttpServices` e configurada por grupo **(Boot 4)** — no Boot 3, sobre o `RestClient` —, com os valores de `CS-RS-1` e `CS-RS-2` e a tradução de erro de `CS-ER-3`;
   - consumo de mensagem: um adaptador de entrada `*Listener` que desserializa, confere a idempotência (`CS-DA-2`) e chama a porta de entrada;
   - trabalho agendado: um adaptador `*Job` que chama a porta de entrada, conforme `CS-DA-2` e `CS-DA-7`;
