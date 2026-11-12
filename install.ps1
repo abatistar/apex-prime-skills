@@ -375,7 +375,11 @@ if ($Desinstalar) {
     }
 
     Write-Host ''
-    Write-Host ("{0} removido(s), {1} mantido(s) por edicao local" -f $script:Removed, $script:Kept) -ForegroundColor Green
+    if ($script:DryRun) {
+        Write-Host ("Simulacao (-WhatIf), nada foi alterado: {0} a remover, {1} a manter por edicao local" -f $script:Removed, $script:Kept) -ForegroundColor Yellow
+    } else {
+        Write-Host ("{0} removido(s), {1} mantido(s) por edicao local" -f $script:Removed, $script:Kept) -ForegroundColor Green
+    }
     if ($script:Kept -gt 0) {
         Write-Host 'Rode novamente com -Force para remover os mantidos.' -ForegroundColor DarkYellow
     }
@@ -483,8 +487,13 @@ try {
     Write-Manifest -Path $manifestPath -Files $next -ManifestVersion $version -ManifestScope $scope
 
     Write-Host ''
-    Write-Host ("{0} skill(s), {1} adapter(s) | {2} gravado(s), {3} ja atualizado(s), {4} preservado(s), {5} removido(s)" -f `
-        $skillNames.Count, $Roles.Count, $script:Written, $script:Unchanged, $script:Preserved, $script:Removed) -ForegroundColor Green
+    if ($script:DryRun) {
+        Write-Host ("Simulacao (-WhatIf), nada foi alterado: {0} skill(s), {1} adapter(s) | {2} a gravar, {3} ja atualizado(s), {4} a preservar, {5} a remover" -f `
+            $skillNames.Count, $Roles.Count, $script:Written, $script:Unchanged, $script:Preserved, $script:Removed) -ForegroundColor Yellow
+    } else {
+        Write-Host ("{0} skill(s), {1} adapter(s) | {2} gravado(s), {3} ja atualizado(s), {4} preservado(s), {5} removido(s)" -f `
+            $skillNames.Count, $Roles.Count, $script:Written, $script:Unchanged, $script:Preserved, $script:Removed) -ForegroundColor Green
+    }
     if ($script:Preserved -gt 0) {
         Write-Host 'Rode novamente com -Force para sobrescrever os preservados.' -ForegroundColor DarkYellow
     }
