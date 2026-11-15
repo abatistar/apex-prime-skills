@@ -108,7 +108,7 @@ A borda vale na revisão registrada. Quem lê o mapa depois confere se ela ainda
 
 ## Passo 7 — Verificar antes de entregar
 
-Três verificações. Corrija cada falha no próprio mapa, em vez de anotá-la:
+**Leia agora** `checklists/impact-map-checklist.md` e percorra-o inteiro sobre o mapa pronto: ele é a lista que se executa e traz o template do relatório. Corrija cada falha no próprio mapa, em vez de anotá-la. Três verificações são o centro dessa conferência:
 
 - **Âncoras.** Toda âncora foi aberta nesta execução, na revisão registrada, e a linha citada diz o que a entrada afirma. A que não sobrevive à conferência é corrigida, ou rebaixada a `[INFERRED]` ou a lacuna. Nunca mantida.
 - **Proveniência.** Toda linha carrega exatamente um estado.
@@ -126,27 +126,14 @@ O cabeçalho é obrigatório: um mapa que não pode ser citado não pode ser con
 - **Demanda** — o que foi mapeado, nos termos de quem pediu.
 - **Perfil de evidência** — as contagens do Passo 7.
 
-O corpo contém:
-
-1. **A mudança**, reformulada como comportamento, com sua fronteira explícita.
-2. **O mapa**, separado por grau — direto, acoplado, superfície de contrato —, cada entrada ancorada, localizada e justificada em uma linha, mais os dados existentes.
-3. **Como o alcance foi buscado** — as sementes e as buscas do Passo 3.
-4. **Contexto do projeto** — legado, sinais de criticidade, migrações em curso, código gerado ou de terceiros.
-5. **A camada documentada** — cobertura por casos de uso com o status de cada um, divergências encontradas, incidência de ADR.
-6. **Lacunas e questões em aberto**, cada uma com o que a resolveria.
-7. **Onde o mapa para**, e por quê.
+O corpo segue o template de `checklists/impact-map-checklist.md`: a mudança e a sua fronteira; o alcance por grau, com os dados existentes; como o alcance foi buscado; o contexto do projeto; a camada documentada; as lacunas, cada uma com o que a resolveria; e onde o mapa para.
 
 Sem veredito, sem recomendação, sem estimativa.
 
-A passada operacional e o template do relatório vivem em `checklists/impact-map-checklist.md`. Leia-o no Passo 7, para a verificação e o relatório — não no Passo 0. A mesma forma, vista do lado de quem consome o relatório, vive em `references/consumer-rules.md`, e é de lá que todo consumidor a lê. **Mudar a forma do relatório muda os dois arquivos, no mesmo PR.**
+A mesma forma, vista do lado de quem consome o relatório, vive em `references/consumer-rules.md`, e é de lá que todo consumidor a lê. **Mudar a forma do relatório muda os dois arquivos, no mesmo PR.**
 
 ## Consumidores
 
-O que um consumidor lê, o que cada estado de proveniência lhe sustenta e o que ele confere antes de julgar vivem em `references/consumer-rules.md` — a fonte única desse hand-off, que nenhum consumidor repete do seu lado.
+O que um consumidor lê, o que cada estado de proveniência lhe sustenta e o que ele confere antes de julgar vivem em `references/consumer-rules.md` — a fonte única desse hand-off, que nenhum consumidor repete do seu lado. Consomem o mapa a `feasibility-analysis`, que o executa primeiro e o cita por ID e revisão, e o arquiteto, lendo-o direto.
 
-- **`feasibility-analysis`** — executa este mapa primeiro e nunca julga sem ele, citando-o por ID e revisão. A borda declarada é o que lhe permite devolver *Undecidable with current evidence* com honestidade, em vez de decidir sobre um quadro cujo fim ela não enxerga.
-- **O arquiteto**, lendo-o diretamente para decidir onde olhar a seguir.
-
-**Não é consumidor: o `its-generator`.** Um mapa tem escopo de uma *demanda* em refinamento; uma ITS, de *exatamente uma story* — e o refinamento pode durar meses entre os dois. Um mapa de escopo de demanda contraria a única disciplina daquela skill: o delta de uma story. Quando a ITS existe, verificar o mapa custa o mesmo que derivar o alcance do zero. O `its-generator` inspeciona o código ele mesmo, todas as vezes, e nenhum plano herda alcance que não verificou.
-
-**Divergências encontradas aqui vão para as skills de caso de uso, nunca para uma ITS.** Uma divergência código × caso de uso é resolvida pelo `use-case-creator` (conformidade ou reconciliação) e uma lacuna de documentação pelo `use-case-extractor`, antes da especificação. Nenhuma das duas é carregada adiante para dentro de um plano de implementação.
+**O `its-generator` não é consumidor.** Um mapa tem o escopo de uma *demanda* em refinamento; uma ITS, o de *exatamente uma story*, e o refinamento pode durar meses entre os dois. O `its-generator` inspeciona o código ele mesmo, todas as vezes, e nenhum plano herda alcance que não verificou.

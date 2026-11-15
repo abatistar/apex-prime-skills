@@ -1,77 +1,29 @@
-# Mapa de impacto — passada operacional
+# Mapa de impacto — conferência antes de entregar
 
-Passada operacional de propriedade do `impact-mapping`. O SKILL.md define os estados de proveniência, os graus, as regras de busca e a borda — este arquivo é a sequência e a forma do relatório.
+A conferência final do `impact-mapping`, feita no Passo 7 sobre o mapa pronto, e o template do relatório. O SKILL.md define os estados de proveniência, os graus, as buscas e a borda. Esta lista não os repete: confere se o mapa os cumpre. Corrija cada falha no próprio mapa, em vez de anotá-la.
 
-## Configuração e revisão
+## 1. A evidência
 
-- [ ] Do `docs/prime-config.md`, só a seção necessária e só no passo que a usa, conforme as regras de consumo do **prime-config**: Estrutura (Passos 2 e 3), Comandos de verificação (Passo 3), Opções (Passo 4), Repositório de documentos (Passo 5). O arquivo nunca lido por inteiro.
-- [ ] Seção necessária ausente → lacuna reportada, nunca improvisada.
-- [ ] Revisão registrada: o commit lido, as mudanças não commitadas declaradas e, com raiz de documentos paralela, a revisão dela. Sem controle de versão acessível, isso dito.
-
-## A mudança, como comportamento
-
-*Definida em `references/reformulation.md`. Quando a `feasibility-analysis` comissiona o mapa, ela já executou este bloco no seu §1, e a reformulação chega pronta.*
-
-- [ ] Reformulada como um delta de comportamento observável, não como uma solução.
-- [ ] Fronteira declarada: o que explicitamente **não** está mudando.
-- [ ] Entrada com leituras concorrentes → nenhuma escolhida aqui: **Insufficient input**, com as leituras candidatas e a recomendada.
-- [ ] Se a reformulação exigiu inventar intenção → **Insufficient input**: sem mapa e sem veredito, com as perguntas específicas. Pare aqui.
-- [ ] Solução nomeada na entrada enquanto o delta admite outras → anotado em uma linha, não avaliado.
-
-## Pontos de entrada
-
-- [ ] Todo gatilho localizado e ancorado: endpoint, job, handler de evento, CLI, ação de UI, migração.
-- [ ] Ponto de entrada que a busca direta não alcança (dispatch dinâmico, reflexão, ligação orientada por configuração, convenção de framework) → `[INFERRED]` com o raciocínio quando há de onde deduzi-lo; lacuna com sua resolução quando não há.
-
-## Alcance, em três graus
-
-- [ ] **Direto** — precisa mudar para que o comportamento mude. O menor conjunto honesto. Regra de negócio replicada: todas as cópias aqui, a duplicação registrada como fato (`QM-CC-6`).
-- [ ] **Acoplado** — chamadores, assinantes, relatórios, fixtures, testes, flags, leitores do mesmo estado persistido. Testes que exercitam o conjunto direto listados; código direto sem nenhum teste declarado como tal.
-- [ ] **Superfície de contrato** — formatos de API, esquema de banco, payloads de eventos, arquivos exportados, assinaturas compartilhadas, telemetria consumida fora (métricas, eventos de log, alertas, painéis). Consumidores conhecidos, inclusive de outros projetos, nomeados, não adentrados.
-- [ ] **Dados existentes** — o estado persistido a migrar, preencher ou reinterpretar: forma e, quando acessível, volume; sem acesso ao volume, lacuna.
-- [ ] Toda entrada carrega localização, grau e uma linha de *por que está no mapa*.
-
-## Como o alcance foi buscado
-
-- [ ] Referências de símbolo a partir das sementes: chamadores, implementações, sobrescritas, assinantes.
-- [ ] Busca textual pelos nomes de contrato (endpoint, tópico, fila, evento, tabela, coluna, chave de configuração, flag) em todos os arquivos: SQL em strings, configuração, migrações, scripts, infraestrutura como código, testes, pipeline.
-- [ ] Leitores do mesmo estado persistido procurados.
-- [ ] Histórico de mudanças dos arquivos diretos consultado: o que mudou junto foi inspecionado e ancorado, ou entra `[INFERRED]` com a contagem — nunca como evidência de comportamento.
-- [ ] Busca antes de abrir: de cada resultado, só o trecho que decide e ancora; arquivo inteiro só quando o trecho depende do que o cerca; nenhum pacote inteiro; nada aberto além da borda.
-- [ ] Sementes e buscas registradas no relatório.
-
-## Sobreposição do contexto do projeto
-
-- [ ] Legado: o valor da opção Legado da configuração — nunca inferido do nome do diretório ou da idade do arquivo.
-- [ ] Sinais de criticidade ancorados (dinheiro, dado pessoal ou sensível, autenticação e autorização, obrigação regulatória, muitos dependentes, prazo de vida declarado). Nível **não** declarado: é da ITS.
-- [ ] Migrações em curso cujo escopo cobre o alcance, com o ADR `Accepted` que as declara e o valor de destino.
-- [ ] Código gerado ou de terceiros no alcance marcado como tal.
-- [ ] Contexto registrado, **não** precificado.
-
-## Sobreposição da camada documentada
-
-- [ ] Cobertura por casos de uso listada (`UC-NNN`, com `RN-N`, `CA-N`, passo ou extensão quando específica), **cada um com seu status**. Documentos escolhidos pelo índice e abertos; nenhuma linha do índice usada como âncora. Índice ausente ou divergente → em Lacunas, rota `use-case-creator` (modo índice).
-- [ ] `Draft` → o que o mantém em `Draft` e a rota (`use-case-creator` modo validação, ou o arquiteto para promover). `Retired` cobrindo código que ainda executa → divergência.
-- [ ] Comportamento tocado sem caso de uso → lacuna de documentação, área nomeada, `use-case-extractor` anotado como a rota.
-- [ ] Delta pendente conferido antes de qualquer divergência: código diferente só nos itens do delta de uma story ainda não entregue, fazendo ali o que o documento descrevia antes → cobertura do estado-alvo, com o ID da story; entrega incerta → `[INFERRED]` com o raciocínio e pergunta em Lacunas.
-- [ ] Divergência código × caso de uso registrada como achado, com o elemento do caso de uso e a âncora no código, e roteada ao `use-case-creator` (`QM-DO-1`). Nenhum caso de uso remendado aqui.
-- [ ] ADRs `Accepted` que incidem sobre as áreas tocadas listados; contradição aparente declarada e citada, **não resolvida**. ADRs `Proposed` sobre as áreas listados como decisão em curso.
-
-## A borda
-
-- [ ] Parou na superfície de contrato; consumidores nomeados, não rastreados por dentro.
-- [ ] Parou onde não há dependência comportamental.
-- [ ] O que deliberadamente não foi rastreado está escrito, com o que justificaria rastrear.
-
-## Verificação antes de entregar
-
-- [ ] Toda âncora aberta nesta execução, na revisão registrada, e a linha citada diz o que a entrada afirma. A que não sobreviveu foi corrigida ou rebaixada a `[INFERRED]` ou a lacuna.
-- [ ] Toda linha é exatamente uma entre: **ancorada**, **`[INFERRED]`** com o raciocínio na linha, **`[UNVERIFIED]`** (afirmada, não conferida) ou **lacuna** com o que a resolveria. Nenhuma inferência sem marca.
-- [ ] Vocabulário definido por esta skill, com a definição de `[INFERRED]` do formato de caso de uso, e reutilizado sem alteração por seus consumidores.
+- [ ] Toda âncora foi aberta nesta execução, na revisão registrada, e a linha citada diz o que a entrada afirma. A que não sobreviveu foi corrigida, ou rebaixada a `[INFERRED]` ou a lacuna.
+- [ ] Toda linha carrega exatamente um estado: ancorada, `[INFERRED]` com o raciocínio na linha, `[UNVERIFIED]` ou lacuna com o que a resolveria. Nenhuma inferência sem marca.
+- [ ] Nenhuma linha do índice de casos de uso usada como âncora: a cobertura cita o documento aberto.
 - [ ] Perfil de evidência contado por grau e escrito no cabeçalho.
-- [ ] Nenhum veredito, nenhuma recomendação, nenhuma estimativa em qualquer ponto do relatório.
-- [ ] Nenhum código de aplicação escrito ou proposto.
-- [ ] Nenhum caso de uso, ITS, ADR ou arquivo de configuração modificado.
+
+## 2. O mapa
+
+- [ ] Cabeçalho completo: ID, revisão (o commit, as mudanças não commitadas e, com raiz de documentos paralela, a revisão dela), data, demanda e perfil de evidência.
+- [ ] A mudança escrita como delta de comportamento, com a fronteira do que não muda.
+- [ ] Os três graus separados, e toda entrada com o local e uma linha de por que está no mapa. Regra de negócio replicada com todas as cópias no grau direto. Testes do conjunto direto listados, e o código direto sem teste declarado como tal.
+- [ ] Dados existentes com forma e volume, ou o volume como lacuna.
+- [ ] As quatro buscas do Passo 3 feitas e registradas, com as sementes.
+- [ ] Contexto do projeto: os quatro fatos do Passo 4, lidos e não precificados. O nível de criticidade não foi declarado.
+- [ ] Camada documentada: cada caso de uso com o seu status; delta pendente conferido antes de registrar divergência; divergências e lacunas de documentação com a rota; ADRs `Accepted` e `Proposed` que incidem, com a contradição declarada e não resolvida.
+- [ ] A borda escrita: o que deliberadamente não foi rastreado e o que justificaria rastrear.
+
+## 3. Fronteira
+
+- [ ] Nenhum veredito, nenhuma recomendação, nenhuma estimativa em ponto algum do relatório.
+- [ ] Nenhum código escrito. Nenhum caso de uso, ITS, ADR ou configuração modificado.
 
 ---
 
