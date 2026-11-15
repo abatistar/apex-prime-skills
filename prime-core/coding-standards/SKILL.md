@@ -1,6 +1,6 @@
 ---
 name: coding-standards
-description: O contrato das convenções concretas de código - o catálogo de slots (CS-XX-N), os padrões do time por stack, as classes invariante e convencional, o projeto legado e as migrações. Consulte ao planejar, escrever ou revisar código e quando um critério de qualidade precisar de uma convenção concreta; um desvio do projeto vive num ADR Accepted e tem precedência. Referencie os slots por ID, nunca os duplique.
+description: Contrato de referência das convenções de código do Apex Prime - o catálogo de slots (CS-XX-N), os padrões do time por stack, as classes invariante e convencional, o projeto legado e as migrações. Vale só em projeto que tem docs/prime-config.md. As skills do arquiteto (its-generator, code-review, feasibility-analysis) o leem no passo que indicam, sem acioná-lo. Acione-o só para implementar código a partir de uma ITS ou para consultar ou manter o catálogo.
 ---
 
 # Padrões de Código

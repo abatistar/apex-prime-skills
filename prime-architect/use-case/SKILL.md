@@ -1,6 +1,6 @@
 ---
 name: use-case
-description: O formato canônico do documento de caso de uso - template, regras de qualidade, histórico de revisões (delta), ciclo de vida do status, marcadores de incerteza e o índice do repositório. Consulte para criar, atualizar, validar ou ler um caso de uso; quem só lê usa references/consumer-rules.md. Referencie-o, nunca o duplique.
+description: Contrato de referência do formato do caso de uso - template, regras de qualidade, histórico de revisões (delta), ciclo de vida do status, marcadores de incerteza e o índice do repositório. Não é ponto de entrada - para escrever ou atualizar um caso de uso use use-case-creator; para documentar código existente use use-case-extractor. Essas skills, e as que só leem um caso de uso, o consultam no passo que indicam.
 ---
 
 # Formato de Caso de Uso

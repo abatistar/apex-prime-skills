@@ -6,4 +6,6 @@ disable-model-invocation: true
 
 # troubleshooting
 
-TODO: a ser escrita separadamente. Este arquivo existe para que a estrutura de camadas e as referências cruzadas sejam válidas.
+Esta skill ainda não foi escrita. Se você chegou aqui por uma rota, diga ao arquiteto que o diagnóstico de problemas ainda não tem procedimento no Apex Prime e pare. Não improvise um diagnóstico em nome desta skill.
+
+Este arquivo existe para que a estrutura de camadas e as referências cruzadas sejam válidas.

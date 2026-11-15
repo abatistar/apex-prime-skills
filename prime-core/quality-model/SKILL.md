@@ -1,6 +1,6 @@
 ---
 name: quality-model
-description: O modelo de qualidade canônico do time - o que é qualidade, o piso inegociável, a calibração por criticidade e os gatilhos de especificação, com critérios QM-XX-N. Referência compartilhada para especificar, implementar e revisar; o enforcement pertence ao code-review, e as convenções concretas, ao coding-standards.
+description: Contrato de referência do modelo de qualidade do Apex Prime - o piso inegociável, a calibração por criticidade e os gatilhos de especificação, com critérios QM-XX-N. Vale só em projeto que tem docs/prime-config.md. As skills do arquiteto (its-generator, code-review, feasibility-analysis) o leem no passo que indicam, sem acioná-lo. Acione-o só para implementar código a partir de uma ITS ou para consultar ou manter o modelo. Não aprova nem reprova código - isso é do code-review.
 ---
 
 # Modelo de Qualidade
