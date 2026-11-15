@@ -29,6 +29,12 @@ Legado é um fato do projeto inteiro, declarado na opção **Legado** da configu
 
 Um projeto legado só passa a seguir o padrão do time, num slot, por uma migração.
 
+**Projeto não legado cujo código diverge do padrão do time.** Quando o código que a mudança toca segue, num slot, um valor diferente do padrão do time e nenhum ADR `Accepted` o registra, ninguém escolhe em silêncio: nem o padrão do time, que criaria uma segunda forma, nem o padrão do código, que não foi decidido. A skill reporta a divergência ao arquiteto, com os dois valores e o trecho que mostra o do código. As saídas são três:
+
+- um ADR de desvio, e o projeto mantém o valor que tem;
+- um ADR de migração, e o projeto vai ao padrão do time;
+- quando o arquiteto adia as duas, o valor do código no entorno da mudança, registrado na ITS como afastamento, com a condição de saída. O code-review julga o código contra esse registro.
+
 **Código gerado e de terceiros não é julgado.** Clientes e modelos gerados a partir de um contrato e código de terceiros copiado para o repositório não são editados à mão: a mudança vai para a entrada do gerador ou para a origem. São reconhecidos pelo marcador de geração ou pela origem declarada no próprio arquivo ou no build. Os slots e as ferramentas não os julgam; o código do projeto que os usa continua sob todos os slots.
 
 ## Migrações
@@ -85,6 +91,7 @@ Uma regra de ferramenta que produz falsos positivos com frequência treina o tim
 - **Valor, nunca ID.** A ITS escreve o valor, nunca o ID do slot. Um exemplo canônico pode ser apontado pelo caminho do arquivo.
 - **Legado.** O legado com que o plano convive sem corrigir vira uma fronteira de fora de escopo. O slot só aparece nas Referências da ITS quando o plano se afasta dele por exceção registrada.
 - **Lacuna.** Um slot de que o plano precisa e que não tem valor é uma lacuna a reportar, não a inventar.
+- **Divergência.** Num projeto não legado, o código tocado que diverge do padrão do time sem ADR é reportado antes de o plano escolher um valor (Projeto não legado cujo código diverge).
 
 **Para quem implementa** — leia os valores efetivos dos slots que o código tocado e os gatilhos da story acionam, não o catálogo inteiro.
 

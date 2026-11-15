@@ -149,3 +149,13 @@ Três papéis leem esta lista. O `its-generator` passa a story por ela e escreve
 - o nível de log dos caminhos de erro.
 
 *Verificação:* revisão do sinal no diff; numa demanda `crítica`, um teste confere que ele é emitido.
+
+## G16 — Configuração nova ou alterada
+*Dispara quando:* a story cria ou altera uma chave de configuração, uma flag ou um segredo.
+*Critérios:* `QM-SR-2`, `QM-MT-1`.
+*A especificação decide:*
+- o nome da chave, o valor padrão e o valor por ambiente;
+- para uma flag, a condição de remoção;
+- para um segredo, de onde ele é lido — nunca do código nem do controle de versão.
+
+*Verificação:* a aplicação sobe com o valor padrão; um teste cobre o comportamento com a chave ligada e desligada.
