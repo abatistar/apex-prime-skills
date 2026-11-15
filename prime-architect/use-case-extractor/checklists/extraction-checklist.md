@@ -1,61 +1,30 @@
-# Extração de casos de uso — passada operacional
+# Extração de casos de uso — conferência antes de entregar
 
-A passada operacional do `use-case-extractor`. **Nenhum template de documento vive aqui:** a estrutura do caso de uso e as regras de qualidade (`../use-case/references/use-case-template.md`), os tipos de entrada do Histórico de revisões e os marcadores (`../use-case/references/consumer-rules.md`) são de propriedade do `use-case` e nunca são copiados para esta camada. Este arquivo confere o *processo*; aquele arquivo fornece a *forma*.
+A conferência do Passo 5 do `use-case-extractor`, feita sobre os documentos escritos, antes de entregá-los. A forma do documento, as regras de qualidade e os marcadores são do `use-case`; os passos são do SKILL.md. Esta lista não os repete nem guarda template: confere se os documentos e a entrega os cumprem. Quando um item falha, conserte o documento.
 
-## Formato e configuração
+## 1. Cada documento escrito
 
-- [ ] Formato `use-case` carregado por inteiro, incluindo as regras de qualidade e os marcadores; template do formato usado como está, sem substituição nem seção extra vinda da configuração.
-- [ ] Do `docs/prime-config.md`, só as seções necessárias e só no ponto de necessidade: **Estrutura** e **Repositório de documentos** no Passo 2; **Stack** apenas se o framework não era evidente no código. Conforme as regras de consumo do **prime-config**; o arquivo nunca lido por inteiro.
-- [ ] Seção necessária ausente, ou divergindo do código → lacuna ou divergência reportada, não resolvida em silêncio.
+- [ ] As regras de qualidade do formato verificadas uma a uma.
+- [ ] Todo conteúdo se apoia em código ou em testes lidos nesta execução, ou carrega um marcador. Nenhuma intenção inventada.
+- [ ] `[INFERRED]` só no que foi deduzido em vez de rastreado de ponta a ponta. Nada rastreado marcado só por falta de teste.
+- [ ] `[CONFIRM: ...]` em toda decisão humana pendente: número mágico, ramificação ambígua, comportamento suspeito de bug, valor que pode ser requisito ou restrição técnica, teste que contradiz o código.
+- [ ] Nenhum comportamento estranho normalizado numa regra limpa: documentado como o código o executa, e sinalizado.
+- [ ] Número igual ao maior já usado + 1, tirado da listagem da pasta e nunca do índice, com os `Retired` contados. Status `Draft`. Primeira entrada do histórico `mapeamento inicial a partir do código`, com o escopo no Resumo.
+- [ ] Casos de uso relacionados preenchidos nos dois lados, sem entrada no histórico e sem mudança de Status no documento que já existia.
 
-## Escopo
+## 2. O repositório
 
-- [ ] Uma fatia delimitada — módulo, jornada de usuário, conjunto de endpoints —, nunca "o sistema inteiro". Fronteiras confirmadas com o usuário.
-- [ ] No máximo 3–5 documentos por execução. Mais que isso → trabalho dividido em execuções, cada fatia confirmada com o usuário.
-- [ ] Nenhum código aberto antes de o escopo estar acordado.
+- [ ] O escopo e os candidatos foram acordados com o usuário antes da escrita. No máximo três a cinco documentos nesta execução.
+- [ ] Nenhum documento novo para comportamento que já tinha caso de uso. Divergência com um documento existente foi roteada ao `use-case-creator`, e um candidato coberto por um `Retired` foi reportado ao arquiteto.
+- [ ] A linha de cada documento escrito está no índice.
 
-## Inventário
+## 3. A entrega
 
-- [ ] Toda superfície de interação do escopo listada — rotas/controllers HTTP, consumidores de mensagens, jobs agendados, comandos de CLI, handlers de eventos —, procurada pelo mapa da seção **Estrutura** da configuração. De cada ponto, aberto só o que o agrupa: rota, assinatura, handler.
-- [ ] Pontos de entrada agrupados pelo objetivo do ator (Granularidade do formato): cada objetivo é um candidato; ponto técnico sem objetivo de ator listado à parte.
-- [ ] Candidatos conferidos pelo índice; nenhum deixado de fora sem abrir o documento que o cobre. Sem índice numa pasta com documentos → criação dele acordada com o usuário.
-- [ ] Nenhum candidato que já tenha caso de uso no repositório. Documento existente que diverge do código → `use-case-creator` (conformidade ou reconciliação), nunca um documento novo; delta pendente de uma story ainda não entregue não é divergência — só mencionado ao arquiteto. Candidato coberto por um documento `Retired` → reportado ao arquiteto.
-- [ ] Inventário agrupado apresentado e candidatos acordados com o usuário antes de escrever qualquer documento.
+- [ ] A Lista de perguntas do formato, por documento, com recomendação e evidência `arquivo:linha` em cada item.
+- [ ] A declaração de que os documentos só viram fonte de verdade depois que o arquiteto resolver os marcadores, pelo modo validação do `use-case-creator`, e os promover.
+- [ ] Os documentos existentes que receberam só o link recíproco.
 
-## Reconstrução
-
-- [ ] Caminho de execução de cada candidato acordado rastreado no código, não deduzido de nomes; aberto só o caminho, não o módulo em volta.
-- [ ] Código traduzido para os elementos do template: validações e guardas que o fluxo executa → extensões; ramificações de negócio → passos, extensões e `RN-N`; efeitos persistidos, eventos e chamadas externas → Garantias de sucesso; o que se mantém na falha → Garantias mínimas; tratamento de erro → extensões com desfecho; autorização do próprio fluxo → extensões; timeouts, limites de volume, janelas e expurgos → critério `não funcional` com `[CONFIRM: ...]` (requisito ou restrição técnica?).
-- [ ] Toda `RN-N` num padrão da Forma das regras de negócio, escolhido pela forma do código: cálculo ou constante → ubíquo; handler ou consumidor → `Quando`; guarda de estado → `Enquanto`; ramo de erro → `Se … então`, citada por uma extensão; flag ou configuração → `Onde`, com `[INFERRED]`. Uma resposta por regra; nenhuma regra cita passo nem extensão.
-- [ ] Pré-condição só o que o fluxo não verifica porque já chega garantido — outro caso de uso, controle transversal anterior ao ponto de entrada.
-- [ ] Testes existentes do código rastreado lidos e usados como fonte dos critérios de aceite, cada critério rotulado com o que cobre. Teste que contradiz o código ou desligado → `[CONFIRM: ...]`.
-- [ ] Envolvidos e interesses só quando o material rastreado expõe um, sempre com `[INFERRED]`; caso contrário, seção omitida.
-
-## Incerteza
-
-- [ ] Todo conteúdo deduzido em vez de rastreado de ponta a ponta marcado com `[INFERRED]`. Nada rastreado marcado só por falta de teste.
-- [ ] Toda decisão humana pendente marcada com `[CONFIRM: ...]`: números mágicos, ramificações ambíguas, comportamento suspeito de bug.
-- [ ] Nenhum comportamento estranho normalizado numa regra limpa — documentado como o código o executa e sinalizado.
-
-## Escrita
-
-- [ ] Template do formato e convenção de nomenclatura; numeração a partir do maior número de UC já usado + 1, tirado da listagem da pasta (nunca do índice), documentos `Retired` inclusive.
-- [ ] Status `Draft`.
-- [ ] Primeira entrada do tipo mapeamento inicial: `mapeamento inicial a partir do código` na coluna Story, o escopo no Resumo.
-- [ ] Diagrama UML só quando há relações a mostrar, restrito ao caso de uso e às suas relações diretas.
-- [ ] Casos de uso relacionados preenchidos nos dois lados, inclusive com documentos já existentes. Link recíproco sem entrada no histórico e sem mudança de Status no outro documento.
-- [ ] Linha de cada documento escrito acrescentada ao índice; índice criado com todos os documentos da pasta, se acordado.
-- [ ] Regras de qualidade do formato verificadas uma a uma em todo documento escrito.
-
-## Entrega
-
-- [ ] Marcadores pendentes entregues como a Lista de perguntas do formato, com recomendação e evidência `arquivo:linha` em cada item.
-- [ ] Declarado que os documentos só viram fonte de verdade depois que o arquiteto resolver os marcadores (modo validação do `use-case-creator`) e os promover.
-- [ ] Documentos existentes que receberam apenas o link recíproco listados.
-
-## Verificação de fronteira antes de entregar
+## 4. Fronteira
 
 - [ ] Nenhum status promovido.
-- [ ] Nenhuma intenção inventada: todo conteúdo se apoia em código ou testes lidos, ou carrega um marcador.
-- [ ] Nenhum código de aplicação alterado; nenhuma ITS gerada.
-- [ ] Nenhum arquivo de configuração editado como efeito colateral.
+- [ ] Nenhum código alterado, nenhuma ITS gerada, nenhuma configuração editada.
