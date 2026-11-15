@@ -10,7 +10,8 @@ A conferência do Passo 3 do `use-case-creator`, feita sobre os documentos escri
 - [ ] Uma entrada por story no Histórico de revisões, num dos tipos do formato. A que é trabalho para o its-generator cita passo, extensão e seção. No máximo cinco entradas.
 - [ ] Documento novo: número igual ao maior já usado + 1, tirado da listagem da pasta e nunca do índice, com os `Retired` contados; Status `Draft`; primeira entrada `Criação`, com o ID da story.
 - [ ] Documento `Reviewed` cujo corpo mudou voltou a `Draft`.
-- [ ] Diagrama e Casos de uso relacionados atualizados nos dois lados, sem entrada no histórico e sem mudança de Status no outro documento.
+- [ ] Diagrama de atividades refeito a partir dos passos e das extensões atuais, com o número de cada um no nó, ou omitido num fluxo linear.
+- [ ] Casos de uso relacionados atualizados nos dois lados, sem entrada no histórico e sem mudança de Status no outro documento.
 
 ## 2. O repositório
 

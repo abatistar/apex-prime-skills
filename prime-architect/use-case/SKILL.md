@@ -16,7 +16,7 @@ Esta skill é dona do formato do documento de caso de uso. O formato tem um ende
 - a granularidade: o que um documento descreve, e o que é nível, extensão ou documento próprio;
 - a reorganização entre documentos — divisão e incorporação;
 - a forma das regras de negócio, em padrões adaptados do EARS;
-- a estrutura do documento: metadados, envolvidos e interesses (opcional), condições (pré-condições, garantias mínimas e de sucesso), cenário principal de sucesso, extensões, regras de negócio, critérios de aceite rotulados com o que cobrem — inclusive os requisitos não funcionais do fluxo —, resumo gráfico em UML (opcional, omitido sem relações a mostrar) e histórico de revisões;
+- a estrutura do documento: metadados, envolvidos e interesses (opcional), condições (pré-condições, garantias mínimas e de sucesso), cenário principal de sucesso, extensões, regras de negócio, critérios de aceite rotulados com o que cobrem — inclusive os requisitos não funcionais do fluxo —, diagrama de atividades (opcional, omitido num fluxo sem extensões nem decisões; derivado do texto, nunca fonte) e histórico de revisões;
 - as regras de qualidade que todo documento precisa satisfazer;
 - a lista de perguntas com que os marcadores chegam ao arquiteto.
 

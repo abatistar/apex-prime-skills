@@ -10,6 +10,7 @@ A conferência do Passo 5 do `use-case-extractor`, feita sobre os documentos esc
 - [ ] `[CONFIRM: ...]` em toda decisão humana pendente: número mágico, ramificação ambígua, comportamento suspeito de bug, valor que pode ser requisito ou restrição técnica, teste que contradiz o código.
 - [ ] Nenhum comportamento estranho normalizado numa regra limpa: documentado como o código o executa, e sinalizado.
 - [ ] Número igual ao maior já usado + 1, tirado da listagem da pasta e nunca do índice, com os `Retired` contados. Status `Draft`. Primeira entrada do histórico `mapeamento inicial a partir do código`, com o escopo no Resumo.
+- [ ] Diagrama de atividades derivado dos passos e das extensões, com o número de cada um no nó, ou omitido num fluxo linear.
 - [ ] Casos de uso relacionados preenchidos nos dois lados, sem entrada no histórico e sem mudança de Status no documento que já existia.
 
 ## 2. O repositório

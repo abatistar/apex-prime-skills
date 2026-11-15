@@ -16,7 +16,7 @@ A pasta dos casos de uso tem um índice: `README.md`, ao lado dos documentos. Um
 O template dá a forma de cada seção; esta lista diz quais um documento precisa ter. É o que quem só lê confere ao aceitar um documento como entrada.
 
 - **Obrigatórias:** a tabela de metadados (ID, Nome, Escopo, Nível, Atores, Casos de uso relacionados, Status), Condições (Pré-condições, Garantias mínimas, Garantias de sucesso), Cenário principal de sucesso, Extensões, Regras de negócio, Critérios de aceite e Histórico de revisões.
-- **Opcionais:** Envolvidos e interesses, só quando o insumo revela interesses; o Diagrama UML, só quando há relações a mostrar.
+- **Opcionais:** Envolvidos e interesses, só quando o insumo revela interesses; o Diagrama de atividades, só quando o fluxo tem extensão ou decisão. Quem lê um caso de uso lê os passos, as extensões e as regras: o diagrama é derivado deles e nunca é fonte.
 - **Do projeto:** nenhuma. A configuração do projeto não acrescenta seção obrigatória nem substitui o template. A lista acima é a lista inteira, e conferir as seções de um documento não exige abrir a configuração.
 
 ## Estabilidade dos identificadores internos

@@ -61,7 +61,7 @@ Nunca normalize em silêncio um comportamento estranho numa regra limpa. Se o c�
 
 ## Passo 5 — Escrever os documentos e passar para revisão
 
-- Use o template do formato. Siga suas regras de qualidade e a convenção de nomenclatura de arquivo. Numere cada documento a partir do maior número de UC já usado no repositório + 1 — documentos `Retired` contam, e um número nunca é reaproveitado. Inclua o resumo gráfico em UML quando o caso de uso tem relações a mostrar, restrito a ele e às suas relações diretas; sem relações, omita a seção.
+- Use o template do formato. Siga suas regras de qualidade e a convenção de nomenclatura de arquivo. Numere cada documento a partir do maior número de UC já usado no repositório + 1 — documentos `Retired` contam, e um número nunca é reaproveitado. Inclua o diagrama de atividades quando o fluxo tem extensão ou decisão, escrito por último, a partir dos passos e das extensões já fechados; num fluxo linear, omita a seção.
 - Defina o Status como **Draft**.
 - Primeira entrada do Histórico de revisões: `Rev 1 | mapeamento inicial a partir do código | data | resumo do escopo`.
 - Preencha Casos de uso relacionados quando os cenários se referenciarem — entre documentos desta execução ou com documentos já existentes —, nos dois lados. Acrescentar o link recíproco a um documento existente é uma atualização derivada, sem entrada no histórico e sem mudança de Status.
