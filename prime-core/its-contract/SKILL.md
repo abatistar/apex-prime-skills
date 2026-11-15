@@ -90,4 +90,4 @@ Uma ITS que toma uma decisão arquitetural no corpo em vez de registrá-la num A
 
 As regras de quem implementa a partir de uma ITS — o escopo, os ADRs, as perguntas devolvidas, os desvios e a descrição do PR de entrega — vivem em `references/implementer-rules.md`. O code-review as lê para conferir o PR; o its-generator, que escreve a ITS, não as carrega.
 
-Quem implementa pode receber só a ITS, sem este contrato. Por isso o documento leva, sob a linha de nível, o bloco fixo **Como implementar este documento**, copiado inteiro do template: é a forma curta dessas regras, igual em toda ITS e nos três níveis de detalhe. O bloco traz regras de consumo, não convenções de código: o que vale para todo código continua fora de cada ITS.
+O Apex Prime não chega à implementação: quem implementa recebe só a ITS, sem este contrato. Por isso o documento leva, sob a linha de nível, o bloco fixo **Como implementar este documento**, copiado inteiro do template: é a forma curta dessas regras, igual em toda ITS e nos três níveis de detalhe. O bloco traz regras de consumo, não convenções de código: o que vale para todo código continua fora de cada ITS.

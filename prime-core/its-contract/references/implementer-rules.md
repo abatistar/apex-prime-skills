@@ -1,6 +1,6 @@
 # Regras de quem implementa a partir da ITS
 
-Parte do contrato do `its-contract`, lida por quem implementa — pessoa ou agente — e pelo code-review, que confere o pull request contra elas. Quem escreve a ITS não precisa deste arquivo.
+Parte do contrato do `its-contract`: a forma completa das regras de quem implementa a partir de uma ITS. O Apex Prime não chega à implementação: quem implementa recebe só a ITS, que traz a forma curta destas regras no bloco Como implementar este documento. Quem lê este arquivo é o code-review, que confere o pull request contra elas. Quem escreve a ITS não precisa dele.
 
 - A ITS é o escopo. Implemente toda ela e nada além — incluindo respeitar as fronteiras de fora de escopo e as alternativas descartadas declaradas no plano de implementação.
 - As restrições de ADR escritas nas unidades são vinculantes; nunca contradiga um ADR Accepted. Com acesso ao repositório, leia os ADRs citados nas premissas do plano, em Decisões registradas, antes de implementar — para saber o porquê; o quê já está na unidade. Um conflito entre a ITS e um ADR é ambiguidade — devolva-o como pergunta.
