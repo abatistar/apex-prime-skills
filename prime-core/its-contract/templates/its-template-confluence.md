@@ -27,7 +27,7 @@ Armadilhas que o documento precisa evitar:
 
 Os trechos entre `<` e `>` são orientação de preenchimento e não ficam no documento entregue.
 
-**Nível de detalhe.** O bloco abaixo mostra a unidade no nível `detalhista`, que tem todos os campos. A orientação de cada campo diz a partir de que nível ele existe e o que muda nele; um campo sem essa marca é igual nos três níveis (SKILL.md do its-contract, Nível de detalhe). Depois do bloco, a mesma unidade aparece escrita nos três. Sob o título, o documento leva a linha do seu nível, copiada inteira — é ela que diz a quem lê fora deste contrato o que o plano fixa e o que delega. Logo abaixo dela, o bloco **Como implementar este documento** também é copiado inteiro, sem alteração, em qualquer nível:
+**Nível de detalhe.** O bloco abaixo mostra a unidade no nível `detalhista`, que tem todos os campos. A orientação de cada campo diz a partir de que nível ele existe e o que muda nele; um campo sem essa marca é igual nos três níveis (SKILL.md do its-contract, Nível de detalhe). A mesma unidade escrita nos três níveis está em `its-template-confluence-levels.md`, ao lado deste arquivo, lido só quando o nível pedido é `simplificado` ou `médio`. Sob o título, o documento leva a linha do seu nível, copiada inteira — é ela que diz a quem lê fora deste contrato o que o plano fixa e o que delega. Logo abaixo dela, o bloco **Como implementar este documento** também é copiado inteiro, sem alteração, em qualquer nível:
 
 | Nível | Linha do documento |
 |---|---|
@@ -139,79 +139,4 @@ h2. Referências
 |R1|<Story S-131 — Limite de crédito na confirmação de pedido>|<D1 · D2>|
 |R2|<Caso de uso UC-042 — Confirmar pedido (alteração)>|<D1 (RN-3, CA-2) · RG-1 (passo 5)>|
 |R3|<Decisão do arquiteto em 2026-11-15 — pendente no caso de uso UC-042>|<D2>|
-````
-
-## A mesma unidade nos três níveis
-
-Exemplo da unidade que atende ao item `D1` do bloco acima. Só os campos que o nível muda aparecem em cada bloco; os que são iguais nos três aparecem uma vez, no fim. As exigências são as mesmas em todos: a condição da recusa, o código do erro, o HTTP 422, a assinatura fixada e os dois testes.
-
-`simplificado` — só o que carrega exigência; sem Arquivos, sem Casos de borda, sem Como verificar:
-
-````text
-h3. 1. Recusar a confirmação acima do limite de crédito
-*O que fazer:*
-# {{CreditPolicy}} (criar), no domínio — expor {{allows}} com a assinatura de Trechos fixados.
-# {{ConfirmOrderService.confirm(ConfirmOrderCommand)}} — quando {{creditPolicy.allows}} recusar o total do pedido contra o limite de crédito vigente do cliente, lançar {{BusinessException}} com o código {{CREDIT_LIMIT_EXCEEDED}} e não gravar o pedido.
-# {{ApiExceptionHandler}} — mapear {{CREDIT_LIMIT_EXCEEDED}} para HTTP 422, em {{ProblemDetail}} com o membro {{code}} e o detalhe "Limite de crédito excedido".
-````
-
-`médio` — a sequência por componente, os pontos de integração e os casos de borda nomeados:
-
-````text
-h3. 1. Recusar a confirmação acima do limite de crédito
-*Arquivos:*
-# {{src/main/java/com/acme/app/application/service/ConfirmOrderService.java}} (modificar)
-# {{src/main/java/com/acme/app/adapter/in/web/ApiExceptionHandler.java}} (modificar)
-# {{src/test/java/com/acme/app/application/service/ConfirmOrderServiceTest.java}} (modificar)
-
-*O que fazer:*
-# {{CreditPolicy}} (criar), no domínio — expor {{allows}} com a assinatura de Trechos fixados, sem depender de nada fora do domínio.
-# {{ConfirmOrderService.confirm(ConfirmOrderCommand)}} — antes de {{saveOrderPort.save}}, ler o limite vigente pela porta existente {{LoadCustomerCreditPort}} e, quando {{creditPolicy.allows}} recusar o total do pedido, lançar {{BusinessException}} com o código {{CREDIT_LIMIT_EXCEEDED}} e não gravar o pedido.
-# {{ApiExceptionHandler}} — no tratador de {{BusinessException}} que a classe já tem, mapear {{CREDIT_LIMIT_EXCEEDED}} para HTTP 422, em {{ProblemDetail}} com o membro {{code}} e o detalhe "Limite de crédito excedido".
-
-*Casos de borda:*
-* total do pedido igual ao limite
-* limite do cliente alterado depois da criação do pedido
-````
-
-`detalhista` — o passo a passo, todos os arquivos, o comportamento de cada caso de borda e a verificação:
-
-````text
-h3. 1. Recusar a confirmação acima do limite de crédito
-*Arquivos:*
-# {{src/main/java/com/acme/app/application/service/ConfirmOrderService.java}} (modificar)
-# {{src/main/java/com/acme/app/adapter/in/web/ApiExceptionHandler.java}} (modificar)
-# {{src/main/java/com/acme/app/domain/CreditPolicy.java}} (criar)
-# {{src/test/java/com/acme/app/application/service/ConfirmOrderServiceTest.java}} (modificar)
-
-*O que fazer:*
-# {{CreditPolicy}} (criar), no domínio — expor {{allows}} com a assinatura de Trechos fixados:
-#* devolver verdadeiro quando o total for menor ou igual ao limite;
-#* não depender de nenhum tipo fora do domínio.
-# {{ConfirmOrderService}} — receber {{LoadCustomerCreditPort}} pelo construtor e manter uma instância de {{CreditPolicy}}.
-# {{ConfirmOrderService.confirm(ConfirmOrderCommand)}} — antes de {{saveOrderPort.save}}:
-#* ler o limite vigente com {{loadCustomerCreditPort.load(customerId)}};
-#* quando {{creditPolicy.allows(order.getTotal(), limit)}} for falso, lançar {{BusinessException}} com o código {{CREDIT_LIMIT_EXCEEDED}} e não gravar o pedido.
-# {{ApiExceptionHandler}} — no tratador de {{BusinessException}} que a classe já tem, mapear {{CREDIT_LIMIT_EXCEEDED}} para HTTP 422, em {{ProblemDetail}} com o membro {{code}} e o detalhe "Limite de crédito excedido".
-
-*Casos de borda:*
-* total do pedido igual ao limite → o pedido é confirmado e gravado (RG-1)
-* limite do cliente alterado depois da criação do pedido → vale o limite lido no momento da confirmação (D1)
-
-*Como verificar:* executar {{./mvnw test -Dtest=ConfirmOrderServiceTest}}; os testes desta unidade passam.
-````
-
-Iguais nos três. No documento, cada campo ocupa a posição que o bloco principal mostra: Trechos fixados logo depois de O que fazer, Atende e Testes depois de Casos de borda, Como verificar depois de Testes.
-
-````text
-*Trechos fixados:*
-Instrução 1 — assinatura de {{CreditPolicy.allows}}:
-{code:language=java}
-boolean allows(BigDecimal orderTotal, BigDecimal creditLimit)
-{code}
-
-*Atende:* D1
-*Testes:*
-# pedido com total acima do limite recebe HTTP 422 com o código {{CREDIT_LIMIT_EXCEEDED}} e a mensagem "Limite de crédito excedido", e nenhum pedido é gravado (D1)
-# pedido com total igual ao limite é confirmado e gravado (RG-1)
 ````

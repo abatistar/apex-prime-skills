@@ -69,7 +69,8 @@ apex-prime-skills/
 │   │   │   └── implementer-rules.md        # o que quem implementa segue ao ler a ITS
 │   │   └── templates/
 │   │       ├── its-template-markdown.md    # a ITS canônica que o arquiteto escreve e o dev consome, em Markdown (o padrão)
-│   │       └── its-template-confluence.md  # a mesma ITS na marcação de wiki do Confluence; a opção Template da ITS do prime-config escolhe
+│   │       ├── its-template-confluence.md  # a mesma ITS na marcação de wiki do Confluence; a opção Template da ITS do prime-config escolhe
+│   │       └── its-template-*-levels.md    # a mesma unidade nos três níveis, um arquivo por formato; lido só no simplificado e no médio
 │   └── adr-contract/
 │       ├── SKILL.md                        # o formato do ADR: quando uma decisão merece um, ciclo de vida do status, quem redige e quem aprova
 │       └── templates/
