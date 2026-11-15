@@ -77,6 +77,8 @@ Se o diff é grande demais para caber na cabeça, esse é o primeiro achado: pe�
 
 O its-generator provou plano ⇄ delta antes da entrega. Agora você prova **diff ⇄ plano**, nas duas direções, e confere que o código respeitou tudo o que o plano fixou.
 
+**A base do plano.** As premissas da ITS dizem de que revisão do código o plano partiu. Quando uma divergência aparecer num arquivo que uma unidade cita, confira se ele mudou entre a base do plano e a base do PR (`git log <base do plano>..<base do PR> -- <arquivo>`). Se mudou por outra entrega, a divergência é do plano, que ficou para trás, e não defeito do autor.
+
 **O nível de detalhe muda como o escopo é lido, nunca a régua.** A mesma implementação é aprovada ou reprovada seja qual for o nível da ITS (its-contract, Nível de detalhe). O que o documento escreve vincula em qualquer nível. O que o nível não escreve foi delegado a quem implementa — os passos, os nomes internos e, no `simplificado` e no `médio`, os arquivos novos — e uma escolha delegada, feita dentro das convenções do projeto e do que o documento fixa, não é escopo excedido nem divergência. Ela continua julgada pelo piso e pelas lentes, como qualquer código.
 
 - **Plano → diff.** Toda unidade do plano está presente no diff, ou sua ausência está justificada. Todo teste que uma unidade deve existe — os que verificam o resultado dos itens que ela atende (`CS-TS-1`) e a cobertura de não regressão do ponto de regressão que ela reivindicou.
