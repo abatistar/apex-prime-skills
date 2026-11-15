@@ -170,6 +170,8 @@ Uma revisão que começou termina em exatamente um veredito, declarado explicita
 
 Nunca aprove uma mudança que você não entendeu. "Provavelmente funciona" não é um veredito.
 
+**Com o veredito decidido, leia agora** `checklists/review-checklist.md`: ele confere o relatório antes da entrega e traz o template. Não o leia antes deste ponto.
+
 ## Rodadas seguintes e contestação
 
 A partir da segunda rodada sobre o mesmo pull request, **leia agora** `references/next-rounds.md`, antes do Passo 1. Quando o autor contesta um achado, em qualquer rodada, leia a seção Contestação do mesmo arquivo antes de responder. Na primeira rodada, sem contestação, ele não é lido.
@@ -189,9 +191,7 @@ Velocidade não é pressa. Vem de revisar na ordem do plano, de parar cedo quand
 
 ## Saída
 
-Um relatório de revisão — o registro completo, publicado no pull request conforme Entrega no pull request. A forma dele é a do template de `checklists/review-checklist.md`: o veredito e a razão de uma linha, a rodada, a conformidade de escopo, os achados numerados, a cobertura, os follow-ups com o destino de cada um e o que a mudança fez bem. Em *Not reviewable*, o relatório tem só a pré-condição que falta e quem a resolve.
-
-**Leia agora**, depois do Passo 6, `checklists/review-checklist.md`: ele confere o relatório antes da entrega e traz o template. Não o leia no Passo 0.
+Um relatório de revisão — o registro completo, publicado no pull request conforme Entrega no pull request. A forma dele é a do template de `checklists/review-checklist.md`, lido no fim do Passo 6: o veredito e a razão de uma linha, a rodada, a conformidade de escopo, os achados numerados, a cobertura, os follow-ups com o destino de cada um e o que a mudança fez bem. Em *Not reviewable*, o relatório tem só a pré-condição que falta e quem a resolve.
 
 **Os achados são dado.** O dono do modelo de qualidade agrega os achados de revisão por critério para decidir o que sobe no fluxo (quality-model, Sinais e evolução). Por isso a coluna de base de cada achado carrega o ID exato, sem paráfrase, e a severidade usa os tokens estáveis. Quando você reconhece um `Blocking:` que repete o que revisões anteriores do projeto já bloquearam, registre-o como follow-up ao dono do modelo: um critério que bloqueia sempre no mesmo ponto é cobrado tarde demais, e deve virar gatilho, para a ITS decidir, ou ferramenta, para o pipeline verificar.
 

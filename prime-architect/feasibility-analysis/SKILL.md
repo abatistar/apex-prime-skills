@@ -191,6 +191,8 @@ Cada follow-up é redigido para o destino que o resolve. Esta skill não executa
 - **Ao backlog** — a dívida que o caminho viável criaria, com um responsável prospectivo (`QM-MT-1`), redigida como item para o arquiteto registrar.
 - **Ao dono do modelo de qualidade** — o critério de que a confrontação precisou e que o catálogo não tem. Quem agrega as ocorrências entre execuções é ele.
 
+**Com o veredito e os follow-ups prontos, leia agora** `checklists/feasibility-checklist.md`: ele confere o relatório antes da entrega e traz o template. Não o leia antes deste ponto.
+
 ## Saída
 
 Um relatório de viabilidade — um artefato de trabalho do arquiteto dentro do refinamento do time, não um
@@ -201,7 +203,7 @@ a data, a demanda e o mapa em que se apoia, por ID e revisão.
 Contém a demanda reformulada e sua fronteira, **a referência ao mapa de impacto — por ID e revisão**, a
 baseline de cada área tocada, as restrições declaradas pelo arquiteto, os achados, a cobertura das lentes, as premissas do veredito, o veredito com
 sua razão de uma linha e os follow-ups por destino. Um mapa citado sem a revisão não está citado: a regra 2 do
-Passo 6 depende de onde aquele mapa parou, e só a revisão diz se a borda ainda vale. **Leia agora**, depois do veredito, `checklists/feasibility-checklist.md`: ele confere o relatório antes da entrega e traz o template. Não o leia no Passo 0.
+Passo 6 depende de onde aquele mapa parou, e só a revisão diz se a borda ainda vale. A forma do relatório é a do template de `checklists/feasibility-checklist.md`, lido no fim do Passo 7.
 
 Nem este relatório nem o mapa que ele cita são obrigatórios para que uma demanda exista ou avance. O
 time é dono da demanda; são ferramentas que o arquiteto usa dentro desse processo.
