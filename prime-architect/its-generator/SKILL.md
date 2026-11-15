@@ -128,9 +128,17 @@ O item que fica de fora é o erro mais caro: um chamador esquecido vira incident
 
 **Caso que nenhuma fonte decide.** Um caso de borda cujo comportamento observável nenhum item `D`, ponto de regressão ou decisão de qualidade decide é uma exigência que falta no caso de uso, e não é o plano que a decide. Ele é pendência para o arquiteto: a lista dos casos, cada um com a sua recomendação.
 
-A resposta dele não entra na ITS. Entra no caso de uso, pelo `use-case-creator`, e a geração retoma do Passo 1 depois que o documento voltar a `Reviewed`, reaproveitando as notas da inspeção que o delta novo não alcança. Três regras impedem o atalho:
+**O caminho padrão.** A resposta dele entra no caso de uso, pelo `use-case-creator`, e a geração retoma do Passo 1 depois que o documento voltar a `Reviewed`, reaproveitando as notas da inspeção que o delta novo não alcança. É o que você oferece ao levar a pendência.
 
-- nenhum item `D` e nenhum ponto de regressão tem como fonte uma resposta dada em conversa;
+**A dispensa.** Só o arquiteto dispensa essa volta, e de forma explícita, para esta story: "use estas respostas e gere a ITS". Uma resposta seguida de "pode seguir" não é dispensa; na dúvida, pergunte em uma linha. A dispensa cobre só casos de borda de itens que o delta já traz. Um comportamento que nenhum item do delta descreve não é caso de borda: é delta que falta, e volta sempre ao caso de uso. Com a dispensa:
+
+- o item `D` ou o ponto de regressão é escrito com a resposta, e Referências ganha uma linha própria para ela: `Decisão do arquiteto em <data> — pendente no caso de uso <identificador>`, com os itens em Usada em;
+- Riscos e pontos de atenção diz que o caso de uso precisa receber a exigência antes do merge, e que o code review cobra isso;
+- a mensagem de entrega lista as decisões que ficaram pendentes no caso de uso.
+
+Com ou sem dispensa, três regras valem:
+
+- nenhuma resposta dada em conversa é atribuída a um elemento do caso de uso;
 - a coluna Usada em só cita elementos da fonte que dizem o que o item diz;
 - o que o plano decide sozinho e nenhum ator observa — a ordem de duas verificações internas, o nome de um índice — é decisão técnica: fica na unidade, como instrução, e na mensagem de entrega, nunca como item `D`.
 
@@ -228,6 +236,7 @@ Um documento de ITS, nomeado conforme o contrato, na localização configurada, 
 - o caminho do arquivo;
 - o nível de detalhe — e, sem nível no pedido, que `detalhista` foi o padrão — e a calibração proposta, com a razão, para o arquiteto confirmar ou corrigir;
 - as decisões técnicas que o plano tomou e nenhuma fonte fixava;
+- as decisões do arquiteto que ficaram pendentes no caso de uso, por dispensa dele;
 - o que não foi verificado: código de que o plano depende e que a inspeção não abriu, consumidores fora do repositório, resultados de busca conferidos por amostragem;
 - os gatilhos disparados, cada um com a unidade que o decide;
 - o resultado do script de conferência, ou que a conferência foi manual.

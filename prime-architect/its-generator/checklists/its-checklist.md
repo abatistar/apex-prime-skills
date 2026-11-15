@@ -35,7 +35,7 @@ Ele só lê arquivos. Confere a estrutura do documento, as direções de rastrea
 ## 2. O que só o julgamento confere
 
 - [ ] **Alcance.** Todo componente que o plano modifica ou remove teve as três buscas do Passo 3, e todo resultado afetado está no documento: ponto de regressão, teste existente a alterar, fronteira de fora de escopo ou risco com o efeito descrito.
-- [ ] **Fonte.** Todo item `D` e todo ponto de regressão corresponde a um elemento que existe na fonte e diz o que o item diz. Nenhum nasceu de uma resposta dada em conversa. Uma decisão técnica do plano não é item `D`.
+- [ ] **Fonte.** Todo item `D` e todo ponto de regressão corresponde a um elemento que existe na fonte e diz o que o item diz. Nenhum nasceu de uma resposta dada em conversa, salvo dispensa explícita do arquiteto para um caso de borda: aí a decisão tem linha própria em Referências, como pendente no caso de uso, e Riscos diz que o caso de uso recebe a exigência antes do merge. Uma decisão técnica do plano não é item `D`.
 - [ ] **Casos de borda.** Todo caso escrito remonta a um item, a um ponto de regressão ou a uma decisão de qualidade. Nenhum caso sem decisão ficou no plano.
 - [ ] **Alternativa descartada.** Toda escolha real da inspeção está fechada: uma linha na unidade, com a razão decisiva, ou um ADR citado nas premissas. Unidade sem escolha real não declara nada.
 - [ ] **Decisão de arquitetura.** Nenhuma decisão que merece ADR tomada no corpo. Todo ADR citado está `Accepted`, muda ao menos uma instrução, e a restrição dele está escrita nas unidades que restringe. Nenhuma instrução o contradiz nem repete o que o código já faz.
