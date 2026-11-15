@@ -23,7 +23,7 @@ Esta skill não deriva alcance. O `impact-mapping` produz a evidência — o que
 - **Não projeta a solução.** Nomear um caminho viável faz parte do raciocínio do veredito; especificá-lo é trabalho do `its-generator`, e só depois que os casos de uso existirem.
 - **Não decide se a demanda vale a pena.** Valor é decisão de quem demanda. Esta skill responde *pode ser absorvida, a que custo estrutural, e o que precisa ser verdade antes*. Das cinco dimensões clássicas de um estudo de viabilidade — técnica, econômica, legal, operacional e de prazo —, ela julga a técnica, a legal e a operacional; a econômica e a de prazo pertencem a quem demanda e ao time.
 
-## Passo 0 — Carregar os critérios
+## Passo 0 — O que esta skill lê, e quando
 
 A configuração do projeto não é lida aqui. Cada fato dela é lido quando uma lente precisa dele, e só a seção que o carrega, conforme as regras de consumo do **prime-config** (`../prime-config/references/consumer-rules.md`):
 
@@ -33,9 +33,7 @@ A configuração do projeto não é lida aqui. Cada fato dela é lido quando uma
 
 **O contexto do projeto não é relido aqui.** Se o projeto é legado, os sinais de criticidade, as migrações em curso e o código gerado ou de terceiros chegam pela sobreposição do mapa, que já diz o que a demanda toca (Passo 2). As restrições que não estão no código nem nos documentos chegam pela pergunta ao arquiteto, depois do mapa (Passo 2).
 
-Carregue, como os critérios em que o julgamento se ancora: as regras de consumo do **quality-model** (`../quality-model/references/consumer-rules.md`) com `../quality-model/references/quality-triggers.md` — os gatilhos que a lente de mesmo nome percorre —, as regras de consumo do **coding-standards** (`../coding-standards/references/consumer-rules.md`) e os **ADRs** `Accepted` e `Proposed`.
-
-Os catálogos desses contratos não são carregados inteiros. Quando uma lente aplica um ID, leia no catálogo do dono o índice e o arquivo da lente ou família daquele ID. Para `QM-XX-N`: `../quality-model/references/quality-criteria/XX.md`. Para `CS-XX-N`: `../coding-standards/references/convention-slots/XX.md` e, quando a lente precisa do valor do slot, o arquivo de mesmo nome nos padrões da stack. Os slots que servem a um critério — os que um gatilho alcança — estão no mapa Critério → slots do índice `../coding-standards/references/convention-slots.md`.
+Os critérios do julgamento — as regras de consumo do quality-model e do coding-standards, os gatilhos e os ADRs — entram no Passo 3, antes da primeira lente. Uma execução que para na reformulação (Passo 1) ou no mapa (Passo 2) não paga essa leitura.
 
 **Custo é evidência, nunca um critério.** O modelo de qualidade responde *o que é bom*, não *quanto isto custa*; não o estique até virar um vocabulário de custo que ele não possui. Onde a confrontação precisa de um critério que não existe — um slot de convenção sem padrão da stack nem ADR `Accepted` do projeto — **reporte a lacuna** conforme o `coding-standards` e nunca improvise o valor. Um critério de que a confrontação precisou e que o catálogo não tem vira follow-up ao dono do modelo de qualidade (Passo 7), em toda execução que o encontrar. Agregar as ocorrências e decidir o PR de governança é dele, não desta skill.
 
@@ -82,6 +80,10 @@ O que o arquiteto responde entra como **restrição declarada** (Passo 4) e alim
 ## Passo 3 — As lentes, em ordem decrescente do que mata uma demanda
 
 Cada lente aponta para onde seu critério vive — nunca o redefine. Rode-as sobre o mapa; não reande o código que o mapa já andou. A intensidade segue os sinais de criticidade que o mapa trouxe: uma demanda com sinal de `crítica` é julgada com tudo o que cada lente lista. O nível em si é declarado adiante, na ITS.
+
+**Leia agora**, antes da primeira lente, os critérios em que o julgamento se ancora: as regras de consumo do **quality-model** (`../quality-model/references/consumer-rules.md`) com `../quality-model/references/quality-triggers.md` — os gatilhos que a lente de mesmo nome percorre —, as regras de consumo do **coding-standards** (`../coding-standards/references/consumer-rules.md`) e os **ADRs** `Accepted` e `Proposed`.
+
+Os catálogos desses contratos não são carregados inteiros. Quando uma lente aplica um ID, leia no catálogo do dono o índice e o arquivo da lente ou família daquele ID. Para `QM-XX-N`: `../quality-model/references/quality-criteria/XX.md`. Para `CS-XX-N`: `../coding-standards/references/convention-slots/XX.md` e, quando a lente precisa do valor do slot, o arquivo de mesmo nome nos padrões da stack. Os slots que servem a um critério — os que um gatilho alcança — estão no mapa Critério → slots do índice `../coding-standards/references/convention-slots.md`.
 
 - **Restrição** — os tetos rígidos: stack e versão (configuração), plataforma, dados que não existem, uma dependência externa ou licença que o projeto não possui, o que um ADR `Accepted` proíbe e as restrições que o arquiteto declarou (Passo 2) — uma fronteira regulatória ou contratual, um dado que não pode ser usado. Código gerado a partir do contrato de um terceiro muda na origem, que o projeto pode não controlar. Só esta lente produz achados que tornam algo genuinamente impossível. Por isso é lida primeiro, e costuma ser a mais curta.
 - **Encaixe estrutural** — a demanda briga com a forma do sistema? `QM-CC-1..7`, `CS-AR-1..5` e a incidência de ADR trazida do mapa.
@@ -199,7 +201,7 @@ a data, a demanda e o mapa em que se apoia, por ID e revisão.
 Contém a demanda reformulada e sua fronteira, **a referência ao mapa de impacto — por ID e revisão**, a
 baseline de cada área tocada, as restrições declaradas pelo arquiteto, os achados, a cobertura das lentes, as premissas do veredito, o veredito com
 sua razão de uma linha e os follow-ups por destino. Um mapa citado sem a revisão não está citado: a regra 2 do
-Passo 6 depende de onde aquele mapa parou, e só a revisão diz se a borda ainda vale. A passada operacional e o template do relatório vivem em `checklists/feasibility-checklist.md`. Leia-o depois do veredito, para conferir a análise e montar o relatório — não no Passo 0.
+Passo 6 depende de onde aquele mapa parou, e só a revisão diz se a borda ainda vale. **Leia agora**, depois do veredito, `checklists/feasibility-checklist.md`: ele confere o relatório antes da entrega e traz o template. Não o leia no Passo 0.
 
 Nem este relatório nem o mapa que ele cita são obrigatórios para que uma demanda exista ou avance. O
 time é dono da demanda; são ferramentas que o arquiteto usa dentro desse processo.
