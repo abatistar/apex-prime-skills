@@ -89,6 +89,8 @@ Cada um destes modos tem o procedimento num arquivo próprio. **Leia agora** só
 
 ## Passo 3 — Validar antes de entregar
 
+**Leia agora** `checklists/creation-checklist.md` e percorra-o inteiro sobre os documentos escritos ou alterados, depois das três verificações abaixo. Ele confere os documentos e a entrega; não guarda template.
+
 **Qualidade, documento a documento.** Verifique todo documento escrito ou alterado contra as regras de qualidade do formato, uma a uma — nunca pela impressão de que o documento parece completo. O its-generator só confere o Status e as seções obrigatórias: uma extensão sem critério de aceite ou uma regra órfã que passe daqui chega à ITS e ao code review. Corrija toda violação; quando a correção depende de uma resposta do arquiteto, marque `[CONFIRM: ...]` no ponto exato.
 
 **Índice.** Atualize a linha de cada documento escrito ou alterado, conforme o Índice do repositório do formato (regra de qualidade 14). É atualização derivada, como o link recíproco.
@@ -102,8 +104,6 @@ Apresente os documentos criados/atualizados. Resuma o delta explicitamente na su
 Separe, no resumo, os critérios de aceite que você derivou dos que a entrada trazia: o arquiteto valida os derivados com mais atenção. O documento não leva essa marca.
 
 Informe o Status resultante de cada documento: um documento que voltou a `Draft` só alimenta o its-generator depois que o arquiteto o promover; um `Retired` por retirada já o alimenta. Entregue os marcadores pendentes como a Lista de perguntas do formato, com recomendação e evidência em cada item — são as perguntas que o arquiteto precisa responder antes de promover cada documento. Reporte também os documentos em que a story espera (base em `Draft`) e as dependências entre stories (delta escrito sobre o de outra story).
-
-A passada operacional vive em `checklists/creation-checklist.md`. Leia-a depois de escrever, para conferir antes de entregar — não no Passo 0. O template do próprio documento não: ele é de propriedade do `use-case` e é lido de lá.
 
 ## Saída
 
