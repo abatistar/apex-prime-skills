@@ -82,8 +82,10 @@ apex-prime-skills/
     │       └── use-case-template.md        # a estrutura do documento, o índice do repositório e as regras de qualidade
     ├── use-case-creator/
     │   ├── SKILL.md                        # como criar e atualizar casos de uso
-    │   └── checklists/
-    │       └── creation-checklist.md
+    │   ├── checklists/
+    │   │   └── creation-checklist.md
+    │   └── references/
+    │       └── mode-*.md                   # um arquivo por modo menos frequente, lido só no modo usado
     ├── use-case-extractor/
     │   ├── SKILL.md                        # engenharia reversa para criar casos de uso
     │   └── checklists/
@@ -102,8 +104,13 @@ apex-prime-skills/
     ├── its-generator/
     │   ├── SKILL.md                        # como escrever a ITS usando o contrato do core
     │   ├── checklists/
-    │   │   └── its-checklist.md
+    │   │   └── its-checklist.md            # a conferência do documento pronto, antes de entregar
+    │   ├── scripts/
+    │   │   └── check-its.ps1               # confere a rastreabilidade, as âncoras e o alcance da ITS; só lê arquivos
     │   └── references/
+    │       ├── technical-story.md          # lido só numa story técnica
+    │       ├── pending-delta.md            # lido só quando um caso de uso tem o delta de outra story ainda não entregue
+    │       ├── proposing-an-adr.md         # lido só quando o plano depende de uma decisão que merece ADR
     │       ├── revising-an-its.md          # lido só quando uma ITS entregue volta
     │       └── restarting-after-an-adr.md  # lido quando a ITS recomeça depois da decisão sobre um ADR
     ├── adr-generator/
@@ -125,7 +132,7 @@ apex-prime-skills/
 
 **O que cada skill carrega.** Um contrato separa o que os consumidores leem (`references/consumer-rules.md`) do que só quem o escreve ou o mantém precisa (o SKILL.md). Os catálogos têm um índice, lido sempre, e um arquivo por lente ou família, lido quando um ID dela é citado ou aplicado. Checklists, templates e procedimentos de um caminho só são lidos no passo que os usa.
 
-Toda skill é um diretório com um `SKILL.md` cujo frontmatter traz `name` e `description`. As skills do core mantêm seu material normativo em `references/` ou `templates/`; as skills de papel mantêm suas listas operacionais em `checklists/` e, em `references/`, os procedimentos que só um caminho lê.
+Toda skill é um diretório com um `SKILL.md` cujo frontmatter traz `name` e `description`. As skills do core mantêm seu material normativo em `references/` ou `templates/`; as skills de papel mantêm suas listas operacionais em `checklists/`, em `references/` os procedimentos que só um caminho lê e, em `scripts/`, a conferência que é mecânica e não precisa de julgamento.
 
 ## Instalação
 
