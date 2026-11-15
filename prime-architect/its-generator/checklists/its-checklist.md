@@ -16,7 +16,7 @@ Ele só lê arquivos. Confere a estrutura do documento, as direções de rastrea
 - [ ] Todo `AVISO` decidido:
   - `alcance` — um arquivo referencia um tipo que o plano altera e o documento não o cita. Abra o trecho que usa o tipo. Se o arquivo é afetado, ele ganha o destino da regra "Quem depende do que muda" (Passo 3). Se não é, siga.
   - `ancora` — um membro citado não existe no tipo. Se o plano o cria, falta a marca `(criar)`. Se não, o nome está errado: abra o tipo e corrija.
-  - `delta->teste` — um item "já atendido hoje" não nomeia o teste que o prova. Nomeie o teste existente, ou planeje o teste de caracterização.
+  - `delta->teste` — um item "já atendido hoje" não tem prova: nem um teste existente nomeado na linha, nem um teste de caracterização numa unidade. Nomeie o teste, ou planeje a unidade.
   - `teste` — um teste não diz o item ou o ponto de regressão que prova. Acrescente-o entre parênteses.
   - `hedge` — uma instrução hesita. Feche a decisão ou leve-a ao arquiteto.
 

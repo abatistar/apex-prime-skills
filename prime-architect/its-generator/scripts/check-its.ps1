@@ -183,8 +183,10 @@ foreach ($id in ($declaredD.Keys | Sort-Object)) {
         Add-Finding 'ERRO' 'delta->plano' "$id nao e atendido por nenhuma unidade nem declara 'ja atendido hoje'"
     }
     if ($alreadyMet) {
-        if ($declaredD[$id] -notmatch 'j. atendido hoje:.*`[^`]+`') {
-            Add-Finding 'AVISO' 'delta->teste' "$id declara 'ja atendido hoje' sem nomear, em codigo em linha, o teste existente que o prova"
+        # A prova e' o teste existente nomeado na linha, ou o teste de caracterizacao de uma unidade.
+        $named = ($declaredD[$id] -match 'j. atendido hoje:.*`[^`]+`')
+        if (-not $named -and -not $testedD.ContainsKey($id)) {
+            Add-Finding 'AVISO' 'delta->teste' "$id declara 'ja atendido hoje' sem nomear o teste existente que o prova e sem teste de caracterizacao numa unidade"
         }
     } elseif (-not $testedD.ContainsKey($id)) {
         Add-Finding 'ERRO' 'delta->teste' "$id nao e citado por nenhum teste de nenhuma unidade"
