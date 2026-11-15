@@ -60,6 +60,18 @@ O ciclo de vida de um valor é sempre o mesmo, em três passos:
 
 Um valor decidido sem o terceiro passo é erosão anunciada.
 
+## Para quem implementa
+
+O Apex Prime não chega à implementação. Estas regras valem para quem implementa quando o time lhe entrega estes padrões por outro meio.
+
+Leia os valores efetivos dos slots que o código tocado e os gatilhos da story acionam, não o catálogo inteiro.
+
+- Siga o exemplo canônico quando houver.
+- Cumpra todo slot invariante em código novo e alterado.
+- Rode os comandos de verificação do projeto antes de dar a unidade por pronta: os slots de verificação `ferramenta` são garantidos ali.
+- Onde um invariante já é violado no código que você toca, nomeie-o como dívida herdada, sem adotá-lo nem corrigi-lo fora do escopo.
+- Ambiguidade sobre qual valor se aplica é uma pergunta devolvida ao arquiteto, nunca uma suposição.
+
 ## O sinal de saúde
 
 A conformidade da base de código inteira é a medida errada: nunca chega a 100%, não é acionável e pune o código que um projeto legado ou uma migração em curso já isentou. Um sinal faz o trabalho em seu lugar:

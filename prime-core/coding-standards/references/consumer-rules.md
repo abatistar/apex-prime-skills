@@ -1,6 +1,6 @@
 # Regras para quem consome os padrões de código
 
-Parte do contrato do `coding-standards`, e a que as skills do fluxo leem: onde cada valor vale (as duas classes), o projeto legado, as migrações, os desvios do projeto, as lacunas, a verificação e como cada papel usa os slots. O SKILL.md — o que é um slot, os padrões versionados, o sinal de saúde e a evolução — é lido por quem implementa, junto com este arquivo, e pelo dono do catálogo.
+Parte do contrato do `coding-standards`, e a que as skills do fluxo leem: onde cada valor vale (as duas classes), o projeto legado, as migrações, os desvios do projeto, as lacunas, a verificação e como cada papel usa os slots. O SKILL.md — o que é um slot, os padrões versionados, as regras de quem implementa, o sinal de saúde e a evolução — é lido pelo dono do catálogo e por quem implementa, quando o time lhe entrega os padrões.
 
 ## Duas classes de aplicação
 
@@ -92,14 +92,6 @@ Uma regra de ferramenta que produz falsos positivos com frequência treina o tim
 - **Legado.** O legado com que o plano convive sem corrigir vira uma fronteira de fora de escopo. O slot só aparece nas Referências da ITS quando o plano se afasta dele por exceção registrada.
 - **Lacuna.** Um slot de que o plano precisa e que não tem valor é uma lacuna a reportar, não a inventar.
 - **Divergência.** Num projeto não legado, o código tocado que diverge do padrão do time sem ADR é reportado antes de o plano escolher um valor (Projeto não legado cujo código diverge).
-
-**Para quem implementa** — leia os valores efetivos dos slots que o código tocado e os gatilhos da story acionam, não o catálogo inteiro.
-
-- Siga o exemplo canônico quando houver.
-- Cumpra todo slot invariante em código novo e alterado.
-- Rode os comandos de verificação do projeto antes de dar a unidade por pronta: os slots de verificação `ferramenta` são garantidos ali.
-- Onde um invariante já é violado no código que você toca, nomeie-o como dívida herdada, sem adotá-lo nem corrigi-lo fora do escopo.
-- Ambiguidade sobre qual valor se aplica é uma pergunta devolvida ao arquiteto, nunca uma suposição.
 
 **Para o `code-review`** — os achados citam IDs de slots junto com IDs de critérios (`CS-ER-4` / `QM-EO-2`), de modo que a conversa seja sobre uma decisão versionada em vez do gosto de um revisor.
 
