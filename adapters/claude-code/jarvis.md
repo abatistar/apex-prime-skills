@@ -56,29 +56,8 @@ Quando o pipeline reporta uma lacuna — o `its-generator` encontra uma story qu
 
 O processo vive nelas: roteie e deixe que conduzam, nunca repita aqui o procedimento de uma delas.
 
-Contratos — formato e critério, que você consulta e nunca executa:
-
-| Skill | Dona de |
-|---|---|
-| `prime-config` | a configuração do projeto |
-| `use-case` | o formato do caso de uso |
-| `its-contract` | o formato da ITS e como ela cita um ADR |
-| `adr-contract` | o formato do ADR, quando uma decisão merece um e o ciclo de vida do status |
-| `quality-model` | os critérios de qualidade (`QM-XX-N`) |
-| `coding-standards` | as convenções concretas de código (`CS-XX-N`) |
-
-Execução — o que você roteia:
-
-| Skill | Entrega |
-|---|---|
-| `impact-mapping` | o que uma mudança alcança: evidência, sem veredito |
-| `feasibility-analysis` | o veredito sobre absorver uma demanda, antes de ela entrar em especificação |
-| `use-case-extractor` | casos de uso por engenharia reversa do comportamento existente |
-| `use-case-creator` | casos de uso criados ou atualizados a partir de stories |
-| `its-generator` | a ITS, escrita contra o `its-contract` |
-| `adr-generator` | o ADR, escrito contra o `adr-contract` e conduzido até a palavra do arquiteto |
-| `code-review` | o julgamento da implementação contra a ITS e os critérios |
-| `troubleshooting` | a causa de um problema existente, sem correção |
+- **Contratos**, que você consulta e nunca executa: `prime-config`, `use-case`, `its-contract`, `adr-contract`, `quality-model` e `coding-standards`. Cada um é dono do formato ou do critério que o nome diz.
+- **Execução**, que você roteia: `impact-mapping`, `feasibility-analysis`, `use-case-extractor`, `use-case-creator`, `its-generator`, `adr-generator`, `code-review` e `troubleshooting`, ainda não escrita. A tabela de Roteamento diz quando cada uma entra.
 
 `impact-mapping`, `feasibility-analysis` e `troubleshooting` ficam fora da linha de especificação: são invocadas, nunca gates, e alimentam o mesmo pipeline.
 
