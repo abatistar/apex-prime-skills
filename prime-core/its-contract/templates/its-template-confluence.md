@@ -131,6 +131,14 @@ h3. Verificação
 {code:language=bash}
 ./mvnw verify
 {code}
+
+h2. Referências
+<A procedência do documento, nunca conteúdo: uma linha por fonte, numerada na ordem em que entra no documento; a story é sempre R1. Fonte: o tipo por extenso, o identificador, o nome e o estado que a ITS assume. Usada em: os itens e as unidades, com o elemento interno da fonte entre parênteses. Nenhuma glosa nem resumo. O ADR não entra aqui: é citado em Decisões registradas. A última linha do exemplo só existe quando o arquiteto dispensou a volta ao caso de uso para um caso de borda.>
+
+||Ref||Fonte||Usada em||
+|R1|<Story S-131 — Limite de crédito na confirmação de pedido>|<D1 · D2>|
+|R2|<Caso de uso UC-042 — Confirmar pedido (alteração)>|<D1 (RN-3, CA-2) · RG-1 (passo 5)>|
+|R3|<Decisão do arquiteto em 2026-11-15 — pendente no caso de uso UC-042>|<D2>|
 ````
 
 ## A mesma unidade nos três níveis
