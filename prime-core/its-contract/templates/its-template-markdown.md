@@ -2,7 +2,7 @@
 
 Template canônico de propriedade do its-contract para o formato de saída `Markdown` — o valor da opção `Template da ITS` na configuração do projeto, e o padrão quando ela está ausente. O formato `Confluence` tem o seu, `its-template-confluence.md`, com as mesmas seções, os mesmos campos e a mesma orientação: só a marcação muda, e uma mudança de conteúdo é feita nos dois. O its-generator lê só o template do formato do projeto, no passo em que escreve a ITS. Quem implementa e o code review leem a ITS pronta, nunca este arquivo: o documento entregue já tem a forma daqui. Veja o SKILL.md do its-contract para as regras de nível de detalhe, rastreabilidade e fronteira entre ITS e ADR, e o `references/writing-rules.md` dele para as regras de escrita.
 
-**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — os identificadores do próprio documento (`D1`, `RG-1`), `ITS-<story-id>`, `ADR-NNN`, os níveis de criticidade (`efêmera`, `padrão`, `crítica`), caminhos de arquivo e identificadores de código — nunca são traduzidos. Cada token continua pertencendo ao contrato que o declara; esta nota apenas afirma que nenhum deles é traduzido.
+**Idioma.** O bloco abaixo é o artefato e é escrito no idioma de documento deste formato: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis citados aqui — os identificadores do próprio documento (`D1`, `RG-1`), `ITS-<story-id>`, caminhos de arquivo e identificadores de código — nunca são traduzidos. Cada token continua pertencendo ao contrato que o declara; esta nota apenas afirma que nenhum deles é traduzido.
 
 **Marcação.** O bloco abaixo é escrito em Markdown, a mesma marcação dos casos de uso e dos ADRs, e o documento inteiro usa só ela. O que o template usa:
 
@@ -28,22 +28,14 @@ Armadilhas que o documento precisa evitar:
 
 Os trechos entre `<` e `>` são orientação de preenchimento e não ficam no documento entregue.
 
-**Nível de detalhe.** O bloco abaixo mostra a unidade no nível `detalhista`, que tem todos os campos. A orientação de cada campo diz a partir de que nível ele existe e o que muda nele; um campo sem essa marca é igual nos três níveis (SKILL.md do its-contract, Nível de detalhe). A mesma unidade escrita nos três níveis está em `its-template-markdown-levels.md`, ao lado deste arquivo, lido só quando o nível pedido é `simplificado` ou `médio`. Sob o título, o documento leva a linha do seu nível, copiada inteira — é ela que diz a quem lê fora deste contrato o que o plano fixa e o que delega. Logo abaixo dela, o bloco **Como implementar este documento** também é copiado inteiro, sem alteração, em qualquer nível:
-
-| Nível | Linha do documento |
-|---|---|
-| `simplificado` | `**Nível de detalhe:** simplificado — o plano fixa as exigências, as restrições, os contratos e os testes de cada unidade; os passos para chegar a eles, os arquivos e os nomes internos ficam a cargo de quem implementa, dentro das convenções do projeto.` |
-| `médio` | `**Nível de detalhe:** médio — o plano fixa também a sequência de cada unidade, os pontos de integração com o código existente e os casos de borda a tratar; os passos dentro de cada componente ficam a cargo de quem implementa, dentro das convenções do projeto.` |
-| `detalhista` | `**Nível de detalhe:** detalhista — o plano fixa o passo a passo de cada unidade, os arquivos a criar e a alterar, o comportamento esperado em cada caso de borda e como verificar cada unidade.` |
+**Nível de detalhe.** O bloco abaixo mostra a unidade no nível `detalhista`, que tem todos os campos. A orientação de cada campo diz a partir de que nível ele existe e o que muda nele; um campo sem essa marca é igual nos três níveis (SKILL.md do its-contract, Nível de detalhe). A mesma unidade escrita nos três níveis está em `its-template-markdown-levels.md`, ao lado deste arquivo, lido só quando o nível pedido é `simplificado` ou `médio`. O documento não declara o nível numa linha: os campos das unidades o mostram. Sob o título, o bloco **Como implementar este documento** é copiado inteiro, sem alteração, em qualquer nível: é ele que diz a quem lê fora deste contrato o que o plano fixa e o que delega.
 
 Restrições de formatação (das regras de escrita do contrato): no máximo 3 níveis de título, 2 níveis de aninhamento de lista, tabelas simples (sem células de várias linhas, sem HTML embutido), blocos de código simples, não aninhados e fora das listas, sem diagramas. O documento precisa ser lido do mesmo jeito no repositório e em qualquer ferramenta que renderize Markdown: só a marcação da tabela acima, sem HTML e sem extensão de um renderizador específico.
 
 ````text
 # ITS-<story-id> — <Título da story>
 
-<A linha do nível de detalhe do documento, copiada inteira da nota Nível de detalhe deste template.>
-
-**Como implementar este documento:** implemente todas as unidades, na ordem, e nada além delas; o que está em "Fora de escopo — não alterar" não é tocado. Instrução ambígua, contraditória ou impossível no código: pare e devolva a pergunta ao arquiteto, citando a unidade. Um teste existente só muda quando uma unidade manda. Antes de abrir o PR, rode os comandos de Verificação; na descrição do PR, declare este documento, as unidades implementadas e a que ficou de fora, as perguntas devolvidas, a dívida encontrada no código tocado e o resultado da verificação.
+**Como implementar este documento:** implemente todas as unidades, na ordem, e nada além delas; o que está em "Fora de escopo — não alterar" não é tocado. O que as unidades não escrevem — os passos dentro de um componente, os nomes internos, os arquivos que nenhuma lista de Arquivos nomeia — fica a cargo de quem implementa, dentro das convenções do projeto; o que está escrito vincula. Instrução ambígua, contraditória ou impossível no código: pare e devolva a pergunta ao arquiteto, citando a unidade. Um teste existente só muda quando uma unidade manda. Antes de abrir o PR, rode os comandos de Verificação; na descrição do PR, declare este documento, as unidades implementadas e a que ficou de fora, as perguntas devolvidas, a dívida encontrada no código tocado e o resultado da verificação.
 
 ## Descrição
 
@@ -71,15 +63,14 @@ Restrições de formatação (das regras de escrita do contrato): no máximo 3 n
 
 <A espinha do documento, em ordem de execução. Quem implementa lê daqui até o fim sem sair do documento: toda exigência é escrita na instrução — a regra, o resultado esperado, a restrição de uma decisão registrada, a convenção do projeto como escolha concreta —, nunca apontada.>
 
-**Premissas técnicas:** <stack e versões que o plano assume — ex.: Java 25 · Spring Boot 4.1 · PostgreSQL 17>
+**Premissas técnicas:**
 
-**Calibração:** <o nível de criticidade da demanda, com a razão em uma linha; uma demanda efêmera leva a condição de remoção; num projeto legado, a linha diz que o plano segue o padrão do código existente — ex.: crítica — altera a regra que libera crédito ao cliente · ex.: efêmera — campanha promocional, remover após 2026-12-15 · ex.: padrão · projeto legado: o plano segue o padrão do código existente>
-
-**Base do plano:** <a revisão do código que a inspeção leu e a data — ex.: `a1b2c3d` · 2026-11-12; com raiz de documentos paralela, também a revisão dela. Sem controle de versão acessível, só a data.>
+- <linguagem e versão — ex.: Java 25>
+- <framework e versão — ex.: Spring Boot 4.1>
+- <cada outra peça de que o plano depende, com a versão — ex.: PostgreSQL 17>
+- <somente num projeto que a configuração declara legado: o plano segue o padrão do código existente, e não o padrão do time>
 
 **Ordem de entrega:** <somente quando um caso de uso que o plano lê tem a mudança de outra story ainda não entregue: a mudança que o plano presume já no código, ou não, por extenso — ex.: o plano presume entregue a recusa de pedidos acima do limite de crédito; implementar depois dela.>
-
-**Decisões registradas:** <somente quando um ADR aprovado muda ao menos uma instrução do plano: o identificador, o título e as unidades que ele restringe; mais de um, separados por ·. É a única citação de um ADR no documento: a restrição em si é escrita como instrução nessas unidades, sem o identificador. Ex.: ADR-012 — Publicação de eventos de pedido pelo outbox — unidade 1>
 
 ### 1. <Título da unidade — o resultado que ela entrega, não a atividade. Ex.: Recusar a confirmação acima do limite de crédito>
 
@@ -140,7 +131,7 @@ boolean allows(BigDecimal orderTotal, BigDecimal creditLimit)
 
 ### Entrega: migrações, ativação e reversão
 
-<A migração em si é uma unidade do plano: o arquivo em Arquivos e o esquema em Trechos fixados. Aqui ficam: a ordem das migrações em relação às outras unidades e ao deploy, a compatibilidade com a versão em produção e a carga ou correção de dados; como a mudança é ativada — no deploy, ou atrás de uma flag, com a condição de remoção; e como é desfeita — quando a mudança grava dado ou publica evento em forma nova, o que acontece com ele na reversão. Sem migração, sem flag e com reversão simples, a seção tem uma linha: "sem migração; ativação no deploy; reversão: reverter o deploy".>
+<A migração em si é uma unidade do plano: o arquivo em Arquivos e o esquema em Trechos fixados. Aqui ficam: a ordem das migrações em relação às outras unidades e ao deploy, a compatibilidade com a versão em produção e a carga ou correção de dados; como a mudança é ativada — no deploy, ou atrás de uma flag, com a condição de remoção; e como é desfeita — quando a mudança grava dado ou publica evento em forma nova, o que acontece com ele na reversão. Numa demanda efêmera — experimento, carga executada uma vez, campanha com prazo —, a condição em que o código sai. Sem migração, sem flag e com reversão simples, a seção tem uma linha: "sem migração; ativação no deploy; reversão: reverter o deploy".>
 
 ### Fora de escopo — não alterar
 
@@ -151,7 +142,9 @@ boolean allows(BigDecimal orderTotal, BigDecimal creditLimit)
 
 ### Riscos e pontos de atenção
 
-<O que merece atenção sem um teste concreto a exigir, por extenso: partes alteradas com frequência, dependências de ambiente ou de dados e pendências que não são decisão do plano — uma janela de implantação, uma confirmação de outro time. Uma decisão do plano nunca fica em aberto aqui. Comportamento que divide código com a mudança não entra aqui: é ponto de regressão, em Continua valendo.>
+<O que merece atenção sem um teste concreto a exigir, por extenso: partes alteradas com frequência, dependências de ambiente ou de dados e pendências que não são decisão do plano — uma janela de implantação, uma confirmação de outro time. Uma decisão do plano nunca fica em aberto aqui. Comportamento que divide código com a mudança não entra aqui: é ponto de regressão, em Continua valendo. Quando o arquiteto dispensou a volta ao caso de uso para um caso de borda, um item aqui registra a decisão por extenso, a data e os itens que dependem dela, e diz que o caso de uso recebe a exigência antes do merge.>
+
+- <ex.: Decisão do arquiteto em 2026-11-15, pendente no caso de uso: a falta justificada não conta para o bloqueio (D2); o caso de uso recebe essa regra antes do merge.>
 
 ### Verificação
 
@@ -160,14 +153,4 @@ boolean allows(BigDecimal orderTotal, BigDecimal creditLimit)
 ```bash
 ./mvnw verify
 ```
-
-## Referências
-
-<A procedência do documento, nunca conteúdo: uma linha por fonte, numerada na ordem em que entra no documento; a story é sempre R1. Fonte: o tipo por extenso, o identificador, o nome e o estado que a ITS assume. Usada em: os itens e as unidades, com o elemento interno da fonte entre parênteses. Nenhuma glosa nem resumo. O ADR não entra aqui: é citado em Decisões registradas. A última linha do exemplo só existe quando o arquiteto dispensou a volta ao caso de uso para um caso de borda.>
-
-| Ref | Fonte | Usada em |
-|---|---|---|
-| R1 | <Story S-131 — Limite de crédito na confirmação de pedido> | <D1 · D2> |
-| R2 | <Caso de uso UC-042 — Confirmar pedido (alteração)> | <D1 (RN-3, CA-2) · RG-1 (passo 5)> |
-| R3 | <Decisão do arquiteto em 2026-11-15 — pendente no caso de uso UC-042> | <D2> |
 ````

@@ -10,7 +10,7 @@ Template canônico de propriedade do adr-contract. O adr-generator redige contra
 
 - Uma decisão por registro. Um documento com duas decisões não pode ser substituído pela metade.
 - **Consequências não são um aviso legal.** Declare o que a decisão custa, além do que ela compra, incluindo o que ela impede. Um registro que lista apenas benefícios é advocacia, não um registro de decisão.
-- **A justificativa vive aqui e só aqui.** Uma ITS que depende deste registro o cita nas premissas do plano e escreve, nas unidades que ele vincula, a restrição operacional que a decisão impõe ao seu plano — nunca o contexto nem as alternativas (its-contract, Fronteira de decisão). Essa propriedade única é o motivo pelo qual quem precisa do porquê vem a este documento.
+- **A justificativa vive aqui e só aqui.** Uma ITS que depende deste registro não o cita: escreve, nas unidades que ele vincula, a restrição operacional que a decisão impõe ao seu plano — nunca o contexto nem as alternativas (its-contract, Fronteira de decisão). Essa propriedade única é o motivo pelo qual quem precisa do porquê vem a este documento.
 - As alternativas consideradas são o ponto do registro, não enchimento. Uma decisão sem alternativa viável não foi uma decisão, e provavelmente não precisava de um ADR.
 - **O registro se sustenta sozinho.** Ele precisa fazer sentido para quem nunca leu a ITS, a story ou a conversa de onde veio: além do campo Origem, nenhum identificador de ITS entra nele — nem item `D`, nem unidade de plano.
 

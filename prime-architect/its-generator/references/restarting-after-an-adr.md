@@ -24,10 +24,9 @@ Recomeçar não é refazer tudo. O que foi produzido antes da parada pode ser ap
 
 ## O que a nova ITS precisa mostrar
 
-A ITS que sai da nova geração é coerente com o ADR aprovado e o cita, conforme o its-contract (Fronteira de decisão):
+A ITS que sai da nova geração é coerente com o ADR aprovado, conforme o its-contract (Fronteira de decisão):
 
-- as premissas do plano citam o ADR em Decisões registradas, com as unidades que ele restringe;
-- cada uma dessas unidades escreve a linha Vincula do ADR como instrução, sem o contexto nem a justificativa;
+- cada unidade que o ADR restringe escreve a linha Vincula dele como instrução, sem o identificador, o contexto nem a justificativa;
 - nenhuma instrução, alternativa descartada ou fronteira de fora de escopo contradiz a Decisão.
 
 Outra decisão que mereça ADR aparece na nova geração → o mesmo ciclo: o Passo 4.5 para e propõe, e o adr-generator redige. Um ADR decidido num ciclo anterior não é reaberto por isso.

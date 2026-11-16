@@ -89,7 +89,7 @@ Uma regra de ferramenta que produz falsos positivos com frequência treina o tim
 
   Fora disso, a convenção é a base de quem implementa e não se repete.
 - **Valor, nunca ID.** A ITS escreve o valor, nunca o ID do slot. Um exemplo canônico pode ser apontado pelo caminho do arquivo.
-- **Legado.** O legado com que o plano convive sem corrigir vira uma fronteira de fora de escopo. O slot só aparece nas Referências da ITS quando o plano se afasta dele por exceção registrada.
+- **Legado.** O legado com que o plano convive sem corrigir vira uma fronteira de fora de escopo. O ID do slot não entra na ITS, nem quando o plano se afasta dele por exceção registrada: o afastamento é escrito por extenso.
 - **Lacuna.** Um slot de que o plano precisa e que não tem valor é uma lacuna a reportar, não a inventar.
 - **Divergência.** Num projeto não legado, o código tocado que diverge do padrão do time sem ADR é reportado antes de o plano escolher um valor (Projeto não legado cujo código diverge).
 

@@ -75,7 +75,7 @@ Para cada item: localização, grau e uma linha sobre *por que está no mapa*. U
 O mesmo alcance custa de forma diferente conforme o projeto e o peso do que a mudança faz. Registre quatro fatos, cada um lido, nunca inferido do nome de um diretório nem da idade de um arquivo:
 
 - **Legado.** O valor da opção Legado da configuração. Num projeto legado, o código existente é a referência para o que for escrito (`coding-standards`, Projeto legado), e o mapa diz isso como fato.
-- **Sinais de criticidade.** O que, no alcance, pesa para o nível de criticidade da demanda, conforme a Calibração do `quality-model`: dinheiro, dado pessoal ou sensível, autenticação e autorização, obrigação regulatória, código com muitos dependentes — ou um prazo de vida declarado na demanda. Cada sinal vai ancorado. O mapa não declara o nível: quem o declara é a ITS.
+- **Sinais de criticidade.** O que, no alcance, pesa para o nível de criticidade da demanda, conforme a Calibração do `quality-model`: dinheiro, dado pessoal ou sensível, autenticação e autorização, obrigação regulatória, código com muitos dependentes — ou um prazo de vida declarado na demanda. Cada sinal vai ancorado. O mapa não declara o nível: quem o propõe é o its-generator, na entrega da ITS.
 - **Migrações em curso.** Os ADRs `Accepted` que declaram migração (`coding-standards`, Migrações) cujo escopo cobre código do alcance, com o número do ADR e o valor de destino.
 - **Código gerado ou de terceiros.** O que, no alcance, não é editado à mão: a mudança nele vai para a origem — o gerador ou o fornecedor.
 

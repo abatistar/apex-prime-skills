@@ -10,7 +10,7 @@ Execute o script de conferência, `scripts/check-its.ps1`, no terminal do projet
 & "<diretório desta skill>/scripts/check-its.ps1" -Its "<caminho da ITS>" -Root "<raiz do repositório do código>"
 ```
 
-Ele só lê arquivos. Confere a estrutura do documento, as direções de rastreabilidade, os identificadores de outros documentos fora de Referências, a existência dos caminhos, tipos e membros citados e os arquivos que referenciam um tipo alterado.
+Ele só lê arquivos. Confere a estrutura do documento, as direções de rastreabilidade, os identificadores de outros documentos no corpo, a existência dos caminhos, tipos e membros citados e os arquivos que referenciam um tipo alterado.
 
 - [ ] Todo `ERRO` corrigido, e o script executado de novo até não restar nenhum.
 - [ ] Todo `AVISO` decidido:
@@ -22,26 +22,25 @@ Ele só lê arquivos. Confere a estrutura do documento, as direções de rastrea
 
 **Sem o script** — formato Confluence, PowerShell indisponível ou execução negada —, confira à mão o que ele confere e diga isso na mensagem de entrega:
 
-- [ ] Título, linha de nível, bloco Como implementar este documento e as quatro seções de nível 2, nesta ordem; as subseções de fecho do plano (Entrega, Fora de escopo, Riscos e pontos de atenção, Verificação) são de nível 3.
-- [ ] Premissas com stack e versões, calibração e base do plano.
+- [ ] Título, bloco Como implementar este documento e as três seções de nível 2 (Descrição, O que muda, Plano de implementação), nesta ordem; as subseções de fecho do plano (Entrega, Fora de escopo, Riscos e pontos de atenção, Verificação) são de nível 3.
+- [ ] Premissas técnicas em lista, com a stack e as versões.
 - [ ] Delta → plano: todo item `D` atendido por uma unidade, ou declarado "já atendido hoje" com o teste que o prova.
 - [ ] Plano → delta: toda unidade com Atende — itens ou consequência técnica.
 - [ ] Delta → teste: todo item `D` atendido citado por um teste da unidade; todo teste termina com o item ou o ponto de regressão que prova.
 - [ ] Regressão → plano: todo `RG-N` reivindicado nos Testes de exatamente uma unidade.
-- [ ] Fonte → item: todo `D` e todo `RG-N` na coluna Usada em de Referências.
-- [ ] Nenhum `UC-`, `RN-`, `CA-`, `QM-` ou `CS-` fora de Referências; `ADR-NNN` só na linha Decisões registradas.
+- [ ] Nenhum `UC-`, `RN-`, `CA-`, `QM-`, `CS-` ou `ADR-` no documento.
 - [ ] Âncoras: todo caminho marcado modificar ou remover existe; todo caminho marcado criar ainda não existe; todo tipo e todo membro sem a marca `(criar)` foi aberto nesta execução.
 
 ## 2. O que só o julgamento confere
 
 - [ ] **Alcance.** Todo componente que o plano modifica ou remove teve as três buscas do Passo 3, e todo resultado afetado está no documento: ponto de regressão, teste existente a alterar, fronteira de fora de escopo ou risco com o efeito descrito.
-- [ ] **Fonte.** Todo item `D` e todo ponto de regressão corresponde a um elemento que existe na fonte e diz o que o item diz. Nenhum nasceu de uma resposta dada em conversa, salvo dispensa explícita do arquiteto para um caso de borda: aí a decisão tem linha própria em Referências, como pendente no caso de uso, e Riscos diz que o caso de uso recebe a exigência antes do merge. Uma decisão técnica do plano não é item `D`.
+- [ ] **Fonte.** Todo item `D` e todo ponto de regressão corresponde a um elemento que existe na fonte e diz o que o item diz. Nenhum nasceu de uma resposta dada em conversa, salvo dispensa explícita do arquiteto para um caso de borda: aí Riscos e pontos de atenção registra a decisão por extenso, a data e os itens que dependem dela, e diz que o caso de uso recebe a exigência antes do merge. Uma decisão técnica do plano não é item `D`.
 - [ ] **Casos de borda.** Todo caso escrito remonta a um item, a um ponto de regressão ou a uma decisão de qualidade. Nenhum caso sem decisão ficou no plano.
-- [ ] **Alternativa descartada.** Toda escolha real da inspeção está fechada: uma linha na unidade, com a razão decisiva, ou um ADR citado nas premissas. Unidade sem escolha real não declara nada.
-- [ ] **Decisão de arquitetura.** Nenhuma decisão que merece ADR tomada no corpo. Todo ADR citado está `Accepted`, muda ao menos uma instrução, e a restrição dele está escrita nas unidades que restringe. Nenhuma instrução o contradiz nem repete o que o código já faz.
+- [ ] **Alternativa descartada.** Toda escolha real da inspeção está fechada: uma linha na unidade, com a razão decisiva, ou a restrição de um ADR `Accepted` escrita na unidade. Unidade sem escolha real não declara nada.
+- [ ] **Decisão de arquitetura.** Nenhuma decisão que merece ADR tomada no corpo. Toda restrição de ADR escrita nas unidades vem de um ADR `Accepted` que muda ao menos uma instrução, sem o identificador. Nenhuma instrução contradiz um ADR `Accepted` nem repete o que o código já faz.
 - [ ] **Fora de escopo.** Toda entrada diz por que é uma borda — compartilhado mas intocado, superfície de contrato não migrada, legado deixado em paz. Nenhuma duplica um ponto de regressão. Sem bordas, a seção diz "nenhuma identificada".
-- [ ] **Qualidade.** Todo gatilho disparado tem decisão numa unidade, com valor concreto e o teste ou a medição que a prova. Todo afastamento de critério ou de slot está registrado por extenso, com a condição de saída, e o identificador dele só em Referências. Nenhuma violação silenciosa de inegociável ou de slot INVARIANT.
-- [ ] **Dependência.** Todo delta pendente de outra story tem a ordem de entrega nas premissas e a outra story em Referências.
+- [ ] **Qualidade.** Todo gatilho disparado tem decisão numa unidade, com valor concreto e o teste ou a medição que a prova. Todo afastamento de critério ou de slot está registrado por extenso, com a condição de saída, e sem o identificador. Nenhuma violação silenciosa de inegociável ou de slot INVARIANT.
+- [ ] **Dependência.** Todo delta pendente de outra story tem a ordem de entrega presumida na linha Ordem de entrega, por extenso.
 - [ ] **Nível.** Toda unidade tem os campos do nível pedido, e só eles. Nada do que é igual nos três níveis falta por o documento ser `simplificado` ou `médio`.
 - [ ] **Proporção.** Cada unidade termina com a suíte verde e é revisável sozinha. Nenhum campo opcional vazio, nenhuma frase que repete outra, nenhuma explicação de conceito.
 - [ ] **Entrega.** A subseção diz como a mudança é ativada e como é desfeita, mesmo que em uma linha.

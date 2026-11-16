@@ -36,7 +36,7 @@ A conferência final do `code-review`, feita sobre o relatório pronto, depois d
 
 ## Template do relatório
 
-**Idioma.** O bloco abaixo é o artefato que o revisor arquiva, e é escrito no idioma de documento que os templates do core usam: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis — os quatro vereditos, `Not reviewable`, as cinco severidades, `QM-XX-N`, `CS-XX-N`, `UC-NNN`, `ADR-NNN`, `ITS-<story-id>`, os identificadores da ITS (`D1`, `RG-1`, `R1`), caminhos de arquivo e identificadores de código — nunca são traduzidos.
+**Idioma.** O bloco abaixo é o artefato que o revisor arquiva, e é escrito no idioma de documento que os templates do core usam: `pt-BR`. Os títulos de seção são traduzidos; os tokens estáveis — os quatro vereditos, `Not reviewable`, as cinco severidades, `QM-XX-N`, `CS-XX-N`, `UC-NNN`, `ADR-NNN`, `ITS-<story-id>`, os identificadores da ITS (`D1`, `RG-1`), caminhos de arquivo e identificadores de código — nunca são traduzidos.
 
 Os trechos entre `[` e `]` são orientação de preenchimento. Quando o resultado é `Not reviewable`, o relatório tem só o cabeçalho, a pré-condição que falta e quem a resolve. No pull request, o relatório se desdobra conforme Entrega no pull request: cada linha de Achados vira um comentário, e o resto forma o resumo.
 

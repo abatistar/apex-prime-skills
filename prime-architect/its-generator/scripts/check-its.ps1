@@ -2,9 +2,9 @@
 <#
 .SYNOPSIS
     Confere mecanicamente uma ITS em Markdown: a estrutura, a rastreabilidade
-    (D, RG, unidades, testes, Referencias), a autossuficiencia (identificadores
-    de outros documentos fora de Referencias), as ancoras (caminhos e simbolos
-    citados existem no projeto) e o alcance (quem referencia um tipo alterado).
+    (D, RG, unidades, testes), a autossuficiencia (nenhum identificador de outro
+    documento), as ancoras (caminhos e simbolos citados existem no projeto) e o
+    alcance (quem referencia um tipo alterado).
 
 .DESCRIPTION
     Parte do its-generator, executado no Passo 6 (checklists/its-checklist.md).
@@ -56,8 +56,8 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
     if ($lines[$i] -match '^\s*```') { $inFence = -not $inFence }
     if (-not $inFence -and $lines[$i] -match '^##\s+(.+?)\s*$') {
         $section = $Matches[1]
-        if ($section -notmatch '^(Descri|O que muda|Plano de implementa|Refer.ncias)') {
-            Add-Finding 'ERRO' 'secoes' "linha $($i + 1): titulo de nivel 2 fora das quatro secoes do contrato: '$section'"
+        if ($section -notmatch '^(Descri|O que muda|Plano de implementa)') {
+            Add-Finding 'ERRO' 'secoes' "linha $($i + 1): titulo de nivel 2 fora das tres secoes do contrato: '$section'"
         }
     }
     $sections[$i] = $section
@@ -65,8 +65,7 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
 function Test-Section { param([int] $Index, [string] $Pattern) return ($sections[$Index] -match $Pattern) }
 $reChange = '^O que muda'
 $rePlan   = '^Plano de implementa'
-$reRefs   = '^Refer.ncias'
-foreach ($required in @('^Descri', $reChange, $rePlan, $reRefs)) {
+foreach ($required in @('^Descri', $reChange, $rePlan)) {
     if (-not ($sections.Values | Where-Object { $_ -match $required })) {
         Add-Finding 'ERRO' 'secoes' "secao obrigatoria ausente (padrao: $required)"
     }
@@ -81,15 +80,15 @@ function Test-Line {
     }
     return $false
 }
-if (-not (Test-Line '^\*\*N.vel de detalhe:\*\*\s+(simplificado|m.dio|detalhista)\b' '')) {
-    Add-Finding 'ERRO' 'cabecalho' 'falta a linha de nivel de detalhe sob o titulo (copiada do template)'
-}
 if (-not (Test-Line '^\*\*Como implementar este documento:\*\*' '')) {
     Add-Finding 'ERRO' 'cabecalho' 'falta o bloco fixo "Como implementar este documento" (copiado do template)'
 }
-foreach ($field in @('Premissas t.cnicas', 'Calibra..o', 'Base do plano')) {
-    if (-not (Test-Line ('^\*\*' + $field + ':\*\*') $rePlan)) {
-        Add-Finding 'ERRO' 'premissas' "falta o campo de premissas (padrao: $field)"
+if (-not (Test-Line '^\*\*Premissas t.cnicas:\*\*\s*$' $rePlan)) {
+    Add-Finding 'ERRO' 'premissas' 'falta o campo Premissas tecnicas, sozinho na linha e seguido da lista'
+}
+foreach ($removed in @('N.vel de detalhe', 'Calibra..o', 'Base do plano', 'Decis.es registradas')) {
+    if (Test-Line ('^\*\*' + $removed + ':\*\*') '') {
+        Add-Finding 'ERRO' 'cabecalho' "campo que o template nao tem mais (padrao: $removed)"
     }
 }
 foreach ($closing in @('Entrega', 'Fora de escopo', 'Riscos', 'Verifica..o')) {
@@ -205,25 +204,12 @@ foreach ($id in ($claimedRG.Keys | Sort-Object)) {
     }
 }
 
-# --- Referencias: todo D e RG na coluna Usada em; nenhum ID externo no corpo --
-$refsText = ''
-for ($i = 0; $i -lt $lines.Count; $i++) { if (Test-Section $i $reRefs) { $refsText += $lines[$i] + "`n" } }
-foreach ($id in (@($declaredD.Keys) + @($declaredRG.Keys) | Sort-Object)) {
-    if ($refsText -notmatch ('\b' + $id + '\b')) {
-        Add-Finding 'ERRO' 'fonte->item' "$id nao aparece em Referencias (coluna Usada em)"
-    }
-}
-$external = '\b(UC-\d+|RN-\d+|CA-\d+|QM-[A-Z]{2}-\d+|CS-[A-Z]{2}-\d+)\b'
+# --- Autossuficiencia: nenhum identificador de outro documento ---------------
+# O ID da story aparece so no titulo; os demais nao aparecem em lugar nenhum.
+$external = '\b(UC-\d+|RN-\d+|CA-\d+|QM-[A-Z]{2}-\d+|CS-[A-Z]{2}-\d+|ADR-\d+)\b'
 for ($i = 0; $i -lt $lines.Count; $i++) {
-    if (Test-Section $i $reRefs) { continue }
     foreach ($id in (Get-Ids $lines[$i] $external)) {
-        Add-Finding 'ERRO' 'autossuficiencia' "linha $($i + 1): identificador de outro documento fora de Referencias: $id"
-    }
-    # O ADR e citado uma vez, na linha Decisoes registradas das premissas, e em nenhuma instrucao.
-    if ($lines[$i] -notmatch '^\*\*Decis.es registradas:\*\*') {
-        foreach ($id in (Get-Ids $lines[$i] '\bADR-\d+\b')) {
-            Add-Finding 'ERRO' 'autossuficiencia' "linha $($i + 1): $id citado fora da linha Decisoes registradas"
-        }
+        Add-Finding 'ERRO' 'autossuficiencia' "linha $($i + 1): identificador de outro documento: $id"
     }
 }
 

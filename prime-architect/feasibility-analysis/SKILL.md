@@ -79,7 +79,7 @@ O que o arquiteto responde entra como **restrição declarada** (Passo 4) e alim
 
 ## Passo 3 — As lentes, em ordem decrescente do que mata uma demanda
 
-Cada lente aponta para onde seu critério vive — nunca o redefine. Rode-as sobre o mapa; não reande o código que o mapa já andou. A intensidade segue os sinais de criticidade que o mapa trouxe: uma demanda com sinal de `crítica` é julgada com tudo o que cada lente lista. O nível em si é declarado adiante, na ITS.
+Cada lente aponta para onde seu critério vive — nunca o redefine. Rode-as sobre o mapa; não reande o código que o mapa já andou. A intensidade segue os sinais de criticidade que o mapa trouxe: uma demanda com sinal de `crítica` é julgada com tudo o que cada lente lista. O nível em si é proposto adiante, pelo its-generator, na entrega da ITS.
 
 **Leia agora**, antes da primeira lente, os critérios em que o julgamento se ancora: as regras de consumo do **quality-model** (`../quality-model/references/consumer-rules.md`) com `../quality-model/references/quality-triggers.md` — os gatilhos que a lente de mesmo nome percorre —, as regras de consumo do **coding-standards** (`../coding-standards/references/consumer-rules.md`) e os **ADRs** `Accepted` e `Proposed`.
 

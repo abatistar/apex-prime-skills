@@ -39,7 +39,7 @@ Os contratos donos — o `use-case`, o `its-contract` e o `adr-contract` — tê
 
 Projetos podem adicionar seções além destas. Seções desconhecidas são preservadas, nunca apagadas por nenhuma skill, e nenhuma skill as lê.
 
-**O que a configuração não guarda.** Valor de convenção, inegociável acrescentado e migração são decisões, e vivem em ADRs `Accepted` (coding-standards, Desvios do projeto e Migrações; quality-model, Desvios do projeto). O nível de criticidade é da demanda, e a ITS o declara (quality-model, Calibração). A release do Apex Prime é a instalada, registrada no manifesto da instalação. Pessoas, tracker e políticas de PR não são fatos que as skills leem: quando precisam de um, perguntam ao arquiteto.
+**O que a configuração não guarda.** Valor de convenção, inegociável acrescentado e migração são decisões, e vivem em ADRs `Accepted` (coding-standards, Desvios do projeto e Migrações; quality-model, Desvios do projeto). O nível de criticidade é da demanda, e o its-generator o propõe na entrega da ITS (quality-model, Calibração). A release do Apex Prime é a instalada, registrada no manifesto da instalação. Pessoas, tracker e políticas de PR não são fatos que as skills leem: quando precisam de um, perguntam ao arquiteto.
 
 Um campo sem valor diz isso explicitamente ("nenhum"), nunca é omitido. Silêncio e ausência são fatos diferentes, e só um deles é uma decisão.
 

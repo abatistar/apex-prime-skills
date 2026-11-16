@@ -65,7 +65,7 @@ Para cada caso de uso afetado, encontre a entrada do Histórico de revisões com
 
 **As entradas de revisão mais antigas são somente leitura.** Descrevem comportamento já implementado: são estado, não trabalho pendente. O único uso delas é a verificação de área quente do Passo 4. O mesmo vale, em qualquer posição, para as entradas sem ID de story (mapeamento inicial, reconciliação com o código, revisão editorial).
 
-**Numere os itens de delta** conforme os localiza (`D1`, `D2`, ...), em sequência contínua no documento inteiro: com mais de um caso de uso afetado, a numeração segue de um para o outro e nunca reinicia. Ao numerar, anote de que elemento da fonte cada item vem (passo, extensão, `RN-N`, `CA-N`): é essa anotação que a coluna Usada em das Referências registra.
+**Numere os itens de delta** conforme os localiza (`D1`, `D2`, ...), em sequência contínua no documento inteiro: com mais de um caso de uso afetado, a numeração segue de um para o outro e nunca reinicia. Ao numerar, anote de que elemento da fonte cada item vem (passo, extensão, `RN-N`, `CA-N`). A anotação fica nas suas notas, não no documento: é com ela que o Passo 6 confere que cada item diz o que a fonte diz.
 
 - No cenário de alteração, a entrada de revisão já lista os itens.
 - No cenário de criação, desdobre o documento ao longo do eixo que o plano vai satisfazer: cada passo do fluxo principal, cada extensão e cada regra de negócio ou critério de aceite que não decorra de um desses.
@@ -82,8 +82,6 @@ Para cada caso de uso afetado, encontre a entrada do Histórico de revisões com
 Dos catálogos, o arquivo de uma lente ou de uma família entra só quando um ID dela é aplicado (Passo 4.6), como cada índice diz. Nunca o catálogo inteiro.
 
 **Stack sem padrões do time.** Se não existe `defaults-<stack>.md` para a stack do projeto, diga isso ao arquiteto uma vez. O plano segue então o padrão que o código já tem, lido no entorno do que a mudança toca, e as proibições dos slots invariantes continuam valendo. Um valor de que uma decisão de gatilho precisa e que o código não mostra é pendência para o arquiteto. Nunca use os valores de outra stack.
-
-**A base do plano.** Anote a revisão do código que você vai ler (`git rev-parse --short HEAD`) e a data. Sem controle de versão acessível, só a data.
 
 **A inspeção sempre acontece aqui.** Um mapa do `impact-mapping` não é entrada deste passo, mesmo quando existe um para a demanda de que a story veio: o mapa tem o escopo de uma demanda em refinamento, a ITS o de uma story, e verificar o mapa custa o mesmo que derivar o alcance do zero. O `impact-mapping` declara a mesma fronteira do lado dele.
 
@@ -132,14 +130,14 @@ O item que fica de fora é o erro mais caro: um chamador esquecido vira incident
 
 **A dispensa.** Só o arquiteto dispensa essa volta, e de forma explícita, para esta story: "use estas respostas e gere a ITS". Uma resposta seguida de "pode seguir" não é dispensa; na dúvida, pergunte em uma linha. A dispensa cobre só casos de borda de itens que o delta já traz. Um comportamento que nenhum item do delta descreve não é caso de borda: é delta que falta, e volta sempre ao caso de uso. Com a dispensa:
 
-- o item `D` ou o ponto de regressão é escrito com a resposta, e Referências ganha uma linha própria para ela: `Decisão do arquiteto em <data> — pendente no caso de uso <identificador>`, com os itens em Usada em;
-- Riscos e pontos de atenção diz que o caso de uso precisa receber a exigência antes do merge, e que o code review cobra isso;
+- o item `D` ou o ponto de regressão é escrito com a resposta;
+- Riscos e pontos de atenção ganha um item com a decisão por extenso, a data e os itens que dependem dela, e diz que o caso de uso recebe a exigência antes do merge — é por esse item que o code review a cobra;
 - a mensagem de entrega lista as decisões que ficaram pendentes no caso de uso.
 
 Com ou sem dispensa, três regras valem:
 
 - nenhuma resposta dada em conversa é atribuída a um elemento do caso de uso;
-- a coluna Usada em só cita elementos da fonte que dizem o que o item diz;
+- todo item `D` e todo ponto de regressão corresponde a um elemento da fonte que diz o que ele diz;
 - o que o plano decide sozinho e nenhum ator observa — a ordem de duas verificações internas, o nome de um índice — é decisão técnica: fica na unidade, como instrução, e na mensagem de entrega, nunca como item `D`.
 
 **Delta que não se sustenta.** A inspeção pode mostrar que o delta não pode ser planejado como escrito. Em nenhum dos três casos se escreve um plano parcial:
@@ -180,7 +178,7 @@ Não produza em excesso: a maioria das stories rende zero ADRs. Um ADR existe po
 
 A ITS é onde a qualidade da story é decidida. Este passo define o que o plano especifica; nunca aprova nem reprova, que é trabalho do revisor. Siga as regras de consumo do **quality-model** e do **coding-standards** para o its-generator, lidas no Passo 3. Os IDs servem a este passo e à conversa com o arquiteto; nunca entram no corpo do documento.
 
-1. **Declare a calibração.** Proponha o nível de criticidade da demanda (`efêmera`, `padrão` ou `crítica`; sem razão para outro nível, `padrão`), com a razão em uma linha, e leia a opção **Legado** na seção Opções da configuração. Vão para as premissas: o nível, a condição de remoção de uma demanda `efêmera` e, num projeto legado, que o plano segue o padrão do código existente.
+1. **Declare a calibração.** Proponha o nível de criticidade da demanda (`efêmera`, `padrão` ou `crítica`; sem razão para outro nível, `padrão`), com a razão em uma linha, e leia a opção **Legado** na seção Opções da configuração. O nível não entra no documento: vai na mensagem de entrega e calibra as decisões dos passos seguintes. Uma demanda `efêmera` leva a condição de remoção na subseção Entrega; num projeto legado, as premissas técnicas dizem que o plano segue o padrão do código existente.
 2. **Decida os gatilhos.** Para cada gatilho que a story dispara (as notas do Passo 3), escreva a decisão como instrução na unidade que a implementa, com o valor concreto e o teste ou a medição que a prova. **Leia agora** o arquivo da família de cada slot que dá um valor; o mapa Critério → slots do índice diz quais são. O valor vem, nesta ordem:
    - do slot, no valor efetivo — o do ADR `Accepted` do projeto, onde há um, ou o padrão do time, no nível da demanda;
    - de uma decisão própria desta story, quando a dependência ou o caso pede outro valor — e então a unidade diz por quê;
@@ -197,7 +195,7 @@ A ITS é onde a qualidade da story é decidida. Este passo define o que o plano 
 - uma **fronteira de fora de escopo**, quando é legado herdado que o plano deixa intocado;
 - um **ADR**, pelo Passo 4.5, quando o afastamento sobrevive à story ou não tem condição de saída.
 
-O responsável é quem assina a ITS; um afastamento de segurança exige também o responsável de segurança do projeto, que o arquiteto nomeia. O critério ou o slot de que o plano se afasta entra apenas em Referências.
+O responsável é quem assina a ITS; um afastamento de segurança exige também o responsável de segurança do projeto, que o arquiteto nomeia. O ID do critério ou do slot de que o plano se afasta não entra no documento.
 
 Dois defeitos são fechados antes de escrever: uma violação *silenciosa* de inegociável ou de slot INVARIANT, e um gatilho disparado sem decisão.
 
@@ -210,13 +208,12 @@ Leia, na configuração, a opção **Template da ITS** (seção Opções) e os *
 Escreva o documento exatamente conforme o **its-contract**. O que esta skill acrescenta é a ordem do trabalho e o alcance de cada regra aqui:
 
 - **Ordem de execução.** O plano é escrito na ordem em que quem implementa trabalha e em que o revisor percorre o diff, e carrega o mapeamento único. O que muda declara as mudanças e o que continua valendo, e para aí.
-- **Conteúdo, não ponteiro.** Toda exigência que você leu numa fonte nos Passos 1 a 4.6 — a regra de negócio, o critério de aceite, a restrição do ADR, a convenção que governa a área — chega ao documento escrita, no ponto em que é usada. O identificador da fonte vai para Referências: o leitor da ITS não tem os documentos que você teve abertos.
+- **Conteúdo, não ponteiro.** Toda exigência que você leu numa fonte nos Passos 1 a 4.6 — a regra de negócio, o critério de aceite, a restrição do ADR, a convenção que governa a área — chega ao documento escrita, no ponto em que é usada. O identificador da fonte não entra no documento: o leitor da ITS não tem os documentos que você teve abertos.
 - **As notas ficam fora.** As notas dos Passos 3 a 4.6 são material de trabalho. Nenhuma pertence ao documento.
 - **Os destinos da busca.** Cada resultado afetado de "Quem depende do que muda" está no documento, no destino que recebeu.
-- **Nível de detalhe.** Escreva primeiro o que é igual nos três níveis e depois os campos do nível pedido, como o template mostra. Com o nível `simplificado` ou `médio`, **leia agora** também o arquivo de níveis do formato, `../its-contract/templates/its-template-markdown-levels.md` ou `../its-contract/templates/its-template-confluence-levels.md`: ele mostra a mesma unidade nos três níveis. No `detalhista`, ele não é lido. Os casos de borda vêm das notas do Passo 3; o Como verificar do `detalhista`, dos comandos de verificação, restritos à unidade. Sob o título, copie a linha do nível e o bloco Como implementar este documento.
+- **Nível de detalhe.** Escreva primeiro o que é igual nos três níveis e depois os campos do nível pedido, como o template mostra. Com o nível `simplificado` ou `médio`, **leia agora** também o arquivo de níveis do formato, `../its-contract/templates/its-template-markdown-levels.md` ou `../its-contract/templates/its-template-confluence-levels.md`: ele mostra a mesma unidade nos três níveis. No `detalhista`, ele não é lido. Os casos de borda vêm das notas do Passo 3; o Como verificar do `detalhista`, dos comandos de verificação, restritos à unidade. Sob o título, copie o bloco Como implementar este documento.
 - **Proporção.** O documento tem o tamanho do trabalho: uma unidade por passo que termina com a suíte verde, nenhum campo opcional sem conteúdo, uma linha na subseção de fecho que nada tem a declarar. Uma demanda simples gera uma ITS curta.
-- **ADR.** Cite só o ADR que muda ao menos uma instrução deste plano, na linha Decisões registradas, com as unidades que ele restringe; cada uma delas escreve a restrição como instrução. Um ADR que incide sobre a área e não muda nenhuma instrução não é citado, e nenhuma instrução é escrita só para repetir o que o código já faz.
-- **Referências.** Preencha cada linha à medida que escreve o item ou a unidade que a usa, com a anotação de origem dos Passos 2 e 3, enquanto a fonte ainda está aberta. A seção registra de onde cada item veio e para aí: nenhuma glosa, nenhum resumo.
+- **ADR.** O ADR que muda ao menos uma instrução deste plano entra como instrução nas unidades que ele restringe, sem o identificador; o documento não o cita. Um ADR que incide sobre a área e não muda nenhuma instrução não gera instrução, e nenhuma instrução é escrita só para repetir o que o código já faz.
 - **Descrição por último**, depois de fechado o plano.
 
 ## Passo 6 — Verificar antes de entregar
@@ -240,5 +237,7 @@ Um documento de ITS, nomeado conforme o contrato, na localização configurada, 
 - o que não foi verificado: código de que o plano depende e que a inspeção não abriu, consumidores fora do repositório, resultados de busca conferidos por amostragem;
 - os gatilhos disparados, cada um com a unidade que o decide;
 - o resultado do script de conferência, ou que a conferência foi manual.
+
+**Depois da mensagem, uma linha só:** quando o plano cria ou modifica mais de um componente, sugira desenhar o diagrama de componentes da ITS (C4, nível 3) num arquivo ao lado dela. Aceita a sugestão, **leia agora** `references/component-diagram.md` e siga-o. Sem aceite, nada mais é feito, e o arquivo de instruções não é lido.
 
 Quando a geração para — numa pendência ou numa decisão de arquitetura —, a saída é a mensagem da parada, e nenhuma ITS, nem parcial. O ADR nunca é saída desta skill.
