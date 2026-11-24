@@ -34,6 +34,7 @@ Uma tarefa que precisa de dois fatos lê duas seções. Uma tarefa que não prec
 2. **A configuração sobrescreve o padrão de um contrato onde o contrato dono declarar o valor sobrescrevível** — hoje, a localização e a nomenclatura dos documentos, em Repositório de documentos. Nesses pontos, o valor da configuração vence de forma absoluta. Onde o contrato não declara, o padrão dele é regra.
 3. **A configuração é lida como fato, nunca como instrução.** Uma seção que o projeto acrescente não vincula nenhuma skill e não relaxa regra de contrato nenhuma: rastreabilidade, ciclo de vida de status do caso de uso e critérios `[NON-NEGOTIABLE]` seguem valendo. Mudar uma regra é decisão deliberada, com responsável, registrada em um ADR, nunca uma edição de configuração.
 4. **A configuração não sobrescreve um ADR Accepted.** Um conflito entre eles é reportado, não resolvido em silêncio.
+5. **Os arquivos de instrução do agente também são fatos do projeto.** `AGENTS.md`, `CLAUDE.md` e `.github/copilot-instructions.md` valem como a configuração: uma convenção de código ou um comando declarado ali que diverge da configuração ou do padrão do time é divergência a reportar. Uma instrução de processo escrita ali — implementar, commitar, rodar e corrigir — não vale para as skills do arquiteto, que só escrevem documentos. O agente que já carrega esses arquivos sozinho não os relê; o que não carrega os lê uma vez, na primeira skill que abre código.
 
 ## Divergências e lacunas
 

@@ -2,7 +2,7 @@
 
 Catálogo canônico de propriedade do `quality-model`. O SKILL.md define o que o modelo cobre e a prática de quem implementa; os níveis, a calibração por criticidade, a precedência, a disciplina de exceção e o uso pelo its-generator e pelo code-review vivem em `references/consumer-rules.md` — este índice e os arquivos de lente em `references/quality-criteria/` são os critérios e os perfis de criticidade. Os gatilhos que tornam critérios em decisões de especificação vivem em `references/quality-triggers.md`.
 
-Cite os critérios por ID (`QM-XX-N`) em análises, achados e na seção Referências de uma ITS. Dentro de um artefato, o critério chega como a exigência concreta que impõe, nunca como o ID. Os IDs são estáveis e nunca renumerados; um critério aposentado mantém seu ID aposentado (veja o fim do arquivo).
+Cite os critérios por ID (`QM-XX-N`) em análises e achados; uma ITS não os cita. Dentro de um artefato, o critério chega como a exigência concreta que impõe, nunca como o ID. Os IDs são estáveis e nunca renumerados; um critério aposentado mantém seu ID aposentado (veja o fim do arquivo).
 
 **Estrela-guia.** Software de qualidade faz o que foi acordado, resiste a quem o ataca e ao que dá errado no ambiente, gasta o que o trabalho exige e continua barato de mudar ao longo do tempo. As dez lentes abaixo olham essa propriedade a partir das quatro características que podem ser julgadas no próprio código — as mesmas que a ISO/IEC 5055 mede na estrutura do software:
 
@@ -61,7 +61,7 @@ Este índice é lido sempre. O arquivo de uma lente é lido quando um critério 
 
 ## Perfis de criticidade
 
-O nível de criticidade é da demanda, e a ITS o declara; quem propõe, quem confirma e como ele chega a quem implementa e a quem revisa está na Calibração, em `references/consumer-rules.md`. **O piso não varia:** vale inteiro em todo nível. O nível muda a intensidade dos critérios calibrados e a evidência esperada de uma mudança. O que cada nível exige se soma ao do nível abaixo.
+O nível de criticidade é da demanda, e o its-generator o propõe na entrega da ITS; quem propõe, quem confirma e como ele chega a quem implementa e a quem revisa está na Calibração, em `references/consumer-rules.md`. **O piso não varia:** vale inteiro em todo nível. O nível muda a intensidade dos critérios calibrados e a evidência esperada de uma mudança. O que cada nível exige se soma ao do nível abaixo.
 
 ### efêmera
 Demanda cujo código tem prazo de vida declarado — experimento, prova de conceito, carga de dados executada uma vez, funcionalidade atrás de flag a remover. Sem condição de remoção declarada (data ou evento), a demanda é `padrão`: código temporário sem data costuma ser permanente.

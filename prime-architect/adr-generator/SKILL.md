@@ -49,13 +49,7 @@ Leia o template (`../adr-contract/templates/adr-template.md`) integralmente e re
 
 ## Passo 4 — Conferir o registro antes de entregar
 
-- Uma decisão só, e ela passa pela fronteira do contrato.
-- Toda seção do template preenchida; campo sem valor diz isso ("nenhum", "sem gatilho previsto").
-- Ao menos uma alternativa viável descartada, com motivo decisivo e não preferência.
-- Custos declarados, e não só ganhos.
-- O Vincula é uma obrigação que um plano consegue escrever como instrução.
-- Nenhuma contradição com um ADR `Accepted` sem o campo Substitui.
-- O registro se entende sem a ITS, a story ou a conversa de onde veio: além da Origem, nenhum identificador de ITS.
+**Leia agora** `checklists/adr-checklist.md` e percorra-o inteiro sobre o registro pronto. É a única lista de conferência desta skill. Se um item falhar, conserte o registro antes de entregar.
 
 ## Passo 5 — Entregar e esperar
 
@@ -95,5 +89,3 @@ Quando a Origem é uma ITS, feche dizendo o que acontece com ela: a geração pa
 - Nenhuma ITS, caso de uso ou arquivo de configuração escrito ou editado; nenhum código de aplicação.
 - Nenhum registro iniciado sem a palavra do arquiteto, e nenhum status movido sem ordem dele.
 - Nenhuma decisão tomada pelo arquiteto: a skill recomenda, mostra o custo e redige.
-
-A passada operacional vive em `checklists/adr-checklist.md`. Leia-a no Passo 4, para conferir o registro antes de entregar.

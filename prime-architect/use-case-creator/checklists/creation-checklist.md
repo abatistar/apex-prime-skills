@@ -1,65 +1,36 @@
-# Caso de uso — passada operacional
+# Caso de uso — conferência antes de entregar
 
-A passada operacional do `use-case-creator`. **Nenhum template de documento vive aqui:** a estrutura do caso de uso e as regras de qualidade (`../use-case/references/use-case-template.md`), os tipos de entrada do Histórico de revisões, a estabilidade dos identificadores e os marcadores (`../use-case/references/consumer-rules.md`) são de propriedade do `use-case` e nunca são copiados para esta camada. Este arquivo confere o *processo*; aquele arquivo fornece a *forma*.
+A conferência do Passo 3 do `use-case-creator`, feita sobre os documentos escritos ou alterados, antes de entregá-los. A forma do documento e as regras de qualidade são do `use-case`; os passos e os modos são do SKILL.md e dos arquivos de modo. Esta lista não os repete nem guarda template: confere se os documentos e a entrega os cumprem. Quando um item falha, conserte o documento.
 
-## Formato e configuração
+## 1. Cada documento escrito ou alterado
 
-- [ ] Formato `use-case` carregado por inteiro, incluindo as regras de qualidade; template do formato usado como está, sem substituição nem seção extra vinda da configuração.
-- [ ] Do `docs/prime-config.md`, só a seção necessária e só no ponto de necessidade: **Repositório de documentos**, no Passo 1, conforme as regras de consumo do **prime-config**. Nenhuma outra seção aberta; o arquivo nunca lido por inteiro.
-- [ ] Nenhum código aberto, exceto o trecho citado pela evidência de uma divergência (Passo 2c).
-- [ ] Seção necessária ausente, ou divergindo do código → lacuna ou divergência reportada, não resolvida em silêncio.
+- [ ] As regras de qualidade do formato verificadas uma a uma. Violação corrigida ou, quando depende do arquiteto, marcada com `[CONFIRM: ...]` no ponto exato.
+- [ ] Nada inventado para preencher uma seção opcional. Meta não funcional pedida sem número é `[CONFIRM: ...]`, nunca um valor.
+- [ ] Identificadores estáveis: nenhum `RN-N` ou `CA-N` renumerado ou reaproveitado; os removidos viraram lápide; toda renumeração de passos está declarada no delta e levou junto os rótulos dos critérios de aceite.
+- [ ] Uma entrada por story no Histórico de revisões, num dos tipos do formato. A que é trabalho para o its-generator cita passo, extensão e seção. No máximo cinco entradas.
+- [ ] Documento novo: número igual ao maior já usado + 1, tirado da listagem da pasta e nunca do índice, com os `Retired` contados; Status `Draft`; primeira entrada `Criação`, com o ID da story.
+- [ ] Documento `Reviewed` cujo corpo mudou voltou a `Draft`.
+- [ ] Diagrama de atividades refeito a partir dos passos e das extensões atuais, com o número de cada um no nó, ou omitido num fluxo linear.
+- [ ] Casos de uso relacionados atualizados nos dois lados, sem entrada no histórico e sem mudança de Status no outro documento.
 
-## Roteamento
+## 2. O repositório
 
-- [ ] Story que não muda o comportamento observável de nenhum ator → técnica: nenhum documento escrito; roteada ao its-generator (cenário técnico).
-- [ ] Repositório examinado pelo índice; todo documento que o resumo não excluía com certeza aberto antes de classificar. Sem índice numa pasta com documentos → criação dele incluída no mapeamento.
-- [ ] Cada documento classificado: criação | atualização | conformidade ou reconciliação | validação | retirada | revisão editorial | índice.
-- [ ] Mapeamento N-para-N (documentos existentes afetados e novos a nascer, com o modo de cada um) confirmado com o usuário antes de escrever.
-- [ ] ID da story confirmado junto com o mapeamento. Sem story → origem seguida de `[CONFIRM: story de origem]`, documento em `Draft`.
-- [ ] Alteração, conformidade e retirada só sobre documento `Reviewed`. Documento em `Draft` → a story espera (marcadores pendentes → modo validação; delta de outra story → promoção do arquiteto), e a espera consta do mapeamento.
-- [ ] Delta escrito sobre o de outra story → dependência entre as stories dita ao confirmar o mapeamento.
-- [ ] Comportamento existente sem caso de uso → `use-case-extractor` recomendado. Nada improvisado.
+- [ ] O mapeamento story ↔ casos de uso e o ID da story foram confirmados com o usuário antes da escrita. Nenhum documento foi classificado só pela linha do índice.
+- [ ] Nenhum delta aplicado sobre base não validada: alteração, conformidade e retirada partiram de um documento `Reviewed`.
+- [ ] A linha do índice de cada documento criado, retirado ou alterado está atualizada.
+- [ ] Consistência cruzada: nenhum conflito com outro caso de uso deixado em silêncio.
 
-## Escrita
+## 3. A entrega
 
-- [ ] Checklist de elicitação respondido pela entrada, pelo repositório e pelos documentos vizinhos. Estrutura decidida pela Granularidade do formato; perguntas ao usuário restritas ao que ela não decide e muda a estrutura do documento, cada uma com a recomendação junto; o resto virou `[CONFIRM: ...]` no ponto exato.
-- [ ] Pré-condição só o que já chega garantido; o que o fluxo verifica e pode falhar virou extensão.
-- [ ] Toda `RN-N` criada ou alterada num padrão da Forma das regras de negócio: uma resposta, sem citar passo nem extensão; toda regra `Se … então` citada por ao menos uma extensão. Regra que a story não altera mantida como estava — convertê-la é revisão editorial.
-- [ ] Todo critério de aceite rotulado com o que cobre; uma renumeração de passos levou junto os rótulos.
-- [ ] Requisito não funcional deste fluxo como critério `não funcional`, com métrica e condição. Meta pedida sem número → `[CONFIRM: ...]`; nenhuma meta inventada; nada sistêmico (ADR) nem de qualidade interna do código.
-- [ ] Nada inventado para preencher uma seção opcional; diagrama UML só quando há relações a mostrar.
-- [ ] Criação: maior número de UC já usado + 1, tirado da listagem da pasta (nunca do índice), documentos `Retired` inclusive; Status `Draft`; primeira entrada `Criação` com o ID da story.
-- [ ] Atualização: documento lido por inteiro antes de qualquer edição; efeitos colaterais internos corrigidos ou sinalizados.
-- [ ] Identificadores: nenhum `RN-N` ou `CA-N` renumerado ou reaproveitado; removidos viraram lápide; toda renumeração de passos declarada no delta.
-- [ ] Uma entrada por story por documento. Reexecução → a entrada existente reescrita, nunca uma segunda — e só enquanto ela é a mais recente do documento; com outra por cima → reportado ao arquiteto.
-- [ ] Documento `Reviewed` que recebeu alteração, reconciliação, revisão editorial ou marcador devolvido a `Draft`.
-- [ ] Conformidade ou reconciliação: delta pendente descartado antes (código divergindo só nos itens do delta de uma story ainda não entregue → nada a registrar, dito ao arquiteto com o ID da story); o arquiteto decidiu qual lado está certo. Conformidade sem mudança no corpo nem no Status; reconciliação com a entrada `reconciliação com o código`.
-- [ ] Validação: marcadores listados no formato da Lista de perguntas; respostas aplicadas item a item, só as que a lista atual reproduz; só marcadores respondidos resolvidos; nenhuma entrada no histórico; nada promovido.
-- [ ] Retirada: corpo inalterado; entrada `Retirada` com o ID da story; Status `Retired`; arquivo mantido no mesmo caminho; documento retirado do campo Casos de uso relacionados dos outros; documento cujo fluxo dependia dele levado ao mapeamento.
-- [ ] Revisão editorial: só sobre documento `Reviewed`; nenhuma mudança de comportamento; itens movidos em lápide apontando o destino; mapa de identificadores no Resumo; documento absorvido em `Retired`; nunca junto com o delta de uma story.
-- [ ] Diagrama (criado ou removido conforme haja relações a mostrar) e Casos de uso relacionados atualizados nos dois lados, sem entrada no histórico e sem mudança de Status no outro documento.
-- [ ] Histórico de revisões com no máximo 5 entradas.
-- [ ] Índice: linha de todo documento criado, retirado ou com Nome, Nível, Atores, Status ou comportamento resumido mudado atualizada no mesmo trabalho; sem entrada no histórico.
-- [ ] Modo índice: linha apontada corrigida a partir do documento, ou índice reconstruído da listagem da pasta (`Retired` inclusive), nunca do índice antigo; nenhum documento alterado.
+- [ ] O resumo do modo: o delta (alteração e conformidade), o que sai do sistema (retirada), o que mudou no corpo (reconciliação), o que mudou de redação ou de lugar e o mapa de identificadores (revisão editorial).
+- [ ] Os critérios de aceite derivados aparecem separados dos que a entrada trazia.
+- [ ] O Status resultante de cada documento, e o que isso significa para o its-generator.
+- [ ] Os marcadores pendentes como a Lista de perguntas do formato, com recomendação e evidência em cada item.
+- [ ] As stories em espera, as dependências entre stories e os documentos que receberam só o link recíproco.
 
-## Validação antes de entregar
-
-- [ ] Regras de qualidade do formato verificadas uma a uma em todo documento escrito ou alterado. Violação corrigida ou, se depende do arquiteto, marcada com `[CONFIRM: ...]`.
-- [ ] Toda entrada do Histórico de revisões num dos tipos do formato; as que são trabalho para o its-generator citam passo, extensão e seção.
-- [ ] Consistência cruzada: nenhum conflito com outro caso de uso deixado em silêncio. Resolução que altera outro documento → de volta ao mapeamento.
-
-## Entrega
-
-- [ ] Delta resumido na resposta (alteração e conformidade); o que sai do sistema (retirada); o que mudou no corpo (reconciliação); o que mudou de redação ou de lugar e o mapa de identificadores (revisão editorial).
-- [ ] Documentos que receberam apenas o link recíproco, ou que deixaram de citar um documento retirado, listados. Criação ou reconstrução do índice informada.
-- [ ] Status resultante de cada documento informado. O que voltou a `Draft` só alimenta o its-generator depois da promoção; um `Retired` por retirada já o alimenta.
-- [ ] Marcadores pendentes entregues como a Lista de perguntas do formato, com recomendação e evidência em cada item.
-- [ ] Stories em espera (base em `Draft`) e dependências entre stories reportadas.
-
-## Verificação de fronteira antes de entregar
+## 4. Fronteira
 
 - [ ] Nenhum status promovido sem ordem explícita do arquiteto para aquele documento, e nunca com marcador pendente.
-- [ ] Nenhum documento de caso de uso apagado — o que deixa de descrever comportamento vivo vira `Retired`.
+- [ ] Nenhum documento apagado: o que deixa de descrever comportamento vivo vira `Retired`.
 - [ ] Nenhum lado de uma divergência escolhido em nome do arquiteto.
-- [ ] Nenhum código de aplicação escrito; nenhuma ITS gerada.
-- [ ] Nenhum arquivo de configuração editado como efeito colateral.
+- [ ] Nenhum código escrito, nenhuma ITS gerada, nenhuma configuração editada.

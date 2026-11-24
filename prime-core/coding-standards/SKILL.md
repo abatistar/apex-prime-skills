@@ -1,6 +1,6 @@
 ---
 name: coding-standards
-description: O contrato das convenções concretas de código - o catálogo de slots (CS-XX-N), os padrões do time por stack, as classes invariante e convencional, o projeto legado e as migrações. Consulte ao planejar, escrever ou revisar código e quando um critério de qualidade precisar de uma convenção concreta; um desvio do projeto vive num ADR Accepted e tem precedência. Referencie os slots por ID, nunca os duplique.
+description: Contrato de referência das convenções de código do Apex Prime - o catálogo de slots (CS-XX-N), os padrões do time por stack, as classes invariante e convencional, o projeto legado e as migrações. Vale só em projeto que tem docs/prime-config.md. Não é ponto de entrada - o its-generator, o code-review e a feasibility-analysis o leem no passo que indicam. Acione-o só para consultar ou manter o catálogo.
 ---
 
 # Padrões de Código
@@ -59,6 +59,18 @@ O ciclo de vida de um valor é sempre o mesmo, em três passos:
 3. **O código existente.** Uma migração, declarada num ADR (Migrações, em `references/consumer-rules.md`).
 
 Um valor decidido sem o terceiro passo é erosão anunciada.
+
+## Para quem implementa
+
+O Apex Prime não chega à implementação. Estas regras valem para quem implementa quando o time lhe entrega estes padrões por outro meio.
+
+Leia os valores efetivos dos slots que o código tocado e os gatilhos da story acionam, não o catálogo inteiro.
+
+- Siga o exemplo canônico quando houver.
+- Cumpra todo slot invariante em código novo e alterado.
+- Rode os comandos de verificação do projeto antes de dar a unidade por pronta: os slots de verificação `ferramenta` são garantidos ali.
+- Onde um invariante já é violado no código que você toca, nomeie-o como dívida herdada, sem adotá-lo nem corrigi-lo fora do escopo.
+- Ambiguidade sobre qual valor se aplica é uma pergunta devolvida ao arquiteto, nunca uma suposição.
 
 ## O sinal de saúde
 

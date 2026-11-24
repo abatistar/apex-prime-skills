@@ -1,6 +1,6 @@
 ---
 name: adr-contract
-description: O contrato do ADR (Architecture Decision Record), o registro de uma decisão de arquitetura que sobrevive à story - quando uma decisão merece um ADR, a nomenclatura, o ciclo de vida do status, quem redige e quem aprova, e o template. Consulte para decidir se uma decisão deve um ADR e para escrever, aprovar ou ler um. Referencie-o, nunca o duplique.
+description: Contrato de referência do ADR (Architecture Decision Record) - quando uma decisão merece um registro, a nomenclatura, o ciclo de vida do status, quem redige e quem aprova, e o template. Não é ponto de entrada - para registrar, ajustar, aprovar ou recusar um ADR use adr-generator. O its-generator, o code-review e a feasibility-analysis o leem no passo que indicam.
 ---
 
 # Contrato do ADR

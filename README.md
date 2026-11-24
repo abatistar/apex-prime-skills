@@ -69,7 +69,8 @@ apex-prime-skills/
 │   │   │   └── implementer-rules.md        # o que quem implementa segue ao ler a ITS
 │   │   └── templates/
 │   │       ├── its-template-markdown.md    # a ITS canônica que o arquiteto escreve e o dev consome, em Markdown (o padrão)
-│   │       └── its-template-confluence.md  # a mesma ITS na marcação de wiki do Confluence; a opção Template da ITS do prime-config escolhe
+│   │       ├── its-template-confluence.md  # a mesma ITS na marcação de wiki do Confluence; a opção Template da ITS do prime-config escolhe
+│   │       └── its-template-*-levels.md    # a mesma unidade nos três níveis, um arquivo por formato; lido só no simplificado e no médio
 │   └── adr-contract/
 │       ├── SKILL.md                        # o formato do ADR: quando uma decisão merece um, ciclo de vida do status, quem redige e quem aprova
 │       └── templates/
@@ -82,8 +83,10 @@ apex-prime-skills/
     │       └── use-case-template.md        # a estrutura do documento, o índice do repositório e as regras de qualidade
     ├── use-case-creator/
     │   ├── SKILL.md                        # como criar e atualizar casos de uso
-    │   └── checklists/
-    │       └── creation-checklist.md
+    │   ├── checklists/
+    │   │   └── creation-checklist.md
+    │   └── references/
+    │       └── mode-*.md                   # um arquivo por modo menos frequente, lido só no modo usado
     ├── use-case-extractor/
     │   ├── SKILL.md                        # engenharia reversa para criar casos de uso
     │   └── checklists/
@@ -102,9 +105,15 @@ apex-prime-skills/
     ├── its-generator/
     │   ├── SKILL.md                        # como escrever a ITS usando o contrato do core
     │   ├── checklists/
-    │   │   └── its-checklist.md
+    │   │   └── its-checklist.md            # a conferência do documento pronto, antes de entregar
+    │   ├── scripts/
+    │   │   └── check-its.ps1               # confere a rastreabilidade, as âncoras e o alcance da ITS; só lê arquivos
     │   └── references/
+    │       ├── technical-story.md          # lido só numa story técnica
+    │       ├── pending-delta.md            # lido só quando um caso de uso tem o delta de outra story ainda não entregue
+    │       ├── proposing-an-adr.md         # lido só quando o plano depende de uma decisão que merece ADR
     │       ├── revising-an-its.md          # lido só quando uma ITS entregue volta
+    │       ├── component-diagram.md        # lido só quando o arquiteto aceita o diagrama de componentes da ITS
     │       └── restarting-after-an-adr.md  # lido quando a ITS recomeça depois da decisão sobre um ADR
     ├── adr-generator/
     │   ├── SKILL.md                        # como redigir um ADR e conduzi-lo até a palavra do arquiteto
@@ -125,7 +134,7 @@ apex-prime-skills/
 
 **O que cada skill carrega.** Um contrato separa o que os consumidores leem (`references/consumer-rules.md`) do que só quem o escreve ou o mantém precisa (o SKILL.md). Os catálogos têm um índice, lido sempre, e um arquivo por lente ou família, lido quando um ID dela é citado ou aplicado. Checklists, templates e procedimentos de um caminho só são lidos no passo que os usa.
 
-Toda skill é um diretório com um `SKILL.md` cujo frontmatter traz `name` e `description`. As skills do core mantêm seu material normativo em `references/` ou `templates/`; as skills de papel mantêm suas listas operacionais em `checklists/` e, em `references/`, os procedimentos que só um caminho lê.
+Toda skill é um diretório com um `SKILL.md` cujo frontmatter traz `name` e `description`. As skills do core mantêm seu material normativo em `references/` ou `templates/`; as skills de papel mantêm suas listas operacionais em `checklists/`, em `references/` os procedimentos que só um caminho lê e, em `scripts/`, a conferência que é mecânica e não precisa de julgamento.
 
 ## Instalação
 
@@ -235,7 +244,7 @@ O Jarvis, portanto, é operável de ponta a ponta (documentação → ITS → re
 
 **O ADR.** O registro de uma decisão de arquitetura que sobrevive à story tem contrato próprio, o `prime-core/adr-contract`: quando uma decisão merece um registro, o ciclo de vida do status, quem redige e quem aprova, e o template. A decisão vem antes do plano: o `its-generator` detecta a decisão sem registro, para a ITS e a propõe; o `prime-architect/adr-generator` redige o ADR por palavra do arquiteto; e a ITS recomeça do início depois que ele aprova ou recusa. É também num ADR `Accepted` que um projeto registra um desvio dos padrões do time ou uma migração.
 
-**O padrão: dois contratos, um único ponto de enforcement.** O `prime-core/quality-model` responde *o que é qualidade* — dez lentes, um piso inegociável com IDs estáveis (`QM-XX-N`), uma calibração por nível de criticidade da demanda, declarado na ITS, os gatilhos que dizem que decisões de qualidade cada ITS precisa tomar e uma disciplina de exceção que distingue dívida deliberada de atalho silencioso. O `prime-core/coding-standards` responde *como a qualidade se parece aqui* — o catálogo fechado de slots de convenção (`CS-XX-N`) que todo projeto precisa ter decidido, os padrões do time por stack, versionados pela release, e as regras do projeto legado, das migrações e dos desvios, que vivem em ADRs. Nenhum dos dois aprova ou reprova nada: o enforcement pertence ao `prime-architect/code-review`, que transforma ambos em achados classificados e um veredito, sempre citando um ID em vez de uma preferência.
+**O padrão: dois contratos, um único ponto de enforcement.** O `prime-core/quality-model` responde *o que é qualidade* — dez lentes, um piso inegociável com IDs estáveis (`QM-XX-N`), uma calibração por nível de criticidade da demanda, proposto na entrega da ITS, os gatilhos que dizem que decisões de qualidade cada ITS precisa tomar e uma disciplina de exceção que distingue dívida deliberada de atalho silencioso. O `prime-core/coding-standards` responde *como a qualidade se parece aqui* — o catálogo fechado de slots de convenção (`CS-XX-N`) que todo projeto precisa ter decidido, os padrões do time por stack, versionados pela release, e as regras do projeto legado, das migrações e dos desvios, que vivem em ADRs. Nenhum dos dois aprova ou reprova nada: o enforcement pertence ao `prime-architect/code-review`, que transforma ambos em achados classificados e um veredito, sempre citando um ID em vez de uma preferência.
 
 **A configuração do projeto.** O `docs/prime-config.md` responde o que é verdade sobre o projeto e as skills não podem adivinhar. Seu contrato — as cinco seções (Stack, Estrutura, Repositório de documentos, Comandos de verificação e Opções), as regras de precedência, o tratamento de divergências e o procedimento de bootstrap — pertence ao `prime-core/prime-config`. Cada skill lê a seção de que precisa, no passo que precisa dela, seguindo só a parte do contrato escrita para quem consome — `references/consumer-rules.md`. A configuração guarda fatos, nunca regras: quem eleva ou relaxa a régua num projeto é um ADR `Accepted`, e nenhum inegociável do core é dispensado em silêncio.
 

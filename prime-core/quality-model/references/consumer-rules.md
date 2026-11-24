@@ -23,9 +23,9 @@ Cada critério tem um de três níveis. O nível diz a **natureza** do critério
 Regras do nível:
 
 - **O piso não varia.** O nível muda a intensidade dos critérios calibrados e a evidência esperada; nunca dispensa um inegociável. O que cada nível exige, critério a critério, está nos Perfis de criticidade do catálogo.
-- **A ITS declara o nível**, por extenso, nas premissas do plano — com a razão em uma linha e, para uma demanda `efêmera`, a condição de remoção. O `its-generator` propõe o nível pelo que a demanda altera e pelo que uma falha dela custa; o arquiteto confirma. O nível nunca é inferido do nome de um diretório nem da idade do código.
+- **O its-generator propõe o nível** pelo que a demanda altera e pelo que uma falha dela custa, com a razão em uma linha, na mensagem de entrega da ITS; o arquiteto confirma. O documento não o escreve: as decisões que o nível calibra já estão nas unidades, e uma demanda `efêmera` leva a condição de remoção na seção de entrega do plano. O nível nunca é inferido do nome de um diretório nem da idade do código.
 - **Uma ITS, um nível.** Uma demanda com partes de pesos diferentes segue o nível mais alto entre elas.
-- **Quem implementa e quem revisa leem o nível da ITS**; não o rejulgam. Antes da ITS, o `impact-mapping` e a `feasibility-analysis` apontam o que na demanda pesa para um nível, como evidência; não o declaram.
+- **Quem revisa usa o nível que o arquiteto informa no pedido de revisão**; sem nível informado, vale `padrão`. Não o rejulga. Antes da ITS, o `impact-mapping` e a `feasibility-analysis` apontam o que na demanda pesa para um nível, como evidência; não o declaram.
 - Dúvida sobre o nível é pergunta ao arquiteto, nunca suposição.
 
 O nível de criticidade não substitui o modelo de ameaças: o padrão de segurança externo e o nível de verificação que o projeto adota vivem no `coding-standards`.
@@ -56,7 +56,7 @@ Uma exceção sem condição de saída é permanente, e uma exceção permanente
 
 **Quem concede.**
 
-- **O arquiteto, na ITS**, para o que o plano decide. A ITS registra o afastamento por extenso num dos seus veículos — a alternativa descartada da unidade, a fronteira de fora de escopo ou um ADR —, conforme o `its-contract`; o critério aparece só nas Referências. Quem assina a ITS é o responsável.
+- **O arquiteto, na ITS**, para o que o plano decide. A ITS registra o afastamento por extenso num dos seus veículos — a alternativa descartada da unidade, a fronteira de fora de escopo ou um ADR —, conforme o `its-contract`; o ID do critério não entra no documento. Quem assina a ITS é o responsável.
 - **O responsável de segurança do projeto**, junto com o arquiteto, para uma exceção de segurança. Ela é uma decisão de modelo de ameaças, não uma linha rotineira de dívida.
 - **Um ADR**, para relaxar um critério no projeto inteiro.
 - **Nunca quem implementa.** Quando o piso não pode ser cumprido como o plano previu, isso volta ao arquiteto como pergunta.
@@ -89,13 +89,13 @@ A régua é a mesma para código escrito por uma pessoa, por um agente ou com as
 
 A ITS é onde a qualidade de uma story é decidida. O que ela não decide fica para quem implementa resolver sob pressão, ou para ninguém. O its-generator se apoia no modelo em cinco movimentos:
 
-1. **Declare o nível.** Proponha o nível de criticidade da demanda pelo que ela altera e pelo que uma falha dela custa, com a razão em uma linha, e leve-o ao arquiteto junto com o plano. Escreva-o nas premissas, com a condição de remoção de uma demanda `efêmera`. Sem razão para outro nível, a demanda é `padrão`.
+1. **Declare o nível.** Proponha o nível de criticidade da demanda pelo que ela altera e pelo que uma falha dela custa, com a razão em uma linha, e leve-o ao arquiteto na mensagem de entrega. O documento não o escreve; uma demanda `efêmera` leva a condição de remoção na seção de entrega do plano. Sem razão para outro nível, a demanda é `padrão`.
 2. **Passe a story pelos gatilhos.** Para cada gatilho de `references/quality-triggers.md` que a story dispara, tome a decisão de qualidade e escreva-a como instrução na unidade que a implementa, com o valor concreto e o teste ou a medição que a prova. Um gatilho disparado sem decisão é uma pergunta que o implementador vai devolver.
 3. **Planeje o que prepara a mudança.** A refatoração preparatória (`QM-MT-3`) e os testes de caracterização (`QM-TS-9`) são unidades próprias, antes das unidades de comportamento.
 4. **Confira o piso no plano.** Nenhuma unidade instrui algo que viole um inegociável. Onde o plano precisa se afastar de um critério, registre a exceção nos veículos da ITS, por extenso.
 5. **Calibre ao nível.** Nem abaixo do que o nível exige, nem acima — estrutura especulativa é dívida (`QM-MT-4`).
 
-Na ITS, o modelo chega como **decisão concreta**, nunca como ID: "timeout de 2 s", não "conforme o critério de robustez". Os IDs servem à análise apresentada ao arquiteto e às Referências da ITS, onde aparecem apenas os critérios de que o plano se afasta. O que vale para todo código, em qualquer story — o piso inteiro —, não se repete em cada ITS: é a base de quem implementa. A ITS escreve o que esta story decide.
+Na ITS, o modelo chega como **decisão concreta**, nunca como ID: "timeout de 2 s", não "conforme o critério de robustez". Os IDs servem à análise apresentada ao arquiteto e nunca entram na ITS, nem os dos critérios de que o plano se afasta. O que vale para todo código, em qualquer story — o piso inteiro —, não se repete em cada ITS: é a base de quem implementa. A ITS escreve o que esta story decide.
 
 ## Para o code-review
 

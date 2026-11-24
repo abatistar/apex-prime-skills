@@ -7,13 +7,13 @@ description: Revisa uma implementação contra a sua ITS e os padrões do core, 
 
 O `quality-model` responde *o que é bom*. O `coding-standards` responde *como o bom se parece aqui*. Esta skill responde à terceira pergunta, a única que governa um merge: **esta mudança superou a régua, dado o seu contexto?** Transformar definições versionadas em achados precisos e uma recomendação é o trabalho exclusivo desta skill — as duas skills do core declaram que não o fazem.
 
-A disciplina abaixo segue as práticas de engenharia do Google para code review — o padrão de revisão, a ordem das lentes, a severidade dos comentários e a economia de velocidade e tamanho —, reescritas no vocabulário deste repositório e atadas aos seus critérios versionados, de modo que um achado sempre se apoie num ID estável em vez de um humor, e diga por extenso o que esse ID exige ali.
+A disciplina abaixo segue as práticas de engenharia do Google para code review, atadas aos critérios versionados deste repositório: um achado sempre se apoia num ID estável, nunca num humor, e diz por extenso o que esse ID exige ali.
 
 Duas entradas definem a régua, sempre as duas: a **ITS** (o que foi acordado para esta story) e os **padrões do core** (o que vale para todo código). Uma mudança que implementa a ITS à perfeição enquanto comete em silêncio um pecado capital não passa. Uma mudança com código impecável que estende discretamente o escopo da ITS também não passa.
 
 ## O padrão de revisão
 
-Aprove quando a mudança **faz o que a ITS acordou e deixa a saúde do código do sistema melhor do que encontrou** — não quando é perfeita. Perfeição não é a régua e nunca pode virar uma: "sempre dá para melhorar" é como um gate degenera em obstáculo. A pergunta é comparativa e contextual — depois deste merge, a base de código está mais segura, mais previsível e mais barata de mudar do que antes? O piso dessa comparação é inegociável: a mudança não deixa pior a área que toca (`QM-MT-6`). E o contexto não é julgado de novo aqui: o nível de criticidade da demanda é o que a ITS declara nas premissas.
+Aprove quando a mudança **faz o que a ITS acordou e deixa a saúde do código do sistema melhor do que encontrou** — não quando é perfeita. Perfeição não é a régua e nunca pode virar uma: "sempre dá para melhorar" é como um gate degenera em obstáculo. A pergunta é comparativa e contextual — depois deste merge, a base de código está mais segura, mais previsível e mais barata de mudar do que antes? O piso dessa comparação é inegociável: a mudança não deixa pior a área que toca (`QM-MT-6`). E o contexto não é julgado de novo aqui: o nível de criticidade da demanda é o que o arquiteto informa (Passo 0).
 
 Quatro princípios resolvem toda discordância:
 
@@ -37,19 +37,21 @@ A configuração do projeto não é lida por inteiro. Cada fato dela é lido qua
 - **Repositório de documentos** — onde vivem a ITS e os ADRs;
 - **Comandos de verificação** — a pré-condição abaixo;
 - **Estrutura** — quando um achado depende de qual pacote representa qual elemento da arquitetura;
-- **Opções** — a opção Legado, quando as premissas da ITS não dizem se o plano segue o padrão do código existente.
+- **Opções** — a opção Legado, quando as premissas técnicas da ITS não dizem se o plano segue o padrão do código existente.
 
-A calibração não vem da configuração: o nível de criticidade da demanda está nas premissas da ITS. Os desvios do projeto — um valor de convenção diferente do padrão do time, um inegociável acrescentado, uma migração — estão nos ADRs `Accepted`.
+A calibração não vem da configuração nem da ITS: o nível de criticidade da demanda é o que o arquiteto informa no pedido de revisão, e, sem nível informado, vale `padrão`. Os desvios do projeto — um valor de convenção diferente do padrão do time, um inegociável acrescentado, uma migração — estão nos ADRs `Accepted`.
 
 **As verificações automatizadas rodam antes da revisão, não durante ela.** Um pipeline vermelho é a rodada do autor, não a do revisor: a revisão humana começa quando as verificações do PR estão verdes. Onde o PR não mostra o resultado delas, valem os **comandos de verificação** da configuração — execute-os, ou peça ao autor que reporte o resultado, antes de começar. A única exceção à espera é o vermelho causado por um teste instável: ele não volta para outra rodada, é um achado `Blocking:` por si só (`QM-TS-1`), porque uma suíte ocasionalmente vermelha é o que treina um time a ignorar o vermelho.
 
-Em seguida carregue, nesta ordem:
+Leia primeiro o que as pré-condições pedem: **a ITS da story** — conforme o **its-contract**, sob a raiz de documentos que a configuração declara. Quando ela é uma pasta paralela, versionada à parte, leia a ITS na revisão que o PR cita. A rastreabilidade plano ⇄ delta que o its-generator já verificou está na estrutura do documento — os itens de O que muda, o Atende e os Testes de cada unidade —, e é a base sobre a qual a sua própria verificação (diff ⇄ plano) se constrói.
 
-1. **A ITS da story** e todo ADR citado nas premissas do plano dela, em Decisões registradas — conforme o **its-contract**, sob a raiz de documentos que a configuração declara. Quando ela é uma pasta paralela, versionada à parte, leia a ITS na revisão que o PR cita. A rastreabilidade plano ⇄ delta que o its-generator já verificou está na estrutura do documento — os itens de O que muda, o Atende e os Testes de cada unidade, a coluna Usada em das Referências —, e é a base sobre a qual a sua própria verificação (diff ⇄ plano) se constrói.
-2. **Os casos de uso listados nas Referências da ITS**, conforme as regras de consumo do **use-case** (`../use-case/references/consumer-rules.md`): o delta desta story e o corpo que ele altera. Eles servem à lente Documentação — conferir que o comportamento entregue não deixa o caso de uso mentindo. O julgamento funcional é contra os itens da ITS, que já carregam por extenso o que os critérios de aceite exigem. Numa ITS técnica — a story que muda o código sem mudar comportamento observável —, os casos de uso listados são só os que forneceram pontos de regressão, e qualquer mudança no comportamento que eles descrevem é escopo excedido.
+**Sem pré-condição, sem revisão.** Três faltas impedem a revisão de começar, e a saída é *Not reviewable* (Passo 6), não um veredito: não existe ITS para a story; a descrição do PR não declara a ITS que implementa — nem, quando a documentação vive em pasta paralela, a revisão da documentação implementada; as verificações obrigatórias estão vermelhas por outra causa que não um teste instável. Uma revisão sem o escopo acordado degenera em gosto em três comentários. A única exceção é uma mudança declarada fora do processo (um hotfix): declare explicitamente que a conformidade de escopo não pôde ser verificada e revise apenas contra os padrões do core. Nenhum código é aberto antes de as três estarem conferidas, nem os casos de uso e os contratos abaixo: uma revisão que não começa não paga essa leitura.
+
+Com as três conferidas, **leia agora**, nesta ordem:
+
+1. **Os casos de uso da story** — os que têm no Histórico de revisões a entrada com o ID dela, achados pelo índice do repositório —, conforme as regras de consumo do **use-case** (`../use-case/references/consumer-rules.md`): o delta desta story e o corpo que ele altera. Eles servem à lente Documentação — conferir que o comportamento entregue não deixa o caso de uso mentindo. O julgamento funcional é contra os itens da ITS, que já carregam por extenso o que os critérios de aceite exigem. Numa ITS técnica — a story que muda o código sem mudar comportamento observável —, nenhum caso de uso tem entrada da story: os que importam são os que descrevem o comportamento que passa pelo código alterado, e qualquer mudança no comportamento que eles descrevem é escopo excedido.
+2. **Os ADRs `Accepted` cujo Escopo cobre o que o PR altera** — o Status, o Escopo, a Decisão e a linha Vincula de cada um, sem o contexto. A ITS escreve a restrição deles nas unidades, sem citá-los; o registro é o que diz se ela foi bem traduzida.
 3. As regras de consumo do **quality-model** (`../quality-model/references/consumer-rules.md`) com o índice `../quality-model/references/quality-criteria.md` (inclusive "O piso num relance" e os Perfis de criticidade) e `../quality-model/references/quality-triggers.md`, e as regras de consumo do **coding-standards** (`../coding-standards/references/consumer-rules.md`) com o índice `../coding-standards/references/convention-slots.md` (inclusive "Os invariantes num relance") mais o índice dos padrões da stack (`../coding-standards/references/defaults-<stack>.md`). O arquivo de uma lente ou família entra quando um ID dela é citado ou aplicado, como cada índice diz — nunca os catálogos inteiros de antemão.
-
-**Sem pré-condição, sem revisão.** Três faltas impedem a revisão de começar, e a saída é *Not reviewable* (Passo 6), não um veredito: não existe ITS para a story; a descrição do PR não declara a ITS que implementa — nem, quando a documentação vive em pasta paralela, a revisão da documentação implementada; as verificações obrigatórias estão vermelhas por outra causa que não um teste instável. Uma revisão sem o escopo acordado degenera em gosto em três comentários. A única exceção é uma mudança declarada fora do processo (um hotfix): declare explicitamente que a conformidade de escopo não pôde ser verificada e revise apenas contra os padrões do core. Nenhum código é aberto antes de as três estarem conferidas: uma revisão que não começa não o lê.
 
 Se esta não é a primeira rodada sobre o PR, a revisão segue também as regras de Rodadas seguintes.
 
@@ -58,9 +60,9 @@ Se esta não é a primeira rodada sobre o PR, a revisão segue também as regras
 Visão ampla primeiro. Leia a Descrição da ITS, a seção O que muda e o plano de implementação; depois a descrição do pull request, que o **its-contract** define para o PR de entrega (`../its-contract/references/implementer-rules.md`) — as unidades implementadas, as perguntas devolvidas e a revisão da ITS que as respondeu, a dívida herdada encontrada, os commits de arrumação, as verificações executadas. Uma descrição incompleta além da ITS citada não impede a revisão: o que faltar e fizer falta vira `Question:`. Você precisa conseguir dizer, antes da primeira linha do diff:
 
 - o que a mudança deveria fazer e onde: os componentes que cada unidade nomeia e, onde o nível de detalhe os lista, os arquivos;
-- em que nível de detalhe a ITS foi escrita — a linha sob o título —, porque ele diz o que o plano fixou e o que deixou a cargo de quem implementa;
+- em que nível de detalhe a ITS foi escrita, pelos campos das unidades — sem Arquivos, `simplificado`; com Arquivos e sem Como verificar, `médio`; com Como verificar, `detalhista` —, porque ele diz o que o plano fixou e o que deixou a cargo de quem implementa;
 - qual comportamento precisa continuar funcionando — os pontos de regressão da ITS e a unidade que reivindicou cada um;
-- com que nível de cuidado — o nível de criticidade da demanda e, num projeto legado, a declaração de que o plano segue o padrão do código existente, nas premissas da ITS, e o que o perfil desse nível exige (Perfis de criticidade, no catálogo);
+- com que nível de cuidado — o nível de criticidade da demanda, como o Passo 0 o define, e o que o perfil desse nível exige (Perfis de criticidade, no catálogo); num projeto legado, as premissas técnicas da ITS dizem que o plano segue o padrão do código existente;
 - onde o plano pede atenção redobrada — a seção Riscos e pontos de atenção da ITS.
 
 Depois percorra o diff **unidade por unidade, na ordem do plano**, não na ordem alfabética da árvore de arquivos. O plano já sequenciou as dependências, e cada unidade diz o que deveria ter mudado — pela lista de Arquivos, no `detalhista`; pelos arquivos existentes listados e pelas instruções, no `médio`; só pelas instruções, no `simplificado`. A resposta para "o que esta mudança deveria conter" é o próprio percurso, não uma lista separada. Dentro de cada unidade, **leia os testes antes do código de produção**: eles mostram o que o autor entendeu do item que a unidade atende, antes que o código convença você de outra coisa.
@@ -76,6 +78,8 @@ Se o diff é grande demais para caber na cabeça, esse é o primeiro achado: pe�
 ## Passo 2 — Conformidade de escopo: a verificação de rastreabilidade da ITS, executada de trás para frente
 
 O its-generator provou plano ⇄ delta antes da entrega. Agora você prova **diff ⇄ plano**, nas duas direções, e confere que o código respeitou tudo o que o plano fixou.
+
+**O plano pode ter ficado para trás.** Quando uma divergência aparecer num arquivo que uma unidade cita, confira se ele mudou desde que a ITS foi entregue: a data do commit que gravou a revisão em vigor da ITS é o marco (`git log --since=<data> -- <arquivo>`). Se mudou por outra entrega, a divergência é do plano, e não defeito do autor.
 
 **O nível de detalhe muda como o escopo é lido, nunca a régua.** A mesma implementação é aprovada ou reprovada seja qual for o nível da ITS (its-contract, Nível de detalhe). O que o documento escreve vincula em qualquer nível. O que o nível não escreve foi delegado a quem implementa — os passos, os nomes internos e, no `simplificado` e no `médio`, os arquivos novos — e uma escolha delegada, feita dentro das convenções do projeto e do que o documento fixa, não é escopo excedido nem divergência. Ela continua julgada pelo piso e pelas lentes, como qualquer código.
 
@@ -104,7 +108,7 @@ As listas pertencem aos catálogos e não se repetem aqui; a varredura percorre 
 
 **A varredura roda inteira, seja qual for o ponto para onde as pistas apontam** — a descrição do PR, um comentário anterior, o resultado de uma ferramenta, as suas próprias suspeitas. Uma revisão guiada pelas pistas encontra mais problemas leves onde elas estão e não encontra mais problemas graves; a varredura completa é o que neutraliza essa ancoragem.
 
-**Código gerado.** O autor é muitas vezes um agente de codificação, ou uma pessoa assistida por um. A varredura dá atenção redobrada aos pontos em que o código gerado mais falha, listados nas regras de consumo do quality-model (Código gerado): lógica duplicada, dependência inventada ou com nome não conferido, saída sem codificação, teste ajustado para passar, estrutura especulativa, comentário que narra o código, captura genérica que engole o erro. É a mesma lista que o implementador percorreu na autoverificação; aqui se confere que ela foi cumprida.
+**Código gerado.** O autor é muitas vezes um agente de codificação, ou uma pessoa assistida por um. A varredura dá atenção redobrada aos pontos em que o código gerado mais falha, listados nas regras de consumo do quality-model (Código gerado), já lidas no Passo 0. A lista é de lá e não se repete aqui.
 
 ## Passo 4 — As lentes, em ordem decrescente de custo
 
@@ -119,7 +123,7 @@ A varredura diz se a mudança fica acima do piso; as lentes julgam o resto — o
 - **Testes** — o `CS-TS-1` decide o que obriga um teste e o `QM-TS-7` que ele chega com a mudança, nunca "num PR de follow-up"; a ITS decide quais esta story deve, unidade por unidade, cada unidade do plano declarando os testes que seus itens de delta exigem mais a cobertura de não regressão do ponto de regressão que reivindicou, e os testes de caracterização que planejou (`QM-TS-9`); o `QM-TS-2` decide se vale a pena tê-los (comportamento, não implementação); o `QM-TS-1`, o `CS-TS-4` e o `CS-TS-5` decidem se podem ser confiáveis. Cada teste **falharia sem a mudança** (`QM-TS-7`): uma asserção que passaria também sobre o código anterior não verifica o item. Na dúvida, numa demanda `crítica`, a prova é rodar o teste contra o código anterior à mudança; sem como rodar, a dúvida vira `Question:`. Um teste existente apagado, desativado ou afrouxado sem que o plano tenha mudado o comportamento que ele verifica é o `QM-TS-8` violado.
 - **Nomenclatura** — `QM-RC-1` / `CS-NM-2`: um nome que oculta I/O, mutação ou um evento emitido é um defeito, não uma preferência.
 - **Comentários** — `QM-RC-5`, `QM-DO-2`: explicam o *porquê*. Se você precisou perguntar o que um bloco faz, o código falhou em se explicar — o conserto pertence ao código ou a um comentário, não à resposta do autor para você.
-- **Documentação** — `QM-DO-1`: uma mudança de comportamento que deixa um documento co-localizado mentindo é um defeito. Comportamento entregue que difere da ITS é achado de Funcionalidade, contra o autor. Se ele cumpre a ITS e ainda assim difere do caso de uso, o defeito está nos documentos, e o veredito é *Return to the architect*: a ITS que traduziu mal o caso de uso volta ao its-generator; o caso de uso que já não descreve o sistema vai às skills de caso de uso. O delta pendente de outra story no mesmo caso de uso não é defeito de documentação (use-case, Ciclo de vida do status): julgue contra a ordem de entrega que a ITS declara nas premissas. Nunca remende um documento de dentro de uma revisão.
+- **Documentação** — `QM-DO-1`: uma mudança de comportamento que deixa um documento co-localizado mentindo é um defeito. Comportamento entregue que difere da ITS é achado de Funcionalidade, contra o autor. Se ele cumpre a ITS e ainda assim difere do caso de uso, o defeito está nos documentos, e o veredito é *Return to the architect*: a ITS que traduziu mal o caso de uso volta ao its-generator; o caso de uso que já não descreve o sistema vai às skills de caso de uso. O delta pendente de outra story no mesmo caso de uso não é defeito de documentação (use-case, Ciclo de vida do status): julgue contra a ordem de entrega que a ITS declara no plano. Um item `Decisão do arquiteto … pendente no caso de uso` em Riscos e pontos de atenção da ITS é uma dispensa registrada (its-contract, Fonte → item): confira se o caso de uso já traz a exigência e voltou a `Reviewed`. Se não, o veredito é *Return to the architect*, com o caso de uso e os itens pendentes; a atualização é do arquiteto, pelo use-case-creator, não do autor. Os demais achados saem na mesma rodada, para que a espera não custe outra revisão. Nunca remende um documento de dentro de uma revisão.
 - **Estilo e consistência** — slots convencionais, julgados **contra o valor efetivo**: num projeto legado, um achado convencional só é válido se a mudança introduziu um padrão que o código não tinha — a forma do time, ali, também é um padrão novo. Onde a ITS aponta um exemplo canônico, a forma dele é a referência. O que uma ferramenta poderia decidir não é material de revisão.
 
 Leia cada linha que um humano deverá manter; código gerado e arquivos de dados podem ser só percorridos, e a Cobertura do relatório diz isso. Quando o autor é um agente, o padrão é idêntico, e a leitura também; o relatório continua sendo escrito para ser lido pelo humano dono do pull request.
@@ -130,7 +134,7 @@ Leia cada linha que um humano deverá manter; código gerado e arquivos de dados
 
 Um achado declara **onde** (arquivo:linha, ou o item, a unidade ou a seção da ITS), **o que** está errado, **por quê** — citando um ID e escrevendo, em uma linha, o que ele exige naquele ponto — e **o que se espera**. É uma instrução, não uma implementação: prefira nomear o problema e deixar a solução ao autor; dê uma direção explícita quando o padrão fixa uma (um slot INVARIANT) ou quando o autor a pediu.
 
-**Evidência.** Um `Blocking:` exige evidência ancorada: o local e o **cenário concreto de falha** — com tal entrada ou tal estado, tal resultado errado —, ou, num achado de escopo, a unidade e o arquivo que não se correspondem. Antes de publicar um `Blocking:`, tente refutá-lo: existe uma guarda em outro ponto do caminho, um teste que já cobre o caso, um chamador que o trata, uma configuração que o impede? O achado que não sobrevive à tentativa cai. O que você não conseguiu verificar — porque depende de execução, de dado ou de código que você não leu — não é `Blocking:`: é `Question:`. É a mesma distinção que o impact-mapping marca como `[INFERRED]` (deduzido em vez de rastreado de ponta a ponta) e `[UNVERIFIED]` (afirmado e não conferido), e a mesma refutação que a feasibility-analysis exige de um `Blocker:`. Uma suspeita publicada como certeza é o defeito mais caro desta skill: ensina o autor a ignorar também os achados certos.
+**Evidência.** Um `Blocking:` exige evidência ancorada: o local e o **cenário concreto de falha** — com tal entrada ou tal estado, tal resultado errado —, ou, num achado de escopo, a unidade e o arquivo que não se correspondem. Antes de publicar um `Blocking:`, tente refutá-lo: existe uma guarda em outro ponto do caminho, um teste que já cobre o caso, um chamador que o trata, uma configuração que o impede? O achado que não sobrevive à tentativa cai. O que você não conseguiu verificar — porque depende de execução, de dado ou de código que você não leu — não é `Blocking:`: é `Question:`. Uma suspeita publicada como certeza é o defeito mais caro desta skill: ensina o autor a ignorar também os achados certos.
 
 Cinco severidades. O *nível* de um critério descreve sua natureza; a severidade aqui é sua *consequência para esta mudança* — e fazer essa tradução é exatamente o que o modelo de qualidade deixa ao revisor.
 
@@ -167,9 +171,11 @@ Uma revisão que começou termina em exatamente um veredito, declarado explicita
 
 Nunca aprove uma mudança que você não entendeu. "Provavelmente funciona" não é um veredito.
 
-## Rodadas seguintes
+**Com o veredito decidido, leia agora** `checklists/review-checklist.md`: ele confere o relatório antes da entrega e traz o template. Não o leia antes deste ponto.
 
-A partir da segunda rodada sobre o mesmo pull request, leia `references/next-rounds.md` antes do Passo 1: as regras de uma rodada seguinte vivem lá. Na primeira rodada, ele não é lido.
+## Rodadas seguintes e contestação
+
+A partir da segunda rodada sobre o mesmo pull request, **leia agora** `references/next-rounds.md`, antes do Passo 1. Quando o autor contesta um achado, em qualquer rodada, leia a seção Contestação do mesmo arquivo antes de responder. Na primeira rodada, sem contestação, ele não é lido.
 
 ## Escrevendo os comentários
 
@@ -177,15 +183,6 @@ A partir da segunda rodada sobre o mesmo pull request, leia `references/next-rou
 - Escreva o que o critério exige ali, em uma linha, e cite o ID — o autor aprende o critério sem precisar abrir o catálogo, e não apenas a correção.
 - Pergunte quando puder estar errado, com `Question:`. Muitas vezes é você quem não tem contexto, e "por que assim?" custa uma linha e evita um achado errado.
 - Uma instrução por comentário. Um parágrafo com três pedidos tem um deles atendido.
-
-## Pushback
-
-A discordância é resolvida pelo padrão — não por senioridade, volume ou cansaço.
-
-- Se o argumento do autor é tecnicamente melhor, aceite-o. Se revela que o *padrão* está errado, isso é um PR de governança contra o contrato que é dono do padrão, não uma exceção local concedida numa thread de comentários.
-- **"Eu corrijo num follow-up"** é aceitável apenas como dívida deliberada: nomeada, com responsável, com um item de backlog e uma condição de saída (`QM-MT-1`). Uma promessa sem nome é precisamente o desvio invisível que o modelo proíbe.
-- **"É urgente"** pode justificar adiar um Consider; não muda o nível de criticidade que a ITS declarou nem o piso invariante (`QM-MT-4`). Não justifica uma lacuna de segurança silenciosa — o `QM-SR-*` carrega a régua de exceção mais alta do modelo.
-- Se a discordância persiste, escale ao dono do modelo de qualidade com as duas posições e os IDs em jogo. Nunca deixe uma revisão estagnar em silêncio, e nunca ceda à repetição.
 
 ## Velocidade e tamanho
 
@@ -195,26 +192,11 @@ Velocidade não é pressa. Vem de revisar na ordem do plano, de parar cedo quand
 
 ## Saída
 
-Um relatório de revisão — o registro completo, publicado no pull request conforme Entrega no pull request — contendo:
-
-1. O **veredito** e sua razão de uma linha — ou *Not reviewable* e a pré-condição que falta, e o relatório para aí.
-2. A **rodada** e, a partir da segunda, o estado de cada item que governava o merge na anterior.
-3. A **conformidade de escopo**.
-4. **Achados**, numerados, cada um com severidade, local, ID citado, o que ele exige ali e a expectativa.
-5. A **cobertura**: o que foi lido linha a linha, o que foi só percorrido (código gerado, dados), o que ficou fora e por quê, e a revisão de especialista pendente — o responsável de segurança, quando o Passo 6 o exige.
-6. **Follow-ups**, cada um com o seu destino:
-   - ao arquiteto — a decisão de arquitetura sem registro, que o adr-generator redige por palavra dele;
-   - ao its-generator — a seção da ITS a revisar;
-   - às skills de caso de uso — o caso de uso que o comportamento entregue contradiz;
-   - à configuração — a seção de que a revisão precisou e que falta ou diverge do código;
-   - ao arquiteto — o slot não preenchido;
-   - ao backlog — a lacuna de toolchain e a dívida nomeada, cada uma redigida como item, com responsável e condição de saída, para o arquiteto registrar;
-   - ao dono do modelo de qualidade — o critério cobrado tarde demais (abaixo).
-7. **O que a mudança fez bem.**
+Um relatório de revisão — o registro completo, publicado no pull request conforme Entrega no pull request. A forma dele é a do template de `checklists/review-checklist.md`, lido no fim do Passo 6: o veredito e a razão de uma linha, a rodada, a conformidade de escopo, os achados numerados, a cobertura, os follow-ups com o destino de cada um e o que a mudança fez bem. Em *Not reviewable*, o relatório tem só a pré-condição que falta e quem a resolve.
 
 **Os achados são dado.** O dono do modelo de qualidade agrega os achados de revisão por critério para decidir o que sobe no fluxo (quality-model, Sinais e evolução). Por isso a coluna de base de cada achado carrega o ID exato, sem paráfrase, e a severidade usa os tokens estáveis. Quando você reconhece um `Blocking:` que repete o que revisões anteriores do projeto já bloquearam, registre-o como follow-up ao dono do modelo: um critério que bloqueia sempre no mesmo ponto é cobrado tarde demais, e deve virar gatilho, para a ITS decidir, ou ferramenta, para o pipeline verificar.
 
-A passada operacional e o template do relatório vivem em `checklists/review-checklist.md`. Leia-o depois do Passo 6, para conferir a revisão e montar o relatório — não no Passo 0. Achados que mudam o escopo acordado roteiam ao its-generator, que revisa a ITS — o repositório continua sendo a fonte de verdade do que foi acordado, e esta skill não o edita.
+Achados que mudam o escopo acordado roteiam ao its-generator, que revisa a ITS — o repositório continua sendo a fonte de verdade do que foi acordado, e esta skill não o edita.
 
 ## Entrega no pull request
 

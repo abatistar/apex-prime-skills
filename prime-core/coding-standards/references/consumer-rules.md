@@ -1,6 +1,6 @@
 # Regras para quem consome os padrões de código
 
-Parte do contrato do `coding-standards`, e a que as skills do fluxo leem: onde cada valor vale (as duas classes), o projeto legado, as migrações, os desvios do projeto, as lacunas, a verificação e como cada papel usa os slots. O SKILL.md — o que é um slot, os padrões versionados, o sinal de saúde e a evolução — é lido por quem implementa, junto com este arquivo, e pelo dono do catálogo.
+Parte do contrato do `coding-standards`, e a que as skills do fluxo leem: onde cada valor vale (as duas classes), o projeto legado, as migrações, os desvios do projeto, as lacunas, a verificação e como cada papel usa os slots. O SKILL.md — o que é um slot, os padrões versionados, as regras de quem implementa, o sinal de saúde e a evolução — é lido pelo dono do catálogo e por quem implementa, quando o time lhe entrega os padrões.
 
 ## Duas classes de aplicação
 
@@ -28,6 +28,12 @@ Legado é um fato do projeto inteiro, declarado na opção **Legado** da configu
   - as **proibições** valem para toda linha escrita ou alterada, como em qualquer projeto.
 
 Um projeto legado só passa a seguir o padrão do time, num slot, por uma migração.
+
+**Projeto não legado cujo código diverge do padrão do time.** Quando o código que a mudança toca segue, num slot, um valor diferente do padrão do time e nenhum ADR `Accepted` o registra, ninguém escolhe em silêncio: nem o padrão do time, que criaria uma segunda forma, nem o padrão do código, que não foi decidido. A skill reporta a divergência ao arquiteto, com os dois valores e o trecho que mostra o do código. As saídas são três:
+
+- um ADR de desvio, e o projeto mantém o valor que tem;
+- um ADR de migração, e o projeto vai ao padrão do time;
+- quando o arquiteto adia as duas, o valor do código no entorno da mudança, registrado na ITS como afastamento, com a condição de saída. O code-review julga o código contra esse registro.
 
 **Código gerado e de terceiros não é julgado.** Clientes e modelos gerados a partir de um contrato e código de terceiros copiado para o repositório não são editados à mão: a mudança vai para a entrada do gerador ou para a origem. São reconhecidos pelo marcador de geração ou pela origem declarada no próprio arquivo ou no build. Os slots e as ferramentas não os julgam; o código do projeto que os usa continua sob todos os slots.
 
@@ -83,16 +89,9 @@ Uma regra de ferramenta que produz falsos positivos com frequência treina o tim
 
   Fora disso, a convenção é a base de quem implementa e não se repete.
 - **Valor, nunca ID.** A ITS escreve o valor, nunca o ID do slot. Um exemplo canônico pode ser apontado pelo caminho do arquivo.
-- **Legado.** O legado com que o plano convive sem corrigir vira uma fronteira de fora de escopo. O slot só aparece nas Referências da ITS quando o plano se afasta dele por exceção registrada.
+- **Legado.** O legado com que o plano convive sem corrigir vira uma fronteira de fora de escopo. O ID do slot não entra na ITS, nem quando o plano se afasta dele por exceção registrada: o afastamento é escrito por extenso.
 - **Lacuna.** Um slot de que o plano precisa e que não tem valor é uma lacuna a reportar, não a inventar.
-
-**Para quem implementa** — leia os valores efetivos dos slots que o código tocado e os gatilhos da story acionam, não o catálogo inteiro.
-
-- Siga o exemplo canônico quando houver.
-- Cumpra todo slot invariante em código novo e alterado.
-- Rode os comandos de verificação do projeto antes de dar a unidade por pronta: os slots de verificação `ferramenta` são garantidos ali.
-- Onde um invariante já é violado no código que você toca, nomeie-o como dívida herdada, sem adotá-lo nem corrigi-lo fora do escopo.
-- Ambiguidade sobre qual valor se aplica é uma pergunta devolvida ao arquiteto, nunca uma suposição.
+- **Divergência.** Num projeto não legado, o código tocado que diverge do padrão do time sem ADR é reportado antes de o plano escolher um valor (Projeto não legado cujo código diverge).
 
 **Para o `code-review`** — os achados citam IDs de slots junto com IDs de critérios (`CS-ER-4` / `QM-EO-2`), de modo que a conversa seja sobre uma decisão versionada em vez do gosto de um revisor.
 

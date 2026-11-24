@@ -1,6 +1,6 @@
 ---
 name: quality-model
-description: O modelo de qualidade canônico do time - o que é qualidade, o piso inegociável, a calibração por criticidade e os gatilhos de especificação, com critérios QM-XX-N. Referência compartilhada para especificar, implementar e revisar; o enforcement pertence ao code-review, e as convenções concretas, ao coding-standards.
+description: Contrato de referência do modelo de qualidade do Apex Prime - o piso inegociável, a calibração por criticidade e os gatilhos de especificação, com critérios QM-XX-N. Vale só em projeto que tem docs/prime-config.md. Não é ponto de entrada - o its-generator, o code-review e a feasibility-analysis o leem no passo que indicam. Acione-o só para consultar ou manter o modelo. Não aprova nem reprova código - isso é do code-review.
 ---
 
 # Modelo de Qualidade
@@ -66,7 +66,7 @@ A ITS diz o que construir e as decisões de qualidade desta story; o modelo diz 
 - **Não substitui o julgamento.** O piso é um mínimo, não uma definição de bom.
 - **Não é um gate.** Define a régua; o `code-review` decide se uma mudança a superou.
 - **Não são os padrões de código.** Este modelo é dono de princípios, do piso e dos gatilhos; o `coding-standards` é dono das convenções concretas — qual nomenclatura, qual divisão em camadas, qual timeout padrão. Quando um critério precisa de uma convenção concreta para ser verificável, ele remete a um slot; nunca inventa um valor. Os slots INVARIANT valem em qualquer projeto: os que são proibições são a forma concreta, na stack do projeto, do que o piso exige; os demais são formas únicas do sistema. Ambos só admitem desvio por exceção registrada.
-- **Não é o formato da ITS.** Como um critério entra na ITS — como instrução concreta no corpo, com o ID apenas nas Referências — é regra do `its-contract`.
+- **Não é o formato da ITS.** Como um critério entra na ITS — como instrução concreta no corpo, sem o ID — é regra do `its-contract`.
 - **Não é o lar das decisões arquiteturais.** Decisões que sobrevivem à story vivem em ADRs, de propriedade do `adr-contract`.
 - **Não fixa metas de produto.** As metas vêm dos casos de uso e dos ADRs.
 

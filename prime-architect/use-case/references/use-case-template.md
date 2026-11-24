@@ -140,33 +140,48 @@ de uso, em sucesso ou em falha. Extensão sem desfecho é defeito, não abrevia�
 [Um critério rotulado com uma regra deriva dela: a característica de `Onde` e o estado de `Enquanto` vão para o Dado, o gatilho de `Quando` ou a condição de `Se` vai para o quando, e a resposta vai para o então.]
 [Um requisito não funcional deste fluxo — tempo de resposta, volume, disponibilidade, acessibilidade, retenção — é um critério como os outros, com `não funcional` acrescentado ao rótulo e a métrica no resultado (ex.: "então o PDF fica pronto em até 30 s (p95)"). O que vale para o sistema inteiro não se repete em cada caso de uso: é decisão de um ADR. A qualidade interna do código pertence ao quality-model e nunca entra num caso de uso.]
 
-## Diagrama UML (resumo gráfico)
+## Diagrama de atividades (resumo gráfico)
 
-[OPCIONAL — inclua apenas quando há relações a mostrar: atores secundários, «include»/«extend»
-ou casos de uso relacionados. Com um único ator e nenhuma relação, omita a seção inteira — o
-diagrama seria uma bolha só e repetiria o campo Atores.]
+[OPCIONAL — inclua quando o fluxo tem ao menos uma extensão ou uma decisão. Num cenário linear,
+sem desvio, omita a seção inteira: o desenho repetiria a lista de passos.]
 
-[Regra de escopo: o diagrama mostra ESTE caso de uso, seus atores e suas relações diretas
-apenas («include»/«extend» e casos de uso diretamente relacionados). Nunca é um mapa do
-sistema inteiro — o repositório como um todo é o mapa. Atualize o diagrama sempre que uma
-mudança nos fluxos alterar atores ou relações — criando-o quando surge a primeira relação e
-removendo-o quando sai a última; atualizações apenas de diagrama NÃO são
-itens de delta no Histórico de revisões (o diagrama é derivado dos fluxos — o delta é a
-mudança de comportamento).]
+[O texto é a fonte; o diagrama é derivado. Ele desenha o Cenário principal de sucesso e as
+Extensões, e nada que não esteja neles: cada passo é uma ação, cada extensão é um desvio que sai
+do passo que ela cita e chega ao seu desfecho, e a condição do desvio é a da extensão. Todo nó
+leva o número do passo ou da extensão que representa. Onde o texto e o diagrama divergem, o
+defeito é do diagrama. As relações com outros casos de uso não entram aqui: ficam no campo Casos
+de uso relacionados.]
+
+[Refaça o diagrama no mesmo trabalho que muda um passo ou uma extensão — criando-o quando surge o
+primeiro desvio e removendo-o quando sai o último. A atualização do diagrama NÃO é item de delta
+no Histórico de revisões: o delta é a mudança de comportamento, que já está registrada nos passos
+e nas extensões.]
 
 ```mermaid
-flowchart LR
-    ator([Ator principal])
-    apoio([Ator de apoio])
+flowchart TD
+    inicio([Início])
+    p1["1. <Ator faz a ação>"]
+    p2["2. <Sistema valida>"]
+    d2{"<Condição da extensão 2a>"}
+    e2a["2a. <Sistema responde ao desvio>"]
+    p3["3. <Sistema conclui>"]
+    ok([Sucesso: <garantia de sucesso>])
+    falha([Fim sem sucesso: <desfecho da extensão 2a>])
 
-    subgraph sistema["Escopo: <Sistema>"]
-        uc(["UC-NNN <Este caso de uso>"])
-        sub(["<Subfunção incluída>"])
-    end
+    inicio --> p1 --> p2 --> d2
+    d2 -- não --> p3 --> ok
+    d2 -- sim --> e2a --> falha
+```
 
-    ator --> uc
-    uc -. «include» .-> sub
-    uc --> apoio
+[Diagrama de estados — OPCIONAL, e só quando o caso de uso gira em torno do ciclo de vida de uma
+entidade (um pedido, um pagamento): os estados que este fluxo alcança e o passo ou a extensão que
+causa cada transição. Mesma regra: derivado do texto, nunca fonte.]
+
+```mermaid
+stateDiagram-v2
+    [*] --> Pendente
+    Pendente --> Confirmado: passo 3
+    Pendente --> Recusado: extensão 2a
 ```
 
 ## Histórico de revisões
@@ -186,7 +201,7 @@ Aplique todas estas antes de considerar um documento pronto:
 4. Todo critério de aceite declara entre parênteses o que cobre: o cenário principal, um passo, uma ou mais extensões ou uma regra, acrescido de `não funcional` quando mede um atributo de qualidade. O rótulo aponta para algo que existe no documento. O `Cenário principal de sucesso` e toda extensão aparecem no rótulo de ao menos um critério.
 5. Toda regra de negócio (RN-N) referenciada em um cenário ou extensão existe na seção `Regras de negócio`, e toda regra da seção, exceto as lápides, é referenciada. Nenhum fluxo referencia uma lápide.
 6. As `Garantias mínimas` declaram o que se mantém mesmo em caso de falha.
-7. O diagrama UML existe quando há relações a mostrar (atores secundários, «include»/«extend», casos de uso relacionados) e é omitido quando não há. Quando existe, cobre apenas este caso de uso e suas relações diretas, e é consistente com os campos `Atores` e `Casos de uso relacionados` e com as `Extensões`.
+7. O diagrama de atividades existe quando o fluxo tem ao menos uma extensão ou uma decisão, e é omitido num cenário linear. Quando existe, desenha só o que os passos e as `Extensões` dizem: todo nó leva o número do passo ou da extensão que representa, toda extensão aparece como desvio com o seu desfecho, e nada no diagrama falta no texto. O diagrama de estados, quando existe, segue a mesma regra.
 8. Toda entrada do `Histórico de revisões` segue um dos tipos das Regras do Histórico de revisões. As que são trabalho para o its-generator carregam o ID da story de origem e referenciam os identificadores de passo, extensão e seção afetados — o its-generator depende disso para localizar o delta. Atualizações apenas de diagrama nunca são itens de delta.
 9. O documento é escrito de ponta a ponta no idioma de documento do formato, sem nenhum token estável traduzido (`RN-N` nunca vira `BR-N`, `Draft` nunca vira `Rascunho`).
 10. O campo `Casos de uso relacionados` é recíproco: todo UC-XXX citado também cita este documento. Nenhum documento vivo cita um documento `Retired`; o campo de um `Retired` fica congelado como estava na retirada.
